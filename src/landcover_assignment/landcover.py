@@ -67,12 +67,13 @@ class LandCover:
                 method = land_use_dict.get(land_use)
                 if method:
                     df = method()()  # Call the method and get the DataFrame
-                    area_value = self.total_grassland.loc[calibration_year, "0"].item()
+                    estimated_area = self.total_grassland.loc[calibration_year, "0"].item()
+                    area_value = df.loc[calibration_year, "total_kha"].item()
                     share_mineral = df.loc[calibration_year, "mineral_kha"].item()/area_value
                     share_organic = 1 - share_mineral
                     share_burnt = df.loc[calibration_year, "burnt_kha"].item()/area_value
 
-                    calculated_current_areas_pd.loc[index, "area_ha"] = area_value
+                    calculated_current_areas_pd.loc[index, "area_ha"] = estimated_area
                     calculated_current_areas_pd.loc[index, "share_mineral"] = share_mineral
                     calculated_current_areas_pd.loc[index, "share_organic"] = share_organic
                     calculated_current_areas_pd.loc[index, "share_burnt"] = share_burnt
