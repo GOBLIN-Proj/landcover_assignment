@@ -67,7 +67,7 @@ class LandCover:
                 method = land_use_dict.get(land_use)
                 if method:
                     df = method()()  # Call the method and get the DataFrame
-                    estimated_area = self.total_grassland.loc[calibration_year, "0"].item()
+                    estimated_area = self.total_grassland.loc[calibration_year, 0].item()
                     area_value = df.loc[calibration_year, "total_kha"].item()
                     share_mineral = df.loc[calibration_year, "mineral_kha"].item()/area_value
                     share_organic = 1 - share_mineral
@@ -182,7 +182,7 @@ class LandCover:
         calibration_year = self.data_manager_class.calibration_year
         target_year = self.data_manager_class.target_year
 
-        initial_spared_area = self.total_spared_area.loc[target_year, str(scenario)]
+        initial_spared_area = self.total_spared_area.loc[target_year, scenario]
         
 
         current_grassland_mask =  ((current_areas['year'] == calibration_year) & (current_areas['land_use'] == 'grassland'))
@@ -190,7 +190,7 @@ class LandCover:
 
         max_organic_available = min(initial_spared_area,(current_areas.loc[current_grassland_mask, "area_ha"].item() * current_areas.loc[current_grassland_mask, "share_organic"].item()))
 
-        adjusted_spared_area = self.total_spared_area.loc[target_year, str(scenario)]
+        adjusted_spared_area = self.total_spared_area.loc[target_year, scenario]
 
         for land_use in spared_land_use_dict.keys():
 
@@ -243,7 +243,7 @@ class LandCover:
         calibration_year = self.data_manager_class.calibration_year
         target_year = self.data_manager_class.target_year
 
-        initial_spared_area = self.total_spared_area.loc[target_year, str(scenario)]
+        initial_spared_area = self.total_spared_area.loc[target_year, scenario]
     
 
         current_grassland_mask =  ((current_areas['year'] == calibration_year) & (current_areas['land_use'] == 'grassland'))

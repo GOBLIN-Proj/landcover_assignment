@@ -9,7 +9,9 @@ def main():
     target_year = 2050
     scenario_dataframe = pd.read_csv("./data/scenario_dataframe.csv", index_col=0)
     spared_area = pd.read_csv("./data/spared_area.csv", index_col=0)
+    spared_area.columns = spared_area.columns.astype(int)
     grassland_area = pd.read_csv("./data/total_grassland_area.csv", index_col=0)
+    grassland_area.columns = grassland_area.columns.astype(int)
     
     transition = TransitionMatrix(baseline, target_year, scenario_dataframe, grassland_area, spared_area)
 
