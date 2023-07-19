@@ -13,7 +13,7 @@ class DataManager():
         self.land_use_columns = ["grassland", "wetland", "cropland", "forest","settlement","farmable_condition"]
 
         self.cbm_default_data = {"scenario": [-1, -1], 
-                         "species":["CF", "BF"], 
+                         "species":["CF", "BL"], 
                          "total_area":[0,0]}
 
         self.areas_dataframe_cols = [
