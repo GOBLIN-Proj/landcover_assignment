@@ -17,8 +17,6 @@ class Afforestation:
             scenario = afforestation_dataframe.at[i, "scenario"]
             future_forest_area = afforestation_dataframe.at[i, "area_ha"]
 
-            print(future_forest_area)
-
             if scenario >= 0:
                 cbm_data = self.compute_cbm_afforestation(scenario, future_forest_area, cbm_data)
     
