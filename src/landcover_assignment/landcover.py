@@ -55,6 +55,7 @@ class LandCover:
         
 
         for index in calculated_current_areas_pd.index:
+
             land_use = calculated_current_areas_pd.loc[index, 'land_use']
 
             if land_use == "farmable_condition":
@@ -96,7 +97,8 @@ class LandCover:
                 if land_use == "wetland":
                     share_rewetted_in_organic = df.loc[calibration_year, "rewetted_organic_kha"].item()/area_value
                     share_rewetted_in_mineral = df.loc[calibration_year, "rewetted_mineral_kha"].item()/area_value
-                    share_peat_extraction = df.loc[calibration_year, "peat_extraction_kha"].item()/area_value
+                    share_peat_extraction = (df.loc[calibration_year, "peat_extraction_kha"].item() + df.loc[calibration_year, "drained_extraction_kha"].item())/area_value
+
 
                     calculated_current_areas_pd.loc[index, "share_rewetted_in_organic"] = share_rewetted_in_organic
                     calculated_current_areas_pd.loc[index, "share_rewetted_in_mineral"] = share_rewetted_in_mineral
