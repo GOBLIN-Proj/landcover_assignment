@@ -41,8 +41,8 @@ class Afforestation:
             )
 
         dict_values = {
-            "CF": grouped_data.loc[mask, "Conifer proportion"].item(),
-            "BL": (1- grouped_data.loc[mask, "Conifer proportion"].item())
+            "Sitka": grouped_data.loc[mask, "Conifer proportion"].item(),
+            "SGB": (1- grouped_data.loc[mask, "Conifer proportion"].item())
         }
 
         for value, key in enumerate(dict_values.keys()):
