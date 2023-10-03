@@ -5,13 +5,26 @@ from landcover_assignment.landcover_data_manager import DataManager
 
 
 class TransitionMatrix:
-    def __init__(self, calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area):
-        
+    def __init__(
+        self,
+        calibration_year,
+        target_year,
+        scenario_inputs_df,
+        total_grassland,
+        total_spared_area,
+    ):
         self.calibration_year = calibration_year
-        self.target_year =target_year
-        self.land_cover_class = LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area)
-        self.data_manager_class = DataManager(calibration_year, target_year, scenario_inputs_df)
-
+        self.target_year = target_year
+        self.land_cover_class = LandCover(
+            calibration_year,
+            target_year,
+            scenario_inputs_df,
+            total_grassland,
+            total_spared_area,
+        )
+        self.data_manager_class = DataManager(
+            calibration_year, target_year, scenario_inputs_df
+        )
 
     def create_transition_matrix(self):
         calibration_year = self.calibration_year
@@ -37,30 +50,37 @@ class TransitionMatrix:
                     if land_use != "grassland":
                         transition_diff = (
                             land_cover_df.loc[
-                                (land_cover_df["land_use"] == land_use) &
-                                (land_cover_df["year"] == calibration_year), "area_ha"
-                            ].item() -
-                            land_cover_df.loc[
-                                (land_cover_df["farm_id"] == float(index)) &
-                                (land_cover_df["land_use"] == land_use) &
-                                (land_cover_df["year"] == target_year), "area_ha"
+                                (land_cover_df["land_use"] == land_use)
+                                & (land_cover_df["year"] == calibration_year),
+                                "area_ha",
+                            ].item()
+                            - land_cover_df.loc[
+                                (land_cover_df["farm_id"] == float(index))
+                                & (land_cover_df["land_use"] == land_use)
+                                & (land_cover_df["year"] == target_year),
+                                "area_ha",
                             ].item()
                         )
-                        transition_matrix.at[index, "Grassland_to_" + land_use.title()] = abs(transition_diff)
+                        transition_matrix.at[
+                            index, "Grassland_to_" + land_use.title()
+                        ] = abs(transition_diff)
                     else:
-                      
                         transition_diff = (
                             land_cover_df.loc[
-                                (land_cover_df["land_use"] == land_use) &
-                                (land_cover_df["year"] == calibration_year), "area_ha"
-                            ].item() -
-                            land_cover_df.loc[
-                                (land_cover_df["farm_id"] == float(index)) &
-                                (land_cover_df["land_use"] == land_use) &
-                                (land_cover_df["year"] == target_year), "area_ha"
+                                (land_cover_df["land_use"] == land_use)
+                                & (land_cover_df["year"] == calibration_year),
+                                "area_ha",
+                            ].item()
+                            - land_cover_df.loc[
+                                (land_cover_df["farm_id"] == float(index))
+                                & (land_cover_df["land_use"] == land_use)
+                                & (land_cover_df["year"] == target_year),
+                                "area_ha",
                             ].item()
                         )
-                        transition_matrix.at[index, "Grassland_to_" + land_use.title()] = -transition_diff
+                        transition_matrix.at[
+                            index, "Grassland_to_" + land_use.title()
+                        ] = -transition_diff
             else:
                 for land_use in self.data_manager_class.land_use_columns:
                     transition_matrix.at[index, "Grassland_to_" + land_use.title()] = 0
