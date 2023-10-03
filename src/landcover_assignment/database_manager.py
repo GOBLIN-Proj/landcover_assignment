@@ -16,7 +16,6 @@ class DataManager:
         engine_url = f"sqlite:///{database_path}"
 
         return sqa.create_engine(engine_url)
-    
 
     def get_national_inventory_areas(self):
         table = "NIR"
@@ -30,7 +29,7 @@ class DataManager:
         dataframe["Area_kha"] *= 1000
 
         return dataframe
-    
+
     def get_national_forest_areas(self):
         table = "forest_data"
         dataframe = pd.read_sql(
@@ -40,10 +39,9 @@ class DataManager:
         )
 
         # Scale the values by 1000
-        dataframe*= 1000
+        dataframe *= 1000
 
         return dataframe
-    
 
     def get_national_settlement_areas(self):
         table = "settlement_data"
@@ -54,10 +52,9 @@ class DataManager:
         )
 
         # Scale the values by 1000
-        dataframe*= 1000
+        dataframe *= 1000
 
         return dataframe
-    
 
     def get_national_grassland_areas(self):
         table = "grassland_data"
@@ -68,10 +65,9 @@ class DataManager:
         )
 
         # Scale the values by 1000
-        dataframe*= 1000
+        dataframe *= 1000
 
         return dataframe
-    
 
     def get_national_cropland_areas(self):
         table = "cropland_data"
@@ -82,10 +78,9 @@ class DataManager:
         )
 
         # Scale the values by 1000
-        dataframe*= 1000
+        dataframe *= 1000
 
         return dataframe
-
 
     def get_national_wetland_areas(self):
         table = "wetland_data"
@@ -96,10 +91,6 @@ class DataManager:
         )
 
         # Scale the values by 1000
-        dataframe*= 1000
+        dataframe *= 1000
 
         return dataframe
-    
-
-    
-
