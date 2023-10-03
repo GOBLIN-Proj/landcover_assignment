@@ -73,7 +73,6 @@ class LandCover:
                     share_mineral = df.loc[calibration_year, "mineral_kha"].item()/area_value
                     share_organic = 1 - share_mineral
                     share_burnt = df.loc[calibration_year, "burnt_kha"].item()/area_value
-
                     calculated_current_areas_pd.loc[index, "area_ha"] = estimated_area
                     calculated_current_areas_pd.loc[index, "share_mineral"] = share_mineral
                     calculated_current_areas_pd.loc[index, "share_organic"] = share_organic
@@ -88,10 +87,15 @@ class LandCover:
                     share_mineral = df.loc[calibration_year, "mineral_kha"].item()/area_value
                     share_organic = df.loc[calibration_year, "organic_kha"].item()/area_value
                     share_burnt = df.loc[calibration_year, "burnt_kha"].item()/area_value
-
                     calculated_current_areas_pd.loc[index, "area_ha"] = area_value
                     calculated_current_areas_pd.loc[index, "share_mineral"] = share_mineral
-                    calculated_current_areas_pd.loc[index, "share_organic"] = share_organic
+
+                    if land_use == "forest":
+                        forest_share_organic = (df.loc[calibration_year, "organic_emitting_kha"].item() + df.loc[calibration_year, "organo_mineral_emitting_kha"].item())/area_value
+                        calculated_current_areas_pd.loc[index, "share_organic"] = forest_share_organic
+                    else:
+                        calculated_current_areas_pd.loc[index, "share_organic"] = share_organic
+                    
                     calculated_current_areas_pd.loc[index, "share_burnt"] = share_burnt
 
                 if land_use == "wetland":
