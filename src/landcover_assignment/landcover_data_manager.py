@@ -57,6 +57,7 @@ class DistributionManager:
         self.land_distribution = {
             "area_ha": 0,
             "share_organic": 0,
+            "share_organic_mineral":0,
             "share_mineral": 0,
             "share_rewetted_in_organic": 0,
             "share_burnt": 0,

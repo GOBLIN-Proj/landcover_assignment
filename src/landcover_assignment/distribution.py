@@ -37,6 +37,18 @@ class LandDistribution:
             ) / land["area_ha"]
             land["share_burnt"] = land_df["share_burnt"].item()
 
+        elif land_use == "forest":
+            land["share_mineral"] = (
+                (land_df["area_ha"].item() * land_df["share_mineral"].item()) + new_area
+            ) / land["area_ha"]
+            land["share_organic"] = (
+                land_df["area_ha"].item() * land_df["share_organic"].item()
+            ) / land["area_ha"]
+            land["share_organic_mineral"] = (
+                land_df["area_ha"].item() * land_df["share_organic_mineral"].item()
+            ) / land["area_ha"]
+            land["share_burnt"] = land_df["share_burnt"].item()
+
         elif land_use != "farmable_condition":
             land["share_organic"] = (
                 land_df["area_ha"].item() * land_df["share_organic"].item()
@@ -74,13 +86,16 @@ class LandDistribution:
 
         current_mineral = land_df["area_ha"].item() * land_df["share_mineral"].item()
         current_organic = land_df["area_ha"].item() * land_df["share_organic"].item()
+        current_organic_mineral = land_df["area_ha"].item() * land_df["share_organic_mineral"].item()
 
         remaining_mineral = current_mineral - mineral_area
         remaining_organic = current_organic - organic_area
-        total_remaining = remaining_mineral + remaining_organic
+
+        total_remaining = remaining_mineral + remaining_organic + current_organic_mineral
 
         land["area_ha"] = total_remaining
         land["share_organic"] = remaining_organic / total_remaining
+        land["share_organic_mineral"] = current_organic_mineral/ total_remaining
         land["share_mineral"] = remaining_mineral / total_remaining
         land["share_rewetted_in_mineral"] = land_df["share_rewetted_in_mineral"].item()
         land["share_rewetted_in_organic"] = land_df["share_rewetted_in_organic"].item()
