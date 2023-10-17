@@ -50,6 +50,7 @@ class LandCover:
                 "area_ha",
                 "share_mineral",
                 "share_organic",
+                "share_organic_mineral",
                 "share_rewetted_in_organic",
                 "share_rewetted_in_mineral",
                 "share_peat_extraction",
@@ -59,12 +60,14 @@ class LandCover:
 
         for index in calculated_current_areas_pd.index:
             land_use = calculated_current_areas_pd.loc[index, "land_use"]
+            
 
             if land_use == "farmable_condition":
                 area_value = 0
                 calculated_current_areas_pd.loc[index, "share_mineral"] = 1
                 calculated_current_areas_pd.loc[index, "share_organic"] = 0
                 calculated_current_areas_pd.loc[index, "share_burnt"] = 0
+                calculated_current_areas_pd.loc[index, "share_organic_mineral"] = 0
 
             elif land_use == "grassland":
                 method = land_use_dict.get(land_use)
@@ -88,7 +91,9 @@ class LandCover:
                     calculated_current_areas_pd.loc[
                         index, "share_organic"
                     ] = share_organic
+                    
                     calculated_current_areas_pd.loc[index, "share_burnt"] = share_burnt
+                    calculated_current_areas_pd.loc[index, "share_organic_mineral"] = 0
 
             else:
                 method = land_use_dict.get(land_use)
@@ -112,13 +117,25 @@ class LandCover:
                     if land_use == "forest":
                         forest_share_organic = (
                             df.loc[calibration_year, "organic_emitting_kha"].item()
-                            + df.loc[
+                        )/area_value
+                        
+                        forest_share_organic_mineral = (df.loc[
                                 calibration_year, "organo_mineral_emitting_kha"
                             ].item()
                         ) / area_value
+
+                        forest_share_mineral =   1 -(forest_share_organic + forest_share_organic_mineral)
+
+                        calculated_current_areas_pd.loc[
+                            index, "share_mineral"
+                        ] = forest_share_mineral
+
                         calculated_current_areas_pd.loc[
                             index, "share_organic"
                         ] = forest_share_organic
+
+                        calculated_current_areas_pd.loc[index, "share_organic_mineral"] = forest_share_organic_mineral
+
                     else:
                         calculated_current_areas_pd.loc[
                             index, "share_organic"
@@ -150,6 +167,8 @@ class LandCover:
                         index, "share_peat_extraction"
                     ] = share_peat_extraction
 
+                    calculated_current_areas_pd.loc[index, "share_organic_mineral"] = 0
+
         return calculated_current_areas_pd
 
     def combined_future_land_use_area(self):
@@ -179,6 +198,9 @@ class LandCover:
                             ],
                             "share_organic": land_use_data_future[landuse][
                                 "share_organic"
+                            ],
+                            "share_organic_mineral": land_use_data_future[landuse][
+                                "share_organic_mineral"
                             ],
                             "share_rewetted_in_organic": land_use_data_future[landuse][
                                 "share_rewetted_in_organic"
@@ -211,6 +233,7 @@ class LandCover:
                             "area_ha": settlement_pd["area_ha"].item(),
                             "share_mineral": settlement_pd["share_mineral"].item(),
                             "share_organic": settlement_pd["share_organic"].item(),
+                            "share_organic_mineral": settlement_pd["share_organic_mineral"].item(),
                             "share_rewetted_in_organic": settlement_pd[
                                 "share_rewetted_in_organic"
                             ].item(),
@@ -243,6 +266,9 @@ class LandCover:
                             ],
                             "share_organic": land_use_data_future[landuse][
                                 "share_organic"
+                            ],
+                            "share_organic_mineral": land_use_data_future[landuse][
+                                "share_organic_mineral"
                             ],
                             "share_rewetted_in_organic": land_use_data_future[landuse][
                                 "share_rewetted_in_organic"
