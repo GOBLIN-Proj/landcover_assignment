@@ -56,7 +56,7 @@ class LandCover:
                 "share_peat_extraction",
                 "share_burnt",
             ]
-        ] = 0
+        ] = 0.0
 
         for index in calculated_current_areas_pd.index:
             land_use = calculated_current_areas_pd.loc[index, "land_use"]
@@ -216,9 +216,12 @@ class LandCover:
                         index=[0],
                     )
 
-                    future_area_pd = pd.concat(
-                        [future_area_pd, temp], ignore_index=True
-                    )
+                    if  future_area_pd.empty:
+                        future_area_pd = temp
+                    else:
+                        future_area_pd = pd.concat(
+                            [future_area_pd, temp], ignore_index=True
+                        )
 
                 elif landuse == "settlement":
                     settlement_pd = current_area_pd.loc[
@@ -248,9 +251,13 @@ class LandCover:
                         index=[0],
                     )
 
-                    future_area_pd = pd.concat(
-                        [future_area_pd, temp], ignore_index=True
-                    )
+                    if  future_area_pd.empty:
+                        future_area_pd = temp
+                    else:
+                        future_area_pd = pd.concat(
+                            [future_area_pd, temp], ignore_index=True
+                        )
+
 
                 else:
                     land_use_data_future = self.spared_area_breakdown(sc)
@@ -284,9 +291,13 @@ class LandCover:
                         index=[0],
                     )
 
-                    future_area_pd = pd.concat(
-                        [future_area_pd, temp], ignore_index=True
-                    )
+                    if  future_area_pd.empty:
+                        future_area_pd = temp
+                    else:
+                        future_area_pd = pd.concat(
+                            [future_area_pd, temp], ignore_index=True
+                        )
+
 
         combined_df = pd.concat([current_area_pd, future_area_pd], ignore_index=True)
 
