@@ -22,7 +22,7 @@ class DataManager:
         self.cbm_default_data = {
             "scenario": [-1, -1],
             "species": ["Sitka", "SGB"],
-            "total_area": [0, 0],
+            "total_area": [0.0, 0.0],
         }
 
         self.areas_dataframe_cols = [
