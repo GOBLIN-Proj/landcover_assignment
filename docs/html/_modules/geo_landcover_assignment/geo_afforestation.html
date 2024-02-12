@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geo_landcover_assignment.geo_afforestation &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">geo_landcover_assignment.geo_afforestation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for geo_landcover_assignment.geo_afforestation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Geo Afforestation</span>
+<span class="sd">======================</span>
+
+<span class="sd">This module provides functionalities for processing afforestation scenarios, particularly for preparing inputs</span>
+<span class="sd">for the Carbon Budget Model (CBM). It enables the generation of afforestation dataframes based on spared area</span>
+<span class="sd">breakdowns, scenario-based afforestation calculations, and structuring data to meet CBM requirements.</span>
+
+<span class="sd">Features:</span>
+<span class="sd">---------</span>
+
+<span class="sd">- **Afforestation Class**: Manages afforestation scenario data processing for CBM input preparation, integrating</span>
+<span class="sd">  various data management and fetching utilities to prepare datasets for environmental modeling and analysis.</span>
+
+<span class="sd">Dependencies:</span>
+<span class="sd">-------------</span>
+
+<span class="sd">- **pandas**: Utilized for data manipulation and analysis.</span>
+<span class="sd">- **DataManager**: Manages land cover and calibration data.</span>
+<span class="sd">- **ScenarioDataFetcher**: Fetches scenario-specific input data.</span>
+<span class="sd">- **TransitionDataFetcher**: Handles land cover transition matrices.</span>
+<span class="sd">- **Loader**: Loads various data resources, including yield mappings.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">------</span>
+
+<span class="sd">This module is intended for use in environmental data processing pipelines, specifically for preparing input data</span>
+<span class="sd">for the Carbon Budget Model (CBM) in the context of afforestation scenario analysis.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<span class="kn">from</span> <span class="nn">resource_manager.scenario_data_fetcher</span> <span class="kn">import</span> <span class="n">ScenarioDataFetcher</span>
+<span class="kn">from</span> <span class="nn">resource_manager.data_loader</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">from</span> <span class="nn">resource_manager.transition_data_fetcher</span> <span class="kn">import</span> <span class="n">TransitionDataFetcher</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="Afforestation">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/geo_afforestation/index.html#geo_landcover_assignment.geo_afforestation.Afforestation">[docs]</a>
+<span class="k">class</span> <span class="nc">Afforestation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages afforestation outputs for scenarios and data processing for Carbon Budget Model (CBM) inputs.</span>
+
+<span class="sd">    This class is designed to output afforestation data, including generating afforestation scenarios,</span>
+<span class="sd">    managing transition matrices, and preparing data for CBM simulations based on different scenarios</span>
+<span class="sd">    and soil group transitions from grassland to forest.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        calibration_year (int): The base year for calibration data.</span>
+<span class="sd">        target_year (int): The target year for scenario projections.</span>
+<span class="sd">        scenario_inputs_df (pd.DataFrame): A DataFrame containing scenario inputs.</span>
+<span class="sd">        transition_matrix (pd.DataFrame): A DataFrame representing the transition matrix for land cover changes.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        data_manager_class (DataManager): An instance of DataManager for managing land cover data.</span>
+<span class="sd">        scenario_data_fetcher (ScenarioDataFetcher): An instance for fetching scenario-specific data.</span>
+<span class="sd">        transition_data_fetcher (TransitionDataFetcher): An instance for fetching transition data.</span>
+<span class="sd">        data_loader (Loader): An instance for loading necessary data resources.</span>
+<span class="sd">        yield_mapping (pd.DataFrame): A DataFrame containing yield mapping for different forest soil groups.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calibration_year</span><span class="p">,</span> <span class="n">target_year</span><span class="p">,</span> <span class="n">scenario_inputs_df</span><span class="p">,</span> <span class="n">transition_matrix</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span>
+            <span class="n">calibration_year</span><span class="p">,</span> <span class="n">target_year</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data_fetcher</span> <span class="o">=</span> <span class="n">ScenarioDataFetcher</span><span class="p">(</span><span class="n">scenario_inputs_df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transition_data_fetcher</span> <span class="o">=</span> <span class="n">TransitionDataFetcher</span><span class="p">(</span><span class="n">transition_matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_loader</span><span class="o">.</span><span class="n">forest_soil_yield_mapping</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Afforestation.gen_cbm_afforestation_dataframe">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/geo_afforestation/index.html#geo_landcover_assignment.geo_afforestation.Afforestation.gen_cbm_afforestation_dataframe">[docs]</a>
+    <span class="k">def</span> <span class="nf">gen_cbm_afforestation_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spared_area_breakdown</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a DataFrame structured for CBM inputs, detailing afforestation areas by scenario.</span>
+
+<span class="sd">        Processes spared area breakdown to determine afforestation areas transitioning from grassland</span>
+<span class="sd">        to forest under different scenarios. This method structures the data to be compatible with CBM</span>
+<span class="sd">        simulation requirements.</span>
+
+<span class="sd">        :param spared_area_breakdown: A DataFrame containing the breakdown of spared areas by scenario.</span>
+<span class="sd">        :type spared_area_breakdown: pd.DataFrame</span>
+<span class="sd">        :return: A DataFrame structured for CBM afforestation inputs.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cbm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cbm_dataframe_structure</span><span class="p">()</span>
+
+        <span class="n">afforestation_dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_data_fetcher</span><span class="o">.</span><span class="n">get_grassland_to_forest_soil_group_areas</span><span class="p">(</span><span class="n">spared_area_breakdown</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">afforestation_dataframe</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="n">scenario</span> <span class="o">=</span> <span class="n">afforestation_dataframe</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;scenario&quot;</span><span class="p">]</span>
+            <span class="n">future_forest_area</span> <span class="o">=</span> <span class="n">afforestation_dataframe</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;Grassland_to_Forest&quot;</span><span class="p">]</span>
+            <span class="n">soil_group</span> <span class="o">=</span> <span class="n">afforestation_dataframe</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;soil_group&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">scenario</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cbm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_cbm_afforestation</span><span class="p">(</span>
+                    <span class="n">scenario</span><span class="p">,</span> <span class="n">soil_group</span><span class="p">,</span> <span class="n">future_forest_area</span><span class="p">,</span> <span class="n">cbm_data</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Reset the index of cbm_data before returning it</span>
+        <span class="n">cbm_data_reset</span> <span class="o">=</span> <span class="n">cbm_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cbm_data_reset</span></div>
+
+
+
+<div class="viewcode-block" id="Afforestation.compute_cbm_afforestation">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/geo_afforestation/index.html#geo_landcover_assignment.geo_afforestation.Afforestation.compute_cbm_afforestation">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_cbm_afforestation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">soil_group</span><span class="p">,</span> <span class="n">future_forest_area</span><span class="p">,</span> <span class="n">cbm_dataframe</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes afforestation outputs for a specific scenario and updates the CBM DataFrame.</span>
+
+<span class="sd">        This method calculates the distribution of future forest areas between different species</span>
+<span class="sd">        and yield classes based on the soil group. It updates and returns the CBM DataFrame with</span>
+<span class="sd">        the new data.</span>
+
+<span class="sd">        :param sc: The scenario identifier.</span>
+<span class="sd">        :type sc: int</span>
+<span class="sd">        :param soil_group: The soil group identifier.</span>
+<span class="sd">        :type soil_group: int</span>
+<span class="sd">        :param future_forest_area: The future forest area for the scenario and soil group.</span>
+<span class="sd">        :type future_forest_area: float</span>
+<span class="sd">        :param cbm_dataframe: The existing CBM DataFrame to be updated.</span>
+<span class="sd">        :type cbm_dataframe: pd.DataFrame</span>
+<span class="sd">        :return: The updated CBM DataFrame with the new afforestation data.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        :raises ValueError: If the future forest area is less than 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check future_forest_area</span>
+        <span class="k">if</span> <span class="n">future_forest_area</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid Forest amount for scenario </span><span class="si">{</span><span class="n">sc</span><span class="si">}</span><span class="s2">, check scenario grassland area is not greater than baseline year&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">dict_values</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Sitka&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data_fetcher</span><span class="o">.</span><span class="n">get_conifer_proportion</span><span class="p">(</span><span class="n">sc</span><span class="p">),</span>
+            <span class="s2">&quot;SGB&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data_fetcher</span><span class="o">.</span><span class="n">get_conifer_proportion</span><span class="p">(</span><span class="n">sc</span><span class="p">)),</span>
+        <span class="p">}</span>
+
+        <span class="n">sitka_yield_mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Sitka&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="p">[</span><span class="s2">&quot;soil_group&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">soil_group</span><span class="p">)</span>
+        <span class="n">sgb_yield_mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;SGB&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="p">[</span><span class="s2">&quot;soil_group&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">soil_group</span><span class="p">)</span>
+
+        <span class="n">yield_dict_values</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Sitka&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sitka_yield_mask</span><span class="p">,</span> <span class="s2">&quot;yield_class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;SGB&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">yield_mapping</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sgb_yield_mask</span><span class="p">,</span> <span class="s2">&quot;yield_class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="p">}</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dict_values</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">row</span> <span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;scenario&quot;</span><span class="p">:</span> <span class="n">sc</span><span class="p">,</span>
+                <span class="s2">&quot;species&quot;</span><span class="p">:</span><span class="n">key</span><span class="p">,</span>
+                <span class="s2">&quot;yield_class&quot;</span><span class="p">:</span> <span class="n">yield_dict_values</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="s2">&quot;total_area&quot;</span><span class="p">:</span> <span class="n">future_forest_area</span> <span class="o">*</span> <span class="n">dict_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="p">}</span>
+
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        
+
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">cbm_dataframe</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
+
+        <span class="n">output_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output_frame</span></div>
+
+    
+
+<div class="viewcode-block" id="Afforestation.cbm_dataframe_structure">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/geo_afforestation/index.html#geo_landcover_assignment.geo_afforestation.Afforestation.cbm_dataframe_structure">[docs]</a>
+    <span class="k">def</span> <span class="nf">cbm_dataframe_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the structure of the CBM DataFrame based on default data.</span>
+
+<span class="sd">        This method creates a new DataFrame structured for CBM inputs using default data</span>
+<span class="sd">        from the data manager class. It serves as the initial template for accumulating</span>
+<span class="sd">        afforestation scenario data.</span>
+
+<span class="sd">        :return: A DataFrame structured for CBM afforestation inputs.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cbm_default_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">cbm_default_data</span>
+
+        <span class="n">cbm_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cbm_default_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cbm_df</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

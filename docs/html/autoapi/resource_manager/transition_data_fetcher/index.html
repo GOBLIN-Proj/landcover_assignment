@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>resource_manager.transition_data_fetcher &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="geo_landcover_assignment" href="../../geo_landcover_assignment/index.html" />
+    <link rel="prev" title="resource_manager.scenario_data_fetcher" href="../scenario_data_fetcher/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../data_loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.data_loader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.database_manager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scenario_data_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.scenario_data_fetcher</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.transition_data_fetcher</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../geo_landcover_assignment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../transition_matrix/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">transition_matrix</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../afforestation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">afforestation</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../landcover_data_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_data_manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../national_landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">national_landcover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">distribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.transition_data_fetcher</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/resource_manager/transition_data_fetcher/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-resource_manager.transition_data_fetcher">
+<span id="resource-manager-transition-data-fetcher"></span><h1><a class="reference internal" href="#module-resource_manager.transition_data_fetcher" title="resource_manager.transition_data_fetcher"><code class="xref py py-mod docutils literal notranslate"><span class="pre">resource_manager.transition_data_fetcher</span></code></a><a class="headerlink" href="#module-resource_manager.transition_data_fetcher" title="Link to this heading"></a></h1>
+<section id="transition-data-fetcher-documentation">
+<p>The <code class="docutils literal notranslate"><span class="pre">TransitionDataFetcher</span></code> class is designed to process and analyze transition data from grasslands to various land uses based on specific scenarios.
+This class simplifies the process of extracting transition area data and supports detailed environmental and land use planning analyses.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">resource_manager.transition_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">TransitionDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transition_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher" title="Link to this definition"></a></dt>
+<dd><p>Initializes the TransitionDataFetcher with a pandas DataFrame containing transition data between different land use types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>transition_data</strong> – A pandas DataFrame containing transition matrices for various scenarios.</p>
+</dd>
+</dl>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_forest_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to forests across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to forests.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_grassland_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_grassland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas remaining as grasslands across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas remaining as grasslands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_wetland_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_wetland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to wetlands across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to wetlands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_cropland_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_cropland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to croplands across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to croplands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_forest_soil_group_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_forest_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_forest_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_forest_soil_group_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to forests, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Forest</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_wetland_soil_group_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_wetland_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_wetland_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_wetland_soil_group_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_cropland_soil_group_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_cropland_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_cropland_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_cropland_soil_group_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to croplands, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Cropland</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_farmable_condition_soil_group_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_to_farmable_condition_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_farmable_condition_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_farmable_condition_soil_group_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Farmable_Condition</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_landuse_soil_group_area">
+<span class="sig-name descname"><span class="pre">get_grassland_to_landuse_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_landuse_soil_group_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_landuse_soil_group_area" title="Link to this definition"></a></dt>
+<dd><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with transition areas categorized by soil group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="resource_manager.transition_data_fetcher.TransitionDataFetcher._derive_soil_group_area">
+<span class="sig-name descname"><span class="pre">_derive_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">soil_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soil_group_pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transition_area_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher._derive_soil_group_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#resource_manager.transition_data_fetcher.TransitionDataFetcher._derive_soil_group_area" title="Link to this definition"></a></dt>
+<dd><p>Internal helper method to calculate the allocation of transition areas by soil group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>soil_group</strong> – The soil group identifier.</p></li>
+<li><p><strong>soil_group_pool</strong> – A dictionary containing available areas for each soil group.</p></li>
+<li><p><strong>transition_area_dict</strong> – A dictionary containing the areas allocated for transition to different land uses.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with updated transition area allocations by soil group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="resource_manager.transition_data_fetcher.TransitionDataFetcher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TransitionDataFetcher</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">resource_manager.transition_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">TransitionDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transition_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">get_grassland_to_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to forests across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to forests.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">get_grassland_to_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to wetlands across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to wetlands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">get_grassland_to_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to wetlands across all scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to wetlands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get_grassland_to_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Retrieves the areas transitioning from grasslands to croplands across all scenarios.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code> and <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> indicating the areas transitioning from grasslands to croplands.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get_grassland_to_forest_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_forest_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to forests, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Forest</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">get_grassland_to_wetland_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_wetland_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">get_grassland_to_cropland_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_cropland_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the areas transitioning from grasslands to croplands, categorized by soil groups, based on spared area breakdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Cropland</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">get_grassland_to_farmable_condition_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_farmable_condition_soil_group_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_to_Farmable_Condition</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">get_grassland_to_landuse_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher.get_grassland_to_landuse_soil_group_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with transition areas categorized by soil group.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">_derive_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">soil_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soil_group_pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transition_area_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/resource_manager/transition_data_fetcher.html#TransitionDataFetcher._derive_soil_group_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>_derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)</p>
+<p>Internal helper method to calculate the allocation of transition areas by soil group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param soil_group<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The soil group identifier.</p>
+</dd>
+<dt class="field-even">param soil_group_pool<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing available areas for each soil group.</p>
+</dd>
+<dt class="field-odd">param transition_area_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the areas allocated for transition to different land uses.</p>
+</dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with updated transition area allocations by soil group.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../scenario_data_fetcher/index.html" class="btn btn-neutral float-left" title="resource_manager.scenario_data_fetcher" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../geo_landcover_assignment/index.html" class="btn btn-neutral float-right" title="geo_landcover_assignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

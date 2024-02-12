@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geo_landcover_assignment.catchment_landcover &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">geo_landcover_assignment.catchment_landcover</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for geo_landcover_assignment.catchment_landcover</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Catchment Land Cover</span>
+<span class="sd">======================</span>
+
+<span class="sd">This module provides a class for managing and analyzing land cover data within catchment areas. It integrates</span>
+<span class="sd">various APIs and data sources to offer a comprehensive set of functionalities for land cover analysis.</span>
+
+<span class="sd">Dependencies</span>
+<span class="sd">------------</span>
+<span class="sd">- ``catchment_data_api.catchment_data_api.CatchmentDataAPI``</span>
+<span class="sd">- ``catchment_data_api.crops.Crops``</span>
+<span class="sd">- ``resource_manager.data_loader.Loader``</span>
+<span class="sd">- ``pandas`` as ``pd``</span>
+
+<span class="sd">Classes</span>
+<span class="sd">-------</span>
+<span class="sd">.. class:: CatchmentLandCover()</span>
+
+<span class="sd">   This class is designed to access and analyze land cover data across different land use types within catchment areas.</span>
+<span class="sd">   It provides methods to calculate areas and shares of different land cover types, including forests, wetlands,</span>
+<span class="sd">   croplands, and grasslands, based on catchment names.</span>
+
+<span class="sd">    Methods:</span>
+
+<span class="sd">   .. method:: get_catchment_forest_area(catchment)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the total forest area within a specified catchment, categorized by cover and soil types.</span>
+
+<span class="sd">   .. method:: get_catchment_peat_area(catchment)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the total peat area within a specified catchment, grouped by cover and soil types.</span>
+
+<span class="sd">   .. method:: get_catchment_crop_area(catchment)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the total crop area within a specified catchment, grouped by cover and soil types.</span>
+
+<span class="sd">   .. method:: get_catchment_grassland_area(catchment, total_grassland_area)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the total grassland area within a specified catchment, grouped by cover and soil types.</span>
+
+<span class="sd">   .. method:: get_landuse_area(landuse, catchment, grassland_area=None)</span>
+<span class="sd">      </span>
+<span class="sd">      Retrieves the total area for a specified land use within a catchment.</span>
+
+<span class="sd">   .. method:: get_share_mineral(landuse, catchment, grassland_area=None)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the share of mineral soil within a specified land use area in a catchment.</span>
+
+<span class="sd">   .. method:: get_share_organic(landuse, catchment, grassland_area=None)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the share of organic soil within a specified land use area in a catchment.</span>
+
+<span class="sd">   .. method:: get_share_organic_mineral(landuse, catchment, grassland_area=None)</span>
+<span class="sd">      </span>
+<span class="sd">      Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">catchment_data_api.catchment_data_api</span> <span class="kn">import</span> <span class="n">CatchmentDataAPI</span>
+<span class="kn">from</span> <span class="nn">catchment_data_api.crops</span> <span class="kn">import</span> <span class="n">Crops</span>
+<span class="kn">from</span> <span class="nn">resource_manager.data_loader</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<div class="viewcode-block" id="CatchmentLandCover">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover">[docs]</a>
+<span class="k">class</span> <span class="nc">CatchmentLandCover</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages and analyzes land cover data within catchment areas by integrating various APIs and data sources.</span>
+
+<span class="sd">    This class provides functionalities for accessing and analyzing land cover data across different land use</span>
+<span class="sd">    types within catchment areas. It includes methods for calculating areas and shares of different land cover</span>
+<span class="sd">    types, such as forests, wetlands, croplands, and grasslands, based on catchment names.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        api (CatchmentDataAPI): An instance of the CatchmentDataAPI for accessing catchment data.</span>
+<span class="sd">        crops_api (Crops): An instance of the Crops API for accessing crops data.</span>
+<span class="sd">        loader (Loader): An instance of the Loader for accessing national area data.</span>
+<span class="sd">        methods (dict): A dictionary mapping land use types to their respective methods.</span>
+<span class="sd">        national_areas (dict): A dictionary mapping land use types to their national areas data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">CatchmentDataAPI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crops_api</span> <span class="o">=</span> <span class="n">Crops</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">methods</span> <span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;forest&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_catchment_forest_area</span><span class="p">,</span>
+            <span class="s1">&#39;wetland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_catchment_peat_area</span><span class="p">,</span>
+            <span class="s1">&#39;cropland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_catchment_crop_area</span><span class="p">,</span>
+            <span class="s1">&#39;grassland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_catchment_grassland_area</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;forest&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_forest_areas</span><span class="p">,</span>
+            <span class="s2">&quot;cropland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_cropland_areas</span><span class="p">,</span>
+            <span class="s2">&quot;wetland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_wetland_areas</span><span class="p">,</span>
+            <span class="s2">&quot;settlement&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_settlement_areas</span><span class="p">,</span>
+            <span class="s2">&quot;grassland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_grassland_areas</span><span class="p">,</span>
+        <span class="p">}</span>
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_catchment_forest_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_forest_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_catchment_forest_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catchment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the total forest area within a specified catchment, categorized by cover and soil types.</span>
+
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :return: A pandas DataFrame summarizing the forest area details.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">forest_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_catchment_forest_data_by_catchment_name</span><span class="p">(</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="c1"># Filter for specific types of forests and then group</span>
+        <span class="n">forest_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Broadleaved Forest and Woodland&#39;</span><span class="p">,</span> <span class="s1">&#39;Coniferous Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Mixed Forest&#39;</span><span class="p">]</span>
+        <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">forest_df</span><span class="p">[</span><span class="n">forest_df</span><span class="p">[</span><span class="s1">&#39;cover_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">forest_types</span><span class="p">)]</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;cover_type&#39;</span><span class="p">,</span> <span class="s1">&#39;soil_type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Calculating totals for different soil types</span>
+        <span class="n">total_area</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> \
+                        <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;misc&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peat&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peaty_mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="n">total_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burnt_average</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="CatchmentLandCover.get_catchment_peat_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_peat_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_catchment_peat_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catchment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the total organic area within a specified catchment, grouped by cover and soil types.</span>
+
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :return: A pandas DataFrame summarizing the peat area details.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">peat_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_catchment_peat_data_by_catchment_name</span><span class="p">(</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="c1"># Filter</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">peat_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;cover_type&#39;</span><span class="p">,</span> <span class="s1">&#39;soil_type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Calculating totals for different soil types</span>
+        <span class="n">total_area</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> \
+                        <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;misc&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peat&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peaty_mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="n">total_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burnt_average</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="CatchmentLandCover.get_catchment_crop_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_catchment_crop_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catchment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the total crop area within a specified catchment, grouped by cover and soil types.</span>
+
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :return: A pandas DataFrame summarizing the crop area details.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cultivated_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_catchment_cultivated_data_by_catchment_name</span><span class="p">(</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="c1"># Filter    </span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">cultivated_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;cover_type&#39;</span><span class="p">,</span> <span class="s1">&#39;soil_type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Calculating totals for different soil types</span>
+        <span class="n">total_area</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> \
+                        <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;misc&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peat&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total_mineral_peat</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;peaty_mineral&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)[</span><span class="s1">&#39;total_hectares&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="n">total_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burnt_average</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">)</span> 
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="CatchmentLandCover.get_catchment_grassland_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_grassland_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_catchment_grassland_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">total_grassland_area</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the total grassland area within a specified catchment, using additional grassland area data from the </span>
+<span class="sd">        grassland_production package.</span>
+
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param total_grassland_area: The total grassland area data.</span>
+<span class="sd">        :type total_grassland_area: Various (e.g., int, float, pd.Series)</span>
+<span class="sd">        :return: A pandas DataFrame summarizing the grassland area details.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">derived_grassland_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_derived_catchment_grassland_area</span><span class="p">(</span><span class="n">total_grassland_area</span><span class="p">)</span>
+
+        <span class="n">grassland_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_catchment_grass_data_by_catchment_name</span><span class="p">(</span><span class="n">catchment</span><span class="p">)</span>
+
+
+        <span class="c1"># Select only numeric columns for transposition and summation</span>
+        <span class="n">numeric_df</span> <span class="o">=</span> <span class="n">grassland_df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
+        
+
+        <span class="c1"># Transpose the numeric part of the DataFrame</span>
+        <span class="n">transposed_numeric_df</span> <span class="o">=</span> <span class="n">numeric_df</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c1"># Now, sum across the &#39;soil_type&#39; level (assuming your DataFrame is structured to allow this)</span>
+        <span class="n">summed_df</span> <span class="o">=</span> <span class="n">transposed_numeric_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;soil_type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+        <span class="n">total_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_mineral</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_peat</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_mineral_peat</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">soil</span> <span class="ow">in</span> <span class="n">summed_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="n">total_area</span> <span class="o">+=</span> <span class="n">summed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">soil</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">soil</span> <span class="o">==</span> <span class="s1">&#39;mineral&#39;</span> <span class="ow">or</span> <span class="n">soil</span> <span class="o">==</span> <span class="s1">&#39;misc&#39;</span><span class="p">:</span>
+                <span class="n">total_mineral</span> <span class="o">+=</span> <span class="n">summed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">soil</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">soil</span> <span class="o">==</span> <span class="s1">&#39;peat&#39;</span><span class="p">:</span>
+                <span class="n">total_peat</span> <span class="o">+=</span> <span class="n">summed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">soil</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">soil</span> <span class="o">==</span> <span class="s1">&#39;peaty_mineral&#39;</span><span class="p">:</span>
+                <span class="n">total_mineral_peat</span> <span class="o">+=</span> <span class="n">summed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">soil</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="n">derived_grassland_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="n">total_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="n">total_mineral_peat</span> <span class="o">/</span> <span class="n">total_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burnt_average</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_landuse_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_landuse_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_landuse_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the total area for a specified land use within a catchment.</span>
+
+<span class="sd">        :param landuse: The type of land use (e.g., &#39;forest&#39;, &#39;wetland&#39;, &#39;cropland&#39;, &#39;grassland&#39;).</span>
+<span class="sd">        :type landuse: str</span>
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param grassland_area: Optional; additional grassland area data, required if landuse is &#39;grassland&#39;.</span>
+<span class="sd">        :type grassland_area: Various, optional</span>
+<span class="sd">        :return: The total area of the specified land use within the catchment.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;area_ha&#39; column is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;area_ha&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;area_ha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;area_ha&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="CatchmentLandCover.get_share_mineral">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of mineral soil within a specified land use area in a catchment.</span>
+
+<span class="sd">        :param landuse: The type of land use.</span>
+<span class="sd">        :type landuse: str</span>
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param grassland_area: Optional; additional grassland area data, required if landuse is &#39;grassland&#39;.</span>
+<span class="sd">        :type grassland_area: Various, optional</span>
+<span class="sd">        :return: The share of mineral soil within the specified land use area.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_mineral&#39; column is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_mineral&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_mineral&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_share_organic">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_organic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of organic soil within a specified land use area in a catchment.</span>
+
+<span class="sd">        :param landuse: The type of land use.</span>
+<span class="sd">        :type landuse: str</span>
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param grassland_area: Optional; additional grassland area data, required if landuse is &#39;grassland&#39;.</span>
+<span class="sd">        :type grassland_area: Various, optional</span>
+<span class="sd">        :return: The share of organic soil within the specified land use area.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_organic&#39; column is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_share_organic_mineral">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_organic_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of organic-mineral mixed soil within a specified land use area in a catchment.</span>
+
+<span class="sd">        :param landuse: The type of land use.</span>
+<span class="sd">        :type landuse: str</span>
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param grassland_area: Optional; additional grassland area data, required if landuse is &#39;grassland&#39;.</span>
+<span class="sd">        :type grassland_area: Various, optional</span>
+<span class="sd">        :return: The share of organic-mineral mixed soil within the specified land use area.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_organic_mineral&#39; column is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_organic_mineral&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_organic_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="CatchmentLandCover.get_share_burnt">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_burnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_burnt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_burnt&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_burnt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_burnt&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_national_burnt_average">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_national_burnt_average">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_burnt_average</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of burnt land within a specified land use area in a catchment.</span>
+
+<span class="sd">        :param landuse: The type of land use.</span>
+<span class="sd">        :type landuse: str</span>
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :param grassland_area: Optional; additional grassland area data, required if landuse is &#39;grassland&#39;.</span>
+<span class="sd">        :type grassland_area: Various, optional</span>
+<span class="sd">        :return: The share of burnt land within the specified land use area.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_burnt&#39; column is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">burn_average</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()[</span><span class="s2">&quot;burnt_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()[</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
+
+        <span class="k">return</span> <span class="n">burn_average</span>   </div>
+
+
+
+<div class="viewcode-block" id="CatchmentLandCover.get_catchment_crop_type">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_catchment_crop_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catchment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the types of crops grown within a specified catchment.</span>
+
+<span class="sd">        :param catchment: The name of the catchment area.</span>
+<span class="sd">        :type catchment: str</span>
+<span class="sd">        :return: A pandas DataFrame containing crop types within the specified catchment.</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">crop_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crops_api</span><span class="o">.</span><span class="n">get_catchment_crops</span><span class="p">(</span><span class="n">catchment</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">crop_df</span></div>
+
+    
+<div class="viewcode-block" id="CatchmentLandCover.get_total_spared_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_total_spared_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the total spared area for a given scenario.</span>
+
+<span class="sd">        This method looks up the total spared area based on a specific scenario identifier. It is useful for</span>
+<span class="sd">        determining the spared area that has been set aside for conservation or other purposes under different</span>
+<span class="sd">        planning or management scenarios.</span>
+
+<span class="sd">        :param spared_area: A pandas DataFrame containing spared areas for various scenarios.</span>
+<span class="sd">        :type spared_area: pd.DataFrame</span>
+<span class="sd">        :param sc: The scenario identifier for which the total spared area is to be retrieved.</span>
+<span class="sd">        :type sc: str or int</span>
+<span class="sd">        :return: The total spared area for the given scenario.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the scenario is not found in the spared_area DataFrame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spared_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># Fallback to integer representation</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spared_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># Handle or log the error specifically for this scenario</span>
+                <span class="c1"># Perhaps log an error or raise a custom exception</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario </span><span class="si">{</span><span class="n">sc</span><span class="si">}</span><span class="s2"> not found in spared_area.&quot;</span><span class="p">)</span></div>
+
+            
+    
+<div class="viewcode-block" id="CatchmentLandCover.get_derived_catchment_grassland_area">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_derived_catchment_grassland_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_derived_catchment_grassland_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the derived grassland area for a catchment based on a scenario grassland input (rather than actual catchment grassland).</span>
+
+<span class="sd">        This method is used to look up the calculated grassland area that is derived from available data for a specific</span>
+<span class="sd">        scenario.</span>
+
+<span class="sd">        :param grassland_area: A pandas DataFrame or Series containing grassland areas for various scenarios.</span>
+<span class="sd">        :type grassland_area: pd.DataFrame or pd.Series</span>
+<span class="sd">        :param sc: Optional; the scenario identifier for which the derived grassland area is calculated. Defaults to 0.</span>
+<span class="sd">        :type sc: str or int, optional</span>
+<span class="sd">        :return: The derived grassland area for the specified scenario.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the scenario is not found in the grassland_area data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">grassland_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># Fallback to integer representation</span>
+                <span class="k">return</span> <span class="n">grassland_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># Handle or log the error specifically for this scenario</span>
+                <span class="c1"># Perhaps log an error or raise a custom exception</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario </span><span class="si">{</span><span class="n">sc</span><span class="si">}</span><span class="s2"> not found in grassland_area.&quot;</span><span class="p">)</span></div>
+
+            
+    
+<div class="viewcode-block" id="CatchmentLandCover.get_area_with_organic_potential">
+<a class="viewcode-back" href="../../autoapi/geo_landcover_assignment/catchment_landcover/index.html#geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_area_with_organic_potential">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_area_with_organic_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">spared_breakdown</span><span class="p">,</span> <span class="n">total_spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the area with organic farming potential based on spared land breakdown and scenario.</span>
+
+<span class="sd">        This method assesses the potential for organic soils in spared areas by analyzing the soil composition</span>
+<span class="sd">        and other factors. It uses detailed breakdown data of spared areas and soil groups. The input data is calculated</span>
+<span class="sd">        in the grassland_production module. It is assumed that the area of organic soils cannot be greater than the </span>
+<span class="sd">        area of available soil group 3. </span>
+
+<span class="sd">        :param spared_breakdown: A pandas DataFrame containing detailed breakdown of spared areas, including soil types.</span>
+<span class="sd">        :type spared_breakdown: pd.DataFrame</span>
+<span class="sd">        :param total_spared_area: A pandas DataFrame or Series containing total spared areas for various scenarios.</span>
+<span class="sd">        :type total_spared_area: pd.DataFrame or pd.Series</span>
+<span class="sd">        :param sc: The scenario identifier used for the analysis.</span>
+<span class="sd">        :type sc: str or int</span>
+<span class="sd">        :return: The area with available organic soils based on the specified scenario.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specific scenario does not exist in the spared_breakdown or total_spared_area data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Select only numeric columns </span>
+        <span class="n">numeric_df</span> <span class="o">=</span> <span class="n">spared_breakdown</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
+
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">numeric_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;soil_group&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Using .xs to select all entries for a specific &#39;Scenario&#39; number</span>
+            <span class="c1"># and then filter for &#39;soil_group&#39; == 3</span>
+            <span class="c1"># Note: .xs returns a DataFrame if there are multiple matches, or a Series if there&#39;s only one match</span>
+            <span class="n">specific_scenario_df</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;Scenario&#39;</span><span class="p">)</span>
+         
+            <span class="c1"># Check if all values in the &#39;area_ha&#39; column are zero</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">specific_scenario_df</span><span class="p">[</span><span class="s1">&#39;area_ha&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="c1"># Handle the case where all values in the &#39;area_ha&#39; column are zero</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="mi">3</span> <span class="ow">in</span> <span class="n">specific_scenario_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="n">area_ha</span> <span class="o">=</span> <span class="n">specific_scenario_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;area_ha&#39;</span><span class="p">]</span>  <span class="c1"># Directly use .loc to access &#39;soil_group&#39; == 3</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">area_ha</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Handle the case where &#39;soil_group&#39; == 3 is not present</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Handle the case where the specific scenario does not exist</span>
+            <span class="n">area_ha</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+        <span class="k">return</span> <span class="n">area_ha</span></div>
+</div>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
