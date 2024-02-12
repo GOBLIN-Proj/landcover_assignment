@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "landcover_assignment"
-version = "0.1.0"
+version = "0.2.0"
 description = "A goblin tool for the generation of areas of alternative land uses based on spared area available"
 authors = ["Colm Duffy"]
 license = "MIT"
@@ -11,7 +11,7 @@ python = "^3.9"
 pandas = "2.1.4"
 numpy = "^1.25.0"
 sqlalchemy = "^1.4.0"
-
+catchment_data_api = {git = "https://github.com/colmduff/catchment_data_api.git", branch = "main"}
 
 
 [build-system]

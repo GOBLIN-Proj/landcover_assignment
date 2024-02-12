@@ -1,0 +1,303 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import os\n",
+    "from landcover_assignment.transition_matrix import TransitionMatrix\n",
+    "from landcover_assignment.landcover import LandCover\n",
+    "from landcover_assignment.afforestation import Afforestation\n",
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Landcover Assignment Example\n",
+    "\n",
+    "The landcover assignment module takes scenario inputs and inputs generated from the [grassland_production](https://colmduff.github.io/grassland_production/html/index.html) module and distributes the spared area to various land uses. It considers soil type in the process (avaialbility of mineral or organic soils). It also considers soil groups in relation to the availability of organic soils and the forest yield class. \n",
+    "\n",
+    "It produces the land use change dataframe for current and future land uses, as well as a transition matrix, and an afforestation dataframe that will then be used by the [cbm_runner](https://colmduff.github.io/cbm_runner/html/index.html) module"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Set UP"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "input_path = \"../tests/data/\"\n",
+    "\n",
+    "baseline = 2020 #the calibration year\n",
+    "target_year = 2050 #the target year\n",
+    "\n",
+    "scenario_dataframe = pd.read_csv(os.path.join(input_path, \"scenario_dataframe.csv\"), index_col=0) #scenario inputs \n",
+    "\n",
+    "spared_area = pd.read_csv(os.path.join(input_path, \"spared_area.csv\"), index_col=0) #total spared area \n",
+    "spared_area_breakdown = pd.read_csv(os.path.join(input_path, \"spared_area_breakdown.csv\"), index_col=0) #spared area by soil group\n",
+    "grassland_area = pd.read_csv(os.path.join(input_path, \"total_grassland_area.csv\"), index_col=0) #total grassland area remaining\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Classes \n",
+    "\n",
+    "The ```TransitionMatrix``` class wil produce the transition matrix. While the ```LandCover``` class produces the land use change dataframe, including the proportions of various soil types and other environmental factors. \n",
+    "\n",
+    "Finally, the ```Afforestation``` class produces the afforested area by yield class for use in the ```cbm_runner``` module. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "transition = TransitionMatrix(\n",
+    "    baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown\n",
+    ")\n",
+    "\n",
+    "land = LandCover(\n",
+    "    baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown\n",
+    ")\n",
+    "\n",
+    "affor = Afforestation(baseline, target_year, scenario_dataframe, transition.create_transition_matrix())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Combined land use dataframe "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    farm_id  year            land_use       area_ha  share_mineral  \\\n",
+      "0     -2020  2020           grassland  3.904877e+06       0.919446   \n",
+      "1     -2020  2020             wetland  1.225774e+06       0.000231   \n",
+      "2     -2020  2020            cropland  7.457409e+05       1.000000   \n",
+      "3     -2020  2020              forest  7.789881e+05       0.682922   \n",
+      "4     -2020  2020          settlement  1.257917e+05       0.975600   \n",
+      "5     -2020  2020  farmable_condition  0.000000e+00       1.000000   \n",
+      "6         0  2050           grassland  1.071079e+06       0.732777   \n",
+      "7         0  2050             wetland  1.254112e+06       0.000226   \n",
+      "8         0  2050            cropland  7.457409e+05       1.000000   \n",
+      "9         0  2050              forest  2.479267e+06       0.900374   \n",
+      "10        0  2050          settlement  1.257917e+05       0.975600   \n",
+      "11        0  2050  farmable_condition  1.105181e+06       1.000000   \n",
+      "12        1  2050           grassland  1.058037e+06       1.000000   \n",
+      "13        1  2050             wetland  1.540328e+06       0.000184   \n",
+      "14        1  2050            cropland  7.457409e+05       1.000000   \n",
+      "15        1  2050              forest  3.311273e+06       0.925406   \n",
+      "16        1  2050          settlement  1.257917e+05       0.975600   \n",
+      "17        1  2050  farmable_condition  0.000000e+00       1.000000   \n",
+      "\n",
+      "    share_organic  share_organic_mineral  share_rewetted_in_organic  \\\n",
+      "0        0.080554               0.000000                   0.000000   \n",
+      "1        0.999769               0.000000                   0.000231   \n",
+      "2        0.000000               0.000000                   0.000000   \n",
+      "3        0.224009               0.093069                   0.000000   \n",
+      "4        0.024400               0.000000                   0.000000   \n",
+      "5        0.000000               0.000000                   0.000000   \n",
+      "6        0.267223               0.000000                   0.000000   \n",
+      "7        0.999774               0.000000                   0.022596   \n",
+      "8        0.000000               0.000000                   0.000000   \n",
+      "9        0.070384               0.029243                   0.000000   \n",
+      "10       0.024400               0.000000                   0.000000   \n",
+      "11       0.000000               0.000000                   0.000000   \n",
+      "12       0.000000               0.000000                   0.000000   \n",
+      "13       0.999816               0.000000                   0.204213   \n",
+      "14       0.000000               0.000000                   0.000000   \n",
+      "15       0.052699               0.021895                   0.000000   \n",
+      "16       0.024400               0.000000                   0.000000   \n",
+      "17       0.000000               0.000000                   0.000000   \n",
+      "\n",
+      "    share_rewetted_in_mineral  share_peat_extraction   share_burnt  \n",
+      "0                    0.000000               0.000000  1.033959e-04  \n",
+      "1                    0.003028               0.060710  2.738795e-04  \n",
+      "2                    0.000000               0.000000  1.915640e-08  \n",
+      "3                    0.000000               0.000000  2.280566e-04  \n",
+      "4                    0.000000               0.000000  0.000000e+00  \n",
+      "5                    0.000000               0.000000  0.000000e+00  \n",
+      "6                    0.000000               0.000000  1.033959e-04  \n",
+      "7                    0.002959               0.059339  2.676909e-04  \n",
+      "8                    0.000000               0.000000  1.915640e-08  \n",
+      "9                    0.000000               0.000000  7.165563e-05  \n",
+      "10                   0.000000               0.000000  0.000000e+00  \n",
+      "11                   0.000000               0.000000  0.000000e+00  \n",
+      "12                   0.000000               0.000000  1.033959e-04  \n",
+      "13                   0.002409               0.048313  2.179498e-04  \n",
+      "14                   0.000000               0.000000  1.915640e-08  \n",
+      "15                   0.000000               0.000000  5.365109e-05  \n",
+      "16                   0.000000               0.000000  0.000000e+00  \n",
+      "17                   0.000000               0.000000  0.000000e+00  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(land.combined_future_land_use_area())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Transition Matrix"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "       Grassland_to_Grassland  Grassland_to_Wetland  Grassland_to_Cropland  \\\n",
+      "-2020            0.000000e+00              0.000000                    0.0   \n",
+      " 0              -2.833798e+06          28337.977911                    0.0   \n",
+      " 1              -2.846840e+06         314554.726543                    0.0   \n",
+      "\n",
+      "       Grassland_to_Forest  Grassland_to_Settlement  \\\n",
+      "-2020         0.000000e+00                      0.0   \n",
+      " 0            1.700279e+06                      0.0   \n",
+      " 1            2.532285e+06                      0.0   \n",
+      "\n",
+      "       Grassland_to_Farmable_Condition  Wetland_to_Grassland  \\\n",
+      "-2020                     0.000000e+00                   0.0   \n",
+      " 0                        1.105181e+06                   0.0   \n",
+      " 1                        0.000000e+00                   0.0   \n",
+      "\n",
+      "       Wetland_to_Wetland  Wetland_to_Cropland  Wetland_to_Forest  ...  \\\n",
+      "-2020                 0.0                  0.0                0.0  ...   \n",
+      " 0                    0.0                  0.0                0.0  ...   \n",
+      " 1                    0.0                  0.0                0.0  ...   \n",
+      "\n",
+      "       Settlement_to_Cropland  Settlement_to_Forest  Settlement_to_Settlement  \\\n",
+      "-2020                     0.0                   0.0                       0.0   \n",
+      " 0                        0.0                   0.0                       0.0   \n",
+      " 1                        0.0                   0.0                       0.0   \n",
+      "\n",
+      "       Settlement_to_Farmable_Condition  Farmable_Condition_to_Grassland  \\\n",
+      "-2020                               0.0                              0.0   \n",
+      " 0                                  0.0                              0.0   \n",
+      " 1                                  0.0                              0.0   \n",
+      "\n",
+      "       Farmable_Condition_to_Wetland  Farmable_Condition_to_Cropland  \\\n",
+      "-2020                            0.0                             0.0   \n",
+      " 0                               0.0                             0.0   \n",
+      " 1                               0.0                             0.0   \n",
+      "\n",
+      "       Farmable_Condition_to_Forest  Farmable_Condition_to_Settlement  \\\n",
+      "-2020                           0.0                               0.0   \n",
+      " 0                              0.0                               0.0   \n",
+      " 1                              0.0                               0.0   \n",
+      "\n",
+      "       Farmable_Condition_to_Farmable_Condition  \n",
+      "-2020                                       0.0  \n",
+      " 0                                          0.0  \n",
+      " 1                                          0.0  \n",
+      "\n",
+      "[3 rows x 36 columns]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(transition.create_transition_matrix())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Afforestation Dataframe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    scenario species yield_class     total_area\n",
+      "0         -1   Sitka     YC17_20       0.000000\n",
+      "1         -1   Sitka     YC20_24       0.000000\n",
+      "2         -1   Sitka     YC24_30       0.000000\n",
+      "3         -1     SGB         YC6       0.000000\n",
+      "4         -1     SGB         YC6       0.000000\n",
+      "5         -1     SGB         YC6       0.000000\n",
+      "6          0   Sitka     YC24_30  417595.058325\n",
+      "7          0     SGB         YC6  715935.503074\n",
+      "8          0   Sitka     YC20_24  208791.204651\n",
+      "9          0     SGB         YC6  357956.908635\n",
+      "10         0   Sitka     YC17_20       0.000000\n",
+      "11         0     SGB         YC6       0.000000\n",
+      "12         1   Sitka     YC24_30  418877.449812\n",
+      "13         1     SGB         YC6  718134.067390\n",
+      "14         1   Sitka     YC20_24  508198.559238\n",
+      "15         1     SGB         YC6  871268.430782\n",
+      "16         1   Sitka     YC17_20    5823.216747\n",
+      "17         1     SGB         YC6    9983.469700\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(affor.gen_cbm_afforestation_dataframe(spared_area_breakdown))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

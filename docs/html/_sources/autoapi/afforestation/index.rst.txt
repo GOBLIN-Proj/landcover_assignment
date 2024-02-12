@@ -1,0 +1,146 @@
+:py:mod:`afforestation`
+=======================
+
+.. py:module:: afforestation
+
+.. autoapi-nested-parse::
+
+   Afforestation
+   ======================
+
+   This module provides functionalities for processing afforestation Irish national context scenarios, particularly for preparing inputs
+   for the Carbon Budget Model (CBM). It enables the generation of afforestation dataframes based on spared area
+   breakdowns, scenario-based afforestation calculations, and structuring data to meet CBM requirements.
+
+   Features:
+   ---------
+
+   - **Afforestation Class**: Manages afforestation scenario data processing for CBM input preparation, integrating
+     various data management and fetching utilities to prepare datasets for environmental modeling and analysis.
+
+   Dependencies:
+   -------------
+
+   - **pandas**: Utilized for data manipulation and analysis.
+   - **DataManager**: Manages land cover and calibration data.
+   - **ScenarioDataFetcher**: Fetches scenario-specific input data.
+   - **TransitionDataFetcher**: Handles land cover transition matrices.
+   - **Loader**: Loads various data resources, including yield mappings.
+
+   Usage:
+   ------
+
+   This module is intended for use in environmental data processing pipelines, specifically for preparing input data
+   for the Carbon Budget Model (CBM) in the context of afforestation scenario analysis.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   afforestation.Afforestation
+
+
+
+
+.. py:class:: Afforestation(calibration_year, target_year, scenario_inputs_df, transition_matrix)
+
+
+   Manages afforestation outputs for scenarios and data processing for Carbon Budget Model (CBM) inputs.
+
+   This class is designed to output afforestation data, including generating afforestation scenarios,
+   managing transition matrices, and preparing data for CBM simulations based on different scenarios
+   and soil group transitions from grassland to forest.
+
+   :param calibration_year: The base year for calibration data.
+   :type calibration_year: int
+   :param target_year: The target year for scenario projections.
+   :type target_year: int
+   :param scenario_inputs_df: A DataFrame containing scenario inputs.
+   :type scenario_inputs_df: pd.DataFrame
+   :param transition_matrix: A DataFrame representing the transition matrix for land cover changes.
+   :type transition_matrix: pd.DataFrame
+
+   .. attribute:: data_manager_class
+
+      An instance of DataManager for managing land cover data.
+
+      :type: DataManager
+
+   .. attribute:: scenario_data_fetcher
+
+      An instance for fetching scenario-specific data.
+
+      :type: ScenarioDataFetcher
+
+   .. attribute:: transition_data_fetcher
+
+      An instance for fetching transition data.
+
+      :type: TransitionDataFetcher
+
+   .. attribute:: data_loader
+
+      An instance for loading necessary data resources.
+
+      :type: Loader
+
+   .. attribute:: yield_mapping
+
+      A DataFrame containing yield mapping for different forest soil groups.
+
+      :type: pd.DataFrame
+
+   .. py:method:: gen_cbm_afforestation_dataframe(spared_area_breakdown)
+
+      Generates a DataFrame structured for CBM inputs, detailing afforestation areas by scenario.
+
+      Processes spared area breakdown to determine afforestation areas transitioning from grassland
+      to forest under different scenarios. This method structures the data to be compatible with CBM
+      simulation requirements.
+
+      :param spared_area_breakdown: A DataFrame containing the breakdown of spared areas by scenario.
+      :type spared_area_breakdown: pd.DataFrame
+      :return: A DataFrame structured for CBM afforestation inputs.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: compute_cbm_afforestation(sc, soil_group, future_forest_area, cbm_dataframe)
+
+      Computes afforestation outputs for a specific scenario and updates the CBM DataFrame.
+
+      This method calculates the distribution of future forest areas between different species
+      and yield classes based on the soil group. It updates and returns the CBM DataFrame with
+      the new data.
+
+      :param sc: The scenario identifier.
+      :type sc: int
+      :param soil_group: The soil group identifier.
+      :type soil_group: int
+      :param future_forest_area: The future forest area for the scenario and soil group.
+      :type future_forest_area: float
+      :param cbm_dataframe: The existing CBM DataFrame to be updated.
+      :type cbm_dataframe: pd.DataFrame
+      :return: The updated CBM DataFrame with the new afforestation data.
+      :rtype: pd.DataFrame
+      :raises ValueError: If the future forest area is less than 0.
+
+
+   .. py:method:: cbm_dataframe_structure()
+
+      Initializes the structure of the CBM DataFrame based on default data.
+
+      This method creates a new DataFrame structured for CBM inputs using default data
+      from the data manager class. It serves as the initial template for accumulating
+      afforestation scenario data.
+
+      :return: A DataFrame structured for CBM afforestation inputs.
+      :rtype: pd.DataFrame
+
+
+

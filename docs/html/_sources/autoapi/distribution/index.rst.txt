@@ -1,0 +1,136 @@
+:py:mod:`distribution`
+======================
+
+.. py:module:: distribution
+
+.. autoapi-nested-parse::
+
+   Distribution
+   ================
+   This module is designed to manage and process land distribution scenarios for the Irish national context, particularly focusing on adjustments
+   in land use areas based on various scenario inputs. It integrates with land cover data management,
+   scenario-specific data fetching, and national area analysis to provide a comprehensive tool for land distribution analysis.
+
+   Features:
+   ---------
+   - **Land Distribution Analysis**: Manages the calculation and distribution of land areas across different land use types
+     based on scenario-driven changes.
+   - **Grassland Distribution Management**: Specifically handles the redistribution of grassland areas, taking into account
+     changes in mineral and organic components.
+
+   Dependencies:
+   -------------
+   - ``landcover_assignment.landcover_data_manager.DistributionManager``
+   - ``landcover_assignment.national_landcover.NatioanlLandCover``
+   - ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``
+   - ``pandas`` for data manipulation and analysis.
+
+   Classes:
+   --------
+   .. class:: LandDistribution(scenario_data)
+      :noindex:
+
+      Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
+      areas and soil composition.
+
+      .. method:: land_distribution(land_use, new_area)
+         Calculates and updates the distribution of land based on land use type and the area change. It supports special
+         handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other
+         soil types accordingly.
+
+      .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)
+         Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
+         components, and recalculates the total remaining grassland area along with its composition.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   distribution.LandDistribution
+
+
+
+
+.. py:class:: LandDistribution(scenario_data)
+
+
+   Handles the distribution of land areas for various land use types under different scenarios,
+   adjusting for changes in areas and soil composition.
+
+   This class provides methods to calculate and update land distribution based on changes in land use
+   types, including special considerations for grassland, wetland, and forest. It utilizes data from
+   land cover data managers, catchment analysis, and scenario-specific data fetchers to accurately
+   model land distribution adjustments under various scenarios.
+
+   :param scenario_data: A DataFrame containing scenario-specific data inputs. This data is used to fetch catchment
+                         names and drive the scenario-based calculations for land distribution adjustments.
+   :type scenario_data: pd.DataFrame
+
+   .. attribute:: data_manager_class
+
+      An instance of DistributionManager for managing land distribution data.
+
+      :type: DistributionManager
+
+   .. attribute:: national_class
+
+      An instance of NatioanlLandCover for accessing and analyzing Irish national context land cover data.
+
+      :type: NationalLandCover
+
+   .. attribute:: sc_fetcher_class
+
+      An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.
+
+      :type: ScenarioDataFetcher
+
+   .. method:: land_distribution(land_use, new_area)
+
+      Calculates and updates the distribution of land based on land use type and the area change.
+      It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
+      of mineral, organic, and other soil types accordingly.
+
+
+   .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)
+
+      Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
+      and organic components, and recalculates the total remaining grassland area along with its composition.
+
+
+   .. py:method:: land_distribution(year, land_use, new_area)
+
+      Calculates and updates the land distribution based on land use type and area change.
+
+      :param year: The reference year for national land use data
+      :type year: int
+      :param land_use: The type of land use to calculate distribution for.
+      :type land_use: str
+      :param new_area: The area change to be applied to the land use type.
+      :type new_area: float
+      :return: A dictionary containing updated land distribution details.
+      :rtype: dict
+
+
+   .. py:method:: grassland_distriubtion(year, mineral_area, organic_area, grassland_area)
+
+      Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.
+
+      :param year: The reference year for national land use data
+      :type year: int
+      :param mineral_area: The area of grassland to be converted to mineral soil.
+      :type mineral_area: float
+      :param organic_area: The area of grassland to be converted to organic soil.
+      :type organic_area: float
+      :param grassland_area: The total initial grassland area before distribution.
+      :type grassland_area: pandas.DataFrame
+      :return: A dictionary containing updated grassland distribution details.
+      :rtype: dict
+
+
+

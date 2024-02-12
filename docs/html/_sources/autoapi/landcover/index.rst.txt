@@ -1,0 +1,246 @@
+:py:mod:`landcover`
+===================
+
+.. py:module:: landcover
+
+.. autoapi-nested-parse::
+
+   Landcover
+   ================
+   This module facilitates the management and analysis of land cover changes within the Irish National context, focusing on the dynamics of land use
+   transitions under various scenarios. It leverages data from land cover assignments, national analyses, and scenario-driven land distribution calculations
+   to provide tools for detailed land cover change analysis.
+
+   Features:
+   ---------
+   - **Land Cover Analysis**: Provides functionalities to analyze and compute land cover distributions and transitions based on calibration and target years,
+   scenario inputs, and specific land area considerations.
+   - **Scenario-driven Land Distribution**: Manages the distribution and transition of land areas across different land use types, adjusting for
+   scenario-specific changes.
+
+   Dependencies:
+   -------------
+   - ``pandas``: Used for data manipulation and analysis.
+   - ``landcover_assignment.distribution.LandDistribution``: Manages land distribution scenarios.
+   - ``landcover_assignment.national_landcover.NationalLandCover``: Analyzes land cover within national areas.
+   - ``landcover_assignment.landcover_data_manager.DataManager``: Manages land cover data.
+   - ``resource_manager.data_loader.Loader``: Loads required data resources.
+   - ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+
+   Classes:
+   --------
+   .. class:: LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
+      :noindex:
+
+      Manages the computation and analysis of land cover changes, focusing on the adjustments of land areas under different scenarios
+      and their implications on land use distribution.
+
+      The class initializes with the required data and parameters for analysis, including calibration and target years, scenario inputs, and areas related
+      to grassland and spared lands. It provides methods to fill current area data, compute current and future land use areas,
+      and analyze spared area breakdowns and grassland distributions based on scenario inputs.
+
+      Methods include:
+      - `_fill_current_area_row`: Fills data for the current area based on land use type.
+      - `_fill_future_area_row`: Fills data for the future area based on land use type.
+      - `compute_current_area`: Computes the current area distribution for all land uses.
+      - `combined_future_land_use_area`: Combines current and future land use areas under different scenarios.
+      - `spared_area_breakdown`: Analyzes the breakdown of spared areas based on scenarios.
+      - `grassland_breakdown`: Specifically analyzes the breakdown of grassland areas under scenarios.
+      - `_available_organic_area`: Computes the available organic area for scenarios.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   landcover.LandCover
+
+
+
+
+.. py:class:: LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
+
+
+   Manages the computation and analysis of land cover changes, focusing on adjustments in land areas under different scenarios.
+
+   This class is designed to analyze land cover transitions and distributions within Irish national areas,
+   taking into account various scenarios. It leverages data from land cover assignments, national analyses, scenario-driven
+   land distribution calculations to model land cover changes effectively.
+
+   The `LandCover` class provides functionalities to compute current land use distributions based on calibration year data,
+   project future land use areas under different scenarios, and analyze the breakdown of spared areas and grassland distributions
+   based on specific scenario inputs.
+
+   :param calibration_year: The year used as a baseline for land cover data and analysis.
+   :type calibration_year: int
+   :param target_year: The future year for which land cover changes are projected.
+   :type target_year: int
+   :param scenario_inputs_df: A DataFrame containing inputs for various scenarios, used to drive the scenario-based inputs for land distribution adjustments.
+   :type scenario_inputs_df: pandas.DataFrame
+   :param total_grassland: The total area of grassland, used in calculations involving grassland distributions.
+   :type total_grassland: float
+   :param total_spared_area: The total area of land spared from agricultural use, key to scenario-based land distribution analysis.
+   :type total_spared_area: float
+   :param spared_area_breakdown: A breakdown of how spared areas are allocated across different land use types.
+   :type spared_area_breakdown: pandas.DataFrame
+
+   .. attribute:: data_manager_class
+
+      Manages land cover data and provides access to calibration and target year data.
+
+      :type: DataManager
+
+   .. attribute:: data_loader_class
+
+      Loads required data resources, including environmental and land use data.
+
+      :type: Loader
+
+   .. attribute:: national_class
+
+      Provides functionalities for accessing and analyzing national land cover data.
+
+      :type: NationalLandCover
+
+   .. attribute:: sc_fetch_class
+
+      Fetches scenario-specific information from the input data.
+
+      :type: ScenarioDataFetcher
+
+   .. attribute:: land_dist_class
+
+      Manages the distribution and transition of land areas across different land use types.
+
+      :type: LandDistribution
+
+   .. attribute:: scenario_list
+
+      A list of scenarios derived from the scenario inputs, driving the land cover analysis.
+
+      :type: list
+
+   .. method:: _fill_current_area_row(farm_id, year, land_use) -> dict
+
+      Fills a row of data representing the current state of a specific land use area.
+
+   .. method:: _fill_future_area_row(farm_id, year, land_use) -> dict
+
+      Fills a row of data representing the future state of a specific land use area.
+
+   .. method:: compute_current_area() -> pandas.DataFrame
+
+      Computes the current distribution of land use areas based on calibration year data.
+
+   .. method:: combined_future_land_use_area() -> pandas.DataFrame
+
+      Combines current and future land use areas under different scenarios into a single DataFrame.
+
+   .. method:: spared_area_breakdown(scenario) -> dict
+
+      Analyzes the breakdown of spared areas under a specific scenario.
+
+   .. method:: grassland_breakdown(scenario) -> dict
+
+      Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.
+
+   .. method:: _available_organic_area(scenario) -> dict
+
+      Computes the available area for organic soil-based land uses under a given scenario.
+
+
+   .. py:method:: _fill_current_area_row(farm_id, year, land_use)
+
+      Fills a row of data representing the current state of a specific land use area.
+
+      :param farm_id: Identifier for the farm or land area.
+      :type farm_id: int
+      :param year: The year for which the data row is relevant.
+      :type year: int
+      :param land_use: The type of land use being considered.
+      :type land_use: str
+      :return: A dictionary containing filled data for the current area row.
+      :rtype: dict
+
+
+   .. py:method:: _fill_future_area_row(farm_id, refyear, target_year, land_use)
+
+      Fills a row of data representing the future state of a specific land use area.
+
+      :param farm_id: Identifier for the farm or land area.
+      :type farm_id: int
+      :param refyear: The year for which the data row is relevant.
+      :type ref_year: int
+      :param target_year: The future year for which the data row is relevant.
+      :type target_year: int
+      :param land_use: The type of land use being considered.
+      :type land_use: str
+      :return: A dictionary containing filled data for the future area row.
+      :rtype: dict
+
+
+   .. py:method:: compute_current_area()
+
+      Computes the distribution of current land use areas based on the calibration year and available data.
+
+      :return A DataFrame containing the computed current land use areas.
+      :rtype: pandas.DataFrame
+
+
+   .. py:method:: combined_future_land_use_area()
+
+      Combines the calculated current land use areas with projected future areas under different scenarios.
+
+      :return: A DataFrame containing both current and projected future land use areas.
+      :rtype: pandas.DataFrame
+
+
+   .. py:method:: spared_area_breakdown(scenario)
+
+      Analyzes the breakdown of spared areas under a specific scenario, adjusting land use distributions accordingly.
+
+      This method calculates how spared areas should be distributed among various land use types based on scenario-specific
+      proportions and environmental considerations, such as the availability of organic soil.
+
+      :param scenario (int): The scenario identifier for which the spared area breakdown is calculated.
+      :type scenario: int
+      :return: A dictionary containing the breakdown of spared areas by land use type, with detailed proportions
+              and areas for each type.
+      :rtype: dict
+
+
+   .. py:method:: grassland_breakdown(scenario)
+
+      Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.
+
+      This method computes how changes in land use, particularly the conversion of grassland to other types or
+      its retention, affect the overall grassland area. It considers organic and mineral soil proportions and
+      adjusts them based on scenario inputs.
+
+      :param scenario: The scenario identifier for which the grassland distribution is calculated.
+      :type scenario: int
+      :return: A dictionary containing updated grassland distribution details, including areas and proportions
+              of soil types.
+      :rtype: dict
+
+
+   .. py:method:: _available_organic_area(scenario)
+
+      Computes the available area for organic soil under a given scenario.
+
+      This internal method calculates the maximum possible area that can be transitioned to organic soil-based
+      land uses, such as wetlands, based on the current organic and organic-mineral soil areas and scenario-specific
+      spared area allocations.
+
+      :param scenario (int): The scenario identifier for which the available organic area is calculated.
+      :type scenario: int
+      :return: A dictionary containing the available organic area and available mineral-organic area.
+      :rtype: dict
+
+
+

@@ -1,0 +1,124 @@
+:py:mod:`resource_manager.database_manager`
+===========================================
+
+.. py:module:: resource_manager.database_manager
+
+.. autoapi-nested-parse::
+
+   DataManager for Land Use Databases
+   ==================================
+
+   The ``DataManager`` class serves as an interface to interact with a land use database, facilitating the retrieval of various datasets
+   related to national land cover areas such as forests, wetlands, croplands, grasslands, and settlements, as well as soil yield mappings for forests.
+   This class is designed to support environmental data analysis and modeling tasks by providing structured access to key land use datasets.
+
+   .. class:: DataManager()
+
+      Initializes the DataManager class, setting up a connection to a SQLite database containing land use data.
+
+      **Attributes**
+
+      - ``database_dir`` (str): Directory where the database file is located.
+      - ``engine`` (:class:`sqlalchemy.engine.Engine`): SQLAlchemy engine object for database connection.
+
+      **Methods**
+
+      .. method:: data_engine_creater()
+
+         Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+
+         :return: A SQLAlchemy engine instance connected to the land use database.
+         :rtype: :class:`sqlalchemy.engine.Engine`
+
+      .. method:: get_national_inventory_areas()
+
+         Retrieves national inventory area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national inventory area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_national_forest_areas()
+
+         Retrieves national forest area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national forest area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_national_settlement_areas()
+
+         Retrieves national settlement area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national settlement area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_national_grassland_areas()
+
+         Retrieves national grassland area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national grassland area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_national_cropland_areas()
+
+         Retrieves national cropland area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national cropland area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_national_wetland_areas()
+
+         Retrieves national wetland area data from the database and scales the values by 1000.
+
+         :return: A pandas DataFrame containing national wetland area data with the area values scaled.
+         :rtype: pandas.DataFrame
+
+      .. method:: get_soil_yield_mapping()
+
+         Retrieves forest soil yield mapping data from the database without scaling.
+
+         :return: A pandas DataFrame containing forest soil yield mapping data.
+         :rtype: pandas.DataFrame
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   resource_manager.database_manager.DataManager
+
+
+
+
+.. py:class:: DataManager
+
+
+   .. py:method:: data_engine_creater()
+
+
+   .. py:method:: get_national_inventory_areas()
+
+
+   .. py:method:: get_national_forest_areas()
+
+
+   .. py:method:: get_national_settlement_areas()
+
+
+   .. py:method:: get_national_grassland_areas()
+
+
+   .. py:method:: get_national_cropland_areas()
+
+
+   .. py:method:: get_national_wetland_areas()
+
+
+   .. py:method:: get_soil_yield_mapping()
+
+
+
