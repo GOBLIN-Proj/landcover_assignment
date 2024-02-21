@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from geo_landcover_assignment.geo_transition_matrix import TransitionMatrix
+from landcover_assignment.geo_landcover_assignment.geo_transition_matrix import TransitionMatrix
 
 def main():
 

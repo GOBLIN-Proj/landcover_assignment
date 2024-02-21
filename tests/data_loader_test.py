@@ -1,4 +1,4 @@
-from resource_manager.data_loader import Loader
+from landcover_assignment.resource_manager.data_loader import Loader
 
 def main():
     loader = Loader()

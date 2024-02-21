@@ -30,9 +30,9 @@ for the Carbon Budget Model (CBM) in the context of afforestation scenario analy
 """
 
 from landcover_assignment.landcover_data_manager import DataManager
-from resource_manager.scenario_data_fetcher import ScenarioDataFetcher
-from resource_manager.data_loader import Loader
-from resource_manager.transition_data_fetcher import TransitionDataFetcher
+from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
+from landcover_assignment.resource_manager.data_loader import Loader
+from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
 import pandas as pd
 
 

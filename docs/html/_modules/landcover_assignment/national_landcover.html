@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.national_landcover &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.national_landcover</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for landcover_assignment.national_landcover</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">National Land Cover Data Analysis</span>
+<span class="sd">=================================</span>
+
+<span class="sd">The National Land Cover class is designed to facilitate access and analysis of national land cover data, encompassing various land use types </span>
+<span class="sd">such as forests, wetlands, croplands, grasslands, and settlements. This class leverages a data loader to fetch predefined datasets and provides </span>
+<span class="sd">a suite of methods to calculate and retrieve detailed information about land cover characteristics, including areas and soil composition shares, </span>
+<span class="sd">for different years.</span>
+
+<span class="sd">Features:</span>
+<span class="sd">---------</span>
+<span class="sd">- Access to national land cover data for multiple land use types.</span>
+<span class="sd">- Calculation of land use areas and shares of different soil compositions.</span>
+<span class="sd">- Ability to retrieve data for specific years, enabling temporal analysis.</span>
+<span class="sd">- Support for scenario-based analysis with functions to handle spared areas and potential for organic soil use.</span>
+
+<span class="sd">Dependencies:</span>
+<span class="sd">-------------</span>
+<span class="sd">- ``resource_manager.data_loader.Loader``: For loading national land cover datasets.</span>
+<span class="sd">- ``pandas``: For data manipulation and analysis.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.data_loader</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<div class="viewcode-block" id="NationalLandCover">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover">[docs]</a>
+<span class="k">class</span> <span class="nc">NationalLandCover</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides detailed national land cover data analysis capabilities, including the extraction of various land use types&#39; data across different years. </span>
+<span class="sd">    This class supports the calculation of area shares and specific environmental factors for different land uses at a national level.</span>
+
+<span class="sd">    The class leverages a data loader to access pre-defined national area datasets and performs calculations to return comprehensive summaries </span>
+<span class="sd">    for each land use type.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        loader (Loader): An instance of Loader to access national datasets.</span>
+<span class="sd">        methods (dict): A mapping from land use types to their respective data retrieval methods.</span>
+<span class="sd">        national_areas (dict): A dictionary containing methods to retrieve national area data for different land use types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+ 
+        <span class="bp">self</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">methods</span> <span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;forest&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_forest_data</span><span class="p">,</span>
+            <span class="s1">&#39;wetland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peat_data</span><span class="p">,</span>
+            <span class="s1">&#39;cropland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crop_data</span><span class="p">,</span>
+            <span class="s1">&#39;grassland&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grassland_data</span><span class="p">,</span>
+            <span class="s1">&#39;settlement&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_settlement_data</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;forest&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_forest_areas</span><span class="p">,</span>
+            <span class="s2">&quot;cropland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_cropland_areas</span><span class="p">,</span>
+            <span class="s2">&quot;wetland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_wetland_areas</span><span class="p">,</span>
+            <span class="s2">&quot;settlement&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_settlement_areas</span><span class="p">,</span>
+            <span class="s2">&quot;grassland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">national_grassland_areas</span><span class="p">,</span>
+        <span class="p">}</span>
+
+
+<div class="viewcode-block" id="NationalLandCover.get_forest_data">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_forest_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_forest_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves summary data for forest land use including area, shares of mineral, organic, and organic-mineral soils, </span>
+<span class="sd">        peat extraction, and rewetted areas for a given year.</span>
+
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :return: A DataFrame containing summary data for forest land use.</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_area</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_peat_extraction</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burn</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_peat_data">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_peat_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_peat_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves summary data for wetland (peat) land use including area, shares of mineral, organic, and organic-mineral soils,</span>
+<span class="sd">        peat extraction, and rewetted areas for a given year.</span>
+
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :return: A DataFrame containing summary data for wetland land use.</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_area</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_peat_extraction</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burn</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_crop_data">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_crop_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_crop_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves summary data for cropland use including area, shares of mineral, organic, and organic-mineral soils,</span>
+<span class="sd">        peat extraction, and rewetted areas for a given year.</span>
+
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :return: A DataFrame containing summary data for cropland use.</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_area</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_peat_extraction</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burn</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_grassland_data">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_grassland_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_grassland_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">total_grassland_area</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves summary data for grassland use including area, shares of mineral, organic, and organic-mineral soils,</span>
+<span class="sd">        peat extraction, and rewetted areas, optionally adjusted by total grassland area for a given year.</span>
+
+<span class="sd">        Area is derived from total grassland area calculated using the grassland_production module</span>
+
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: A DataFrame containing summary data for grassland use.</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">derived_grassland_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_derived_national_grassland_area</span><span class="p">(</span><span class="n">total_grassland_area</span><span class="p">)</span>
+
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="n">derived_grassland_area</span><span class="p">,</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_peat_extraction</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burn</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_settlement_data">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_settlement_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_settlement_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves summary data for settlement land use including area, shares of mineral, organic, and organic-mineral soils,</span>
+<span class="sd">        peat extraction, and rewetted areas for a given year.</span>
+
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :return: A DataFrame containing summary data for settlement land use.</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Creating a summary DataFrame</span>
+        <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;area_ha&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_area</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_peat_extraction</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_burnt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_burn</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">summary_data</span><span class="p">])</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_landuse_area">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_landuse_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_landuse_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the total area for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The total area for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;area_ha&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;area_ha&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;area_ha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;area_ha&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="NationalLandCover.get_share_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of mineral soil for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share mineral for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_mineral&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_mineral&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_mineral&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="NationalLandCover.get_share_organic">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_organic">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_organic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of organic soil for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share organic for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_organic&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="NationalLandCover.get_share_organic_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_organic_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_organic_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of organic-mineral mixed soil for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share organic mineral for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_organic_mineral&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+
+        <span class="k">if</span> <span class="s1">&#39;share_organic_mineral&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_organic_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="NationalLandCover.get_share_rewetted_in_organic">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_organic">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_rewetted_in_organic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share rewetted in organic for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share rewetted in organic for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_rewetted_in_organic&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_rewetted_in_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_rewetted_in_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+    
+<div class="viewcode-block" id="NationalLandCover.get_share_rewetted_in_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_rewetted_in_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share rewetted in mineral for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share rewetted in mineral for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_rewetted_in_mineral&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_rewetted_in_mineral&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_rewetted_in_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="NationalLandCover.get_share_peat_extraction">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_peat_extraction">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_peat_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share peat extraction for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_peat_extraction&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+
+        <span class="k">if</span> <span class="s1">&#39;share_peat_extraction&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_peat_extraction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_peat_extraction&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="NationalLandCover.get_share_burnt">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_burnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_burnt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>   
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share burnt for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share burnt for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_burnt&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;farmable_condition&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;share_burnt&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_burnt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_burnt&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="NationalLandCover.get_national_burnt_average">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_burnt_average">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_burnt_average</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the national average of burnt areas for a specified land use type.</span>
+
+<span class="sd">        :param landuse: The type of land use for which the burnt average is calculated as string.</span>
+<span class="sd">        :return: The national average of burnt areas for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">burn_average</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()[</span><span class="s2">&quot;burnt_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()[</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
+
+        <span class="k">return</span> <span class="n">burn_average</span>   </div>
+
+    
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_area">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the total area in hectares for a specified land use type and year from national datasets.</span>
+
+<span class="sd">        :param landuse: The land use type as a string.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The total area in hectares as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_national_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of mineral soil for a given land use type and year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: The land use type as a string.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of mineral soil as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s2">&quot;forest&quot;</span><span class="p">:</span>
+            <span class="n">mineral</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;mineral_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">mineral</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_national_organic">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_organic">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_organic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of organic soil for a given land use type and year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: The land use type as a string.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of organic soil as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s2">&quot;forest&quot;</span><span class="p">:</span>
+            <span class="n">organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;organic_emitting_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">organic</span></div>
+
+
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_organic_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_organic_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_organic_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of organic soil for a given land use type and year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: The land use type as a string.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of organic soil as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;forest&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">organic_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;organo_mineral_emitting_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">organic_mineral</span></div>
+
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_peat_extraction">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_peat_extraction">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_peat_extraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of areas under peat extraction for wetlands in a given year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: Must be &quot;wetland&quot; for this calculation.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown or not &quot;wetland&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">peat_extraction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;peat_extraction_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;drained_extraction_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span><span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">peat_extraction</span></div>
+
+    
+
+<div class="viewcode-block" id="NationalLandCover.get_national_rewetted_in_organic">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_organic">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_rewetted_in_organic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of rewetted organic areas for wetlands in a given year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: Must be &quot;wetland&quot; for this calculation.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of rewetted organic areas as a float, returns 0.0 for non-wetland land uses.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown or not &quot;wetland&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">rewetted_in_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rewetted_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">rewetted_in_organic</span></div>
+
+    
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_rewetted_in_mineral">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_mineral">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of rewetted mineral areas for wetlands in a given year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: Must be &quot;wetland&quot; for this calculation.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of rewetted mineral areas as a float, returns 0.0 for non-wetland land uses.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown or not &quot;wetland&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>                
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">rewetted_in_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rewetted_mineral_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">rewetted_in_mineral</span></div>
+
+    
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_burn">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_burn">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_burn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of burnt areas for a given land use type and year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: The land use type as a string.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of burnt areas as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>    
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+        <span class="n">burn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;burnt_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">burn</span></div>
+
+
+    
+<div class="viewcode-block" id="NationalLandCover.get_total_spared_area">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_total_spared_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the total spared area for a specific scenario from a spared area dataset.</span>
+
+<span class="sd">        :param spared_area: A DataFrame containing spared area data.</span>
+<span class="sd">        :param sc: The scenario as a string or integer.</span>
+<span class="sd">        :return: The total spared area as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the scenario is not found in the spared area dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spared_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># Fallback to integer representation</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">spared_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># Handle or log the error specifically for this scenario</span>
+                <span class="c1"># Perhaps log an error or raise a custom exception</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario </span><span class="si">{</span><span class="n">sc</span><span class="si">}</span><span class="s2"> not found in spared_area.&quot;</span><span class="p">)</span></div>
+
+            
+    
+<div class="viewcode-block" id="NationalLandCover.get_derived_national_grassland_area">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_derived_national_grassland_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_derived_national_grassland_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Derives the national grassland area for a given scenario.</span>
+
+<span class="sd">        :param grassland_area: A DataFrame or Series containing grassland area data.</span>
+<span class="sd">        :type grassland_area: </span>
+<span class="sd">        :param sc: The scenario as a string or integer, default is 0.</span>
+<span class="sd">        :return: The derived national grassland area as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the scenario is not found in the grassland area data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">grassland_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># Fallback to integer representation</span>
+                <span class="k">return</span> <span class="n">grassland_area</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># Handle or log the error specifically for this scenario</span>
+                <span class="c1"># Perhaps log an error or raise a custom exception</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario </span><span class="si">{</span><span class="n">sc</span><span class="si">}</span><span class="s2"> not found in grassland_area.&quot;</span><span class="p">)</span></div>
+
+            
+    
+<div class="viewcode-block" id="NationalLandCover.get_area_with_organic_potential">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_area_with_organic_potential">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_area_with_organic_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">spared_breakdown</span><span class="p">,</span> <span class="n">total_spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the area with organic potential based on a spared area breakdown for a specific scenario.</span>
+
+<span class="sd">        :param spared_breakdown: A DataFrame containing spared area breakdown data.</span>
+<span class="sd">        :param total_spared_area: A DataFrame or Series containing total spared area data.</span>
+<span class="sd">        :param sc: The scenario as a string or integer.</span>
+<span class="sd">        :return: The area with organic potential as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the scenario is not found in the spared breakdown dataset or if all values in the &#39;area_ha&#39; column are zero.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Select only numeric columns </span>
+        <span class="n">numeric_df</span> <span class="o">=</span> <span class="n">spared_breakdown</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
+
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">numeric_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;soil_group&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Using .xs to select all entries for a specific &#39;Scenario&#39; number</span>
+            <span class="c1"># and then filter for &#39;soil_group&#39; == 3</span>
+            <span class="c1"># Note: .xs returns a DataFrame if there are multiple matches, or a Series if there&#39;s only one match</span>
+            <span class="n">specific_scenario_df</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;Scenario&#39;</span><span class="p">)</span>
+         
+            <span class="c1"># Check if all values in the &#39;area_ha&#39; column are zero</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">specific_scenario_df</span><span class="p">[</span><span class="s1">&#39;area_ha&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="c1"># Handle the case where all values in the &#39;area_ha&#39; column are zero</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">sc</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="mi">3</span> <span class="ow">in</span> <span class="n">specific_scenario_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="n">area_ha</span> <span class="o">=</span> <span class="n">specific_scenario_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;area_ha&#39;</span><span class="p">]</span>  <span class="c1"># Directly use .loc to access &#39;soil_group&#39; == 3</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">area_ha</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Handle the case where &#39;soil_group&#39; == 3 is not present</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Handle the case where the specific scenario does not exist</span>
+            <span class="n">area_ha</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+        <span class="k">return</span> <span class="n">area_ha</span></div>
+</div>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

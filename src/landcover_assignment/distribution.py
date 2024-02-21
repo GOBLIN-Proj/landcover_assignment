@@ -40,7 +40,7 @@ Classes:
 
 from landcover_assignment.landcover_data_manager import DistributionManager
 from landcover_assignment.national_landcover import NationalLandCover
-from resource_manager.scenario_data_fetcher import ScenarioDataFetcher
+from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 
 class LandDistribution:
     """

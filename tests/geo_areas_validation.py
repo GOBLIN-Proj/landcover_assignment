@@ -2,9 +2,9 @@ import unittest
 import pandas as pd
 import shutil
 import os
-from geo_landcover_assignment.geo_transition_matrix import TransitionMatrix
-from resource_manager.transition_data_fetcher import TransitionDataFetcher
-from geo_landcover_assignment.geo_afforestation import Afforestation
+from landcover_assignment.geo_landcover_assignment.geo_transition_matrix import TransitionMatrix
+from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
+from landcover_assignment.geo_landcover_assignment.geo_afforestation import Afforestation
 
 class TestTransitions(unittest.TestCase):
 

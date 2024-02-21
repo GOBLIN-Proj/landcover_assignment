@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.geo_landcover_assignment.catchment_landcover &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="landcover_assignment.geo_landcover_assignment.geo_afforestation" href="../geo_afforestation/index.html" />
+    <link rel="prev" title="landcover_assignment.geo_landcover_assignment" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../resource_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment.catchment_landcover</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/landcover_assignment/geo_landcover_assignment/catchment_landcover/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-landcover_assignment.geo_landcover_assignment.catchment_landcover">
+<span id="landcover-assignment-geo-landcover-assignment-catchment-landcover"></span><h1><a class="reference internal" href="#module-landcover_assignment.geo_landcover_assignment.catchment_landcover" title="landcover_assignment.geo_landcover_assignment.catchment_landcover"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment.catchment_landcover</span></code></a><a class="headerlink" href="#module-landcover_assignment.geo_landcover_assignment.catchment_landcover" title="Link to this heading"></a></h1>
+<section id="catchment-land-cover">
+<p>This module provides a class for managing and analyzing land cover data within catchment areas. It integrates
+various APIs and data sources to offer a comprehensive set of functionalities for land cover analysis.</p>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">catchment_data_api.catchment_data_api.CatchmentDataAPI</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">catchment_data_api.crops.Crops</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_manager.data_loader.Loader</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> as <code class="docutils literal notranslate"><span class="pre">pd</span></code></p></li>
+</ul>
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.geo_landcover_assignment.catchment_landcover.</span></span><span class="sig-name descname"><span class="pre">CatchmentLandCover</span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover" title="Link to this definition"></a></dt>
+<dd><p>This class is designed to access and analyze land cover data across different land use types within catchment areas.
+It provides methods to calculate areas and shares of different land cover types, including forests, wetlands,
+croplands, and grasslands, based on catchment names.</p>
+<blockquote>
+<div><p>Methods:</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_forest_area">
+<span class="sig-name descname"><span class="pre">get_catchment_forest_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_forest_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_forest_area" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total forest area within a specified catchment, categorized by cover and soil types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_peat_area">
+<span class="sig-name descname"><span class="pre">get_catchment_peat_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_peat_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_peat_area" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total peat area within a specified catchment, grouped by cover and soil types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_area">
+<span class="sig-name descname"><span class="pre">get_catchment_crop_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_crop_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_area" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total crop area within a specified catchment, grouped by cover and soil types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_grassland_area">
+<span class="sig-name descname"><span class="pre">get_catchment_grassland_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_grassland_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_grassland_area" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total grassland area within a specified catchment, grouped by cover and soil types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_landuse_area">
+<span class="sig-name descname"><span class="pre">get_landuse_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_landuse_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_landuse_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total area for a specified land use within a catchment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_mineral">
+<span class="sig-name descname"><span class="pre">get_share_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_mineral" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of mineral soil within a specified land use area in a catchment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic">
+<span class="sig-name descname"><span class="pre">get_share_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of organic soil within a specified land use area in a catchment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic_mineral">
+<span class="sig-name descname"><span class="pre">get_share_organic_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_organic_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_organic_mineral" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Classes<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CatchmentLandCover</span></code></a></p></td>
+<td><p>Manages and analyzes land cover data within catchment areas by integrating various APIs and data sources.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.geo_landcover_assignment.catchment_landcover.</span></span><span class="sig-name descname"><span class="pre">CatchmentLandCover</span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Manages and analyzes land cover data within catchment areas by integrating various APIs and data sources.</p>
+<p>This class provides functionalities for accessing and analyzing land cover data across different land use
+types within catchment areas. It includes methods for calculating areas and shares of different land cover
+types, such as forests, wetlands, croplands, and grasslands, based on catchment names.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.api">
+<span class="sig-name descname"><span class="pre">api</span></span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.api" title="Link to this definition"></a></dt>
+<dd><p>An instance of the CatchmentDataAPI for accessing catchment data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CatchmentDataAPI</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.crops_api">
+<span class="sig-name descname"><span class="pre">crops_api</span></span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.crops_api" title="Link to this definition"></a></dt>
+<dd><p>An instance of the Crops API for accessing crops data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Crops</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.loader">
+<span class="sig-name descname"><span class="pre">loader</span></span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.loader" title="Link to this definition"></a></dt>
+<dd><p>An instance of the Loader for accessing national area data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../resource_manager/data_loader/index.html#id0" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.methods" title="Link to this definition"></a></dt>
+<dd><p>A dictionary mapping land use types to their respective methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.national_areas">
+<span class="sig-name descname"><span class="pre">national_areas</span></span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.national_areas" title="Link to this definition"></a></dt>
+<dd><p>A dictionary mapping land use types to their national areas data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">get_catchment_forest_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_forest_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total forest area within a specified catchment, categorized by cover and soil types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame summarizing the forest area details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">get_catchment_peat_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_peat_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total organic area within a specified catchment, grouped by cover and soil types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame summarizing the peat area details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get_catchment_crop_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_crop_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total crop area within a specified catchment, grouped by cover and soil types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame summarizing the crop area details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get_catchment_grassland_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_grassland_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Calculates the total grassland area within a specified catchment, using additional grassland area data from the
+grassland_production package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>total_grassland_area</strong> (<em>Various</em><em> (</em><em>e.g.</em><em>, </em><em>int</em><em>, </em><em>float</em><em>, </em><em>pd.Series</em><em>)</em>) – The total grassland area data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame summarizing the grassland area details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">get_landuse_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_landuse_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total area for a specified land use within a catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use (e.g., ‘forest’, ‘wetland’, ‘cropland’, ‘grassland’).</p></li>
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>grassland_area</strong> (<em>Various</em><em>, </em><em>optional</em>) – Optional; additional grassland area data, required if landuse is ‘grassland’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total area of the specified land use within the catchment.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘area_ha’ column is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">get_share_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of mineral soil within a specified land use area in a catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>grassland_area</strong> (<em>Various</em><em>, </em><em>optional</em>) – Optional; additional grassland area data, required if landuse is ‘grassland’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of mineral soil within the specified land use area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_mineral’ column is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">get_share_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of organic soil within a specified land use area in a catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>grassland_area</strong> (<em>Various</em><em>, </em><em>optional</em>) – Optional; additional grassland area data, required if landuse is ‘grassland’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of organic soil within the specified land use area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_organic’ column is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">get_share_organic_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_organic_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of organic-mineral mixed soil within a specified land use area in a catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>grassland_area</strong> (<em>Various</em><em>, </em><em>optional</em>) – Optional; additional grassland area data, required if landuse is ‘grassland’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of organic-mineral mixed soil within the specified land use area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_organic_mineral’ column is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_burnt">
+<span class="sig-name descname"><span class="pre">get_share_burnt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_share_burnt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_share_burnt" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_national_burnt_average">
+<span class="sig-name descname"><span class="pre">get_national_burnt_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_national_burnt_average"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_national_burnt_average" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of burnt land within a specified land use area in a catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p></li>
+<li><p><strong>grassland_area</strong> (<em>Various</em><em>, </em><em>optional</em>) – Optional; additional grassland area data, required if landuse is ‘grassland’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of burnt land within the specified land use area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_burnt’ column is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_type">
+<span class="sig-name descname"><span class="pre">get_catchment_crop_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catchment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_catchment_crop_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_catchment_crop_type" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the types of crops grown within a specified catchment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>catchment</strong> (<em>str</em>) – The name of the catchment area.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame containing crop types within the specified catchment.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_total_spared_area">
+<span class="sig-name descname"><span class="pre">get_total_spared_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_total_spared_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_total_spared_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total spared area for a given scenario.</p>
+<p>This method looks up the total spared area based on a specific scenario identifier. It is useful for
+determining the spared area that has been set aside for conservation or other purposes under different
+planning or management scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spared_area</strong> (<em>pd.DataFrame</em>) – A pandas DataFrame containing spared areas for various scenarios.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em>) – The scenario identifier for which the total spared area is to be retrieved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total spared area for the given scenario.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared_area DataFrame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_derived_catchment_grassland_area">
+<span class="sig-name descname"><span class="pre">get_derived_catchment_grassland_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_derived_catchment_grassland_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_derived_catchment_grassland_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the derived grassland area for a catchment based on a scenario grassland input (rather than actual catchment grassland).</p>
+<p>This method is used to look up the calculated grassland area that is derived from available data for a specific
+scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grassland_area</strong> (<em>pd.DataFrame</em><em> or </em><em>pd.Series</em>) – A pandas DataFrame or Series containing grassland areas for various scenarios.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – Optional; the scenario identifier for which the derived grassland area is calculated. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The derived grassland area for the specified scenario.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the grassland_area data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_area_with_organic_potential">
+<span class="sig-name descname"><span class="pre">get_area_with_organic_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_breakdown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/catchment_landcover.html#CatchmentLandCover.get_area_with_organic_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover.get_area_with_organic_potential" title="Link to this definition"></a></dt>
+<dd><p>Calculates the area with organic farming potential based on spared land breakdown and scenario.</p>
+<p>This method assesses the potential for organic soils in spared areas by analyzing the soil composition
+and other factors. It uses detailed breakdown data of spared areas and soil groups. The input data is calculated
+in the grassland_production module. It is assumed that the area of organic soils cannot be greater than the
+area of available soil group 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spared_breakdown</strong> (<em>pd.DataFrame</em>) – A pandas DataFrame containing detailed breakdown of spared areas, including soil types.</p></li>
+<li><p><strong>total_spared_area</strong> (<em>pd.DataFrame</em><em> or </em><em>pd.Series</em>) – A pandas DataFrame or Series containing total spared areas for various scenarios.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em>) – The scenario identifier used for the analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The area with available organic soils based on the specified scenario.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specific scenario does not exist in the spared_breakdown or total_spared_area data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="landcover_assignment.geo_landcover_assignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../geo_afforestation/index.html" class="btn btn-neutral float-right" title="landcover_assignment.geo_landcover_assignment.geo_afforestation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

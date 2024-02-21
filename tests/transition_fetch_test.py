@@ -1,6 +1,6 @@
 import pandas as pd
 import os 
-from resource_manager.transition_data_fetcher import TransitionDataFetcher
+from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
 
 def main():
     path = "./geo_data/"

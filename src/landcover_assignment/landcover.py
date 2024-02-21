@@ -50,8 +50,8 @@ import numpy as np
 from landcover_assignment.distribution import LandDistribution
 from landcover_assignment.national_landcover import NationalLandCover
 from landcover_assignment.landcover_data_manager import DataManager
-from resource_manager.scenario_data_fetcher import ScenarioDataFetcher
-from resource_manager.data_loader import Loader
+from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
+from landcover_assignment.resource_manager.data_loader import Loader
 
 
 

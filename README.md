@@ -20,11 +20,11 @@
  ```
     src/
     │
-    ├── geo_landcover_assignment
-    │   └── ... (other modules and sub-packages)
-    │
     ├── landcover_assignment
-    |   └── ... (other modules and sub-packages)
+    │   └── ... (other modules and sub-packages)
+        │
+        ├── geo_landcover_assignment
+        |   └── ... (other modules and sub-packages)
 
  ```
 

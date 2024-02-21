@@ -1,4 +1,4 @@
-from geo_landcover_assignment.catchment_landcover import CatchmentLandCover
+from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
 import os 
 import pandas as pd
 

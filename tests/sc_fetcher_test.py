@@ -1,6 +1,6 @@
 import pandas as pd
 import os 
-from resource_manager.scenario_data_fetcher import ScenarioDataFetcher
+from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 
 def main():
     path = "./geo_data/"
