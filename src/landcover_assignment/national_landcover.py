@@ -19,7 +19,7 @@ Dependencies:
 - ``resource_manager.data_loader.Loader``: For loading national land cover datasets.
 - ``pandas``: For data manipulation and analysis.
 """
-from resource_manager.data_loader import Loader
+from landcover_assignment.resource_manager.data_loader import Loader
 import pandas as pd 
 
 class NationalLandCover:

@@ -1,4 +1,4 @@
-from geo_landcover_assignment.geo_afforestation import Afforestation
+from landcover_assignment.geo_landcover_assignment.geo_afforestation import Afforestation
 import os
 import pandas as pd
 

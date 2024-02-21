@@ -6,14 +6,6 @@ This page contains auto-generated API reference documentation [#f1]_.
 .. toctree::
    :titlesonly:
 
-   /autoapi/database/index
-   /autoapi/resource_manager/index
-   /autoapi/geo_landcover_assignment/index
-   /autoapi/landcover/index
-   /autoapi/transition_matrix/index
-   /autoapi/afforestation/index
-   /autoapi/landcover_data_manager/index
-   /autoapi/national_landcover/index
-   /autoapi/distribution/index
+   /autoapi/landcover_assignment/index
 
 .. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

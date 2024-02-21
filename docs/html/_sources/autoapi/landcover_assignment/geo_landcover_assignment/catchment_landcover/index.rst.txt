@@ -1,0 +1,301 @@
+:py:mod:`landcover_assignment.geo_landcover_assignment.catchment_landcover`
+===========================================================================
+
+.. py:module:: landcover_assignment.geo_landcover_assignment.catchment_landcover
+
+.. autoapi-nested-parse::
+
+   Catchment Land Cover
+   ======================
+
+   This module provides a class for managing and analyzing land cover data within catchment areas. It integrates
+   various APIs and data sources to offer a comprehensive set of functionalities for land cover analysis.
+
+   Dependencies
+   ------------
+   - ``catchment_data_api.catchment_data_api.CatchmentDataAPI``
+   - ``catchment_data_api.crops.Crops``
+   - ``resource_manager.data_loader.Loader``
+   - ``pandas`` as ``pd``
+
+   Classes
+   -------
+   .. class:: CatchmentLandCover()
+
+      This class is designed to access and analyze land cover data across different land use types within catchment areas.
+      It provides methods to calculate areas and shares of different land cover types, including forests, wetlands,
+      croplands, and grasslands, based on catchment names.
+
+       Methods:
+
+      .. method:: get_catchment_forest_area(catchment)
+
+         Calculates the total forest area within a specified catchment, categorized by cover and soil types.
+
+      .. method:: get_catchment_peat_area(catchment)
+
+         Calculates the total peat area within a specified catchment, grouped by cover and soil types.
+
+      .. method:: get_catchment_crop_area(catchment)
+
+         Calculates the total crop area within a specified catchment, grouped by cover and soil types.
+
+      .. method:: get_catchment_grassland_area(catchment, total_grassland_area)
+
+         Calculates the total grassland area within a specified catchment, grouped by cover and soil types.
+
+      .. method:: get_landuse_area(landuse, catchment, grassland_area=None)
+
+         Retrieves the total area for a specified land use within a catchment.
+
+      .. method:: get_share_mineral(landuse, catchment, grassland_area=None)
+
+         Calculates the share of mineral soil within a specified land use area in a catchment.
+
+      .. method:: get_share_organic(landuse, catchment, grassland_area=None)
+
+         Calculates the share of organic soil within a specified land use area in a catchment.
+
+      .. method:: get_share_organic_mineral(landuse, catchment, grassland_area=None)
+
+         Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   landcover_assignment.geo_landcover_assignment.catchment_landcover.CatchmentLandCover
+
+
+
+
+.. py:class:: CatchmentLandCover
+
+
+   Manages and analyzes land cover data within catchment areas by integrating various APIs and data sources.
+
+   This class provides functionalities for accessing and analyzing land cover data across different land use
+   types within catchment areas. It includes methods for calculating areas and shares of different land cover
+   types, such as forests, wetlands, croplands, and grasslands, based on catchment names.
+
+   .. attribute:: api
+
+      An instance of the CatchmentDataAPI for accessing catchment data.
+
+      :type: CatchmentDataAPI
+
+   .. attribute:: crops_api
+
+      An instance of the Crops API for accessing crops data.
+
+      :type: Crops
+
+   .. attribute:: loader
+
+      An instance of the Loader for accessing national area data.
+
+      :type: Loader
+
+   .. attribute:: methods
+
+      A dictionary mapping land use types to their respective methods.
+
+      :type: dict
+
+   .. attribute:: national_areas
+
+      A dictionary mapping land use types to their national areas data.
+
+      :type: dict
+
+   .. py:method:: get_catchment_forest_area(catchment)
+
+      Calculates the total forest area within a specified catchment, categorized by cover and soil types.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :return: A pandas DataFrame summarizing the forest area details.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_catchment_peat_area(catchment)
+
+      Calculates the total organic area within a specified catchment, grouped by cover and soil types.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :return: A pandas DataFrame summarizing the peat area details.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_catchment_crop_area(catchment)
+
+      Calculates the total crop area within a specified catchment, grouped by cover and soil types.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :return: A pandas DataFrame summarizing the crop area details.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_catchment_grassland_area(catchment, total_grassland_area)
+
+      Calculates the total grassland area within a specified catchment, using additional grassland area data from the
+      grassland_production package.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param total_grassland_area: The total grassland area data.
+      :type total_grassland_area: Various (e.g., int, float, pd.Series)
+      :return: A pandas DataFrame summarizing the grassland area details.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_landuse_area(landuse, catchment, grassland_area=None)
+
+      Retrieves the total area for a specified land use within a catchment.
+
+      :param landuse: The type of land use (e.g., 'forest', 'wetland', 'cropland', 'grassland').
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+      :return: The total area of the specified land use within the catchment.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'area_ha' column is not found.
+
+
+   .. py:method:: get_share_mineral(landuse, catchment, grassland_area=None)
+
+      Retrieves the share of mineral soil within a specified land use area in a catchment.
+
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+      :return: The share of mineral soil within the specified land use area.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_mineral' column is not found.
+
+
+   .. py:method:: get_share_organic(landuse, catchment, grassland_area=None)
+
+      Retrieves the share of organic soil within a specified land use area in a catchment.
+
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+      :return: The share of organic soil within the specified land use area.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_organic' column is not found.
+
+
+   .. py:method:: get_share_organic_mineral(landuse, catchment, grassland_area=None)
+
+      Retrieves the share of organic-mineral mixed soil within a specified land use area in a catchment.
+
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+      :return: The share of organic-mineral mixed soil within the specified land use area.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_organic_mineral' column is not found.
+
+
+   .. py:method:: get_share_burnt(landuse, catchment, grassland_area=None)
+
+
+   .. py:method:: get_national_burnt_average(landuse)
+
+      Retrieves the share of burnt land within a specified land use area in a catchment.
+
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+      :return: The share of burnt land within the specified land use area.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_burnt' column is not found.
+
+
+   .. py:method:: get_catchment_crop_type(catchment)
+
+      Retrieves the types of crops grown within a specified catchment.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :return: A pandas DataFrame containing crop types within the specified catchment.
+      :rtype: pd.DataFrame
+
+
+   .. py:method:: get_total_spared_area(spared_area, sc)
+
+      Retrieves the total spared area for a given scenario.
+
+      This method looks up the total spared area based on a specific scenario identifier. It is useful for
+      determining the spared area that has been set aside for conservation or other purposes under different
+      planning or management scenarios.
+
+      :param spared_area: A pandas DataFrame containing spared areas for various scenarios.
+      :type spared_area: pd.DataFrame
+      :param sc: The scenario identifier for which the total spared area is to be retrieved.
+      :type sc: str or int
+      :return: The total spared area for the given scenario.
+      :rtype: float
+      :raises ValueError: If the scenario is not found in the spared_area DataFrame.
+
+
+   .. py:method:: get_derived_catchment_grassland_area(grassland_area, sc=0)
+
+      Retrieves the derived grassland area for a catchment based on a scenario grassland input (rather than actual catchment grassland).
+
+      This method is used to look up the calculated grassland area that is derived from available data for a specific
+      scenario.
+
+      :param grassland_area: A pandas DataFrame or Series containing grassland areas for various scenarios.
+      :type grassland_area: pd.DataFrame or pd.Series
+      :param sc: Optional; the scenario identifier for which the derived grassland area is calculated. Defaults to 0.
+      :type sc: str or int, optional
+      :return: The derived grassland area for the specified scenario.
+      :rtype: float
+      :raises ValueError: If the scenario is not found in the grassland_area data.
+
+
+   .. py:method:: get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)
+
+      Calculates the area with organic farming potential based on spared land breakdown and scenario.
+
+      This method assesses the potential for organic soils in spared areas by analyzing the soil composition
+      and other factors. It uses detailed breakdown data of spared areas and soil groups. The input data is calculated
+      in the grassland_production module. It is assumed that the area of organic soils cannot be greater than the
+      area of available soil group 3.
+
+      :param spared_breakdown: A pandas DataFrame containing detailed breakdown of spared areas, including soil types.
+      :type spared_breakdown: pd.DataFrame
+      :param total_spared_area: A pandas DataFrame or Series containing total spared areas for various scenarios.
+      :type total_spared_area: pd.DataFrame or pd.Series
+      :param sc: The scenario identifier used for the analysis.
+      :type sc: str or int
+      :return: The area with available organic soils based on the specified scenario.
+      :rtype: float
+      :raises ValueError: If the specific scenario does not exist in the spared_breakdown or total_spared_area data.
+
+
+

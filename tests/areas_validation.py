@@ -3,7 +3,7 @@ import pandas as pd
 import shutil
 import os
 from landcover_assignment.transition_matrix import TransitionMatrix
-from resource_manager.transition_data_fetcher import TransitionDataFetcher
+from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
 from landcover_assignment.afforestation import Afforestation
 
 class TestTransitions(unittest.TestCase):

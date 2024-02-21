@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.national_landcover &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="landcover_assignment.transition_matrix" href="../transition_matrix/index.html" />
+    <link rel="prev" title="landcover_assignment.landcover_data_manager" href="../landcover_data_manager/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../afforestation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.afforestation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.distribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landcover_data_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover_data_manager</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transition_matrix/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.transition_matrix</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/landcover_assignment/national_landcover/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-landcover_assignment.national_landcover">
+<span id="landcover-assignment-national-landcover"></span><h1><a class="reference internal" href="#module-landcover_assignment.national_landcover" title="landcover_assignment.national_landcover"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover</span></code></a><a class="headerlink" href="#module-landcover_assignment.national_landcover" title="Link to this heading"></a></h1>
+<section id="national-land-cover-data-analysis">
+<p>The National Land Cover class is designed to facilitate access and analysis of national land cover data, encompassing various land use types
+such as forests, wetlands, croplands, grasslands, and settlements. This class leverages a data loader to fetch predefined datasets and provides
+a suite of methods to calculate and retrieve detailed information about land cover characteristics, including areas and soil composition shares,
+for different years.</p>
+<section id="features">
+<h3>Features:<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Access to national land cover data for multiple land use types.</p></li>
+<li><p>Calculation of land use areas and shares of different soil compositions.</p></li>
+<li><p>Ability to retrieve data for specific years, enabling temporal analysis.</p></li>
+<li><p>Support for scenario-based analysis with functions to handle spared areas and potential for organic soil use.</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_manager.data_loader.Loader</span></code>: For loading national land cover datasets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code>: For data manipulation and analysis.</p></li>
+</ul>
+</section>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover" title="landcover_assignment.national_landcover.NationalLandCover"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NationalLandCover</span></code></a></p></td>
+<td><p>Provides detailed national land cover data analysis capabilities, including the extraction of various land use types' data across different years.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">NationalLandCover</span></span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover" title="Link to this definition"></a></dt>
+<dd><p>Provides detailed national land cover data analysis capabilities, including the extraction of various land use types’ data across different years.
+This class supports the calculation of area shares and specific environmental factors for different land uses at a national level.</p>
+<p>The class leverages a data loader to access pre-defined national area datasets and performs calculations to return comprehensive summaries
+for each land use type.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.loader">
+<span class="sig-name descname"><span class="pre">loader</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.loader" title="Link to this definition"></a></dt>
+<dd><p>An instance of Loader to access national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../resource_manager/data_loader/index.html#id0" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.methods" title="Link to this definition"></a></dt>
+<dd><p>A mapping from land use types to their respective data retrieval methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.national_areas">
+<span class="sig-name descname"><span class="pre">national_areas</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.national_areas" title="Link to this definition"></a></dt>
+<dd><p>A dictionary containing methods to retrieve national area data for different land use types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_forest_data">
+<span class="sig-name descname"><span class="pre">get_forest_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_forest_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieves summary data for forest land use including area, shares of mineral, organic, and organic-mineral soils,
+peat extraction, and rewetted areas for a given year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing summary data for forest land use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_peat_data">
+<span class="sig-name descname"><span class="pre">get_peat_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_peat_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_peat_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieves summary data for wetland (peat) land use including area, shares of mineral, organic, and organic-mineral soils,
+peat extraction, and rewetted areas for a given year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing summary data for wetland land use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_crop_data">
+<span class="sig-name descname"><span class="pre">get_crop_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_crop_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_crop_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieves summary data for cropland use including area, shares of mineral, organic, and organic-mineral soils,
+peat extraction, and rewetted areas for a given year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing summary data for cropland use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_grassland_data">
+<span class="sig-name descname"><span class="pre">get_grassland_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_grassland_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieves summary data for grassland use including area, shares of mineral, organic, and organic-mineral soils,
+peat extraction, and rewetted areas, optionally adjusted by total grassland area for a given year.</p>
+<p>Area is derived from total grassland area calculated using the grassland_production module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing summary data for grassland use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_settlement_data">
+<span class="sig-name descname"><span class="pre">get_settlement_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_settlement_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_settlement_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieves summary data for settlement land use including area, shares of mineral, organic, and organic-mineral soils,
+peat extraction, and rewetted areas for a given year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing summary data for settlement land use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_landuse_area">
+<span class="sig-name descname"><span class="pre">get_landuse_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_landuse_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_landuse_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total area for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total area for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘area_ha’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_mineral">
+<span class="sig-name descname"><span class="pre">get_share_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_mineral" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of mineral soil for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share mineral for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_mineral’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_organic">
+<span class="sig-name descname"><span class="pre">get_share_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_organic" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of organic soil for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share organic for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_organic’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_organic_mineral">
+<span class="sig-name descname"><span class="pre">get_share_organic_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_organic_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_organic_mineral" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of organic-mineral mixed soil for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share organic mineral for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_organic_mineral’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_organic">
+<span class="sig-name descname"><span class="pre">get_share_rewetted_in_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_in_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_organic" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share rewetted in organic for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_rewetted_in_organic’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_mineral">
+<span class="sig-name descname"><span class="pre">get_share_rewetted_in_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_in_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_mineral" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share rewetted in mineral for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share rewetted in mineral for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_rewetted_in_mineral’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_peat_extraction">
+<span class="sig-name descname"><span class="pre">get_share_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_peat_extraction" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share peat extraction for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_peat_extraction’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_burnt">
+<span class="sig-name descname"><span class="pre">get_share_burnt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_burnt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_burnt" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share burnt for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share burnt for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_burnt’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_burnt_average">
+<span class="sig-name descname"><span class="pre">get_national_burnt_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_burnt_average"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_burnt_average" title="Link to this definition"></a></dt>
+<dd><p>Calculates the national average of burnt areas for a specified land use type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>landuse</strong> – The type of land use for which the burnt average is calculated as string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The national average of burnt areas for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_area">
+<span class="sig-name descname"><span class="pre">get_national_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total area in hectares for a specified land use type and year from national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total area in hectares as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_mineral">
+<span class="sig-name descname"><span class="pre">get_national_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_mineral" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of mineral soil for a given land use type and year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of mineral soil as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_organic">
+<span class="sig-name descname"><span class="pre">get_national_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_organic" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of organic soil for a given land use type and year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of organic soil as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_organic_mineral">
+<span class="sig-name descname"><span class="pre">get_national_organic_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_organic_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_organic_mineral" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of organic soil for a given land use type and year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of organic soil as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_peat_extraction">
+<span class="sig-name descname"><span class="pre">get_national_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_peat_extraction" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of areas under peat extraction for wetlands in a given year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown or not “wetland”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_organic">
+<span class="sig-name descname"><span class="pre">get_national_rewetted_in_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_rewetted_in_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_organic" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of rewetted organic areas for wetlands in a given year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of rewetted organic areas as a float, returns 0.0 for non-wetland land uses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown or not “wetland”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_mineral">
+<span class="sig-name descname"><span class="pre">get_national_rewetted_in_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_rewetted_in_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_in_mineral" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of rewetted mineral areas for wetlands in a given year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of rewetted mineral areas as a float, returns 0.0 for non-wetland land uses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown or not “wetland”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_burn">
+<span class="sig-name descname"><span class="pre">get_national_burn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_burn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_burn" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of burnt areas for a given land use type and year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of burnt areas as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_total_spared_area">
+<span class="sig-name descname"><span class="pre">get_total_spared_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_total_spared_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_total_spared_area" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the total spared area for a specific scenario from a spared area dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spared_area</strong> – A DataFrame containing spared area data.</p></li>
+<li><p><strong>sc</strong> – The scenario as a string or integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total spared area as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared area dataset.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_derived_national_grassland_area">
+<span class="sig-name descname"><span class="pre">get_derived_national_grassland_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_derived_national_grassland_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_derived_national_grassland_area" title="Link to this definition"></a></dt>
+<dd><p>Derives the national grassland area for a given scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grassland_area</strong> – A DataFrame or Series containing grassland area data.</p></li>
+<li><p><strong>sc</strong> – The scenario as a string or integer, default is 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The derived national grassland area as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the grassland area data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_area_with_organic_potential">
+<span class="sig-name descname"><span class="pre">get_area_with_organic_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_breakdown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_area_with_organic_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_area_with_organic_potential" title="Link to this definition"></a></dt>
+<dd><p>Calculates the area with organic potential based on a spared area breakdown for a specific scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spared_breakdown</strong> – A DataFrame containing spared area breakdown data.</p></li>
+<li><p><strong>total_spared_area</strong> – A DataFrame or Series containing total spared area data.</p></li>
+<li><p><strong>sc</strong> – The scenario as a string or integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The area with organic potential as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared breakdown dataset or if all values in the ‘area_ha’ column are zero.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../landcover_data_manager/index.html" class="btn btn-neutral float-left" title="landcover_assignment.landcover_data_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../transition_matrix/index.html" class="btn btn-neutral float-right" title="landcover_assignment.transition_matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

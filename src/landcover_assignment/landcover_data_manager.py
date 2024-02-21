@@ -41,7 +41,7 @@ DistributionManager Class
    - ``land_distribution`` (dict): A dictionary with keys for area and shares of different soil types and environmental factors, initialized with default values.
 """
 
-from resource_manager.data_loader import Loader
+from landcover_assignment.resource_manager.data_loader import Loader
 
 
 class DataManager:

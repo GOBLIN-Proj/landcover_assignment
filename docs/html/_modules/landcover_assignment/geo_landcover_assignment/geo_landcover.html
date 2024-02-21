@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.geo_landcover_assignment.geo_landcover &mdash; LandCover Assignment 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.geo_landcover_assignment.geo_landcover</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for landcover_assignment.geo_landcover_assignment.geo_landcover</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Geo landcover</span>
+<span class="sd">================</span>
+<span class="sd">This module facilitates the management and analysis of land cover changes within specified geographic areas, focusing on the dynamics of land use </span>
+<span class="sd">transitions under various scenarios. It leverages data from land cover assignments, catchment analyses, and scenario-driven land distribution calculations </span>
+<span class="sd">to provide tools for detailed land cover change analysis.</span>
+
+<span class="sd">Features:</span>
+<span class="sd">---------</span>
+<span class="sd">- **Land Cover Analysis**: Provides functionalities to analyze and compute land cover distributions and transitions based on calibration and target years, </span>
+<span class="sd">scenario inputs, and specific land area considerations.</span>
+<span class="sd">- **Scenario-driven Land Distribution**: Manages the distribution and transition of land areas across different land use types, adjusting for </span>
+<span class="sd">scenario-specific changes.</span>
+
+<span class="sd">Dependencies:</span>
+<span class="sd">-------------</span>
+<span class="sd">- ``pandas``: Used for data manipulation and analysis.</span>
+<span class="sd">- ``geo_landcover_assignment.geo_distribution.LandDistribution``: Manages land distribution scenarios.</span>
+<span class="sd">- ``geo_landcover_assignment.catchment_landcover.CatchmentLandCover``: Analyzes land cover within catchment areas.</span>
+<span class="sd">- ``landcover_assignment.landcover_data_manager.DataManager``: Manages land cover data.</span>
+<span class="sd">- ``resource_manager.data_loader.Loader``: Loads required data resources.</span>
+<span class="sd">- ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">--------</span>
+<span class="sd">.. class:: LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)</span>
+<span class="sd">   :noindex:</span>
+
+<span class="sd">   Manages the computation and analysis of land cover changes, focusing on the adjustments of land areas under different scenarios </span>
+<span class="sd">   and their implications on land use distribution.</span>
+
+<span class="sd">   The class initializes with the required data and parameters for analysis, including calibration and target years, scenario inputs, and areas related </span>
+<span class="sd">   to grassland and spared lands. It provides methods to fill current area data, compute current and future land use areas, </span>
+<span class="sd">   and analyze spared area breakdowns and grassland distributions based on scenario inputs.</span>
+
+<span class="sd">   Methods include:</span>
+<span class="sd">   - `_fill_current_area_row`: Fills data for the current area based on land use type.</span>
+<span class="sd">   - `compute_current_area`: Computes the current area distribution for all land uses.</span>
+<span class="sd">   - `combined_future_land_use_area`: Combines current and future land use areas under different scenarios.</span>
+<span class="sd">   - `spared_area_breakdown`: Analyzes the breakdown of spared areas based on scenarios.</span>
+<span class="sd">   - `grassland_breakdown`: Specifically analyzes the breakdown of grassland areas under scenarios.</span>
+<span class="sd">   - `_available_organic_area`: Computes the available organic area for scenarios.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.geo_landcover_assignment.geo_distribution</span> <span class="kn">import</span> <span class="n">LandDistribution</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.geo_landcover_assignment.catchment_landcover</span> <span class="kn">import</span> <span class="n">CatchmentLandCover</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DataManager</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.data_loader</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.scenario_data_fetcher</span> <span class="kn">import</span> <span class="n">ScenarioDataFetcher</span>
+
+<div class="viewcode-block" id="LandCover">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover">[docs]</a>
+<span class="k">class</span> <span class="nc">LandCover</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the computation and analysis of land cover changes, focusing on adjustments in land areas under different scenarios.</span>
+
+<span class="sd">    This class is designed to analyze land cover transitions and distributions within specified geographic areas, </span>
+<span class="sd">    taking into account various scenarios. It leverages data from land cover assignments, catchment analyses, scenario-driven </span>
+<span class="sd">    land distribution calculations to model land cover changes effectively.</span>
+
+<span class="sd">    The `LandCover` class provides functionalities to compute current land use distributions based on calibration year data, </span>
+<span class="sd">    project future land use areas under different scenarios, and analyze the breakdown of spared areas and grassland distributions</span>
+<span class="sd">    based on specific scenario inputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    calibration_year : int</span>
+<span class="sd">        The year used as a baseline for land cover data and analysis.</span>
+<span class="sd">    target_year : int</span>
+<span class="sd">        The future year for which land cover changes are projected.</span>
+<span class="sd">    scenario_inputs_df : pandas.DataFrame</span>
+<span class="sd">        A DataFrame containing inputs for various scenarios, used to drive the scenario-based inputs for land distribution adjustments.</span>
+<span class="sd">    total_grassland : float</span>
+<span class="sd">        The total area of grassland, used in calculations involving grassland distributions.</span>
+<span class="sd">    total_spared_area : float</span>
+<span class="sd">        The total area of land spared from agricultural use, key to scenario-based land distribution analysis.</span>
+<span class="sd">    spared_area_breakdown : pandas.DataFrame</span>
+<span class="sd">        A breakdown of how spared areas are allocated across different land use types.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_manager_class : DataManager</span>
+<span class="sd">        Manages land cover data and provides access to calibration and target year data.</span>
+<span class="sd">    data_loader_class : Loader</span>
+<span class="sd">        Loads required data resources, including environmental and land use data.</span>
+<span class="sd">    catchment_class : CatchmentLandCover</span>
+<span class="sd">        Provides functionalities for accessing and analyzing catchment land cover data.</span>
+<span class="sd">    sc_fetch_class : ScenarioDataFetcher</span>
+<span class="sd">        Fetches scenario-specific information from the input data.</span>
+<span class="sd">    land_dist_class : LandDistribution</span>
+<span class="sd">        Manages the distribution and transition of land areas across different land use types.</span>
+<span class="sd">    catchment_name : str</span>
+<span class="sd">        The name of the catchment area, derived from scenario data, used in land cover calculations.</span>
+<span class="sd">    scenario_list : list</span>
+<span class="sd">        A list of scenarios derived from the scenario inputs, driving the land cover analysis.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    _fill_current_area_row(farm_id, year, land_use) -&gt; dict</span>
+<span class="sd">        Fills a row of data representing the current state of a specific land use area.</span>
+<span class="sd">    compute_current_area() -&gt; pandas.DataFrame</span>
+<span class="sd">        Computes the current distribution of land use areas based on calibration year data.</span>
+<span class="sd">    combined_future_land_use_area() -&gt; pandas.DataFrame</span>
+<span class="sd">        Combines current and future land use areas under different scenarios into a single DataFrame.</span>
+<span class="sd">    spared_area_breakdown(scenario) -&gt; dict</span>
+<span class="sd">        Analyzes the breakdown of spared areas under a specific scenario.</span>
+<span class="sd">    grassland_breakdown(scenario) -&gt; dict</span>
+<span class="sd">        Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.</span>
+<span class="sd">    _available_organic_area(scenario) -&gt; dict</span>
+<span class="sd">        Computes the available area for organic soil-based land uses under a given scenario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">calibration_year</span><span class="p">,</span>
+        <span class="n">target_year</span><span class="p">,</span>
+        <span class="n">scenario_inputs_df</span><span class="p">,</span>
+        <span class="n">total_grassland</span><span class="p">,</span>
+        <span class="n">total_spared_area</span><span class="p">,</span>
+        <span class="n">spared_area_breakdown</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">(</span>
+            <span class="n">calibration_year</span><span class="p">,</span> <span class="n">target_year</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_loader_class</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span> <span class="o">=</span> <span class="n">CatchmentLandCover</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span> <span class="o">=</span> <span class="n">ScenarioDataFetcher</span><span class="p">(</span><span class="n">scenario_inputs_df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span> <span class="o">=</span> <span class="n">LandDistribution</span><span class="p">(</span><span class="n">scenario_inputs_df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span> <span class="o">=</span> <span class="n">total_grassland</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span> <span class="o">=</span> <span class="n">total_spared_area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area_breakdown</span> <span class="o">=</span> <span class="n">spared_area_breakdown</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="o">.</span><span class="n">get_catchment_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenario_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="o">.</span><span class="n">get_scenario_list</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="LandCover._fill_current_area_row">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._fill_current_area_row">[docs]</a>
+    <span class="k">def</span> <span class="nf">_fill_current_area_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">farm_id</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">land_use</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fills a row of data representing the current state of a specific land use area.</span>
+<span class="sd">        </span>
+<span class="sd">        :param farm_id: Identifier for the farm or land area.</span>
+<span class="sd">        :type farm_id: int</span>
+<span class="sd">        :param year: The year for which the data row is relevant.</span>
+<span class="sd">        :type year: int</span>
+<span class="sd">        :param land_use: The type of land use being considered.</span>
+<span class="sd">        :type land_use: str</span>
+<span class="sd">        :return: A dictionary containing filled data for the current area row.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;grassland&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;farm_id&quot;</span><span class="p">:</span> <span class="n">farm_id</span><span class="p">,</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+                <span class="s2">&quot;land_use&quot;</span><span class="p">:</span> <span class="n">land_use</span><span class="p">,</span>
+                <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
+                <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
+                <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
+                <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
+                <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
+            <span class="p">}</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;farm_id&quot;</span><span class="p">:</span> <span class="n">farm_id</span><span class="p">,</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+                <span class="s2">&quot;land_use&quot;</span><span class="p">:</span> <span class="n">land_use</span><span class="p">,</span>
+                <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
+                <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
+                <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
+                <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
+                <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
+            <span class="p">}</span></div>
+
+        
+
+<div class="viewcode-block" id="LandCover.compute_current_area">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.compute_current_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_current_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the distribution of current land use areas based on the calibration year and available data.</span>
+<span class="sd">        </span>
+<span class="sd">        :return pd.DataFrame: A DataFrame containing the computed current land use areas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">calibration_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">calibration_year</span>
+        <span class="n">landuses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">landuse</span> <span class="ow">in</span> <span class="n">landuses</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;settlement&quot;</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_current_area_row</span><span class="p">(</span><span class="o">-</span><span class="n">calibration_year</span><span class="p">,</span> <span class="n">calibration_year</span><span class="p">,</span> <span class="n">landuse</span><span class="p">)</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="LandCover.combined_future_land_use_area">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.combined_future_land_use_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">combined_future_land_use_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Combines the calculated current land use areas with projected future areas under different scenarios.</span>
+<span class="sd">        </span>
+<span class="sd">        :return pd.DataFrame: A DataFrame containing both current and projected future land use areas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">target_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">target_year</span>
+
+        <span class="n">scenarios</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_list</span>
+
+        <span class="n">land_use_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span>
+
+        <span class="n">current_area_pd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_current_area</span><span class="p">()</span>
+
+        <span class="n">future_area_pd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">current_area_pd</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">scenarios</span><span class="p">:</span>
+            <span class="n">land_use_data_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spared_area_breakdown</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="n">grassland_data_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grassland_breakdown</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">landuse</span> <span class="ow">in</span> <span class="n">land_use_columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">landuse</span> <span class="o">==</span> <span class="s2">&quot;grassland&quot;</span><span class="p">:</span>
+               
+                    <span class="n">row</span> <span class="o">=</span><span class="p">{</span>
+                            <span class="s2">&quot;farm_id&quot;</span><span class="p">:</span> <span class="n">sc</span><span class="p">,</span>
+                            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">target_year</span><span class="p">,</span>
+                            <span class="s2">&quot;land_use&quot;</span><span class="p">:</span> <span class="n">landuse</span><span class="p">,</span>
+                            <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span><span class="s2">&quot;area_ha&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_organic&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_organic_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_organic&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_peat_extraction&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">],</span>
+                        <span class="p">}</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+
+                <span class="k">elif</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;settlement&quot;</span><span class="p">:</span>
+
+                    <span class="n">row</span> <span class="o">=</span><span class="p">{</span>
+                            <span class="s2">&quot;farm_id&quot;</span><span class="p">:</span> <span class="n">sc</span><span class="p">,</span>
+                            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">target_year</span><span class="p">,</span>
+                            <span class="s2">&quot;land_use&quot;</span><span class="p">:</span> <span class="n">landuse</span><span class="p">,</span>
+                            <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span><span class="s2">&quot;area_ha&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_organic&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_organic_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_organic&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_peat_extraction&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">],</span>
+                        <span class="p">}</span>
+
+                    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        
+        <span class="n">future_area_pd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">combined_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">current_area_pd</span><span class="p">,</span> <span class="n">future_area_pd</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">combined_df</span></div>
+
+    
+
+<div class="viewcode-block" id="LandCover.spared_area_breakdown">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.spared_area_breakdown">[docs]</a>
+    <span class="k">def</span> <span class="nf">spared_area_breakdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyzes the breakdown of spared areas under a specific scenario, adjusting land use distributions accordingly.</span>
+
+<span class="sd">        This method calculates how spared areas should be distributed among various land use types based on scenario-specific</span>
+<span class="sd">        proportions and environmental considerations, such as the availability of organic soil.</span>
+
+<span class="sd">        :param scenario (int): The scenario identifier for which the spared area breakdown is calculated.</span>
+<span class="sd">        :type scenario: int</span>
+<span class="sd">        :return: A dictionary containing the breakdown of spared areas by land use type, with detailed proportions</span>
+<span class="sd">                and areas for each type.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">spared_land_use_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">spared_area_dict</span>
+
+        <span class="n">max_organic_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_organic_area</span><span class="p">(</span><span class="n">scenario</span><span class="p">)[</span><span class="s2">&quot;available_organic&quot;</span><span class="p">]</span>
+        <span class="n">initial_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+        <span class="n">adjusted_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="n">spared_land_use_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+            <span class="n">result_dict</span><span class="p">[</span><span class="n">land_use</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">method_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;get_</span><span class="si">{</span><span class="n">land_use</span><span class="si">}</span><span class="s2">_proportion&quot;</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+                <span class="n">land_use_proportion</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+                <span class="n">target_wetland</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">land_use_proportion</span>
+
+                <span class="n">new_wetland_area</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_organic_available</span><span class="p">,</span><span class="n">target_wetland</span><span class="p">)</span>
+
+                <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">land_distribution</span><span class="p">(</span>
+                    <span class="n">land_use</span><span class="p">,</span> <span class="n">new_wetland_area</span>
+                <span class="p">)</span>
+
+                <span class="n">result_dict</span><span class="p">[</span><span class="n">land_use</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
+
+                <span class="n">adjusted_spared_area</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">new_wetland_area</span>
+
+            <span class="k">elif</span> <span class="n">land_use</span> <span class="o">!=</span> <span class="s2">&quot;farmable_condition&quot;</span><span class="p">:</span>
+                <span class="n">land_use_proportion</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+
+                <span class="n">target_area</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">land_use_proportion</span>
+                
+                <span class="n">new_land_use_area</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">adjusted_spared_area</span><span class="p">,</span><span class="n">target_area</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">new_land_use_area</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                   <span class="n">new_land_use_area</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">land_distribution</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">new_land_use_area</span><span class="p">)</span>
+
+                <span class="n">result_dict</span><span class="p">[</span><span class="n">land_use</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
+
+                <span class="n">adjusted_spared_area</span> <span class="o">-=</span> <span class="n">new_land_use_area</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">land_distribution</span><span class="p">(</span>
+                    <span class="n">land_use</span><span class="p">,</span> <span class="n">adjusted_spared_area</span>
+                <span class="p">)</span>
+
+                <span class="n">result_dict</span><span class="p">[</span><span class="n">land_use</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
+
+        <span class="k">return</span> <span class="n">result_dict</span>    </div>
+
+
+
+<div class="viewcode-block" id="LandCover.grassland_breakdown">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.grassland_breakdown">[docs]</a>
+    <span class="k">def</span> <span class="nf">grassland_breakdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.</span>
+
+<span class="sd">        This method computes how changes in land use, particularly the conversion of grassland to other types or</span>
+<span class="sd">        its retention, affect the overall grassland area. It considers organic and mineral soil proportions and</span>
+<span class="sd">        adjusts them based on scenario inputs.</span>
+
+<span class="sd">        :param scenario: The scenario identifier for which the grassland distribution is calculated.</span>
+<span class="sd">        :type scenario: int</span>
+<span class="sd">        :return: A dictionary containing updated grassland distribution details, including areas and proportions</span>
+<span class="sd">                of soil types.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">initial_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+
+        <span class="n">max_organic_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_organic_area</span><span class="p">(</span><span class="n">scenario</span><span class="p">)[</span><span class="s2">&quot;available_organic&quot;</span><span class="p">]</span>
+
+        <span class="n">sc_wetland_proportion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="o">.</span><span class="n">get_wetland_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">target_wetland</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">sc_wetland_proportion</span>
+
+        <span class="n">new_wetland_area_achieved</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_organic_available</span><span class="p">,</span><span class="n">target_wetland</span><span class="p">)</span>
+
+        <span class="n">spared_mineral_achieved</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">new_wetland_area_achieved</span>
+
+        <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">grassland_distriubtion</span><span class="p">(</span>
+            <span class="n">spared_mineral_achieved</span><span class="p">,</span> <span class="n">new_wetland_area_achieved</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span>
+        <span class="p">)</span>
+
+        <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;grassland&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
+
+        <span class="k">return</span> <span class="n">result_dict</span></div>
+
+    
+
+<div class="viewcode-block" id="LandCover._available_organic_area">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index.html#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._available_organic_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">_available_organic_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the available area for organic soil under a given scenario.</span>
+
+<span class="sd">        This internal method calculates the maximum possible area that can be transitioned to organic soil-based</span>
+<span class="sd">        land uses, such as wetlands, based on the current organic and organic-mineral soil areas and scenario-specific</span>
+<span class="sd">        spared area allocations.</span>
+
+<span class="sd">        :param scenario (int): The scenario identifier for which the available organic area is calculated.</span>
+<span class="sd">        :type scenario: int</span>
+<span class="sd">        :return: A dictionary containing the available organic area and available mineral-organic area.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">initial_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+        <span class="n">organic_potential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_area_with_organic_potential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area_breakdown</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+        <span class="n">current_organic_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span>
+        <span class="n">current_mineral_organic_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span>
+
+        <span class="n">max_organic_spared</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">organic_potential</span><span class="p">,</span> <span class="n">current_organic_area</span><span class="p">)</span>
+
+        <span class="n">max_mineral_organic_spared</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">initial_spared_area</span><span class="p">,</span><span class="n">current_mineral_organic_area</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;available_organic&quot;</span><span class="p">:</span><span class="n">max_organic_spared</span><span class="p">,</span> <span class="s2">&quot;available_mineral_organic&quot;</span><span class="p">:</span> <span class="n">max_mineral_organic_spared</span><span class="p">}</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

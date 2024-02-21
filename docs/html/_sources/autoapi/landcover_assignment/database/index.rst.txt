@@ -1,0 +1,27 @@
+:py:mod:`landcover_assignment.database`
+=======================================
+
+.. py:module:: landcover_assignment.database
+
+
+Package Contents
+----------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   landcover_assignment.database.get_local_dir
+
+
+
+.. py:function:: get_local_dir()
+
+   Gets the directory containing this script
+
+   :returns: full path to the the script's directory
+   :rtype: str
+
+

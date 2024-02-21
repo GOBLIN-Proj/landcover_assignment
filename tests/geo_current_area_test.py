@@ -1,5 +1,5 @@
-from geo_landcover_assignment.geo_landcover import LandCover
-from geo_landcover_assignment.catchment_landcover import CatchmentLandCover
+from landcover_assignment.geo_landcover_assignment.geo_landcover import LandCover
+from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
 import pandas as pd
 import os
 

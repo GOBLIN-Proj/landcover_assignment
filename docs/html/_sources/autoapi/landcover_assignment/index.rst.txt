@@ -1,0 +1,31 @@
+:py:mod:`landcover_assignment`
+==============================
+
+.. py:module:: landcover_assignment
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   database/index.rst
+   geo_landcover_assignment/index.rst
+   resource_manager/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   afforestation/index.rst
+   distribution/index.rst
+   landcover/index.rst
+   landcover_data_manager/index.rst
+   national_landcover/index.rst
+   transition_matrix/index.rst
+
+
