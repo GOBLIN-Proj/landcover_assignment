@@ -17,7 +17,6 @@ def main():
     grassland_area = pd.read_csv(os.path.join(path, "total_grassland_area.csv"), index_col=0)
     grassland_area.columns = grassland_area.columns.astype(int)
 
-
     transition = TransitionMatrix(
         baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown
     )
