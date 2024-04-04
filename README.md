@@ -36,13 +36,6 @@
 
 Install from git hub. 
 
-When prompted enter your ```<username>``` and password, which is your ```<access_token>```.
-
-```<access_token>``` is provided by the repo manager.
-
-```<username>``` pass your own github username.
-
-
 ```bash
 pip install "landcover_assignment@git+https://github.com/GOBLIN-Proj/landcover_assignment.git@main" 
 
