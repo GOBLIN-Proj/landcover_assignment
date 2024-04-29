@@ -41,6 +41,12 @@ pip install "landcover_assignment@git+https://github.com/GOBLIN-Proj/landcover_a
 
 ```
 
+Install from PyPI
+
+```bash
+pip install landcover_assignment
+```
+
 ## Usage
 The baseline year represents the scenario baseline. The target year is the end year for each one of the scenarios. 
 
