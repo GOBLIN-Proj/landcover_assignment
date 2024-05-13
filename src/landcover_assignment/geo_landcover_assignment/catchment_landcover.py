@@ -108,28 +108,40 @@ class CatchmentLandCover:
         """
         forest_df = self.api.get_catchment_forest_data_by_catchment_name(catchment)
 
+        # Check if the DataFrame is empty
+        if forest_df.empty:
+            summary_data = {
+                'area_ha': 0,
+                'share_mineral': 0,
+                'share_organic': 0,
+                'share_organic_mineral': 0,
+                'share_burnt': 0  # Assuming a default value; replace with an appropriate call if needed
+            }
+            return pd.DataFrame([summary_data])
+
         # Filter for specific types of forests and then group
         forest_types = ['Broadleaved Forest and Woodland', 'Coniferous Forest', 'Mixed Forest']
         filtered_df = forest_df[forest_df['cover_type'].isin(forest_types)]
         grouped_df = filtered_df.groupby(['cover_type', 'soil_type']).sum()
 
-        # Calculating totals for different soil types
+        # Safely get totals for different soil types, using 0 if the category is missing
         total_area = grouped_df['total_hectares'].sum()
-        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() + \
-                        grouped_df.xs('misc', level='soil_type')['total_hectares'].sum()
-        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum()
-        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum()
+        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() if 'mineral' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral += grouped_df.xs('misc', level='soil_type')['total_hectares'].sum() if 'misc' in grouped_df.index.get_level_values('soil_type') else 0
+        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum() if 'peat' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum() if 'peaty_mineral' in grouped_df.index.get_level_values('soil_type') else 0
 
-        # Creating a summary DataFrame
+        # Calculating shares, ensuring no division by zero
         summary_data = {
             'area_ha': total_area,
-            'share_mineral': total_mineral / total_area,
-            'share_organic': total_peat / total_area,
-            'share_organic_mineral': total_mineral_peat / total_area,
+            'share_mineral': total_mineral / total_area if total_area != 0 else 0,
+            'share_organic': total_peat / total_area if total_area != 0 else 0,
+            'share_organic_mineral': total_mineral_peat / total_area if total_area != 0 else 0,
             'share_burnt': self.get_national_burnt_average('forest')
         }
 
         return pd.DataFrame([summary_data])
+
     
 
     def get_catchment_peat_area(self, catchment):
@@ -143,26 +155,38 @@ class CatchmentLandCover:
         """
         peat_df = self.api.get_catchment_peat_data_by_catchment_name(catchment)
 
-        # Filter
+        # Check if the DataFrame is empty
+        if peat_df.empty:
+            summary_data = {
+                'area_ha': 0,
+                'share_mineral': 0,
+                'share_organic': 0,
+                'share_organic_mineral': 0,
+                'share_burnt': 0  # Assuming a default value; replace with an appropriate call if needed
+            }
+            return pd.DataFrame([summary_data])
+        
+        # Filter and group by cover and soil types
         grouped_df = peat_df.groupby(['cover_type', 'soil_type']).sum()
 
-        # Calculating totals for different soil types
+        # Safely get totals for different soil types, using 0 if the category is missing
         total_area = grouped_df['total_hectares'].sum()
-        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() + \
-                        grouped_df.xs('misc', level='soil_type')['total_hectares'].sum()
-        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum()
-        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum()
+        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() if 'mineral' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral += grouped_df.xs('misc', level='soil_type')['total_hectares'].sum() if 'misc' in grouped_df.index.get_level_values('soil_type') else 0
+        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum() if 'peat' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum() if 'peaty_mineral' in grouped_df.index.get_level_values('soil_type') else 0
 
-        # Creating a summary DataFrame
+        # Calculating shares, ensuring no division by zero
         summary_data = {
             'area_ha': total_area,
-            'share_mineral': total_mineral / total_area,
-            'share_organic': total_peat / total_area,
-            'share_organic_mineral': total_mineral_peat / total_area,
+            'share_mineral': total_mineral / total_area if total_area != 0 else 0,
+            'share_organic': total_peat / total_area if total_area != 0 else 0,
+            'share_organic_mineral': total_mineral_peat / total_area if total_area != 0 else 0,
             'share_burnt': self.get_national_burnt_average('wetland')
         }
 
         return pd.DataFrame([summary_data])
+
     
 
     def get_catchment_crop_area(self, catchment):
@@ -176,26 +200,38 @@ class CatchmentLandCover:
         """
         cultivated_df = self.api.get_catchment_cultivated_data_by_catchment_name(catchment)
 
-        # Filter    
+        # Check if the DataFrame is empty
+        if cultivated_df.empty:
+            summary_data = {
+                'area_ha': 0,
+                'share_mineral': 0,
+                'share_organic': 0,
+                'share_organic_mineral': 0,
+                'share_burnt': 0  # Assuming a default value; replace with an appropriate call if needed
+            }
+            return pd.DataFrame([summary_data])
+        
+        # Filter and group by cover and soil types
         grouped_df = cultivated_df.groupby(['cover_type', 'soil_type']).sum()
 
-        # Calculating totals for different soil types
+        # Safely get totals for different soil types, using 0 if the category is missing
         total_area = grouped_df['total_hectares'].sum()
-        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() + \
-                        grouped_df.xs('misc', level='soil_type')['total_hectares'].sum()
-        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum()
-        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum()
+        total_mineral = grouped_df.xs('mineral', level='soil_type')['total_hectares'].sum() if 'mineral' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral += grouped_df.xs('misc', level='soil_type')['total_hectares'].sum() if 'misc' in grouped_df.index.get_level_values('soil_type') else 0
+        total_peat = grouped_df.xs('peat', level='soil_type')['total_hectares'].sum() if 'peat' in grouped_df.index.get_level_values('soil_type') else 0
+        total_mineral_peat = grouped_df.xs('peaty_mineral', level='soil_type')['total_hectares'].sum() if 'peaty_mineral' in grouped_df.index.get_level_values('soil_type') else 0
 
-        # Creating a summary DataFrame
+        # Calculating shares, ensuring no division by zero
         summary_data = {
             'area_ha': total_area,
-            'share_mineral': total_mineral / total_area,
-            'share_organic': total_peat / total_area,
-            'share_organic_mineral': total_mineral_peat / total_area,
-            'share_burnt': self.get_national_burnt_average('cropland') 
+            'share_mineral': total_mineral / total_area if total_area != 0 else 0,
+            'share_organic': total_peat / total_area if total_area != 0 else 0,
+            'share_organic_mineral': total_mineral_peat / total_area if total_area != 0 else 0,
+            'share_burnt': self.get_national_burnt_average('cropland')
         }
 
         return pd.DataFrame([summary_data])
+
     
 
     def get_catchment_grassland_area(self, catchment, total_grassland_area):
@@ -245,9 +281,9 @@ class CatchmentLandCover:
         # Creating a summary DataFrame
         summary_data = {
             'area_ha': derived_grassland_area,
-            'share_mineral': total_mineral / total_area,
-            'share_organic': total_peat / total_area,
-            'share_organic_mineral': total_mineral_peat / total_area,
+            'share_mineral': total_mineral / total_area if total_area != 0 else 0,
+            'share_organic': total_peat / total_area if total_area != 0 else 0,
+            'share_organic_mineral': total_mineral_peat / total_area if total_area != 0 else 0,
             'share_burnt': self.get_national_burnt_average('grassland')
         }
 
