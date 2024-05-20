@@ -120,7 +120,7 @@ class CatchmentLandCover:
             return pd.DataFrame([summary_data])
 
         # Filter for specific types of forests and then group
-        forest_types = ['Broadleaved Forest and Woodland', 'Coniferous Forest', 'Mixed Forest']
+        forest_types = ['Broadleaved Forest and Woodland', 'Coniferous Forest', 'Mixed Forest', 'Transitional Forest']
         filtered_df = forest_df[forest_df['cover_type'].isin(forest_types)]
         grouped_df = filtered_df.groupby(['cover_type', 'soil_type']).sum()
 
