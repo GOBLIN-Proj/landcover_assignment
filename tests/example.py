@@ -35,6 +35,7 @@ def main():
     transition_matrix = transition.create_transition_matrix()
     print(transition_matrix)
     print("#"*50)
+    transition_matrix.to_csv(os.path.join(path,"transition_matrix_results.csv"))
 
     #create afforestation 
     affor = Afforestation(baseline, target_year, scenario_dataframe, transition_matrix)

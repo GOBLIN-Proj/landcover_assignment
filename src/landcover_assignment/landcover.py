@@ -158,10 +158,17 @@ class LandCover:
                 "area_ha": self.national_class.get_landuse_area(land_use, year, self.total_grassland),
                 "share_mineral": self.national_class.get_share_mineral(land_use, year, self.total_grassland),
                 "share_organic": self.national_class.get_share_organic(land_use, year, self.total_grassland),
+                "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, year, self.total_grassland),
+                "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, year, self.total_grassland),
                 "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, year, self.total_grassland),
                 "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, year, self.total_grassland),
                 "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, year, self.total_grassland),
-                "share_peat_extraction": self.national_class.get_share_peat_extraction(land_use, year, self.total_grassland),
+                "share_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
+                "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, year),
+                "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year),
+                "share_rewetted_domestic_peat_extraction": self.national_class.get_national_rewetted_domestic_peat(land_use, year),
+                "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, year),
+                "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, year),
                 "share_burnt": self.national_class.get_share_burnt(land_use, year, self.total_grassland),
             }
         
@@ -174,10 +181,17 @@ class LandCover:
                 "area_ha": self.national_class.get_landuse_area(land_use, year),
                 "share_mineral": self.national_class.get_share_mineral(land_use, year),
                 "share_organic": self.national_class.get_share_organic(land_use, year),
+                "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, year),
+                "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, year),
                 "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, year),
                 "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, year),
                 "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, year),
-                "share_peat_extraction": self.national_class.get_share_peat_extraction(land_use, year),
+                "share_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
+                "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, year),
+                "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year),
+                "share_rewetted_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
+                "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, year),
+                "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, year),
                 "share_burnt": self.national_class.get_share_burnt(land_use, year),
             } 
         
@@ -203,10 +217,17 @@ class LandCover:
             "area_ha": self.national_class.get_landuse_area(land_use, refyear),
             "share_mineral": self.national_class.get_share_mineral(land_use, refyear),
             "share_organic": self.national_class.get_share_organic(land_use, refyear),
+            "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, refyear),
+            "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, refyear),
             "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, refyear),
             "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, refyear),
             "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, refyear),
-            "share_peat_extraction": self.national_class.get_share_peat_extraction(land_use, refyear),
+            "share_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, refyear),
+            "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, refyear),
+            "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, refyear),
+            "share_rewetted_domestic_peat_extraction": self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, refyear),
+            "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, refyear),
+            "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, refyear),
             "share_burnt": self.national_class.get_share_burnt(land_use, refyear),
         }  
         
@@ -267,6 +288,10 @@ class LandCover:
                             "share_organic": grassland_data_future[landuse][
                                 "share_organic"
                             ],
+                            "share_rich_organic": grassland_data_future[landuse]["share_rich_organic"],
+
+                            "share_poor_organic": grassland_data_future[landuse]["share_poor_organic"],
+
                             "share_organic_mineral": grassland_data_future[landuse][
                                 "share_organic_mineral"
                             ],
@@ -276,9 +301,20 @@ class LandCover:
                             "share_rewetted_in_mineral": grassland_data_future[landuse][
                                 "share_rewetted_in_mineral"
                             ],
-                            "share_peat_extraction": grassland_data_future[landuse][
-                                "share_peat_extraction"
+                            "share_domestic_peat_extraction": grassland_data_future[landuse][
+                                "share_domestic_peat_extraction"
                             ],
+                            "share_industrial_peat_extraction": grassland_data_future[landuse][
+                                "share_industrial_peat_extraction"
+                            ],
+                            "share_rewetted_industrial_peat_extraction": grassland_data_future[landuse][
+                                "share_rewetted_industrial_peat_extraction"
+                            ],
+                            "share_rewetted_domestic_peat_extraction": grassland_data_future[landuse][
+                                "share_rewetted_domestic_peat_extraction"
+                            ],
+                            "share_near_natural_wetland": grassland_data_future[landuse]["share_near_natural_wetland"],
+                            "share_unmanaged_wetland": grassland_data_future[landuse]["share_unmanaged_wetland"],
                             "share_burnt": grassland_data_future[landuse]["share_burnt"],
                         }
                     data.append(row)
@@ -302,6 +338,10 @@ class LandCover:
                             "share_organic": land_use_data_future[landuse][
                                 "share_organic"
                             ],
+                            "share_rich_organic": land_use_data_future[landuse]["share_rich_organic"],
+
+                            "share_poor_organic": land_use_data_future[landuse]["share_poor_organic"],
+
                             "share_organic_mineral": land_use_data_future[landuse][
                                 "share_organic_mineral"
                             ],
@@ -311,9 +351,20 @@ class LandCover:
                             "share_rewetted_in_mineral": land_use_data_future[landuse][
                                 "share_rewetted_in_mineral"
                             ],
-                            "share_peat_extraction": land_use_data_future[landuse][
-                                "share_peat_extraction"
+                            "share_domestic_peat_extraction": land_use_data_future[landuse][
+                                "share_domestic_peat_extraction"
                             ],
+                            "share_industrial_peat_extraction": land_use_data_future[landuse][
+                                "share_industrial_peat_extraction"
+                            ],
+                            "share_rewetted_industrial_peat_extraction": land_use_data_future[landuse][
+                                "share_rewetted_industrial_peat_extraction"
+                            ],
+                            "share_rewetted_domestic_peat_extraction": land_use_data_future[landuse][
+                                "share_rewetted_domestic_peat_extraction"
+                            ],
+                            "share_near_natural_wetland": land_use_data_future[landuse]["share_near_natural_wetland"],
+                            "share_unmanaged_wetland": land_use_data_future[landuse]["share_unmanaged_wetland"],
                             "share_burnt": land_use_data_future[landuse]["share_burnt"],
                         }
 

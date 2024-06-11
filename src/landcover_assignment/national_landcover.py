@@ -71,11 +71,19 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('forest', year),
             'share_organic': self.get_national_organic('forest', year),
             'share_organic_mineral': self.get_national_organic_mineral('forest', year),
-            'share_peat_extraction': self.get_national_peat_extraction('forest', year),
+            'share_rich_organic': self.get_national_rich_orgainc_grassland('forest', year),
+            'share_poor_organic': self.get_national_poor_organic_grassland('forest', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('forest', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('forest', year),
+            'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('forest', year),
+            'share_industrial_peat_extraction': self.get_national_industrial_peat_extraction('forest', year),
+            'share_rewetted_domestic_peat_extraction': self.get_national_rewetted_domestic_peat('forest', year),
+            'share_rewetted_industrial_peat_extraction': self.get_national_rewetted_industrial_peat('forest', year),
+            'share_near_natural_wetland': self.get_national_near_natural_wetland('forest', year),
+            'share_unmanaged_wetland': self.get_national_unmanaged_wetland('forest', year),
             'share_burnt': self.get_national_burn('forest', year)
         }
+
 
         return pd.DataFrame([summary_data])
     
@@ -95,9 +103,16 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('wetland', year),
             'share_organic': self.get_national_organic('wetland', year),
             'share_organic_mineral': self.get_national_organic_mineral('wetland', year),
-            'share_peat_extraction': self.get_national_peat_extraction('wetland', year),
+            'share_rich_organic': self.get_national_rich_orgainc_grassland('wetland', year),
+            'share_poor_organic': self.get_national_poor_organic_grassland('wetland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('wetland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('wetland', year),
+            'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('wetland', year),
+            'share_industrial_peat_extraction': self.get_national_industrial_peat_extraction('wetland', year),
+            'share_rewetted_domestic_peat_extraction': self.get_national_rewetted_domestic_peat('wetland', year),
+            'share_rewetted_industrial_peat_extraction': self.get_national_rewetted_industrial_peat('wetland', year),
+            'share_near_natural_wetland': self.get_national_near_natural_wetland('wetland', year),
+            'share_unmanaged_wetland': self.get_national_unmanaged_wetland('wetland', year),
             'share_burnt': self.get_national_burn('wetland', year)
         }
 
@@ -119,11 +134,19 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('cropland', year),
             'share_organic': self.get_national_organic('cropland', year),
             'share_organic_mineral': self.get_national_organic_mineral('cropland', year),
+            'share_rich_organic': self.get_national_rich_orgainc_grassland('cropland', year),
+            'share_poor_organic': self.get_national_poor_organic_grassland('cropland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('cropland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('cropland', year),
-            'share_peat_extraction': self.get_national_peat_extraction('cropland', year),
+            'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('cropland', year),
+            'share_industrial_peat_extraction': self.get_national_industrial_peat_extraction('cropland', year),
+            'share_rewetted_domestic_peat_extraction': self.get_national_rewetted_domestic_peat('cropland', year),
+            'share_rewetted_industrial_peat_extraction': self.get_national_rewetted_industrial_peat('cropland', year),
+            'share_near_natural_wetland': self.get_national_near_natural_wetland('cropland', year),
+            'share_unmanaged_wetland': self.get_national_unmanaged_wetland('cropland', year),
             'share_burnt': self.get_national_burn('cropland', year)
         }
+
 
         return pd.DataFrame([summary_data])
     
@@ -140,17 +163,26 @@ class NationalLandCover:
         :return: A DataFrame containing summary data for grassland use.
         :rtype: pandas.DataFrame
         """
+        
         derived_grassland_area = self.get_derived_national_grassland_area(total_grassland_area)
 
+     
         # Creating a summary DataFrame
         summary_data = {
             'area_ha': derived_grassland_area,
             'share_mineral': self.get_national_mineral('grassland', year),
             'share_organic': self.get_national_organic('grassland', year),
             'share_organic_mineral': self.get_national_organic_mineral('grassland', year),
+            'share_rich_organic': self.get_national_rich_orgainc_grassland('grassland', year),
+            'share_poor_organic': self.get_national_poor_organic_grassland('grassland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('grassland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('grassland', year),
-            'share_peat_extraction': self.get_national_peat_extraction('grassland', year),
+            'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('grassland', year),
+            'share_industrial_peat_extraction': self.get_national_industrial_peat_extraction('grassland', year),
+            'share_rewetted_domestic_peat_extraction': self.get_national_rewetted_domestic_peat('grassland', year),
+            'share_rewetted_industrial_peat_extraction': self.get_national_rewetted_industrial_peat('grassland', year),
+            'share_near_natural_wetland': self.get_national_near_natural_wetland('grassland', year),
+            'share_unmanaged_wetland': self.get_national_unmanaged_wetland('grassland', year),
             'share_burnt': self.get_national_burn('grassland', year)
         }
 
@@ -172,11 +204,19 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('settlement', year),
             'share_organic': self.get_national_organic('settlement', year),
             'share_organic_mineral': self.get_national_organic_mineral('settlement', year),
+            'share_rich_organic': self.get_national_rich_orgainc_grassland('settlement', year),
+            'share_poor_organic': self.get_national_poor_organic_grassland('settlement', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('settlement', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('settlement', year),
-            'share_peat_extraction': self.get_national_peat_extraction('settlement', year),
+            'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('settlement', year),
+            'share_industrial_peat_extraction': self.get_national_industrial_peat_extraction('settlement', year),
+            'share_rewetted_domestic_peat_extraction': self.get_national_rewetted_domestic_peat('settlement', year),
+            'share_rewetted_industrial_peat_extraction': self.get_national_rewetted_industrial_peat('settlement', year),
+            'share_near_natural_wetland': self.get_national_near_natural_wetland('settlement', year),
+            'share_unmanaged_wetland': self.get_national_unmanaged_wetland('settlement', year),
             'share_burnt': self.get_national_burn('settlement', year)
         }
+
 
         return pd.DataFrame([summary_data])
     
@@ -296,6 +336,63 @@ class NationalLandCover:
         else:
             raise ValueError(f"'share_organic_mineral' column not found in the result for land use: {landuse}")
         
+    def get_share_rich_organic_grassland(self, landuse, year, grassland_area=None):
+        """
+        Retrieves the share of rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share rich organic for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_rich_organic' column is not found in the result.
+        """
+        if landuse != 'grassland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        
+        if grassland_area is None:
+            raise ValueError(f"Grassland area must be provided for land use: {landuse}")
+        else:
+            result_df = self.methods[landuse](year, grassland_area)
+       
+
+        if 'share_rich_organic' in result_df.columns:
+            return result_df['share_rich_organic'].iloc[0]
+        else:
+            raise ValueError(f"'share_rich_organic' column not found in the result for land use: {landuse}")
+        
+
+    def get_share_poor_organic_grassland(self, landuse, year, grassland_area=None):
+        """
+        Retrieves the share of poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share poor organic for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_poor_organic' column is not found in the result.
+        """
+        if landuse != 'grassland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        
+        if grassland_area is None:
+            raise ValueError(f"Grassland area must be provided for land use: {landuse}")
+        else:
+            result_df = self.methods[landuse](year, grassland_area)
+       
+
+        if 'share_poor_organic' in result_df.columns:
+            return result_df['share_poor_organic'].iloc[0]
+        else:
+            raise ValueError(f"'share_poor_organic' column not found in the result for land use: {landuse}")
+        
 
     def get_share_rewetted_in_organic(self, landuse, year, grassland_area=None):
         """
@@ -354,7 +451,7 @@ class NationalLandCover:
             raise ValueError(f"'share_rewetted_in_mineral' column not found in the result for land use: {landuse}")
 
 
-    def get_share_peat_extraction(self, landuse, year, grassland_area=None):
+    def get_share_domestic_peat_extraction(self, landuse, year):
         """
         Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
 
@@ -363,26 +460,148 @@ class NationalLandCover:
         :param grassland_area: An optional parameter (float), relevant only for grassland land use.
         :return: The share peat extraction for the specified land use type.
         :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_peat_extraction' column is not found in the result.
+        :raises ValueError: If the land use type is unknown or if 'share_domestic_peat_extraction' column is not found in the result.
         """
-        if landuse == 'farmable_condition':
+
+        if landuse != 'wetland':
             return 0.0
 
         if landuse not in self.methods:
             raise ValueError(f"Unknown land use type: {landuse}")
-        
-        if landuse == 'grassland':
-            result_df = self.methods[landuse](year, grassland_area)
+    
         else:
             result_df = self.methods[landuse](year)
 
 
-        if 'share_peat_extraction' in result_df.columns:
-            return result_df['share_peat_extraction'].iloc[0]
+        if 'share_domestic_peat_extraction' in result_df.columns:
+            return result_df['share_domestic_peat_extraction'].iloc[0]
         else:
-            raise ValueError(f"'share_peat_extraction' column not found in the result for land use: {landuse}")
+            raise ValueError(f"'share_domestic_peat_extraction' column not found in the result for land use: {landuse}")
         
 
+    def get_share_industrial_peat_extraction(self, landuse, year):
+        """
+        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share peat extraction for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_industrial_peat_extraction' column is not found in the result.
+        """
+        if landuse != 'wetland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        else:
+            result_df = self.methods[landuse](year)
+
+
+        if 'share_industrial_peat_extraction' in result_df.columns:
+            return result_df['share_industrial_peat_extraction'].iloc[0]
+        else:
+            raise ValueError(f"'share_industrial_peat_extraction' column not found in the result for land use: {landuse}")
+        
+
+    def get_share_rewetted_domestic_peat_extraction(self, landuse, year):
+        """
+        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share peat extraction for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_rewetted_domestic_peat_extraction' column is not found in the result.
+        """
+        if landuse != 'wetland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        else:
+            result_df = self.methods[landuse](year)
+
+        if 'share_rewetted_domestic_peat_extraction' in result_df.columns:
+            return result_df['share_rewetted_domestic_peat_extraction'].iloc[0]
+        else:
+            raise ValueError(f"'get_share_rewetted_domestic_peat_extraction' column not found in the result for land use: {landuse}")
+        
+
+    def get_share_rewetted_industrial_peat_extraction(self, landuse, year):
+        """
+        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share peat extraction for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_rewetted_industrial_peat_extraction' column is not found in the result.
+        """
+        if landuse != 'wetland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        else:
+            result_df = self.methods[landuse](year)
+
+
+        if 'share_rewetted_industrial_peat_extraction' in result_df.columns:
+            return result_df['share_rewetted_industrial_peat_extraction'].iloc[0]
+        else:
+            raise ValueError(f"'share_rewetted_industrial_peat_extraction' column not found in the result for land use: {landuse}")
+        
+    def get_share_near_natural_wetland(self, landuse, year):
+        """
+        Retrieves the share of near natural wetland for a specified land use type and year.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :return: The share near natural wetland for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_near_natural_wetland' column is not found in the result.
+        """
+        if landuse != 'wetland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        else:
+            result_df = self.methods[landuse](year)
+
+        if 'share_near_natural_wetland' in result_df.columns:
+            return result_df['share_near_natural_wetland'].iloc[0]
+        else:
+            raise ValueError(f"'share_near_natural_wetland' column not found in the result for land use: {landuse}")
+        
+    def get_share_unmanaged_wetland(self, landuse, year):
+        """
+        Retrieves the share of unmanaged wetland for a specified land use type and year.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :return: The share unmanaged wetland for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_unmanaged_wetland' column is not found in the result.
+        """
+        if landuse != 'wetland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        else:
+            result_df = self.methods[landuse](year)
+
+        if 'share_unmanaged_wetland' in result_df.columns:
+            return result_df['share_unmanaged_wetland'].iloc[0]
+        else:
+            raise ValueError(f"'share_unmanaged_wetland' column not found in the result for land use: {landuse}")
+        
+        
     def get_share_burnt(self, landuse, year, grassland_area=None):   
         """
         Retrieves the share of share burnt for a specified land use type and year. For grassland, the total area must be provided.
@@ -508,9 +727,51 @@ class NationalLandCover:
 
         return organic_mineral
     
-    def get_national_peat_extraction(self, landuse, year):
+
+    def get_national_rich_orgainc_grassland(self, landuse, year):
         """
-        Calculates the share of areas under peat extraction for wetlands in a given year, based on national datasets.
+        Calculates the share of rich organic soil for grassland in a given year, based on national datasets.
+
+        :param landuse: Must be "grassland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        """
+        if landuse != "grassland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        rich_organic = self.national_areas[landuse]()().loc[year,"rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return rich_organic
+    
+    def get_national_poor_organic_grassland(self, landuse, year):
+        """
+        Calculates the share of poor organic soil for grassland in a given year, based on national datasets.
+
+        :param landuse: Must be "grassland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        """
+        if landuse != "grassland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        poor_organic = self.national_areas[landuse]()().loc[year,"poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return poor_organic
+    
+
+    def get_national_domestic_peat_extraction(self, landuse, year):
+        """
+        Calculates the share of areas under domestic peat extraction for wetlands in a given year, based on national datasets.
 
         :param landuse: Must be "wetland" for this calculation.
         :param year: The year for which data is retrieved as an integer.
@@ -524,10 +785,69 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        peat_extraction = (self.national_areas[landuse]()().loc[year,"peat_extraction_kha"].item()+ self.national_areas[landuse]()().loc[year,"drained_extraction_kha"].item())/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        peat_extraction = self.national_areas[landuse]()().loc[year,"domestic_peat_extraction_kha"].item()/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
 
         return peat_extraction
     
+    def get_national_industrial_peat_extraction(self, landuse, year):
+        """
+        Calculates the share of areas under industrial peat extraction for wetlands in a given year, based on national datasets.
+
+        :param landuse: Must be "wetland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        """
+        if landuse != "wetland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        peat_extraction = self.national_areas[landuse]()().loc[year,"industrial_peat_extraction_kha"].item()/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return peat_extraction
+    
+    def get_national_rewetted_domestic_peat(self, landuse, year):
+        """
+        Calculates the share of rewetted areas under domestic peat extraction for wetlands in a given year, based on national datasets.
+
+        :param landuse: Must be "wetland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        """
+        if landuse != "wetland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        rewetted = self.national_areas[landuse]()().loc[year,"rewetted_domestic_peat_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return rewetted
+    
+    def get_national_rewetted_industrial_peat(self, landuse, year):
+        """
+        Calculates the share of rewetted areas under industrial peat extraction for wetlands in a given year, based on national datasets.
+
+        :param landuse: Must be "wetland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        """
+        if landuse != "wetland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        rewetted = self.national_areas[landuse]()().loc[year,"rewetted_industrial_peat_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return rewetted
 
     def get_national_rewetted_in_organic(self, landuse, year):
         """
@@ -569,6 +889,46 @@ class NationalLandCover:
         rewetted_in_mineral = self.national_areas[landuse]()().loc[year,"rewetted_mineral_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
 
         return rewetted_in_mineral
+    
+    def get_national_unmanaged_wetland(self, landuse, year):
+        """
+        Calculates the share of unmanaged wetland areas for a given year, based on national datasets.
+
+        :param landuse: Must be "wetland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of unmanaged wetland areas as a float, returns 0.0 for non-wetland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        """
+        if landuse != "wetland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        unmanaged = self.national_areas[landuse]()().loc[year,"unmanaged_wetland_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return unmanaged
+    
+    def get_national_near_natural_wetland(self, landuse, year):
+        """
+        Calculates the share of near natural wetland areas for a given year, based on national datasets.
+
+        :param landuse: Must be "wetland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of near natural wetland areas as a float, returns 0.0 for non-wetland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        """
+        if landuse != "wetland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        near_natural = self.national_areas[landuse]()().loc[year,"near_natural_wetland_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return near_natural
     
     
     def get_national_burn(self, landuse, year):
