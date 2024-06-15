@@ -2,6 +2,8 @@ import unittest
 import pandas as pd
 from landcover_assignment.transition_matrix import TransitionMatrix
 from landcover_assignment.landcover import LandCover
+from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
+from landcover_assignment.afforestation import Afforestation
 import os
 
 class TestLandCoverSystem(unittest.TestCase):
@@ -25,6 +27,7 @@ class TestLandCoverSystem(unittest.TestCase):
             self.baseline, self.target_year, self.scenario_dataframe, self.grassland_area, self.spared_area, self.spared_area_breakdown
         )
 
+        self.fetcher = ScenarioDataFetcher(self.scenario_dataframe)
 
     def test_transition_matrix_creation(self):
         # Test the creation of the transition matrix
@@ -39,10 +42,26 @@ class TestLandCoverSystem(unittest.TestCase):
 
     def test_spared_area(self):
         matrix = self.transition.create_transition_matrix()
+        landcover_data = self.land.combined_future_land_use_area()
+
+        rewetted_area_base_mask = (landcover_data.year == self.baseline) & (landcover_data.land_use == "grassland")
+
         for farm_id in matrix.index:
             if farm_id > 0:
-                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Grassland"].item()), self.spared_area.loc[self.target_year, farm_id].item())
-        
+                rewetted_area_target_mask = (landcover_data.year == self.target_year) &(landcover_data.farm_id == farm_id) & (landcover_data.land_use == "grassland")
+
+                rewetted_area_target_rich = landcover_data.loc[rewetted_area_target_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_target_mask, "share_rewetted_rich_organic"].item()
+                rewetted_area_target_poor = landcover_data.loc[rewetted_area_target_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_target_mask, "share_rewetted_poor_organic"].item()
+
+                rewetted_area_base_rich = landcover_data.loc[rewetted_area_base_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_base_mask, "share_rewetted_rich_organic"].item()
+                rewetted_area_base_poor = landcover_data.loc[rewetted_area_base_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_base_mask, "share_rewetted_poor_organic"].item()
+
+                total_rewetted_area_target = (rewetted_area_base_rich + rewetted_area_base_poor)-(rewetted_area_target_rich + rewetted_area_target_poor)
+                
+                print(f"total_rewetted_area_target: {total_rewetted_area_target}")
+
+                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Grassland"].item()), (self.spared_area.loc[self.target_year, farm_id].item()+ total_rewetted_area_target))
+            
     def test_land_balance(self):
         landcover_data = self.land.combined_future_land_use_area()
         matrix = self.transition.create_transition_matrix()
@@ -73,5 +92,33 @@ class TestLandCoverSystem(unittest.TestCase):
                 settlement_mask = (landcover_data.farm_id == farm_id) & (landcover_data.land_use == "settlement")
                 self.assertAlmostEqual((landcover_data.loc[settlement_base_mask, "area_ha"].item() + abs(matrix.loc[farm_id, "Grassland_to_Settlement"])),landcover_data.loc[settlement_mask, "area_ha"].item())
 
+
+    def test_proportions(self):
+        matrix = self.transition.create_transition_matrix()
+        landcover_data = self.land.combined_future_land_use_area()  
+
+        for farm_id in matrix.index:
+            if farm_id > 0:
+
+                spared_area = self.spared_area.loc[self.target_year, farm_id].item()
+
+                forest_area = spared_area * self.fetcher.get_forest_proportion(farm_id)
+
+                print(f"forest_area: {forest_area}")
+
+                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Forest"]), forest_area)
+
+
+    def test_afforestation(self):
+        matrix = self.transition.create_transition_matrix()
+        affor = Afforestation(self.baseline, self.target_year, self.scenario_dataframe, matrix)
+        afforestation = affor.gen_cbm_afforestation_dataframe(self.spared_area_breakdown)
+        
+        for sc in afforestation.scenario.unique():
+            if sc > 0:
+                afforestation_mask = (afforestation.scenario == sc)
+                self.assertAlmostEqual(afforestation.loc[afforestation_mask, "total_area"].sum(), abs(matrix.loc[sc, "Grassland_to_Forest"]))
+
+                
 if __name__ == '__main__':
     unittest.main()

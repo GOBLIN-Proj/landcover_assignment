@@ -360,9 +360,9 @@ peat extraction, and rewetted areas for a given year.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rich_organic_grassland">
-<span class="sig-name descname"><span class="pre">get_share_rich_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rich_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rich_organic_grassland" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_drained_rich_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_share_drained_rich_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_drained_rich_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_drained_rich_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -378,15 +378,15 @@ peat extraction, and rewetted areas for a given year.</p>
 <dd class="field-odd"><p>float</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_rich_organic’ column is not found in the result.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_drained_rich_organic’ column is not found in the result.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_poor_organic_grassland">
-<span class="sig-name descname"><span class="pre">get_share_poor_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_poor_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_poor_organic_grassland" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_drained_poor_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_share_drained_poor_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_drained_poor_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_drained_poor_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -403,6 +403,54 @@ peat extraction, and rewetted areas for a given year.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_poor_organic’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_rich_in_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_share_rewetted_rich_in_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_rich_in_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_rich_in_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_rewetted_rich_organic’ column is not found in the result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_poor_in_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_share_rewetted_poor_in_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_poor_in_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_poor_in_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
+<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the land use type is unknown or if ‘share_rewetted_poor_organic’ column is not found in the result.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -734,9 +782,9 @@ peat extraction, and rewetted areas for a given year.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_rich_orgainc_grassland">
-<span class="sig-name descname"><span class="pre">get_national_rich_orgainc_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_rich_orgainc_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_orgainc_grassland" title="Link to this definition"></a></dt>
-<dd><p>Calculates the share of rich organic soil for grassland in a given year, based on national datasets.</p>
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_rich_drained_orgainc_grassland">
+<span class="sig-name descname"><span class="pre">get_national_rich_drained_orgainc_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_rich_drained_orgainc_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_drained_orgainc_grassland" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -757,9 +805,55 @@ peat extraction, and rewetted areas for a given year.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_poor_organic_grassland">
-<span class="sig-name descname"><span class="pre">get_national_poor_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_poor_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_organic_grassland" title="Link to this definition"></a></dt>
-<dd><p>Calculates the share of poor organic soil for grassland in a given year, based on national datasets.</p>
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_poor_drained_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_national_poor_drained_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_poor_drained_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_drained_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown or not “grassland”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_rich_rewetted_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_national_rich_rewetted_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_rich_rewetted_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_rewetted_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown or not “grassland”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_poor_rewetted_organic_grassland">
+<span class="sig-name descname"><span class="pre">get_national_poor_rewetted_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_national_poor_rewetted_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_rewetted_organic_grassland" title="Link to this definition"></a></dt>
+<dd><p>Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

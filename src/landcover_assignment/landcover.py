@@ -158,8 +158,10 @@ class LandCover:
                 "area_ha": self.national_class.get_landuse_area(land_use, year, self.total_grassland),
                 "share_mineral": self.national_class.get_share_mineral(land_use, year, self.total_grassland),
                 "share_organic": self.national_class.get_share_organic(land_use, year, self.total_grassland),
-                "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, year, self.total_grassland),
-                "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, year, self.total_grassland),
+                "share_drained_rich_organic": self.national_class.get_share_drained_rich_organic_grassland(land_use, year, self.total_grassland),
+                "share_drained_poor_organic": self.national_class.get_share_drained_poor_organic_grassland(land_use, year, self.total_grassland),
+                "share_rewetted_rich_organic": self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, year, self.total_grassland),
+                "share_rewetted_poor_organic": self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, year, self.total_grassland),
                 "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, year, self.total_grassland),
                 "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, year, self.total_grassland),
                 "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, year, self.total_grassland),
@@ -181,8 +183,10 @@ class LandCover:
                 "area_ha": self.national_class.get_landuse_area(land_use, year),
                 "share_mineral": self.national_class.get_share_mineral(land_use, year),
                 "share_organic": self.national_class.get_share_organic(land_use, year),
-                "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, year),
-                "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, year),
+                "share_drained_rich_organic": self.national_class.get_share_drained_rich_organic_grassland(land_use, year),
+                "share_drained_poor_organic": self.national_class.get_share_drained_poor_organic_grassland(land_use, year),
+                "share_rewetted_rich_organic": self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, year),
+                "share_rewetted_poor_organic": self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, year),
                 "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, year),
                 "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, year),
                 "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, year),
@@ -217,8 +221,10 @@ class LandCover:
             "area_ha": self.national_class.get_landuse_area(land_use, refyear),
             "share_mineral": self.national_class.get_share_mineral(land_use, refyear),
             "share_organic": self.national_class.get_share_organic(land_use, refyear),
-            "share_rich_organic": self.national_class.get_share_rich_organic_grassland(land_use, refyear),
-            "share_poor_organic": self.national_class.get_share_poor_organic_grassland(land_use, refyear),
+            "share_drained_rich_organic": self.national_class.get_share_drained_rich_organic_grassland(land_use, refyear),
+            "share_drained_poor_organic": self.national_class.get_share_drained_poor_organic_grassland(land_use, refyear),
+            "share_rewetted_rich_organic": self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, refyear),
+            "share_rewetted_poor_organic": self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, refyear),
             "share_organic_mineral": self.national_class.get_share_organic_mineral(land_use, refyear),
             "share_rewetted_in_organic": self.national_class.get_share_rewetted_in_organic(land_use, refyear),
             "share_rewetted_in_mineral": self.national_class.get_share_rewetted_in_mineral(land_use, refyear),
@@ -288,9 +294,13 @@ class LandCover:
                             "share_organic": grassland_data_future[landuse][
                                 "share_organic"
                             ],
-                            "share_rich_organic": grassland_data_future[landuse]["share_rich_organic"],
+                            "share_drained_rich_organic": grassland_data_future[landuse]["share_drained_rich_organic"],
 
-                            "share_poor_organic": grassland_data_future[landuse]["share_poor_organic"],
+                            "share_drained_poor_organic": grassland_data_future[landuse]["share_drained_poor_organic"],
+
+                            "share_rewetted_rich_organic": grassland_data_future[landuse]["share_rewetted_rich_organic"],
+
+                            "share_rewetted_poor_organic": grassland_data_future[landuse]["share_rewetted_poor_organic"],
 
                             "share_organic_mineral": grassland_data_future[landuse][
                                 "share_organic_mineral"
@@ -338,9 +348,13 @@ class LandCover:
                             "share_organic": land_use_data_future[landuse][
                                 "share_organic"
                             ],
-                            "share_rich_organic": land_use_data_future[landuse]["share_rich_organic"],
+                            "share_drained_rich_organic": land_use_data_future[landuse]["share_drained_rich_organic"],
 
-                            "share_poor_organic": land_use_data_future[landuse]["share_poor_organic"],
+                            "share_drained_poor_organic": land_use_data_future[landuse]["share_drained_poor_organic"],
+
+                            "share_rewetted_rich_organic": land_use_data_future[landuse]["share_rewetted_rich_organic"],
+
+                            "share_rewetted_poor_organic": land_use_data_future[landuse]["share_rewetted_poor_organic"],
 
                             "share_organic_mineral": land_use_data_future[landuse][
                                 "share_organic_mineral"
@@ -410,7 +424,10 @@ class LandCover:
                 land_use_proportion = method(scenario)
                 target_wetland = initial_spared_area * land_use_proportion
 
-                new_wetland_area = min(max_organic_available,target_wetland)
+                spared_area_reduction = min(max_organic_available,target_wetland)
+
+                # wetland area does not increase, transfer is between categories in grassland
+                new_wetland_area = 0 
 
                 generated_land_use_data = self.land_dist_class.land_distribution(
                     year, land_use, new_wetland_area
@@ -418,7 +435,7 @@ class LandCover:
 
                 result_dict[land_use] = generated_land_use_data
 
-                adjusted_spared_area = initial_spared_area - new_wetland_area
+                adjusted_spared_area = initial_spared_area - spared_area_reduction
 
             elif land_use != "farmable_condition":
 
@@ -469,20 +486,23 @@ class LandCover:
 
         initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
 
+
         max_organic_available = self._available_organic_area(scenario)["available_organic"]
 
         sc_wetland_proportion = self.sc_fetch_class.get_wetland_proportion(scenario)
-        target_wetland = initial_spared_area * sc_wetland_proportion
+        target_rewet= initial_spared_area * sc_wetland_proportion
 
-        new_wetland_area_achieved = min(max_organic_available,target_wetland)
+        new_rewetted_area_achieved = min(max_organic_available,target_rewet)
 
-        spared_mineral_achieved = initial_spared_area - new_wetland_area_achieved
+
+        spared_mineral_achieved = initial_spared_area - new_rewetted_area_achieved
 
         generated_land_use_data = self.land_dist_class.grassland_distriubtion(
-            calibration_year, spared_mineral_achieved, new_wetland_area_achieved, self.total_grassland
+            calibration_year, spared_mineral_achieved, new_rewetted_area_achieved, self.total_grassland
         )
 
         result_dict["grassland"] = generated_land_use_data
+
 
         return result_dict
     
@@ -505,10 +525,13 @@ class LandCover:
 
         initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
         organic_potential = self.national_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
-        current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_organic("grassland", year, self.total_grassland)
+        drained_rich_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
+        drained_poor_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
+        total_drained = drained_rich_current_organic_area + drained_poor_current_organic_area
+
         current_mineral_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_organic_mineral("grassland", year, self.total_grassland)
 
-        max_organic_spared = min(organic_potential, current_organic_area)
+        max_organic_spared = min(organic_potential, total_drained)
 
         max_mineral_organic_spared = min(initial_spared_area,current_mineral_organic_area)
 

@@ -154,9 +154,22 @@
             <span class="s2">&quot;area_ha&quot;</span><span class="p">,</span>
             <span class="s2">&quot;share_mineral&quot;</span><span class="p">,</span>
             <span class="s2">&quot;share_organic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">,</span>
             <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">,</span>
             <span class="s2">&quot;share_burnt&quot;</span><span class="p">,</span>
         <span class="p">]</span>
+
 
         <span class="bp">self</span><span class="o">.</span><span class="n">landuse_dict</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;forest&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_loader_class</span><span class="o">.</span><span class="n">national_forest_areas</span><span class="p">,</span>
@@ -180,14 +193,23 @@
 <span class="k">class</span> <span class="nc">DistributionManager</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">land_distribution</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
             <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">}</span></div>
 
 </pre></div>

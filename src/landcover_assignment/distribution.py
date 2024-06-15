@@ -107,8 +107,10 @@ class LandDistribution:
 
             land_share_mineral = self.national_class.get_share_mineral(land_use, year)
             land_share_organic = self.national_class.get_share_organic(land_use, year)
-            land_share_rich_organic = self.national_class.get_share_rich_organic_grassland(land_use, year)
-            land_share_poor_organic = self.national_class.get_share_poor_organic_grassland(land_use, year)
+            land_share_drained_rich_organic = self.national_class.get_share_drained_rich_organic_grassland(land_use, year)
+            land_share_drained_poor_organic = self.national_class.get_share_drained_poor_organic_grassland(land_use, year)
+            land_share_rewetted_rich_organic = self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, year)
+            land_share_rewetted_poor_organic = self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, year)
             land_share_organic_mineral = self.national_class.get_share_organic_mineral(land_use, year)
             land_share_domestic_peat_extraction = self.national_class.get_share_domestic_peat_extraction(land_use, year)
             land_share_industrial_peat_extraction = self.national_class.get_share_industrial_peat_extraction(land_use, year)
@@ -126,8 +128,10 @@ class LandDistribution:
             if land["area_ha"] != 0:
                 land["share_mineral"] = (land_area_current* land_share_mineral) / land["area_ha"]
                 land["share_organic"] = (land_area_current* land_share_organic) / land["area_ha"]
-                land["share_rich_organic"] = (land_area_current* land_share_rich_organic) / land["area_ha"]
-                land["share_poor_organic"] = (land_area_current* land_share_poor_organic) / land["area_ha"]
+                land["share_drained_rich_organic"] = (land_area_current* land_share_drained_rich_organic) / land["area_ha"]
+                land["share_drained_poor_organic"] = (land_area_current* land_share_drained_poor_organic) / land["area_ha"]
+                land["share_rewetted_rich_organic"] = (land_area_current* land_share_rewetted_rich_organic) / land["area_ha"]
+                land["share_rewetted_poor_organic"] = (land_area_current* land_share_rewetted_poor_organic) / land["area_ha"]
                 land["share_organic_mineral"] = (land_area_current* land_share_organic_mineral) / land["area_ha"]
                 land["share_domestic_peat_extraction"] = (land_area_current* land_share_domestic_peat_extraction) / land["area_ha"]
                 land["share_industrial_peat_extraction"] = (land_area_current* land_share_industrial_peat_extraction) / land["area_ha"]
@@ -139,10 +143,6 @@ class LandDistribution:
                 land["share_unmanaged_wetland"] = (land_area_current* land_share_unmanaged_wetland) / land["area_ha"]
                 land["share_burnt"] = (land_area_current* land_share_burnt) / land["area_ha"]
 
-    
-            if land_use == "wetland":
-                land["share_organic"] = ((land_area_current* land_share_organic) + new_area) / land["area_ha"]
-                land["share_rewetted_in_organic"] = new_area / land["area_ha"]
 
             elif land_use == "forest":
                 land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
@@ -157,8 +157,10 @@ class LandDistribution:
                 else: #farmable_condition is 0
                     land["share_mineral"] = land_share_mineral
                     land["share_organic"] = land_share_organic
-                    land["share_rich_organic"] = land_share_rich_organic
-                    land["share_poor_organic"] = land_share_poor_organic
+                    land["share_drained_rich_organic"] = land_share_drained_rich_organic
+                    land["share_drained_poor_organic"] = land_share_drained_poor_organic
+                    land["share_rewetted_rich_organic"] = land_share_rewetted_rich_organic
+                    land["share_rewetted_poor_organic"] = land_share_rewetted_poor_organic
                     land["share_organic_mineral"] = land_share_organic_mineral
                     land["share_domestic_peat_extraction"] = land_share_domestic_peat_extraction
                     land["share_industrial_peat_extraction"] = land_share_industrial_peat_extraction
@@ -181,7 +183,7 @@ class LandDistribution:
         :type year: int
         :param mineral_area: The area of grassland to be converted to mineral soil.
         :type mineral_area: float
-        :param organic_area: The area of grassland to be converted to organic soil.
+        :param organic_area: The area of grassland to be converted to rewetted organic soil.
         :type organic_area: float
         :param grassland_area: The total initial grassland area before distribution.
         :type grassland_area: pandas.DataFrame
@@ -193,31 +195,44 @@ class LandDistribution:
         current_grassland_area = self.national_class.get_landuse_area("grassland", year, grassland_area)
         grass_share_mineral = self.national_class.get_share_mineral("grassland", year, grassland_area)
         grass_share_organic = self.national_class.get_share_organic("grassland", year, grassland_area)
-        get_share_rich_organic_grassland = self.national_class.get_share_rich_organic_grassland("grassland", year, grassland_area)
-        get_share_poor_organic_grassland = self.national_class.get_share_poor_organic_grassland("grassland", year, grassland_area)
+        share_drained_rich_organic_grassland = self.national_class.get_share_drained_rich_organic_grassland("grassland", year, grassland_area)
+        share_drained_poor_organic_grassland = self.national_class.get_share_drained_poor_organic_grassland("grassland", year, grassland_area)
+        share_rewetted_rich_in_organic_grassland = self.national_class.get_share_rewetted_rich_in_organic_grassland("grassland", year, grassland_area)
+        share_rewetted_poor_in_organic_grassland = self.national_class.get_share_rewetted_poor_in_organic_grassland("grassland", year, grassland_area)
         grass_share_organic_mineral = self.national_class.get_share_organic_mineral("grassland", year, grassland_area)
         grass_share_burnt = self.national_class.get_share_burnt("grassland", year, grassland_area)
 
         grass_mineral_area = current_grassland_area * grass_share_mineral
         grass_organic_area = current_grassland_area * grass_share_organic
         grass_organic_mineral_area = current_grassland_area * grass_share_organic_mineral
-        grass_rich_organic_area = current_grassland_area * get_share_rich_organic_grassland
-        grass_poor_organic_area = current_grassland_area * get_share_poor_organic_grassland
+        grass_drained_rich_organic_area = current_grassland_area * share_drained_rich_organic_grassland
+        grass_drained_poor_organic_area = current_grassland_area * share_drained_poor_organic_grassland
+        grass_rewetted_rich_organic_area = current_grassland_area * share_rewetted_rich_in_organic_grassland
+        grass_rewetted_poor_organic_area = current_grassland_area * share_rewetted_poor_in_organic_grassland
 
-        rich_organic_proportion = grass_rich_organic_area / grass_organic_area
-        poor_organic_proportion = grass_poor_organic_area / grass_organic_area
+        total_drained_area = grass_drained_rich_organic_area + grass_drained_poor_organic_area
+
+        drained_rich_organic_proportion = grass_drained_rich_organic_area / total_drained_area
+        drained_poor_organic_proportion = grass_drained_poor_organic_area / total_drained_area
+
 
         grass_remaining_mineral = grass_mineral_area - mineral_area
-        grass_remaining_organic = grass_organic_area - organic_area
-        grass_remaining_rich_organic = grass_rich_organic_area - (organic_area * rich_organic_proportion)
-        grass_remaining_poor_organic = grass_poor_organic_area - (organic_area * poor_organic_proportion)
 
-        grass_total_remaining = grass_remaining_mineral + grass_remaining_organic + grass_organic_mineral_area
+        grass_remaining_drained_rich_organic = grass_drained_rich_organic_area - (organic_area * drained_rich_organic_proportion)
+        grass_remaining_drained_poor_organic = grass_drained_poor_organic_area - (organic_area * drained_poor_organic_proportion)
+
+        grass_rewetted_total_rich_organic = grass_rewetted_rich_organic_area + (organic_area * drained_rich_organic_proportion)
+        grass_rewetted_total_poor_organic = grass_rewetted_poor_organic_area + (organic_area * drained_poor_organic_proportion)
+
+        grass_total_remaining = grass_remaining_mineral + grass_organic_area + grass_organic_mineral_area
+
 
         land["area_ha"] = grass_total_remaining
-        land["share_organic"] = grass_remaining_organic / grass_total_remaining
-        land["share_rich_organic"] = grass_remaining_rich_organic / grass_total_remaining
-        land["share_poor_organic"] = grass_remaining_poor_organic / grass_total_remaining
+        land["share_organic"] = grass_organic_area / grass_total_remaining
+        land["share_drained_rich_organic"] = grass_remaining_drained_rich_organic / grass_total_remaining
+        land["share_drained_poor_organic"] = grass_remaining_drained_poor_organic / grass_total_remaining
+        land["share_rewetted_rich_organic"] = grass_rewetted_total_rich_organic / grass_total_remaining
+        land["share_rewetted_poor_organic"] = grass_rewetted_total_poor_organic / grass_total_remaining
         land["share_organic_mineral"] = grass_organic_mineral_area/ grass_total_remaining
         land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
         land["share_rewetted_in_mineral"] = 0

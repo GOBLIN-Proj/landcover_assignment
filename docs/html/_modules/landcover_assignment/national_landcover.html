@@ -152,8 +152,10 @@
             <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_organic_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_domestic_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_domestic_peat_extraction</span><span class="p">(</span><span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
@@ -187,8 +189,10 @@
             <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_organic_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_domestic_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_domestic_peat_extraction</span><span class="p">(</span><span class="s1">&#39;wetland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
@@ -221,8 +225,10 @@
             <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_organic_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_domestic_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_domestic_peat_extraction</span><span class="p">(</span><span class="s1">&#39;cropland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
@@ -263,8 +269,10 @@
             <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_organic_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_domestic_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_domestic_peat_extraction</span><span class="p">(</span><span class="s1">&#39;grassland&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
@@ -297,8 +305,10 @@
             <span class="s1">&#39;share_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_organic_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_organic_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
-            <span class="s1">&#39;share_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_organic_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
+            <span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_organic&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_organic</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_rewetted_in_mineral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_rewetted_in_mineral</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
             <span class="s1">&#39;share_domestic_peat_extraction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_national_domestic_peat_extraction</span><span class="p">(</span><span class="s1">&#39;settlement&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span>
@@ -442,18 +452,19 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_organic_mineral&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
         
-<div class="viewcode-block" id="NationalLandCover.get_share_rich_organic_grassland">
-<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_rich_organic_grassland">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_share_rich_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="NationalLandCover.get_share_drained_rich_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_drained_rich_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_drained_rich_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieves the share of rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
+<span class="sd">        Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
 
 <span class="sd">        :param landuse: The type of land use as string.</span>
 <span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
 <span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
 <span class="sd">        :return: The share rich organic for the specified land use type.</span>
 <span class="sd">        :rtype: float</span>
-<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_rich_organic&#39; column is not found in the result.</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_drained_rich_organic&#39; column is not found in the result.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">0.0</span>
@@ -466,19 +477,18 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
        
-
-        <span class="k">if</span> <span class="s1">&#39;share_rich_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_rich_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;share_drained_rich_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_drained_rich_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_rich_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_drained_rich_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
         
 
-<div class="viewcode-block" id="NationalLandCover.get_share_poor_organic_grassland">
-<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_poor_organic_grassland">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_share_poor_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NationalLandCover.get_share_drained_poor_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_drained_poor_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_drained_poor_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieves the share of poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
+<span class="sd">        Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
 
 <span class="sd">        :param landuse: The type of land use as string.</span>
 <span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
@@ -499,10 +509,72 @@
             <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
        
 
-        <span class="k">if</span> <span class="s1">&#39;share_poor_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_poor_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;share_drained_poor_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_drained_poor_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_poor_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_drained_poor_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="NationalLandCover.get_share_rewetted_rich_in_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_rich_in_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_rewetted_rich_in_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share rewetted in organic for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_rewetted_rich_organic&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">grassland_area</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grassland area must be provided for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+       
+
+        <span class="k">if</span> <span class="s1">&#39;share_rewetted_rich_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_rewetted_rich_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_rewetted_rich_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="NationalLandCover.get_share_rewetted_poor_in_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_poor_in_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_share_rewetted_poor_in_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</span>
+
+<span class="sd">        :param landuse: The type of land use as string.</span>
+<span class="sd">        :param year: The year, as int, for which data is retrieved.</span>
+<span class="sd">        :param grassland_area: An optional parameter (float), relevant only for grassland land use.</span>
+<span class="sd">        :return: The share rewetted in organic for the specified land use type.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the land use type is unknown or if &#39;share_rewetted_poor_organic&#39; column is not found in the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s1">&#39;grassland&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">grassland_area</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grassland area must be provided for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="n">landuse</span><span class="p">](</span><span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+       
+
+        <span class="k">if</span> <span class="s1">&#39;share_rewetted_poor_organic&#39;</span> <span class="ow">in</span> <span class="n">result_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result_df</span><span class="p">[</span><span class="s1">&#39;share_rewetted_poor_organic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;share_rewetted_poor_organic&#39; column not found in the result for land use: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
         
 
@@ -882,11 +954,11 @@
 
     
 
-<div class="viewcode-block" id="NationalLandCover.get_national_rich_orgainc_grassland">
-<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_orgainc_grassland">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_national_rich_orgainc_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<div class="viewcode-block" id="NationalLandCover.get_national_rich_drained_orgainc_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_drained_orgainc_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_rich_drained_orgainc_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the share of rich organic soil for grassland in a given year, based on national datasets.</span>
+<span class="sd">        Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.</span>
 
 <span class="sd">        :param landuse: Must be &quot;grassland&quot; for this calculation.</span>
 <span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
@@ -900,16 +972,16 @@
         <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">rich_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rich_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">rich_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;drained_rich_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">rich_organic</span></div>
 
     
-<div class="viewcode-block" id="NationalLandCover.get_national_poor_organic_grassland">
-<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_organic_grassland">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_national_poor_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<div class="viewcode-block" id="NationalLandCover.get_national_poor_drained_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_drained_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_poor_drained_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the share of poor organic soil for grassland in a given year, based on national datasets.</span>
+<span class="sd">        Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.</span>
 
 <span class="sd">        :param landuse: Must be &quot;grassland&quot; for this calculation.</span>
 <span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
@@ -923,7 +995,53 @@
         <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">poor_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;poor_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">poor_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;drained_poor_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">poor_organic</span></div>
+
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_rich_rewetted_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rich_rewetted_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_rich_rewetted_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: Must be &quot;grassland&quot; for this calculation.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown or not &quot;grassland&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;grassland&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">rich_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rewetted_rich_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">rich_organic</span></div>
+
+    
+<div class="viewcode-block" id="NationalLandCover.get_national_poor_rewetted_organic_grassland">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_poor_rewetted_organic_grassland">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_national_poor_rewetted_organic_grassland</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.</span>
+
+<span class="sd">        :param landuse: Must be &quot;grassland&quot; for this calculation.</span>
+<span class="sd">        :param year: The year for which data is retrieved as an integer.</span>
+<span class="sd">        :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :raises ValueError: If the specified land use type is unknown or not &quot;grassland&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">landuse</span> <span class="o">!=</span> <span class="s2">&quot;grassland&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        
+        <span class="k">if</span> <span class="n">landuse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown land use type: </span><span class="si">{</span><span class="n">landuse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">poor_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rewetted_poor_organic_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">poor_organic</span></div>
 
@@ -975,6 +1093,7 @@
         <span class="k">return</span> <span class="n">peat_extraction</span></div>
 
     
+
 <div class="viewcode-block" id="NationalLandCover.get_national_rewetted_domestic_peat">
 <a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_domestic_peat">[docs]</a>
     <span class="k">def</span> <span class="nf">get_national_rewetted_domestic_peat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
@@ -998,6 +1117,7 @@
         <span class="k">return</span> <span class="n">rewetted</span></div>
 
     
+
 <div class="viewcode-block" id="NationalLandCover.get_national_rewetted_industrial_peat">
 <a class="viewcode-back" href="../../autoapi/landcover_assignment/national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover.get_national_rewetted_industrial_peat">[docs]</a>
     <span class="k">def</span> <span class="nf">get_national_rewetted_industrial_peat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landuse</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
@@ -1019,6 +1139,7 @@
         <span class="n">rewetted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;rewetted_industrial_peat_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_areas</span><span class="p">[</span><span class="n">landuse</span><span class="p">]()()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="s2">&quot;total_kha&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">rewetted</span></div>
+
 
 
 <div class="viewcode-block" id="NationalLandCover.get_national_rewetted_in_organic">

@@ -168,21 +168,21 @@ Classes
       :raises ValueError: If the land use type is unknown or if 'share_organic_mineral' column is not found in the result.
 
 
-   .. py:method:: get_share_rich_organic_grassland(landuse, year, grassland_area=None)
+   .. py:method:: get_share_drained_rich_organic_grassland(landuse, year, grassland_area=None)
 
-      Retrieves the share of rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+      Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
       :param landuse: The type of land use as string.
       :param year: The year, as int, for which data is retrieved.
       :param grassland_area: An optional parameter (float), relevant only for grassland land use.
       :return: The share rich organic for the specified land use type.
       :rtype: float
-      :raises ValueError: If the land use type is unknown or if 'share_rich_organic' column is not found in the result.
+      :raises ValueError: If the land use type is unknown or if 'share_drained_rich_organic' column is not found in the result.
 
 
-   .. py:method:: get_share_poor_organic_grassland(landuse, year, grassland_area=None)
+   .. py:method:: get_share_drained_poor_organic_grassland(landuse, year, grassland_area=None)
 
-      Retrieves the share of poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+      Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
       :param landuse: The type of land use as string.
       :param year: The year, as int, for which data is retrieved.
@@ -190,6 +190,30 @@ Classes
       :return: The share poor organic for the specified land use type.
       :rtype: float
       :raises ValueError: If the land use type is unknown or if 'share_poor_organic' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_rich_in_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share rewetted in organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_rich_organic' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_poor_in_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share rewetted in organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_poor_organic' column is not found in the result.
 
 
    .. py:method:: get_share_rewetted_in_organic(landuse, year, grassland_area=None)
@@ -352,9 +376,9 @@ Classes
       :raises ValueError: If the specified land use type is unknown.
 
 
-   .. py:method:: get_national_rich_orgainc_grassland(landuse, year)
+   .. py:method:: get_national_rich_drained_orgainc_grassland(landuse, year)
 
-      Calculates the share of rich organic soil for grassland in a given year, based on national datasets.
+      Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.
 
       :param landuse: Must be "grassland" for this calculation.
       :param year: The year for which data is retrieved as an integer.
@@ -363,9 +387,31 @@ Classes
       :raises ValueError: If the specified land use type is unknown or not "grassland".
 
 
-   .. py:method:: get_national_poor_organic_grassland(landuse, year)
+   .. py:method:: get_national_poor_drained_organic_grassland(landuse, year)
 
-      Calculates the share of poor organic soil for grassland in a given year, based on national datasets.
+      Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_rich_rewetted_organic_grassland(landuse, year)
+
+      Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_poor_rewetted_organic_grassland(landuse, year)
+
+      Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.
 
       :param landuse: Must be "grassland" for this calculation.
       :param year: The year for which data is retrieved as an integer.

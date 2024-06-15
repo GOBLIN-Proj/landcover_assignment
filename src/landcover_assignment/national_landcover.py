@@ -71,8 +71,10 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('forest', year),
             'share_organic': self.get_national_organic('forest', year),
             'share_organic_mineral': self.get_national_organic_mineral('forest', year),
-            'share_rich_organic': self.get_national_rich_orgainc_grassland('forest', year),
-            'share_poor_organic': self.get_national_poor_organic_grassland('forest', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('forest', year),
+            'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('forest', year),
+            'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('forest', year),
+            'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('forest', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('forest', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('forest', year),
             'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('forest', year),
@@ -103,8 +105,10 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('wetland', year),
             'share_organic': self.get_national_organic('wetland', year),
             'share_organic_mineral': self.get_national_organic_mineral('wetland', year),
-            'share_rich_organic': self.get_national_rich_orgainc_grassland('wetland', year),
-            'share_poor_organic': self.get_national_poor_organic_grassland('wetland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('wetland', year),
+            'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('wetland', year),
+            'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('wetland', year),
+            'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('wetland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('wetland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('wetland', year),
             'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('wetland', year),
@@ -134,8 +138,10 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('cropland', year),
             'share_organic': self.get_national_organic('cropland', year),
             'share_organic_mineral': self.get_national_organic_mineral('cropland', year),
-            'share_rich_organic': self.get_national_rich_orgainc_grassland('cropland', year),
-            'share_poor_organic': self.get_national_poor_organic_grassland('cropland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('cropland', year),
+            'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('cropland', year),
+            'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('cropland', year),
+            'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('cropland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('cropland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('cropland', year),
             'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('cropland', year),
@@ -173,8 +179,10 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('grassland', year),
             'share_organic': self.get_national_organic('grassland', year),
             'share_organic_mineral': self.get_national_organic_mineral('grassland', year),
-            'share_rich_organic': self.get_national_rich_orgainc_grassland('grassland', year),
-            'share_poor_organic': self.get_national_poor_organic_grassland('grassland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('grassland', year),
+            'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('grassland', year),
+            'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('grassland', year),
+            'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('grassland', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('grassland', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('grassland', year),
             'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('grassland', year),
@@ -204,8 +212,10 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('settlement', year),
             'share_organic': self.get_national_organic('settlement', year),
             'share_organic_mineral': self.get_national_organic_mineral('settlement', year),
-            'share_rich_organic': self.get_national_rich_orgainc_grassland('settlement', year),
-            'share_poor_organic': self.get_national_poor_organic_grassland('settlement', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('settlement', year),
+            'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('settlement', year),
+            'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('settlement', year),
+            'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('settlement', year),
             'share_rewetted_in_organic':self.get_national_rewetted_in_organic('settlement', year),
             'share_rewetted_in_mineral': self.get_national_rewetted_in_mineral('settlement', year),
             'share_domestic_peat_extraction': self.get_national_domestic_peat_extraction('settlement', year),
@@ -336,16 +346,17 @@ class NationalLandCover:
         else:
             raise ValueError(f"'share_organic_mineral' column not found in the result for land use: {landuse}")
         
-    def get_share_rich_organic_grassland(self, landuse, year, grassland_area=None):
+
+    def get_share_drained_rich_organic_grassland(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
         :param landuse: The type of land use as string.
         :param year: The year, as int, for which data is retrieved.
         :param grassland_area: An optional parameter (float), relevant only for grassland land use.
         :return: The share rich organic for the specified land use type.
         :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rich_organic' column is not found in the result.
+        :raises ValueError: If the land use type is unknown or if 'share_drained_rich_organic' column is not found in the result.
         """
         if landuse != 'grassland':
             return 0.0
@@ -358,16 +369,15 @@ class NationalLandCover:
         else:
             result_df = self.methods[landuse](year, grassland_area)
        
-
-        if 'share_rich_organic' in result_df.columns:
-            return result_df['share_rich_organic'].iloc[0]
+        if 'share_drained_rich_organic' in result_df.columns:
+            return result_df['share_drained_rich_organic'].iloc[0]
         else:
-            raise ValueError(f"'share_rich_organic' column not found in the result for land use: {landuse}")
+            raise ValueError(f"'share_drained_rich_organic' column not found in the result for land use: {landuse}")
         
 
-    def get_share_poor_organic_grassland(self, landuse, year, grassland_area=None):
+    def get_share_drained_poor_organic_grassland(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
         :param landuse: The type of land use as string.
         :param year: The year, as int, for which data is retrieved.
@@ -388,10 +398,66 @@ class NationalLandCover:
             result_df = self.methods[landuse](year, grassland_area)
        
 
-        if 'share_poor_organic' in result_df.columns:
-            return result_df['share_poor_organic'].iloc[0]
+        if 'share_drained_poor_organic' in result_df.columns:
+            return result_df['share_drained_poor_organic'].iloc[0]
         else:
-            raise ValueError(f"'share_poor_organic' column not found in the result for land use: {landuse}")
+            raise ValueError(f"'share_drained_poor_organic' column not found in the result for land use: {landuse}")
+        
+    def get_share_rewetted_rich_in_organic_grassland(self, landuse, year, grassland_area=None):
+        """
+        Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share rewetted in organic for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_rewetted_rich_organic' column is not found in the result.
+        """
+        if landuse != 'grassland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        
+        if grassland_area is None:
+            raise ValueError(f"Grassland area must be provided for land use: {landuse}")
+        else:
+            result_df = self.methods[landuse](year, grassland_area)
+       
+
+        if 'share_rewetted_rich_organic' in result_df.columns:
+            return result_df['share_rewetted_rich_organic'].iloc[0]
+        else:
+            raise ValueError(f"'share_rewetted_rich_organic' column not found in the result for land use: {landuse}")
+        
+    def get_share_rewetted_poor_in_organic_grassland(self, landuse, year, grassland_area=None):
+        """
+        Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+        :param landuse: The type of land use as string.
+        :param year: The year, as int, for which data is retrieved.
+        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+        :return: The share rewetted in organic for the specified land use type.
+        :rtype: float
+        :raises ValueError: If the land use type is unknown or if 'share_rewetted_poor_organic' column is not found in the result.
+        """
+        if landuse != 'grassland':
+            return 0.0
+
+        if landuse not in self.methods:
+            raise ValueError(f"Unknown land use type: {landuse}")
+        
+        if grassland_area is None:
+            raise ValueError(f"Grassland area must be provided for land use: {landuse}")
+        else:
+            result_df = self.methods[landuse](year, grassland_area)
+       
+
+        if 'share_rewetted_poor_organic' in result_df.columns:
+            return result_df['share_rewetted_poor_organic'].iloc[0]
+        else:
+            raise ValueError(f"'share_rewetted_poor_organic' column not found in the result for land use: {landuse}")
         
 
     def get_share_rewetted_in_organic(self, landuse, year, grassland_area=None):
@@ -728,9 +794,9 @@ class NationalLandCover:
         return organic_mineral
     
 
-    def get_national_rich_orgainc_grassland(self, landuse, year):
+    def get_national_rich_drained_orgainc_grassland(self, landuse, year):
         """
-        Calculates the share of rich organic soil for grassland in a given year, based on national datasets.
+        Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.
 
         :param landuse: Must be "grassland" for this calculation.
         :param year: The year for which data is retrieved as an integer.
@@ -744,13 +810,13 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rich_organic = self.national_areas[landuse]()().loc[year,"rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        rich_organic = self.national_areas[landuse]()().loc[year,"drained_rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
 
         return rich_organic
     
-    def get_national_poor_organic_grassland(self, landuse, year):
+    def get_national_poor_drained_organic_grassland(self, landuse, year):
         """
-        Calculates the share of poor organic soil for grassland in a given year, based on national datasets.
+        Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.
 
         :param landuse: Must be "grassland" for this calculation.
         :param year: The year for which data is retrieved as an integer.
@@ -764,7 +830,47 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        poor_organic = self.national_areas[landuse]()().loc[year,"poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        poor_organic = self.national_areas[landuse]()().loc[year,"drained_poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return poor_organic
+    
+    def get_national_rich_rewetted_organic_grassland(self, landuse, year):
+        """
+        Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.
+
+        :param landuse: Must be "grassland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        """
+        if landuse != "grassland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        rich_organic = self.national_areas[landuse]()().loc[year,"rewetted_rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        return rich_organic
+    
+    def get_national_poor_rewetted_organic_grassland(self, landuse, year):
+        """
+        Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.
+
+        :param landuse: Must be "grassland" for this calculation.
+        :param year: The year for which data is retrieved as an integer.
+        :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
+        :rtype: float
+        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        """
+        if landuse != "grassland":
+            return 0.0
+        
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        poor_organic = self.national_areas[landuse]()().loc[year,"rewetted_poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
 
         return poor_organic
     
@@ -809,6 +915,7 @@ class NationalLandCover:
 
         return peat_extraction
     
+
     def get_national_rewetted_domestic_peat(self, landuse, year):
         """
         Calculates the share of rewetted areas under domestic peat extraction for wetlands in a given year, based on national datasets.
@@ -829,6 +936,7 @@ class NationalLandCover:
 
         return rewetted
     
+
     def get_national_rewetted_industrial_peat(self, landuse, year):
         """
         Calculates the share of rewetted areas under industrial peat extraction for wetlands in a given year, based on national datasets.
@@ -848,6 +956,7 @@ class NationalLandCover:
         rewetted = self.national_areas[landuse]()().loc[year,"rewetted_industrial_peat_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
 
         return rewetted
+
 
     def get_national_rewetted_in_organic(self, landuse, year):
         """
