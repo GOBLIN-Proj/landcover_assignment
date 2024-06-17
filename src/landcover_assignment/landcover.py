@@ -421,16 +421,16 @@ class LandCover:
             method = getattr(self.sc_fetch_class, method_name, None)
 
             if land_use == "wetland":
+                # wetland area does not increase, transfer is between categories in grassland
+                # however, spared area must still be accounted for
+
                 land_use_proportion = method(scenario)
                 target_wetland = initial_spared_area * land_use_proportion
 
                 spared_area_reduction = min(max_organic_available,target_wetland)
 
-                # wetland area does not increase, transfer is between categories in grassland
-                new_wetland_area = 0 
-
                 generated_land_use_data = self.land_dist_class.land_distribution(
-                    year, land_use, new_wetland_area
+                    year, land_use, None
                 )
 
                 result_dict[land_use] = generated_land_use_data
@@ -523,7 +523,7 @@ class LandCover:
         """
         year = self.data_manager_class.calibration_year
 
-        initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
+        #initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
         organic_potential = self.national_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
         drained_rich_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
         drained_poor_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
@@ -533,6 +533,6 @@ class LandCover:
 
         max_organic_spared = min(organic_potential, total_drained)
 
-        max_mineral_organic_spared = min(initial_spared_area,current_mineral_organic_area)
+        #max_mineral_organic_spared = min(initial_spared_area,current_mineral_organic_area)
 
-        return {"available_organic":max_organic_spared, "available_mineral_organic": max_mineral_organic_spared}
+        return {"available_organic":max_organic_spared}

@@ -123,7 +123,10 @@ class LandDistribution:
             land_share_burnt = self.national_class.get_share_burnt(land_use, year)
             land_area_current = self.national_class.get_landuse_area(land_use, year)
 
-            land["area_ha"] = land_area_current + new_area
+            if land_use == "wetland":
+                land["area_ha"] = land_area_current
+            else:
+                land["area_ha"] = land_area_current + new_area
 
             if land["area_ha"] != 0:
                 land["share_mineral"] = (land_area_current* land_share_mineral) / land["area_ha"]

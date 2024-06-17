@@ -237,6 +237,7 @@
                 <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
                 <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">),</span>
             <span class="p">}</span>
@@ -253,6 +254,7 @@
                 <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
                 <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
                 <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">),</span>
             <span class="p">}</span></div>
@@ -326,6 +328,9 @@
                             <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
                                 <span class="s2">&quot;share_rewetted_in_mineral&quot;</span>
                             <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span>
+                            <span class="p">],</span>
                             <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="n">grassland_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
                                 <span class="s2">&quot;share_peat_extraction&quot;</span>
                             <span class="p">],</span>
@@ -355,6 +360,9 @@
                             <span class="p">],</span>
                             <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
                                 <span class="s2">&quot;share_rewetted_in_mineral&quot;</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
+                                <span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span>
                             <span class="p">],</span>
                             <span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_use_data_future</span><span class="p">[</span><span class="n">landuse</span><span class="p">][</span>
                                 <span class="s2">&quot;share_peat_extraction&quot;</span>
@@ -402,18 +410,21 @@
             <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+                <span class="c1"># wetland area does not increase, transfer is between categories in grassland</span>
+                <span class="c1"># however, spared area must still be accounted for</span>
+                
                 <span class="n">land_use_proportion</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
                 <span class="n">target_wetland</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">land_use_proportion</span>
 
-                <span class="n">new_wetland_area</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_organic_available</span><span class="p">,</span><span class="n">target_wetland</span><span class="p">)</span>
+                <span class="n">spared_area_reduction</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_organic_available</span><span class="p">,</span><span class="n">target_wetland</span><span class="p">)</span>
 
                 <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">land_distribution</span><span class="p">(</span>
-                    <span class="n">land_use</span><span class="p">,</span> <span class="n">new_wetland_area</span>
+                    <span class="n">land_use</span><span class="p">,</span> <span class="kc">None</span>
                 <span class="p">)</span>
 
                 <span class="n">result_dict</span><span class="p">[</span><span class="n">land_use</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
 
-                <span class="n">adjusted_spared_area</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">new_wetland_area</span>
+                <span class="n">adjusted_spared_area</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">spared_area_reduction</span>
 
             <span class="k">elif</span> <span class="n">land_use</span> <span class="o">!=</span> <span class="s2">&quot;farmable_condition&quot;</span><span class="p">:</span>
                 <span class="n">land_use_proportion</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
@@ -463,16 +474,22 @@
         <span class="n">initial_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
 
         <span class="n">max_organic_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_organic_area</span><span class="p">(</span><span class="n">scenario</span><span class="p">)[</span><span class="s2">&quot;available_organic&quot;</span><span class="p">]</span>
+        <span class="n">max_mineral_organic_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_organic_area</span><span class="p">(</span><span class="n">scenario</span><span class="p">)[</span><span class="s2">&quot;available_mineral_organic&quot;</span><span class="p">]</span>
+
+        <span class="n">combined_max_organic</span> <span class="o">=</span> <span class="n">max_organic_available</span> <span class="o">+</span> <span class="n">max_mineral_organic_available</span>
 
         <span class="n">sc_wetland_proportion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetch_class</span><span class="o">.</span><span class="n">get_wetland_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
-        <span class="n">target_wetland</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">sc_wetland_proportion</span>
+        <span class="n">target_rewet</span><span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">*</span> <span class="n">sc_wetland_proportion</span>
 
-        <span class="n">new_wetland_area_achieved</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_organic_available</span><span class="p">,</span><span class="n">target_wetland</span><span class="p">)</span>
+        <span class="n">new_rewetted_area_total</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">combined_max_organic</span><span class="p">,</span><span class="n">target_rewet</span><span class="p">)</span>
 
-        <span class="n">spared_mineral_achieved</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">new_wetland_area_achieved</span>
+        <span class="n">new_rewetted_organic_area</span> <span class="o">=</span> <span class="n">new_rewetted_area_total</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_organic_available</span> <span class="o">/</span> <span class="n">combined_max_organic</span><span class="p">)</span>
+        <span class="n">new_rewetted_mineral_organic_area</span> <span class="o">=</span> <span class="n">new_rewetted_area_total</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_mineral_organic_available</span> <span class="o">/</span> <span class="n">combined_max_organic</span><span class="p">)</span>
+
+        <span class="n">spared_mineral_achieved</span> <span class="o">=</span> <span class="n">initial_spared_area</span> <span class="o">-</span> <span class="n">new_rewetted_area_total</span>
 
         <span class="n">generated_land_use_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">land_dist_class</span><span class="o">.</span><span class="n">grassland_distriubtion</span><span class="p">(</span>
-            <span class="n">spared_mineral_achieved</span><span class="p">,</span> <span class="n">new_wetland_area_achieved</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span>
+            <span class="n">spared_mineral_achieved</span><span class="p">,</span> <span class="n">new_rewetted_organic_area</span><span class="p">,</span><span class="n">new_rewetted_mineral_organic_area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span>
         <span class="p">)</span>
 
         <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;grassland&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generated_land_use_data</span>
@@ -496,14 +513,20 @@
 <span class="sd">        :return: A dictionary containing the available organic area and available mineral-organic area.</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">initial_spared_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_total_spared_area</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
+        <span class="c1">#initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)</span>
         <span class="n">organic_potential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_area_with_organic_potential</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area_breakdown</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_spared_area</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
         <span class="n">current_organic_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span>
         <span class="n">current_mineral_organic_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchemnt_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_grassland</span><span class="p">)</span>
 
-        <span class="n">max_organic_spared</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">organic_potential</span><span class="p">,</span> <span class="n">current_organic_area</span><span class="p">)</span>
+        <span class="n">total_organic_area</span> <span class="o">=</span> <span class="n">current_organic_area</span> <span class="o">+</span> <span class="n">current_mineral_organic_area</span>
 
-        <span class="n">max_mineral_organic_spared</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">initial_spared_area</span><span class="p">,</span><span class="n">current_mineral_organic_area</span><span class="p">)</span>
+        <span class="n">max_organic_spared_total</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">organic_potential</span><span class="p">,</span> <span class="n">total_organic_area</span><span class="p">)</span>
+
+        <span class="n">proportion_organic</span> <span class="o">=</span> <span class="n">current_organic_area</span> <span class="o">/</span> <span class="n">total_organic_area</span>
+        <span class="n">proportion_mineral_organic</span> <span class="o">=</span> <span class="n">current_mineral_organic_area</span> <span class="o">/</span> <span class="n">total_organic_area</span>
+
+        <span class="n">max_mineral_organic_spared</span> <span class="o">=</span> <span class="n">max_organic_spared_total</span> <span class="o">*</span> <span class="n">proportion_mineral_organic</span>
+        <span class="n">max_organic_spared</span> <span class="o">=</span> <span class="n">max_organic_spared_total</span> <span class="o">*</span> <span class="n">proportion_organic</span>
 
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;available_organic&quot;</span><span class="p">:</span><span class="n">max_organic_spared</span><span class="p">,</span> <span class="s2">&quot;available_mineral_organic&quot;</span><span class="p">:</span> <span class="n">max_mineral_organic_spared</span><span class="p">}</span></div>
 </div>

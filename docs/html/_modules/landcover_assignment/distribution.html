@@ -204,7 +204,10 @@
             <span class="n">land_share_burnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
             <span class="n">land_area_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
 
-            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span> <span class="o">+</span> <span class="n">new_area</span>
+            <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span> <span class="o">+</span> <span class="n">new_area</span>
 
             <span class="k">if</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_mineral</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>

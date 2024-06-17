@@ -192,10 +192,15 @@
             <span class="n">land_share_burnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">)</span>
             <span class="n">land_area_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catchment_name</span><span class="p">)</span>
 
-            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span> <span class="o">+</span> <span class="n">new_area</span>
+            <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span> <span class="o">+</span> <span class="n">new_area</span>
+
             <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">if</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_mineral</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
@@ -203,10 +208,6 @@
                 <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_organic_mineral</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
                 <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_burnt</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
 
-    
-            <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
-                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_organic</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
-                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_area</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
 
             <span class="k">elif</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;forest&quot;</span><span class="p">:</span>
                 <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">land_area_current</span><span class="o">*</span> <span class="n">land_share_mineral</span><span class="p">)</span><span class="o">+</span><span class="n">new_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
@@ -230,7 +231,7 @@
 
 <div class="viewcode-block" id="LandDistribution.grassland_distriubtion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_distribution/index.html#landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distriubtion">[docs]</a>
-    <span class="k">def</span> <span class="nf">grassland_distriubtion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mineral_area</span><span class="p">,</span> <span class="n">organic_area</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">grassland_distriubtion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mineral_area</span><span class="p">,</span> <span class="n">organic_area</span><span class="p">,</span> <span class="n">organic_mineral_area</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.</span>
 
@@ -257,15 +258,19 @@
 
         <span class="n">grass_remaining_mineral</span> <span class="o">=</span> <span class="n">grass_mineral_area</span> <span class="o">-</span> <span class="n">mineral_area</span>
         <span class="n">grass_remaining_organic</span> <span class="o">=</span> <span class="n">grass_organic_area</span> <span class="o">-</span> <span class="n">organic_area</span>
+        <span class="n">grass_remaining_organic_mineral_area</span> <span class="o">=</span> <span class="n">grass_organic_mineral_area</span> <span class="o">-</span> <span class="n">organic_mineral_area</span>
+        <span class="n">grass_rewetted_in_organic</span> <span class="o">=</span> <span class="n">organic_area</span>
+        <span class="n">grass_rewetted_in_organic_mineral</span> <span class="o">=</span> <span class="n">organic_mineral_area</span>
 
-        <span class="n">grass_total_remaining</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">+</span> <span class="n">grass_remaining_organic</span> <span class="o">+</span> <span class="n">grass_organic_mineral_area</span>
+        <span class="n">grass_total_remaining</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">+</span> <span class="n">grass_remaining_organic</span> <span class="o">+</span> <span class="n">grass_remaining_organic_mineral_area</span> <span class="o">+</span> <span class="n">grass_rewetted_in_organic</span> <span class="o">+</span> <span class="n">grass_rewetted_in_organic_mineral</span>
 
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_total_remaining</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_organic_mineral_area</span><span class="o">/</span> <span class="n">grass_total_remaining</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_in_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_in_organic_mineral</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_share_burnt</span>
 

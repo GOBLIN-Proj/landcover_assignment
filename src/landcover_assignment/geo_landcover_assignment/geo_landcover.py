@@ -156,6 +156,7 @@ class LandCover:
                 "share_organic_mineral": self.catchemnt_class.get_share_organic_mineral(land_use, self.catchment_name, self.total_grassland),
                 "share_rewetted_in_organic": 0.0,
                 "share_rewetted_in_mineral": 0.0,
+                "share_rewetted_in_organic_mineral":0.0,
                 "share_peat_extraction": 0.0,
                 "share_burnt": self.catchemnt_class.get_share_burnt(land_use, self.catchment_name, self.total_grassland),
             }
@@ -172,6 +173,7 @@ class LandCover:
                 "share_organic_mineral": self.catchemnt_class.get_share_organic_mineral(land_use, self.catchment_name),
                 "share_rewetted_in_organic": 0.0,
                 "share_rewetted_in_mineral": 0.0,
+                "share_rewetted_in_organic_mineral":0.0,
                 "share_peat_extraction": 0.0,
                 "share_burnt": self.catchemnt_class.get_share_burnt(land_use, self.catchment_name),
             }
@@ -239,6 +241,9 @@ class LandCover:
                             "share_rewetted_in_mineral": grassland_data_future[landuse][
                                 "share_rewetted_in_mineral"
                             ],
+                            "share_rewetted_in_organic_mineral": grassland_data_future[landuse][
+                                "share_rewetted_in_organic_mineral"
+                            ],
                             "share_peat_extraction": grassland_data_future[landuse][
                                 "share_peat_extraction"
                             ],
@@ -268,6 +273,9 @@ class LandCover:
                             ],
                             "share_rewetted_in_mineral": land_use_data_future[landuse][
                                 "share_rewetted_in_mineral"
+                            ],
+                            "share_rewetted_in_organic_mineral": land_use_data_future[landuse][
+                                "share_rewetted_in_organic_mineral"
                             ],
                             "share_peat_extraction": land_use_data_future[landuse][
                                 "share_peat_extraction"
@@ -312,18 +320,21 @@ class LandCover:
             method = getattr(self.sc_fetch_class, method_name, None)
 
             if land_use == "wetland":
+                # wetland area does not increase, transfer is between categories in grassland
+                # however, spared area must still be accounted for
+                
                 land_use_proportion = method(scenario)
                 target_wetland = initial_spared_area * land_use_proportion
 
-                new_wetland_area = min(max_organic_available,target_wetland)
+                spared_area_reduction = min(max_organic_available,target_wetland)
 
                 generated_land_use_data = self.land_dist_class.land_distribution(
-                    land_use, new_wetland_area
+                    land_use, None
                 )
 
                 result_dict[land_use] = generated_land_use_data
 
-                adjusted_spared_area = initial_spared_area - new_wetland_area
+                adjusted_spared_area = initial_spared_area - spared_area_reduction
 
             elif land_use != "farmable_condition":
                 land_use_proportion = method(scenario)
@@ -370,16 +381,22 @@ class LandCover:
         initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)
 
         max_organic_available = self._available_organic_area(scenario)["available_organic"]
+        max_mineral_organic_available = self._available_organic_area(scenario)["available_mineral_organic"]
+
+        combined_max_organic = max_organic_available + max_mineral_organic_available
 
         sc_wetland_proportion = self.sc_fetch_class.get_wetland_proportion(scenario)
-        target_wetland = initial_spared_area * sc_wetland_proportion
+        target_rewet= initial_spared_area * sc_wetland_proportion
 
-        new_wetland_area_achieved = min(max_organic_available,target_wetland)
+        new_rewetted_area_total = min(combined_max_organic,target_rewet)
 
-        spared_mineral_achieved = initial_spared_area - new_wetland_area_achieved
+        new_rewetted_organic_area = new_rewetted_area_total * (max_organic_available / combined_max_organic)
+        new_rewetted_mineral_organic_area = new_rewetted_area_total * (max_mineral_organic_available / combined_max_organic)
+
+        spared_mineral_achieved = initial_spared_area - new_rewetted_area_total
 
         generated_land_use_data = self.land_dist_class.grassland_distriubtion(
-            spared_mineral_achieved, new_wetland_area_achieved, self.total_grassland
+            spared_mineral_achieved, new_rewetted_organic_area,new_rewetted_mineral_organic_area, self.total_grassland
         )
 
         result_dict["grassland"] = generated_land_use_data
@@ -400,14 +417,20 @@ class LandCover:
         :return: A dictionary containing the available organic area and available mineral-organic area.
         :rtype: dict
         """
-        initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)
+        #initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)
         organic_potential = self.catchemnt_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
         current_organic_area = self.catchemnt_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchemnt_class.get_share_organic("grassland", self.catchment_name, self.total_grassland)
         current_mineral_organic_area = self.catchemnt_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchemnt_class.get_share_organic_mineral("grassland", self.catchment_name, self.total_grassland)
 
-        max_organic_spared = min(organic_potential, current_organic_area)
+        total_organic_area = current_organic_area + current_mineral_organic_area
 
-        max_mineral_organic_spared = min(initial_spared_area,current_mineral_organic_area)
+        max_organic_spared_total = min(organic_potential, total_organic_area)
+
+        proportion_organic = current_organic_area / total_organic_area
+        proportion_mineral_organic = current_mineral_organic_area / total_organic_area
+
+        max_mineral_organic_spared = max_organic_spared_total * proportion_mineral_organic
+        max_organic_spared = max_organic_spared_total * proportion_organic
 
         return {"available_organic":max_organic_spared, "available_mineral_organic": max_mineral_organic_spared}
 
