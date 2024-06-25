@@ -29,12 +29,14 @@ def main():
     #create_combined_future_land_use_area
     print("combined future land use area")
     print(land.combined_future_land_use_area())
+    land.combined_future_land_use_area().to_csv(os.path.join(path,"combined_future_land_use_area_results.csv"))
     print("#"*50)
 
     #create_transition_matrix
     transition_matrix = transition.create_transition_matrix()
     print(transition_matrix)
     print("#"*50)
+    transition_matrix.to_csv(os.path.join(path,"transition_matrix_results.csv"))
 
     #create afforestation 
     affor = Afforestation(baseline, target_year, scenario_dataframe, transition_matrix)

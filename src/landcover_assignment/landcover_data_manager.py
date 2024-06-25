@@ -75,9 +75,22 @@ class DataManager:
             "area_ha",
             "share_mineral",
             "share_organic",
+            "share_drained_rich_organic",
+            "share_drained_poor_organic",
             "share_rewetted_in_organic",
+            "share_rewetted_rich_organic",
+            "share_rewetted_poor_organic",
+            "share_rewetted_in_mineral",
+            "share_organic_mineral",
+            "share_domestic_peat_extraction",
+            "share_industrial_peat_extraction",
+            "share_rewetted_domestic_peat_extraction",
+            "share_rewetted_industrial_peat_extraction",
+            "share_near_natural_wetland",
+            "share_unmanaged_wetland",
             "share_burnt",
         ]
+
 
         self.landuse_dict = {
             "forest": self.data_loader_class.national_forest_areas,
@@ -98,12 +111,21 @@ class DataManager:
 class DistributionManager:
     def __init__(self):
         self.land_distribution = {
-            "area_ha": 0,
-            "share_organic": 0,
+            "area_ha":0,
+            "share_mineral":0,
+            "share_organic":0,
+            "share_drained_rich_organic":0,
+            "share_drained_poor_organic":0,
+            "share_rewetted_in_organic":0,
+            "share_rewetted_rich_organic":0,
+            "share_rewetted_poor_organic":0,
+            "share_rewetted_in_mineral":0,
             "share_organic_mineral":0,
-            "share_mineral": 0,
-            "share_rewetted_in_organic": 0,
-            "share_burnt": 0,
-            "share_rewetted_in_mineral": 0,
-            "share_peat_extraction": 0,
+            "share_domestic_peat_extraction":0,
+            "share_industrial_peat_extraction":0,
+            "share_rewetted_domestic_peat_extraction":0,
+            "share_rewetted_industrial_peat_extraction":0,
+            "share_near_natural_wetland":0,
+            "share_unmanaged_wetland":0,
+            "share_burnt":0,
         }

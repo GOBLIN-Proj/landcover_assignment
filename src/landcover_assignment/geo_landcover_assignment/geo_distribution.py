@@ -111,10 +111,15 @@ class LandDistribution:
             land_share_burnt = self.catchment_class.get_share_burnt(land_use, self.catchment_name)
             land_area_current = self.catchment_class.get_landuse_area(land_use, self.catchment_name)
 
-            land["area_ha"] = land_area_current + new_area
+            if land_use == "wetland":
+                land["area_ha"] = land_area_current
+            else:
+                land["area_ha"] = land_area_current + new_area
+
             land["share_peat_extraction"] = 0
             land["share_rewetted_in_mineral"] = 0
             land["share_rewetted_in_organic"] = 0
+            land["share_rewetted_in_organic_mineral"] = 0
 
             if land["area_ha"] != 0:
                 land["share_mineral"] = (land_area_current* land_share_mineral) / land["area_ha"]
@@ -122,10 +127,6 @@ class LandDistribution:
                 land["share_organic_mineral"] = (land_area_current* land_share_organic_mineral) / land["area_ha"]
                 land["share_burnt"] = (land_area_current* land_share_burnt) / land["area_ha"]
 
-    
-            if land_use == "wetland":
-                land["share_organic"] = ((land_area_current* land_share_organic) + new_area) / land["area_ha"]
-                land["share_rewetted_in_organic"] = new_area / land["area_ha"]
 
             elif land_use == "forest":
                 land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
@@ -146,7 +147,7 @@ class LandDistribution:
             return land
 
 
-    def grassland_distriubtion(self, mineral_area, organic_area, grassland_area):
+    def grassland_distriubtion(self, mineral_area, organic_area, organic_mineral_area, grassland_area):
         """
         Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.
 
@@ -173,15 +174,19 @@ class LandDistribution:
 
         grass_remaining_mineral = grass_mineral_area - mineral_area
         grass_remaining_organic = grass_organic_area - organic_area
+        grass_remaining_organic_mineral_area = grass_organic_mineral_area - organic_mineral_area
+        grass_rewetted_in_organic = organic_area
+        grass_rewetted_in_organic_mineral = organic_mineral_area
 
-        grass_total_remaining = grass_remaining_mineral + grass_remaining_organic + grass_organic_mineral_area
+        grass_total_remaining = grass_remaining_mineral + grass_remaining_organic + grass_remaining_organic_mineral_area + grass_rewetted_in_organic + grass_rewetted_in_organic_mineral
 
         land["area_ha"] = grass_total_remaining
         land["share_organic"] = grass_remaining_organic / grass_total_remaining
         land["share_organic_mineral"] = grass_organic_mineral_area/ grass_total_remaining
         land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
         land["share_rewetted_in_mineral"] = 0
-        land["share_rewetted_in_organic"] = 0
+        land["share_rewetted_in_organic"] = grass_rewetted_in_organic / grass_total_remaining
+        land["share_rewetted_in_organic_mineral"] = grass_rewetted_in_organic_mineral / grass_total_remaining
         land["share_peat_extraction"] = 0
         land["share_burnt"] = grass_share_burnt
 

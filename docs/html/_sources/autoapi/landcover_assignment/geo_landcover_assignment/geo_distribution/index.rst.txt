@@ -122,7 +122,7 @@ Classes
       :rtype: dict
 
 
-   .. py:method:: grassland_distriubtion(mineral_area, organic_area, grassland_area)
+   .. py:method:: grassland_distriubtion(mineral_area, organic_area, organic_mineral_area, grassland_area)
 
       Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.
 

@@ -168,6 +168,54 @@ Classes
       :raises ValueError: If the land use type is unknown or if 'share_organic_mineral' column is not found in the result.
 
 
+   .. py:method:: get_share_drained_rich_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share rich organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_drained_rich_organic' column is not found in the result.
+
+
+   .. py:method:: get_share_drained_poor_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share poor organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_poor_organic' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_rich_in_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share rewetted in organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_rich_organic' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_poor_in_organic_grassland(landuse, year, grassland_area=None)
+
+      Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share rewetted in organic for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_poor_organic' column is not found in the result.
+
+
    .. py:method:: get_share_rewetted_in_organic(landuse, year, grassland_area=None)
 
       Retrieves the share of share rewetted in organic for a specified land use type and year. For grassland, the total area must be provided.
@@ -192,7 +240,7 @@ Classes
       :raises ValueError: If the land use type is unknown or if 'share_rewetted_in_mineral' column is not found in the result.
 
 
-   .. py:method:: get_share_peat_extraction(landuse, year, grassland_area=None)
+   .. py:method:: get_share_domestic_peat_extraction(landuse, year)
 
       Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
 
@@ -201,7 +249,65 @@ Classes
       :param grassland_area: An optional parameter (float), relevant only for grassland land use.
       :return: The share peat extraction for the specified land use type.
       :rtype: float
-      :raises ValueError: If the land use type is unknown or if 'share_peat_extraction' column is not found in the result.
+      :raises ValueError: If the land use type is unknown or if 'share_domestic_peat_extraction' column is not found in the result.
+
+
+   .. py:method:: get_share_industrial_peat_extraction(landuse, year)
+
+      Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share peat extraction for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_industrial_peat_extraction' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_domestic_peat_extraction(landuse, year)
+
+      Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share peat extraction for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_domestic_peat_extraction' column is not found in the result.
+
+
+   .. py:method:: get_share_rewetted_industrial_peat_extraction(landuse, year)
+
+      Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :param grassland_area: An optional parameter (float), relevant only for grassland land use.
+      :return: The share peat extraction for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_rewetted_industrial_peat_extraction' column is not found in the result.
+
+
+   .. py:method:: get_share_near_natural_wetland(landuse, year)
+
+      Retrieves the share of near natural wetland for a specified land use type and year.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :return: The share near natural wetland for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_near_natural_wetland' column is not found in the result.
+
+
+   .. py:method:: get_share_unmanaged_wetland(landuse, year)
+
+      Retrieves the share of unmanaged wetland for a specified land use type and year.
+
+      :param landuse: The type of land use as string.
+      :param year: The year, as int, for which data is retrieved.
+      :return: The share unmanaged wetland for the specified land use type.
+      :rtype: float
+      :raises ValueError: If the land use type is unknown or if 'share_unmanaged_wetland' column is not found in the result.
 
 
    .. py:method:: get_share_burnt(landuse, year, grassland_area=None)
@@ -270,13 +376,90 @@ Classes
       :raises ValueError: If the specified land use type is unknown.
 
 
-   .. py:method:: get_national_peat_extraction(landuse, year)
+   .. py:method:: get_national_rich_drained_orgainc_grassland(landuse, year)
 
-      Calculates the share of areas under peat extraction for wetlands in a given year, based on national datasets.
+      Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_poor_drained_organic_grassland(landuse, year)
+
+      Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_rich_rewetted_organic_grassland(landuse, year)
+
+      Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_poor_rewetted_organic_grassland(landuse, year)
+
+      Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.
+
+      :param landuse: Must be "grassland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "grassland".
+
+
+   .. py:method:: get_national_domestic_peat_extraction(landuse, year)
+
+      Calculates the share of areas under domestic peat extraction for wetlands in a given year, based on national datasets.
 
       :param landuse: Must be "wetland" for this calculation.
       :param year: The year for which data is retrieved as an integer.
       :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "wetland".
+
+
+   .. py:method:: get_national_industrial_peat_extraction(landuse, year)
+
+      Calculates the share of areas under industrial peat extraction for wetlands in a given year, based on national datasets.
+
+      :param landuse: Must be "wetland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "wetland".
+
+
+   .. py:method:: get_national_rewetted_domestic_peat(landuse, year)
+
+      Calculates the share of rewetted areas under domestic peat extraction for wetlands in a given year, based on national datasets.
+
+      :param landuse: Must be "wetland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "wetland".
+
+
+   .. py:method:: get_national_rewetted_industrial_peat(landuse, year)
+
+      Calculates the share of rewetted areas under industrial peat extraction for wetlands in a given year, based on national datasets.
+
+      :param landuse: Must be "wetland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
       :rtype: float
       :raises ValueError: If the specified land use type is unknown or not "wetland".
 
@@ -299,6 +482,28 @@ Classes
       :param landuse: Must be "wetland" for this calculation.
       :param year: The year for which data is retrieved as an integer.
       :return: The share of rewetted mineral areas as a float, returns 0.0 for non-wetland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "wetland".
+
+
+   .. py:method:: get_national_unmanaged_wetland(landuse, year)
+
+      Calculates the share of unmanaged wetland areas for a given year, based on national datasets.
+
+      :param landuse: Must be "wetland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of unmanaged wetland areas as a float, returns 0.0 for non-wetland land uses.
+      :rtype: float
+      :raises ValueError: If the specified land use type is unknown or not "wetland".
+
+
+   .. py:method:: get_national_near_natural_wetland(landuse, year)
+
+      Calculates the share of near natural wetland areas for a given year, based on national datasets.
+
+      :param landuse: Must be "wetland" for this calculation.
+      :param year: The year for which data is retrieved as an integer.
+      :return: The share of near natural wetland areas as a float, returns 0.0 for non-wetland land uses.
       :rtype: float
       :raises ValueError: If the specified land use type is unknown or not "wetland".
 

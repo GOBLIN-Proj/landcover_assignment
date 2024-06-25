@@ -125,7 +125,7 @@ Classes
       :type year: int
       :param mineral_area: The area of grassland to be converted to mineral soil.
       :type mineral_area: float
-      :param organic_area: The area of grassland to be converted to organic soil.
+      :param organic_area: The area of grassland to be converted to rewetted organic soil.
       :type organic_area: float
       :param grassland_area: The total initial grassland area before distribution.
       :type grassland_area: pandas.DataFrame
