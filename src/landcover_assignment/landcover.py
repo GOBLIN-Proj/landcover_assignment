@@ -168,9 +168,9 @@ class LandCover:
                 "share_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
                 "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, year),
                 "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year),
-                "share_rewetted_domestic_peat_extraction": self.national_class.get_national_rewetted_domestic_peat(land_use, year),
-                "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, year),
-                "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, year),
+                "share_rewetted_domestic_peat_extraction": self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, year),
+                "share_near_natural_wetland": self.national_class.get_share_near_natural_wetland(land_use, year),
+                "share_unmanaged_wetland": self.national_class.get_share_unmanaged_wetland(land_use, year),
                 "share_burnt": self.national_class.get_share_burnt(land_use, year, self.total_grassland),
             }
         
@@ -193,9 +193,9 @@ class LandCover:
                 "share_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
                 "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, year),
                 "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year),
-                "share_rewetted_domestic_peat_extraction": self.national_class.get_share_domestic_peat_extraction(land_use, year),
-                "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, year),
-                "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, year),
+                "share_rewetted_domestic_peat_extraction": self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, year),
+                "share_near_natural_wetland": self.national_class.get_share_near_natural_wetland(land_use, year),
+                "share_unmanaged_wetland": self.national_class.get_share_unmanaged_wetland(land_use, year),
                 "share_burnt": self.national_class.get_share_burnt(land_use, year),
             } 
         
@@ -232,8 +232,8 @@ class LandCover:
             "share_industrial_peat_extraction": self.national_class.get_share_industrial_peat_extraction(land_use, refyear),
             "share_rewetted_industrial_peat_extraction": self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, refyear),
             "share_rewetted_domestic_peat_extraction": self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, refyear),
-            "share_near_natural_wetland": self.national_class.get_national_near_natural_wetland(land_use, refyear),
-            "share_unmanaged_wetland": self.national_class.get_national_unmanaged_wetland(land_use, refyear),
+            "share_near_natural_wetland": self.national_class.get_share_near_natural_wetland(land_use, refyear),
+            "share_unmanaged_wetland": self.national_class.get_share_unmanaged_wetland(land_use, refyear),
             "share_burnt": self.national_class.get_share_burnt(land_use, refyear),
         }  
         
@@ -381,13 +381,15 @@ class LandCover:
                             "share_unmanaged_wetland": land_use_data_future[landuse]["share_unmanaged_wetland"],
                             "share_burnt": land_use_data_future[landuse]["share_burnt"],
                         }
+                    
+                    
 
                     data.append(row)
         
         future_area_pd = pd.DataFrame(data)
 
         combined_df = pd.concat([current_area_pd, future_area_pd], ignore_index=True)
-
+        
         return combined_df
 
 

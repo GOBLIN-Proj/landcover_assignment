@@ -119,7 +119,7 @@ class NationalLandCover:
             'share_unmanaged_wetland': self.get_national_unmanaged_wetland('wetland', year),
             'share_burnt': self.get_national_burn('wetland', year)
         }
-
+    
         return pd.DataFrame([summary_data])
     
 

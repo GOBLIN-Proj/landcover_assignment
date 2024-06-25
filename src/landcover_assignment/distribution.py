@@ -145,6 +145,7 @@ class LandDistribution:
                 land["share_near_natural_wetland"] = (land_area_current* land_share_near_natural_wetland) / land["area_ha"]
                 land["share_unmanaged_wetland"] = (land_area_current* land_share_unmanaged_wetland) / land["area_ha"]
                 land["share_burnt"] = (land_area_current* land_share_burnt) / land["area_ha"]
+                
 
 
             elif land_use == "forest":
@@ -174,6 +175,7 @@ class LandDistribution:
                     land["share_near_natural_wetland"] = land_share_near_natural_wetland
                     land["share_unmanaged_wetland"] = land_share_unmanaged_wetland
                     land["share_burnt"] = land_share_burnt
+
 
             return land
 
