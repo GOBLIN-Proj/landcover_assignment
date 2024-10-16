@@ -182,7 +182,7 @@ class LandDistribution:
 
         land["area_ha"] = grass_total_remaining
         land["share_organic"] = grass_remaining_organic / grass_total_remaining
-        land["share_organic_mineral"] = grass_organic_mineral_area/ grass_total_remaining
+        land["share_organic_mineral"] = grass_remaining_organic_mineral_area/ grass_total_remaining
         land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
         land["share_rewetted_in_mineral"] = 0
         land["share_rewetted_in_organic"] = grass_rewetted_in_organic / grass_total_remaining
