@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "landcover_assignment"
-version = "0.3.1"
+version = "0.3.2"
 description = "A goblin tool for the generation of areas of alternative land uses based on spared area available"
 authors = ["Colm Duffy"]
 license = "MIT"

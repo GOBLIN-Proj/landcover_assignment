@@ -103,46 +103,51 @@ class LandDistribution:
             return None
         else:
             
-            land = {}
+            land = {
+                "area_ha": 0,
+                "share_mineral": 0,
+                "share_organic": 0,
+                "share_organic_mineral": 0,
+                "share_peat_extraction": 0,
+                "share_rewetted_in_mineral": 0,
+                "share_rewetted_in_organic": 0,
+                "share_rewetted_in_organic_mineral": 0,
+                "share_burnt": 0
+            }
 
-            land_share_mineral = self.catchment_class.get_share_mineral(land_use, self.catchment_name)
-            land_share_organic = self.catchment_class.get_share_organic(land_use, self.catchment_name)
-            land_share_organic_mineral = self.catchment_class.get_share_organic_mineral(land_use, self.catchment_name)
-            land_share_burnt = self.catchment_class.get_share_burnt(land_use, self.catchment_name)
-            land_area_current = self.catchment_class.get_landuse_area(land_use, self.catchment_name)
+            land_share_mineral = self.catchment_class.get_share_mineral(land_use, self.catchment_name) or 0
+            land_share_organic = self.catchment_class.get_share_organic(land_use, self.catchment_name) or 0
+            land_share_organic_mineral = self.catchment_class.get_share_organic_mineral(land_use, self.catchment_name) or 0
+            land_share_burnt = self.catchment_class.get_share_burnt(land_use, self.catchment_name) or 0
+
+            land_area_current = self.catchment_class.get_landuse_area(land_use, self.catchment_name) or 0
 
             if land_use == "wetland":
                 land["area_ha"] = land_area_current
             else:
-                land["area_ha"] = land_area_current + new_area
+                land["area_ha"] = land_area_current + (new_area or 0)
 
-            land["share_peat_extraction"] = 0
-            land["share_rewetted_in_mineral"] = 0
-            land["share_rewetted_in_organic"] = 0
-            land["share_rewetted_in_organic_mineral"] = 0
+            shares = {
+                "share_mineral": land_share_mineral,
+                "share_organic": land_share_organic,
+                "share_organic_mineral": land_share_organic_mineral,
+                "share_burnt": land_share_burnt
 
+            }
+
+            # Calculate shares
             if land["area_ha"] != 0:
-                land["share_mineral"] = (land_area_current* land_share_mineral) / land["area_ha"]
-                land["share_organic"] = (land_area_current* land_share_organic) / land["area_ha"]
-                land["share_organic_mineral"] = (land_area_current* land_share_organic_mineral) / land["area_ha"]
-                land["share_burnt"] = (land_area_current* land_share_burnt) / land["area_ha"]
-
-
-            elif land_use == "forest":
-                land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-
-            elif land_use != "farmable_condition":
-                land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-                
-
+                for key, share_value in shares.items():
+                    if key == "share_mineral" and land_use != "wetland":                    
+                        land[key] = ((land_area_current * share_value) + (new_area or 0)) / land["area_ha"]
+                    else:
+                        # Calculate other shares proportionally
+                        land[key] = (land_area_current * share_value) / land["area_ha"]
             else:
-                if land["area_ha"] != 0:
-                    land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-                else: #farmable_condition is 0
-                    land["share_mineral"] = land_share_mineral
-                    land["share_organic"] = land_share_organic
-                    land["share_organic_mineral"] = land_share_organic_mineral
-                    land["share_burnt"] = land_share_burnt
+                # If area is zero, retain current shares
+                for key, share_value in shares.items():
+                    land[key] = share_value
+
 
             return land
 
