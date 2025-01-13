@@ -103,78 +103,87 @@ class LandDistribution:
         
         else:
             
-            land = {}
+            #initialize land dictionary with default values 
 
-            land_share_mineral = self.national_class.get_share_mineral(land_use, year)
-            land_share_organic = self.national_class.get_share_organic(land_use, year)
-            land_share_drained_rich_organic = self.national_class.get_share_drained_rich_organic_grassland(land_use, year)
-            land_share_drained_poor_organic = self.national_class.get_share_drained_poor_organic_grassland(land_use, year)
-            land_share_rewetted_rich_organic = self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, year)
-            land_share_rewetted_poor_organic = self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, year)
-            land_share_organic_mineral = self.national_class.get_share_organic_mineral(land_use, year)
-            land_share_domestic_peat_extraction = self.national_class.get_share_domestic_peat_extraction(land_use, year)
-            land_share_industrial_peat_extraction = self.national_class.get_share_industrial_peat_extraction(land_use, year)
-            land_share_rewetted_domestic_peat_extraction = self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, year)
-            land_share_rewetted_industrial_peat_extraction = self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year)
-            land_share_rewetted_in_mineral = self.national_class.get_share_rewetted_in_mineral(land_use, year)
-            land_share_rewetted_in_organic = self.national_class.get_share_rewetted_in_organic(land_use, year)
-            land_share_near_natural_wetland = self.national_class.get_share_near_natural_wetland(land_use, year)
-            land_share_unmanaged_wetland = self.national_class.get_share_unmanaged_wetland(land_use, year)
-            land_share_burnt = self.national_class.get_share_burnt(land_use, year)
-            land_area_current = self.national_class.get_landuse_area(land_use, year)
+            land = {            
+                "area_ha": 0,
+                "share_mineral": 0,
+                "share_organic": 0,
+                "share_drained_rich_organic": 0,
+                "share_drained_poor_organic": 0,
+                "share_rewetted_rich_organic": 0,
+                "share_rewetted_poor_organic": 0,
+                "share_organic_mineral": 0,
+                "share_domestic_peat_extraction": 0,
+                "share_industrial_peat_extraction": 0,
+                "share_rewetted_domestic_peat_extraction": 0,
+                "share_rewetted_industrial_peat_extraction": 0,
+                "share_rewetted_in_mineral": 0,
+                "share_rewetted_in_organic": 0,
+                "share_near_natural_wetland": 0,
+                "share_unmanaged_wetland": 0,
+                "share_burnt": 0,
+            }
+
+            land_share_mineral = self.national_class.get_share_mineral(land_use, year) or 0
+            land_share_organic = self.national_class.get_share_organic(land_use, year) or 0
+            land_share_drained_rich_organic = self.national_class.get_share_drained_rich_organic_grassland(land_use, year) or 0
+            land_share_drained_poor_organic = self.national_class.get_share_drained_poor_organic_grassland(land_use, year) or 0
+            land_share_rewetted_rich_organic = self.national_class.get_share_rewetted_rich_in_organic_grassland(land_use, year) or 0
+            land_share_rewetted_poor_organic = self.national_class.get_share_rewetted_poor_in_organic_grassland(land_use, year) or 0
+            land_share_organic_mineral = self.national_class.get_share_organic_mineral(land_use, year) or 0
+            land_share_domestic_peat_extraction = self.national_class.get_share_domestic_peat_extraction(land_use, year) or 0
+            land_share_industrial_peat_extraction = self.national_class.get_share_industrial_peat_extraction(land_use, year) or 0
+            land_share_rewetted_domestic_peat_extraction = self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, year) or 0
+            land_share_rewetted_industrial_peat_extraction = self.national_class.get_share_rewetted_industrial_peat_extraction(land_use, year) or 0
+            land_share_rewetted_in_mineral = self.national_class.get_share_rewetted_in_mineral(land_use, year) or 0
+            land_share_rewetted_in_organic = self.national_class.get_share_rewetted_in_organic(land_use, year) or 0
+            land_share_near_natural_wetland = self.national_class.get_share_near_natural_wetland(land_use, year) or 0
+            land_share_unmanaged_wetland = self.national_class.get_share_unmanaged_wetland(land_use, year) or 0
+            land_share_burnt = self.national_class.get_share_burnt(land_use, year) or 0
+            land_area_current = self.national_class.get_landuse_area(land_use, year) or 0
+
+
+            #calculate total wetland area 
 
             if land_use == "wetland":
                 land["area_ha"] = land_area_current
             else:
-                land["area_ha"] = land_area_current + new_area
+                land["area_ha"] = land_area_current + (new_area or 0)
 
+            #shares to calculate
+            shares = {
+                "share_mineral": land_share_mineral,
+                "share_organic": land_share_organic,
+                "share_drained_rich_organic": land_share_drained_rich_organic,
+                "share_drained_poor_organic": land_share_drained_poor_organic,
+                "share_rewetted_rich_organic": land_share_rewetted_rich_organic,
+                "share_rewetted_poor_organic": land_share_rewetted_poor_organic,
+                "share_organic_mineral": land_share_organic_mineral,
+                "share_domestic_peat_extraction": land_share_domestic_peat_extraction,
+                "share_industrial_peat_extraction": land_share_industrial_peat_extraction,
+                "share_rewetted_domestic_peat_extraction": land_share_rewetted_domestic_peat_extraction,
+                "share_rewetted_industrial_peat_extraction": land_share_rewetted_industrial_peat_extraction,
+                "share_rewetted_in_mineral": land_share_rewetted_in_mineral,
+                "share_rewetted_in_organic": land_share_rewetted_in_organic,
+                "share_near_natural_wetland": land_share_near_natural_wetland,
+                "share_unmanaged_wetland": land_share_unmanaged_wetland,
+                "share_burnt": land_share_burnt
+            }
+
+            # Calculate shares
             if land["area_ha"] != 0:
-                land["share_mineral"] = (land_area_current* land_share_mineral) / land["area_ha"]
-                land["share_organic"] = (land_area_current* land_share_organic) / land["area_ha"]
-                land["share_drained_rich_organic"] = (land_area_current* land_share_drained_rich_organic) / land["area_ha"]
-                land["share_drained_poor_organic"] = (land_area_current* land_share_drained_poor_organic) / land["area_ha"]
-                land["share_rewetted_rich_organic"] = (land_area_current* land_share_rewetted_rich_organic) / land["area_ha"]
-                land["share_rewetted_poor_organic"] = (land_area_current* land_share_rewetted_poor_organic) / land["area_ha"]
-                land["share_organic_mineral"] = (land_area_current* land_share_organic_mineral) / land["area_ha"]
-                land["share_domestic_peat_extraction"] = (land_area_current* land_share_domestic_peat_extraction) / land["area_ha"]
-                land["share_industrial_peat_extraction"] = (land_area_current* land_share_industrial_peat_extraction) / land["area_ha"]
-                land["share_rewetted_domestic_peat_extraction"] = (land_area_current* land_share_rewetted_domestic_peat_extraction) / land["area_ha"]
-                land["share_rewetted_industrial_peat_extraction"] = (land_area_current* land_share_rewetted_industrial_peat_extraction) / land["area_ha"]
-                land["share_rewetted_in_mineral"] = (land_area_current* land_share_rewetted_in_mineral) / land["area_ha"]
-                land["share_rewetted_in_organic"] = (land_area_current* land_share_rewetted_in_organic) / land["area_ha"]
-                land["share_near_natural_wetland"] = (land_area_current* land_share_near_natural_wetland) / land["area_ha"]
-                land["share_unmanaged_wetland"] = (land_area_current* land_share_unmanaged_wetland) / land["area_ha"]
-                land["share_burnt"] = (land_area_current* land_share_burnt) / land["area_ha"]
-                
-
-
-            elif land_use == "forest":
-                land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-
-            elif land_use != "farmable_condition":
-                land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-                
-
+                for key, share_value in shares.items():
+                    if key == "share_mineral" and land_use != "wetland":
+                        # Adjust share_mineral specifically to reflect new_area
+                        land[key] = ((land_area_current * share_value) + new_area) / land["area_ha"]
+                    else:
+                        # Calculate other shares proportionally
+                        land[key] = (land_area_current * share_value) / land["area_ha"]
             else:
-                if land["area_ha"] != 0:
-                    land["share_mineral"] = ((land_area_current* land_share_mineral)+new_area) / land["area_ha"]
-                else: #farmable_condition is 0
-                    land["share_mineral"] = land_share_mineral
-                    land["share_organic"] = land_share_organic
-                    land["share_drained_rich_organic"] = land_share_drained_rich_organic
-                    land["share_drained_poor_organic"] = land_share_drained_poor_organic
-                    land["share_rewetted_rich_organic"] = land_share_rewetted_rich_organic
-                    land["share_rewetted_poor_organic"] = land_share_rewetted_poor_organic
-                    land["share_organic_mineral"] = land_share_organic_mineral
-                    land["share_domestic_peat_extraction"] = land_share_domestic_peat_extraction
-                    land["share_industrial_peat_extraction"] = land_share_industrial_peat_extraction
-                    land["share_rewetted_domestic_peat_extraction"] = land_share_rewetted_domestic_peat_extraction
-                    land["share_rewetted_industrial_peat_extraction"] = land_share_rewetted_industrial_peat_extraction
-                    land["share_rewetted_in_mineral"] = land_share_rewetted_in_mineral
-                    land["share_rewetted_in_organic"] = land_share_rewetted_in_organic
-                    land["share_near_natural_wetland"] = land_share_near_natural_wetland
-                    land["share_unmanaged_wetland"] = land_share_unmanaged_wetland
-                    land["share_burnt"] = land_share_burnt
+                # If area is zero, retain current shares
+                for key, share_value in shares.items():
+                    land[key] = share_value
 
 
             return land
