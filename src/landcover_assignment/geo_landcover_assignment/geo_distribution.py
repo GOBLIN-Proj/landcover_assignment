@@ -38,7 +38,7 @@ Classes:
 
 """
 
-from landcover_assignment.landcover_data_manager import DistributionManager
+from landcover_assignment.resource_manager.landcover_data_manager import DistributionManager
 from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 

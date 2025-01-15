@@ -43,13 +43,12 @@ Classes:
    - `_available_organic_area`: Computes the available organic area for scenarios.
 
 """
-
 import pandas as pd
 import numpy as np
 
 from landcover_assignment.distribution import LandDistribution
 from landcover_assignment.national_landcover import NationalLandCover
-from landcover_assignment.landcover_data_manager import DataManager
+from landcover_assignment.resource_manager.landcover_data_manager import DataManager
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 from landcover_assignment.resource_manager.data_loader import Loader
 

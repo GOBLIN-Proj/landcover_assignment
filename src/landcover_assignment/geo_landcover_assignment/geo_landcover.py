@@ -45,7 +45,7 @@ Classes:
 import pandas as pd
 from landcover_assignment.geo_landcover_assignment.geo_distribution import LandDistribution
 from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
-from landcover_assignment.landcover_data_manager import DataManager
+from landcover_assignment.resource_manager.landcover_data_manager import DataManager
 from landcover_assignment.resource_manager.data_loader import Loader
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 

@@ -38,7 +38,7 @@ Classes:
 
 """
 
-from landcover_assignment.landcover_data_manager import DistributionManager
+from landcover_assignment.resource_manager.landcover_data_manager import DistributionManager
 from landcover_assignment.national_landcover import NationalLandCover
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 
@@ -147,7 +147,8 @@ class LandDistribution:
             #calculate total wetland area 
 
             if land_use == "wetland":
-                land["area_ha"] = land_area_current
+                land["area_ha"] = land_area_current 
+                new_area = 0
             else:
                 land["area_ha"] = land_area_current + (new_area or 0)
 
