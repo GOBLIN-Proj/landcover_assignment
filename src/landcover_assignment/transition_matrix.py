@@ -45,7 +45,7 @@ Class Documentation:
 import pandas as pd
 import numpy as np
 from landcover_assignment.landcover import LandCover
-from landcover_assignment.landcover_data_manager import DataManager
+from landcover_assignment.resource_manager.landcover_data_manager import DataManager
 
 
 class TransitionMatrix:
