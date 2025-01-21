@@ -177,6 +177,8 @@ Classes
 
       :param scenario: The scenario identifier.
       :type scenario: int
+      :param catchment_name: The name of the catchment area.
+      :type catchment_name: str
       :param land_use: The type of land use.
       :type land_use: str
       :param mineral_area: The amount of area spared on mineral soil.

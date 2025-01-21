@@ -150,6 +150,8 @@ class LandCover:
         ----------
         scenario : int
             The scenario identifier.
+        catchment_name : str
+            The name of the catchment area.
         land_use : str
             The type of land use.
         mineral_area : float
@@ -161,6 +163,7 @@ class LandCover:
         """
         new_entry = {
             "scenario": scenario,
+            "catchment_name": self.catchment_name,
             "land_use": land_use,
             "mineral_area": mineral_area,
             "organic_area": organic_area,
