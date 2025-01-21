@@ -23,9 +23,10 @@
    - ``pandas``: Used for data manipulation and analysis.
    - ``landcover_assignment.distribution.LandDistribution``: Manages land distribution scenarios.
    - ``landcover_assignment.national_landcover.NationalLandCover``: Analyzes land cover within national areas.
-   - ``landcover_assignment.landcover_data_manager.DataManager``: Manages land cover data.
-   - ``resource_manager.data_loader.Loader``: Loads required data resources.
-   - ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+   - ``landcover_assignment.resource_manager.landcover_data_manager.DataManager``: Manages land cover data.
+   - ``landcover_assignment.resource_manager.data_loader.Loader``: Loads required data resources.
+   - ``landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+   - ``landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation``: Optimizes land cover distribution.
 
    Classes:
    --------
@@ -40,6 +41,8 @@
       and analyze spared area breakdowns and grassland distributions based on scenario inputs.
 
       Methods include:
+      - `_log_spared_area`: Logs the spared area details for a specific scenario and land use.
+      - `get_spared_area_log`: Returns the log of spared area details.
       - `_fill_current_area_row`: Fills data for the current area based on land use type.
       - `_fill_future_area_row`: Fills data for the future area based on land use type.
       - `compute_current_area`: Computes the current area distribution for all land uses.
@@ -125,11 +128,19 @@ Classes
 
       :type: list
 
+   .. method:: _log_spared_area(scenario, land_use, area, rewetted_area, mineral_area)
+
+      Logs the spared area details for a specific scenario and land use.
+
+   .. method:: get_spared_area_log() -> pandas.DataFrame
+
+      Returns the log of spared area details.
+
    .. method:: _fill_current_area_row(farm_id, year, land_use) -> dict
 
       Fills a row of data representing the current state of a specific land use area.
 
-   .. method:: _fill_future_area_row(farm_id, year, land_use) -> dict
+   .. method:: _fill_future_area_row(farm_id, refyear, target_year, land_use) -> dict
 
       Fills a row of data representing the future state of a specific land use area.
 
@@ -154,17 +165,40 @@ Classes
       Computes the available area for organic soil-based land uses under a given scenario.
 
 
+   .. py:method:: _log_spared_area(scenario, land_use, mineral_area, organic_area)
+
+      Logs the spared area details for a specific scenario and land use.
+
+      :param scenario: The scenario identifier.
+      :type scenario: int
+      :param land_use: The type of land use.
+      :type land_use: str
+      :param mineral_area: The amount of area spared on mineral soil.
+      :type mineral_area: float
+      :param organic_area: The amount of area spared on organic soil.
+      :type organic_area: float
+
+
+   .. py:method:: get_spared_area_log()
+
+      Returns the log of spared area details.
+
+      :returns: A DataFrame containing the log of spared area details.
+      :rtype: pandas.DataFrame
+
+
    .. py:method:: _fill_current_area_row(farm_id, year, land_use)
 
       Fills a row of data representing the current state of a specific land use area.
 
-      :param farm_id: Identifier for the farm or land area.
+      :param farm_id: Identifier, a legacy term that represents the scenario identifier.
       :type farm_id: int
       :param year: The year for which the data row is relevant.
       :type year: int
       :param land_use: The type of land use being considered.
       :type land_use: str
-      :return: A dictionary containing filled data for the current area row.
+
+      :returns: A dictionary containing filled data for the current area row.
       :rtype: dict
 
 
@@ -172,15 +206,16 @@ Classes
 
       Fills a row of data representing the future state of a specific land use area.
 
-      :param farm_id: Identifier for the farm or land area.
+      :param farm_id: Identifier, a legacy term that represents the scenario identifier.
       :type farm_id: int
       :param refyear: The year for which the data row is relevant.
-      :type ref_year: int
+      :type refyear: int
       :param target_year: The future year for which the data row is relevant.
       :type target_year: int
       :param land_use: The type of land use being considered.
       :type land_use: str
-      :return: A dictionary containing filled data for the future area row.
+
+      :returns: A dictionary containing filled data for the future area row.
       :rtype: dict
 
 
@@ -188,7 +223,7 @@ Classes
 
       Computes the distribution of current land use areas based on the calibration year and available data.
 
-      :return A DataFrame containing the computed current land use areas.
+      :returns: A DataFrame containing the computed current land use areas.
       :rtype: pandas.DataFrame
 
 
@@ -196,21 +231,18 @@ Classes
 
       Combines the calculated current land use areas with projected future areas under different scenarios.
 
-      :return: A DataFrame containing both current and projected future land use areas.
+      :returns: A DataFrame containing both current and projected future land use areas.
       :rtype: pandas.DataFrame
 
 
    .. py:method:: spared_area_breakdown(scenario)
 
-      Analyzes the breakdown of spared areas under a specific scenario, adjusting land use distributions accordingly.
+      Analyzes the breakdown of spared areas under a specific scenario.
 
-      This method calculates how spared areas should be distributed among various land use types based on scenario-specific
-      proportions and environmental considerations, such as the availability of organic soil.
-
-      :param scenario (int): The scenario identifier for which the spared area breakdown is calculated.
+      :param scenario: The scenario identifier for which the spared area breakdown is calculated.
       :type scenario: int
-      :return: A dictionary containing the breakdown of spared areas by land use type, with detailed proportions
-              and areas for each type.
+
+      :returns: A dictionary containing the breakdown of spared areas for the given scenario.
       :rtype: dict
 
 
@@ -224,8 +256,9 @@ Classes
 
       :param scenario: The scenario identifier for which the grassland distribution is calculated.
       :type scenario: int
-      :return: A dictionary containing updated grassland distribution details, including areas and proportions
-              of soil types.
+
+      :returns: A dictionary containing updated grassland distribution details, including areas and proportions
+                of soil types.
       :rtype: dict
 
 
@@ -237,9 +270,10 @@ Classes
       land uses, such as wetlands, based on the current organic and organic-mineral soil areas and scenario-specific
       spared area allocations.
 
-      :param scenario (int): The scenario identifier for which the available organic area is calculated.
+      :param scenario: The scenario identifier for which the available organic area is calculated.
       :type scenario: int
-      :return: A dictionary containing the available organic area and available mineral-organic area.
+
+      :returns: A dictionary containing the available organic area and available mineral-organic area.
       :rtype: dict
 
 

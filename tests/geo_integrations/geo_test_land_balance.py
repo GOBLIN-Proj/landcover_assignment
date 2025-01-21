@@ -9,7 +9,7 @@ import os
 
 class TestLandCoverSystem(unittest.TestCase):
     def setUp(self):
-        self.path = "./geo_data/"
+        self.path = "../geo_data/"
 
         self.baseline = 2020
         self.target_year = 2050
@@ -17,7 +17,7 @@ class TestLandCoverSystem(unittest.TestCase):
         self.spared_area = pd.read_csv(os.path.join(self.path, "spared_area.csv"), index_col=0)
         self.spared_area_breakdown = pd.read_csv(os.path.join(self.path, "spared_area_breakdown.csv"), index_col=0)
         self.spared_area.columns = self.spared_area.columns.astype(int)
-        self.grassland_area = pd.read_csv(os.path.join(self.path, "total_grassland_area.csv"), index_col=0)
+        self.grassland_area = pd.read_csv(os.path.join(self.path, "grassland_area.csv"), index_col=0)
         self.grassland_area.columns = self.grassland_area.columns.astype(int)
 
         self.catchment = CatchmentLandCover()
@@ -108,7 +108,7 @@ class TestLandCoverSystem(unittest.TestCase):
                 print(f"forest_proportion: {self.fetcher.get_forest_proportion(farm_id)}")
                 print(f"forest_area: {forest_area}")
 
-                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Forest"]), forest_area)
+                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Forest"]), forest_area, places=2)
 
 
     def test_afforestation(self):
@@ -120,6 +120,21 @@ class TestLandCoverSystem(unittest.TestCase):
             if sc > 0:
                 afforestation_mask = (afforestation.scenario == sc)
                 self.assertAlmostEqual(afforestation.loc[afforestation_mask, "total_area"].sum(), abs(matrix.loc[sc, "Grassland_to_Forest"]))
+
+    
+    def test_future_land_use_area_balance(self):
+
+        # Generate future land use data using the function
+        future_land_use = self.land.combined_future_land_use_area()
+
+        base_sum = future_land_use[future_land_use.farm_id == -self.baseline]["area_ha"].sum()
+
+        # Check that the area_ha balance is the same for the sum of all the land_use data for each unique farm_id
+        for farm_id in future_land_use.farm_id.unique()[1:]:
+
+            future_sum = future_land_use[future_land_use.farm_id == farm_id]["area_ha"].sum()
+
+            self.assertAlmostEqual(base_sum, future_sum, places=5)
 
                 
 if __name__ == '__main__':

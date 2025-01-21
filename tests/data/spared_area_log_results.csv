@@ -1,0 +1,13 @@
+,scenario,land_use,mineral_area,organic_area
+0,0,rewet_grassland,0.0,28337.9779114202
+1,0,forest,1700278.660445064,0.0
+2,0,cropland,0.0,0.0
+3,0,farmable_condition,1105181.1527855357,0.0
+4,1,rewet_grassland,0.0,126356.79189202392
+5,1,forest,2704497.068300545,0.0
+6,1,cropland,0.0,0.0
+7,1,farmable_condition,15986.060018671244,0.0
+8,2,rewet_grassland,0.0,126356.79189202392
+9,2,forest,0.0,0.0
+10,2,cropland,0.0,0.0
+11,2,farmable_condition,2720483.1283192164,0.0

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.resource_manager.data_loader &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.resource_manager.data_loader &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -81,71 +81,9 @@
 
 <span class="sd">The ``Loader`` class serves as an interface to access various national land cover and land use area datasets. It utilizes the ``DataManager`` to retrieve specific datasets related to inventory areas, forest areas, cropland areas, grassland areas, wetland areas, settlement areas, and forest soil yield mappings.</span>
 
-<span class="sd">.. _loader-class:</span>
-
-<span class="sd">.. class:: Loader()</span>
-
-<span class="sd">   Initializes the Loader class with a connection to the data management system for retrieving national land cover datasets.</span>
-
-<span class="sd">   **Attributes**</span>
-
-<span class="sd">   - ``dataframes`` (:class:`DataManager`): An instance of the DataManager class for accessing land cover data.</span>
-
-<span class="sd">   **Methods**</span>
-
-<span class="sd">   .. method:: national_inventory_areas()</span>
-
-<span class="sd">      Retrieves national inventory areas dataset.</span>
-
-<span class="sd">      :return: A DataFrame containing national inventory areas data.</span>
-<span class="sd">      :rtype: pandas.DataFrame</span>
-
-<span class="sd">   .. method:: national_forest_areas()</span>
-
-<span class="sd">      Retrieves national forest areas dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing national forest areas data.</span>
-<span class="sd">      :rtype: method</span>
-
-<span class="sd">   .. method:: national_cropland_areas()</span>
-
-<span class="sd">      Retrieves national cropland areas dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing national cropland areas data.</span>
-<span class="sd">      :rtype: method</span>
-
-<span class="sd">   .. method:: national_grassland_areas()</span>
-
-<span class="sd">      Retrieves national grassland areas dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing national grassland areas data.</span>
-<span class="sd">      :rtype: method</span>
-
-<span class="sd">   .. method:: national_wetland_areas()</span>
-
-<span class="sd">      Retrieves national wetland areas dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing national wetland areas data.</span>
-<span class="sd">      :rtype: method</span>
-
-<span class="sd">   .. method:: national_settlement_areas()</span>
-
-<span class="sd">      Retrieves national settlement areas dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing national settlement areas data.</span>
-<span class="sd">      :rtype: method</span>
-
-<span class="sd">   .. method:: forest_soil_yield_mapping()</span>
-
-<span class="sd">      Retrieves forest soil yield mapping to soil groups dataset.</span>
-
-<span class="sd">      :return: A method object that when called, returns a DataFrame containing forest soil yield mappings.</span>
-<span class="sd">      :rtype: method</span>
-
 <span class="sd">**Usage**</span>
 
 <span class="sd">The ``Loader`` class is primarily used within environmental data analysis applications, where accessing standardized datasets on land cover and land use is essential. It abstracts the complexity of data retrieval processes, allowing users to focus on analyzing the data rather than managing data access.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.database_manager</span> <span class="kn">import</span> <span class="n">DataManager</span>
@@ -154,48 +92,111 @@
 <div class="viewcode-block" id="Loader">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader">[docs]</a>
 <span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Loader`` class serves as an interface to access various national land cover and land use area datasets.</span>
+<span class="sd">    It utilizes the ``DataManager`` to retrieve specific datasets related to inventory areas, forest areas, cropland areas,</span>
+<span class="sd">    grassland areas, wetland areas, settlement areas, and forest soil yield mappings.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        dataframes (DataManager): An instance of the DataManager class for accessing land cover data.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        national_inventory_areas(): Retrieves national inventory areas dataset.</span>
+<span class="sd">        national_forest_areas(): Retrieves national forest areas dataset.</span>
+<span class="sd">        national_cropland_areas(): Retrieves national cropland areas dataset.</span>
+<span class="sd">        national_grassland_areas(): Retrieves national grassland areas dataset.</span>
+<span class="sd">        national_wetland_areas(): Retrieves national wetland areas dataset.</span>
+<span class="sd">        national_settlement_areas(): Retrieves national settlement areas dataset.</span>
+<span class="sd">        forest_soil_yield_mapping(): Retrieves forest soil yield mapping to soil groups dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Loader class with a connection to the data management system for retrieving national land cover datasets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Loader.national_inventory_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_inventory_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_inventory_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national inventory areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national inventory areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_inventory_areas</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Loader.national_forest_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_forest_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_forest_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national forest areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national forest areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_forest_areas</span></div>
 
 
 <div class="viewcode-block" id="Loader.national_cropland_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_cropland_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_cropland_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national cropland areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national cropland areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_cropland_areas</span></div>
 
 
 <div class="viewcode-block" id="Loader.national_grassland_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_grassland_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_grassland_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national grassland areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national grassland areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_grassland_areas</span></div>
 
 
 <div class="viewcode-block" id="Loader.national_wetland_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_wetland_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_wetland_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national wetland areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national wetland areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_wetland_areas</span></div>
 
 
 <div class="viewcode-block" id="Loader.national_settlement_areas">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.national_settlement_areas">[docs]</a>
     <span class="k">def</span> <span class="nf">national_settlement_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves national settlement areas dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing national settlement areas data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_national_settlement_areas</span></div>
 
 
 <div class="viewcode-block" id="Loader.forest_soil_yield_mapping">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping">[docs]</a>
     <span class="k">def</span> <span class="nf">forest_soil_yield_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves forest soil yield mapping to soil groups dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: A DataFrame containing forest soil yield mappings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframes</span><span class="o">.</span><span class="n">get_soil_yield_mapping</span><span class="p">()</span></div>
 </div>
 

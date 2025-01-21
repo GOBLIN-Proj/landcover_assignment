@@ -84,7 +84,6 @@ Classes
 
       Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
-
       :return: A DataFrame representing the transition matrix with changes in land use areas.
       :rtype: pandas.DataFrame
 
@@ -100,7 +99,7 @@ Classes
       :param calibration_year: Initial year for transition.
       :type calibration_year: int
       :param target_year: Target year for transition.
-      :type targe_year: int
+      :type target_year: int
       :param land_cover_df: DataFrame containing land cover data.
       :type land_cover_df: pandas.DataFrame
       :return: The difference in area for the specified land use between years.
@@ -110,7 +109,6 @@ Classes
    .. py:method:: _create_transition_frame(land_cover_df)
 
       Initializes the structure of the transition matrix based on land use columns and scenario data.
-
 
       :param land_cover_df: DataFrame containing combined future land use areas.
       :type land_cover_df: pandas.DataFrame

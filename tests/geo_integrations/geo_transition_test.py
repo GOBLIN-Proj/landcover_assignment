@@ -4,7 +4,7 @@ from landcover_assignment.geo_landcover_assignment.geo_transition_matrix import 
 
 def main():
 
-    path = "./geo_data/"
+    path = "../geo_data/"
 
     baseline = 2020
     target_year = 2050

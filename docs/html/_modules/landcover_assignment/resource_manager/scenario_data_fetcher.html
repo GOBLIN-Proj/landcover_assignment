@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.resource_manager.scenario_data_fetcher &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.resource_manager.scenario_data_fetcher &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -81,11 +81,12 @@
 
 <span class="sd">The ``ScenarioDataFetcher`` class is designed to extract specific pieces of information from a scenario dataset. It enables the retrieval of land use proportions, harvest proportions, afforestation end years, and other scenario-specific data.</span>
 
-<span class="sd">.. class:: ScenarioDataFetcher(scenario_data)</span>
+<span class="sd">.. class:: ScenarioDataFetcher(scenario_data, validate_on_init=False)</span>
 
 <span class="sd">   Initializes the ScenarioDataFetcher class with a pandas DataFrame containing scenario data.</span>
 
 <span class="sd">   :param scenario_data: A pandas DataFrame containing various scenarios and their respective data points.</span>
+<span class="sd">   :param validate_on_init: A boolean indicating whether to validate proportions on initialization.</span>
 
 <span class="sd">   **Methods**</span>
 
@@ -175,19 +176,176 @@
 <span class="sd">      :return: A list of scenario identifiers.</span>
 <span class="sd">      :rtype: list</span>
 
+<span class="sd">   .. method:: validate_proportions(scenario)</span>
+
+<span class="sd">      Validates that the sum of cropland, forestland, and rewetted area proportions equals 1 for a specified scenario.</span>
+
+<span class="sd">      :param scenario: The scenario identifier as a string.</span>
+<span class="sd">      :raises ValueError: If the proportions do not sum to 1.</span>
+
+<span class="sd">   .. method:: validate_all_proportions()</span>
+
+<span class="sd">      Validates that the proportions for all scenarios in the dataset sum to 1.</span>
+
+<span class="sd">      :raises ValueError: If any scenario has invalid proportions.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <div class="viewcode-block" id="ScenarioDataFetcher">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher">[docs]</a>
 <span class="k">class</span> <span class="nc">ScenarioDataFetcher</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_data</span><span class="p">,</span> <span class="n">validate_on_init</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ScenarioDataFetcher class with a pandas DataFrame containing scenario data.</span>
+
+<span class="sd">        :param scenario_data: A pandas DataFrame containing various scenarios and their respective data points.</span>
+<span class="sd">        :param validate_on_init: A boolean indicating whether to validate proportions on initialization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span> <span class="o">=</span> <span class="n">scenario_data</span>
 
-<div class="viewcode-block" id="ScenarioDataFetcher.get_wetland_proportion">
-<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_wetland_proportion">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_wetland_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">validate_on_init</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_all_spared_area_proportions</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_all_species_proportions</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_all_forest_thinning_and_harvest_proportions</span><span class="p">()</span>
 
+
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_forest_thinning_and_harvest_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_forest_thinning_and_harvest_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_forest_thinning_and_harvest_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the sum of conifer and broadleaf tree proportions equals 1.</span>
+
+<span class="sd">        :param scenario: The scenario identifier to validate.</span>
+<span class="sd">        :type scenario: int or str</span>
+<span class="sd">        :raises ValueError: If the proportions do not sum to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">conifer_harvest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_conifer_harvest_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">broadleaf_harvest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_broadleaf_harvest_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">conifer_thinned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_conifer_thinned_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+
+        <span class="c1">#if conifer harvest is less than 0 or greater than 1 return error </span>
+        <span class="k">if</span> <span class="n">conifer_harvest</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">conifer_harvest</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid conifer harvest proportion for scenario &#39;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Conifer harvest proportion must be between 0 and 1.&quot;</span>
+            <span class="p">)</span>
+        
+        <span class="c1">#if broadleaf harvest is less than 0 or greater than 1 return error</span>
+        <span class="k">if</span> <span class="n">broadleaf_harvest</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">broadleaf_harvest</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid broadleaf harvest proportion for scenario &#39;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Broadleaf harvest proportion must be between 0 and 1.&quot;</span>
+            <span class="p">)</span>
+        
+        <span class="c1">#if conifer thinned is less than 0 or greater than 1 return error</span>
+        <span class="k">if</span> <span class="n">conifer_thinned</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">conifer_thinned</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid conifer thinned proportion for scenario &#39;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Conifer thinned proportion must be between 0 and 1.&quot;</span>
+            <span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_all_forest_thinning_and_harvest_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_forest_thinning_and_harvest_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_all_forest_thinning_and_harvest_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the proportions for all scenarios in the dataset sum to 1.</span>
+
+<span class="sd">        :raises ValueError: If any scenario has invalid proportions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scenarios</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scenario_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="n">scenarios</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_forest_thinning_and_harvest_proportions</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_species_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_species_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_species_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the sum of conifer and broadleaf tree proportions equals 1.</span>
+
+<span class="sd">        :param scenario: The scenario identifier to validate.</span>
+<span class="sd">        :type scenario: int or str</span>
+<span class="sd">        :raises ValueError: If the proportions do not sum to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">conifer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_conifer_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">broadleaf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_broadleaf_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="n">conifer</span> <span class="o">+</span> <span class="n">broadleaf</span>
+
+        <span class="k">if</span> <span class="n">total</span> <span class="o">!=</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid tree species proportions for scenario &#39;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The sum of conifer (</span><span class="si">{</span><span class="n">conifer</span><span class="si">}</span><span class="s2">) and broadleaf (</span><span class="si">{</span><span class="n">broadleaf</span><span class="si">}</span><span class="s2">) is </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">, total must be 1.&quot;</span>
+            <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_all_species_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_species_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_all_species_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the proportions for all scenarios in the dataset sum to 1.</span>
+
+<span class="sd">        :raises ValueError: If any scenario has invalid proportions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scenarios</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scenario_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="n">scenarios</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_species_proportions</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_landuse_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_landuse_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_landuse_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the sum of cropland, forestland, and rewetted area proportions equals 1.</span>
+
+<span class="sd">        :param scenario: The scenario identifier to validate.</span>
+<span class="sd">        :type scenario: int or str</span>
+<span class="sd">        :raises ValueError: If the proportions do not sum to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">crop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cropland_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">forest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_forest_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+        <span class="n">rewetted_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rewetted_proportion</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="n">crop</span> <span class="o">+</span> <span class="n">forest</span> <span class="o">+</span> <span class="n">rewetted_area</span>
+
+        <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1">#Allow less than 1, but not more</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid proportions for scenario &#39;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The sum of cropland (</span><span class="si">{</span><span class="n">crop</span><span class="si">}</span><span class="s2">), forestland (</span><span class="si">{</span><span class="n">forest</span><span class="si">}</span><span class="s2">), and rewetted area (</span><span class="si">{</span><span class="n">rewetted_area</span><span class="si">}</span><span class="s2">) is </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">, total must be less than 1.&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScenarioDataFetcher.validate_all_spared_area_proportions">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_spared_area_proportions">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_all_spared_area_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the proportions for all scenarios in the dataset sum to 1.</span>
+
+<span class="sd">        :raises ValueError: If any scenario has invalid proportions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scenarios</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scenario_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="n">scenarios</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_landuse_proportions</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ScenarioDataFetcher.get_rewetted_proportion">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_rewetted_proportion">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_rewetted_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the proportion of rewetted area for a specified scenario.</span>
+
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The rewetted area proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -199,7 +357,13 @@
 <div class="viewcode-block" id="ScenarioDataFetcher.get_forest_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_forest_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_forest_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the proportion of forest area for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The forest proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -211,7 +375,13 @@
 <div class="viewcode-block" id="ScenarioDataFetcher.get_cropland_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_cropland_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_cropland_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the proportion of cropland area for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The cropland proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -222,7 +392,13 @@
 <div class="viewcode-block" id="ScenarioDataFetcher.get_conifer_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_conifer_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_conifer_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the proportion of conifer trees for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The conifer proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -233,7 +409,13 @@
 <div class="viewcode-block" id="ScenarioDataFetcher.get_broadleaf_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_broadleaf_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_broadleaf_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the proportion of broadleaf trees for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The broadleaf proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -245,7 +427,13 @@
 <div class="viewcode-block" id="ScenarioDataFetcher.get_broadleaf_harvest_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_broadleaf_harvest_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_broadleaf_harvest_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the harvest proportion of broadleaf trees for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The broadleaf harvest proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -253,10 +441,17 @@
         <span class="k">return</span> <span class="n">scenario_subset</span><span class="p">[</span><span class="s2">&quot;Broadleaf harvest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     
+
 <div class="viewcode-block" id="ScenarioDataFetcher.get_conifer_harvest_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_conifer_harvest_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_conifer_harvest_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the harvest proportion of conifer trees for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The conifer harvest proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -264,10 +459,17 @@
         <span class="k">return</span> <span class="n">scenario_subset</span><span class="p">[</span><span class="s2">&quot;Conifer harvest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     
+
 <div class="viewcode-block" id="ScenarioDataFetcher.get_conifer_thinned_proportion">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_conifer_thinned_proportion">[docs]</a>
     <span class="k">def</span> <span class="nf">get_conifer_thinned_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the thinned proportion of conifer trees for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The conifer thinned proportion as a float.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -275,10 +477,17 @@
         <span class="k">return</span> <span class="n">scenario_subset</span><span class="p">[</span><span class="s2">&quot;Conifer thinned&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     
+
 <div class="viewcode-block" id="ScenarioDataFetcher.get_afforest_end_year">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_afforest_end_year">[docs]</a>
     <span class="k">def</span> <span class="nf">get_afforest_end_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the end year for afforestation activities for a specified scenario.</span>
 
+<span class="sd">        :param scenario: The scenario identifier as a string.</span>
+<span class="sd">        :return: The afforestation end year as an integer.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scenario_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scenario</span><span class="p">)</span>
             <span class="p">]</span>
@@ -286,16 +495,29 @@
         <span class="k">return</span> <span class="n">scenario_subset</span><span class="p">[</span><span class="s2">&quot;Afforest year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     
+
 <div class="viewcode-block" id="ScenarioDataFetcher.get_catchment_name">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_catchment_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_catchment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the name of the catchment area defined in the scenario data.</span>
+
+<span class="sd">        :return: The catchment name as a string.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Catchment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     
+
 <div class="viewcode-block" id="ScenarioDataFetcher.get_scenario_list">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_scenario_list">[docs]</a>
     <span class="k">def</span> <span class="nf">get_scenario_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves a list of all scenarios present in the scenario data.</span>
+
+<span class="sd">        :return: A list of scenario identifiers.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_data</span><span class="p">[</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 </div>
 

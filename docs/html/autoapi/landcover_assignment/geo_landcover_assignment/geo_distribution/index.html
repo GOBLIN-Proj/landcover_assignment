@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.geo_landcover_assignment.geo_distribution &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.geo_landcover_assignment.geo_distribution &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,7 +17,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -54,6 +54,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../resource_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
 </ul>
 </li>
@@ -136,7 +137,7 @@ areas and soil composition.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distribution">
-<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distribution" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distribution" title="Link to this definition"></a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">Specifically</span> <span class="pre">handles</span> <span class="pre">the</span> <span class="pre">distribution</span> <span class="pre">and</span> <span class="pre">adjustment</span> <span class="pre">of</span> <span class="pre">grassland</span> <span class="pre">areas,</span> <span class="pre">considering</span> <span class="pre">changes</span> <span class="pre">in</span> <span class="pre">mineral</span> <span class="pre">and</span> <span class="pre">organic</span></span></dt>
 <dt class="sig sig-object py">
@@ -179,7 +180,7 @@ names and drive the scenario-based calculations for land distribution adjustment
 <dd><p>An instance of DistributionManager for managing land distribution data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../landcover_data_manager/index.html#id1" title="landcover_assignment.landcover_data_manager.DistributionManager">DistributionManager</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../../resource_manager/landcover_data_manager/index.html#id7" title="landcover_assignment.resource_manager.landcover_data_manager.DistributionManager">DistributionManager</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -228,7 +229,7 @@ of mineral, organic, and other soil types accordingly.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
 <dd><p>Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
 and organic components, and recalculates the total remaining grassland area along with its composition.</p>
 </dd></dl>
@@ -254,15 +255,16 @@ and organic components, and recalculates the total remaining grassland area alon
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distriubtion">
-<span class="sig-name descname"><span class="pre">grassland_distriubtion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_distribution.html#LandDistribution.grassland_distriubtion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution.grassland_distriubtion" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
 <dd><p>Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mineral_area</strong> (<em>float</em>) – The area of grassland to be converted to mineral soil.</p></li>
 <li><p><strong>organic_area</strong> (<em>float</em>) – The area of grassland to be converted to organic soil.</p></li>
-<li><p><strong>grassland_area</strong> (<em>pandas.DataFrame</em>) – The total initial grassland area before distribution.</p></li>
+<li><p><strong>organic_mineral_area</strong> (<em>float</em>) – The area of grassland to be converted to organic-mineral soil.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em>) – The total initial grassland area before distribution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

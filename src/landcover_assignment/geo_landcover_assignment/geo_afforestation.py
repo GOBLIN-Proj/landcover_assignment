@@ -60,7 +60,7 @@ class Afforestation:
         self.data_manager_class = DataManager(
             calibration_year, target_year
         )
-        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df)
+        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=True)
         self.transition_data_fetcher = TransitionDataFetcher(transition_matrix)
         self.data_loader = Loader()
         self.yield_mapping = self.data_loader.forest_soil_yield_mapping()
@@ -170,7 +170,7 @@ class Afforestation:
         :return: A DataFrame structured for CBM afforestation inputs.
         :rtype: pd.DataFrame
         """
-        cbm_default_data = self.data_manager_class.cbm_default_data
+        cbm_default_data = self.data_manager_class.get_cbm_default_data()
 
         cbm_df = pd.DataFrame(cbm_default_data)
 

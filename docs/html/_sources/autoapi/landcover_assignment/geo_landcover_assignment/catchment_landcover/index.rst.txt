@@ -60,6 +60,38 @@
 
          Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.
 
+      .. method:: get_share_burnt(landuse, catchment, grassland_area=None)
+
+         Calculates the share of burnt land within a specified land use area in a catchment.
+
+      .. method:: get_national_burnt_average(landuse)
+
+         Retrieves the national average share of burnt land for a specified land use type.
+
+      .. method:: get_catchment_crop_type(catchment)
+
+         Retrieves the types of crops grown within a specified catchment.
+
+      .. method:: get_total_spared_area(spared_area, sc)
+
+         Retrieves the total spared area for a given scenario.
+
+      .. method:: get_derived_catchment_grassland_area(grassland_area, sc=0)
+
+         Retrieves the derived grassland area for a catchment based on a scenario grassland input.
+
+      .. method:: get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)
+
+         Calculates the area with organic farming potential based on spared land breakdown and scenario.
+
+      .. method:: get_land_shares(key, landuse, catchment_name)
+
+         Retrieves the share of a specific soil type within a specified land use area in a catchment.
+
+      .. method:: get_grassland_shares(key, catchment_name, grassland_area)
+
+         Retrieves the share of a specific soil type within the grassland area of a catchment.
+
 
 
 Module Contents
@@ -114,14 +146,94 @@ Classes
 
       :type: dict
 
+   .. attribute:: cached_national_areas
+
+      A dictionary for caching national areas data.
+
+      :type: dict
+
+   .. attribute:: cached_burnt_averages
+
+      A dictionary for caching burnt averages data.
+
+      :type: dict
+
+   .. attribute:: cached_crops
+
+      A dictionary for caching crop data.
+
+      :type: dict
+
+   .. py:method:: _get_cached_crops(catchment)
+
+      Retrieve and cache the data for a specified catchment.
+
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+
+      :returns: The cached DataFrame for the specified catchment.
+      :rtype: pandas.DataFrame
+
+
+   .. py:method:: _get_cached_burnt_averages(landuse)
+
+      Retrieve and cache the data for a specified land use type.
+
+      :param landuse: The land use type to retrieve.
+      :type landuse: str
+
+      :returns: The cached DataFrame for the specified land use type.
+      :rtype: pandas.DataFrame
+
+
+   .. py:method:: _get_cached_national_areas(landuse)
+
+      Retrieve and cache the data for a specified land use type.
+
+      :param landuse: The land use type to retrieve.
+      :type landuse: str
+
+      :returns: The cached DataFrame for the specified land use type.
+      :rtype: pandas.DataFrame
+
+      :raises ValueError: If the specified land use type is unknown.
+
+
+   .. py:method:: _get_catchment_data(landuse, catchment)
+
+      Retrieves catchment data based on the specified land use type.
+
+      :param landuse: The type of land use (e.g., 'forest', 'wetland', 'cropland', 'grassland').
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+
+      :returns: The DataFrame containing catchment data for the specified land use type.
+      :rtype: pandas.DataFrame
+
+
+   .. py:method:: get_catchment_data(landuse, catchment)
+
+      Wrapper around the cached function to always return a fresh copy of the cached data.
+
+      :param landuse: The type of land use (e.g., 'forest', 'wetland', 'cropland', 'grassland').
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+
+      :returns: The DataFrame containing catchment data for the specified land use type.
+      :rtype: pandas.DataFrame
+
+
    .. py:method:: get_catchment_forest_area(catchment)
 
       Calculates the total forest area within a specified catchment, categorized by cover and soil types.
 
       :param catchment: The name of the catchment area.
       :type catchment: str
-      :return: A pandas DataFrame summarizing the forest area details.
-      :rtype: pd.DataFrame
+
+      :returns: A DataFrame summarizing the forest area details.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_catchment_peat_area(catchment)
@@ -130,8 +242,9 @@ Classes
 
       :param catchment: The name of the catchment area.
       :type catchment: str
-      :return: A pandas DataFrame summarizing the peat area details.
-      :rtype: pd.DataFrame
+
+      :returns: A DataFrame summarizing the peat area details.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_catchment_crop_area(catchment)
@@ -140,8 +253,9 @@ Classes
 
       :param catchment: The name of the catchment area.
       :type catchment: str
-      :return: A pandas DataFrame summarizing the crop area details.
-      :rtype: pd.DataFrame
+
+      :returns: A DataFrame summarizing the crop area details.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_catchment_grassland_area(catchment, total_grassland_area)
@@ -153,8 +267,9 @@ Classes
       :type catchment: str
       :param total_grassland_area: The total grassland area data.
       :type total_grassland_area: Various (e.g., int, float, pd.Series)
-      :return: A pandas DataFrame summarizing the grassland area details.
-      :rtype: pd.DataFrame
+
+      :returns: A DataFrame summarizing the grassland area details.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_landuse_area(landuse, catchment, grassland_area=None)
@@ -167,8 +282,10 @@ Classes
       :type catchment: str
       :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
       :type grassland_area: Various, optional
-      :return: The total area of the specified land use within the catchment.
+
+      :returns: The total area of the specified land use within the catchment.
       :rtype: float
+
       :raises ValueError: If the land use type is unknown or if 'area_ha' column is not found.
 
 
@@ -182,8 +299,10 @@ Classes
       :type catchment: str
       :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
       :type grassland_area: Various, optional
-      :return: The share of mineral soil within the specified land use area.
+
+      :returns: The share of mineral soil within the specified land use area.
       :rtype: float
+
       :raises ValueError: If the land use type is unknown or if 'share_mineral' column is not found.
 
 
@@ -197,8 +316,10 @@ Classes
       :type catchment: str
       :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
       :type grassland_area: Various, optional
-      :return: The share of organic soil within the specified land use area.
+
+      :returns: The share of organic soil within the specified land use area.
       :rtype: float
+
       :raises ValueError: If the land use type is unknown or if 'share_organic' column is not found.
 
 
@@ -212,12 +333,28 @@ Classes
       :type catchment: str
       :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
       :type grassland_area: Various, optional
-      :return: The share of organic-mineral mixed soil within the specified land use area.
+
+      :returns: The share of organic-mineral mixed soil within the specified land use area.
       :rtype: float
+
       :raises ValueError: If the land use type is unknown or if 'share_organic_mineral' column is not found.
 
 
    .. py:method:: get_share_burnt(landuse, catchment, grassland_area=None)
+
+      Retrieves the share of burnt land within a specified land use area in a catchment.
+
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment: The name of the catchment area.
+      :type catchment: str
+      :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
+      :type grassland_area: Various, optional
+
+      :returns: The share of burnt land within the specified land use area.
+      :rtype: float
+
+      :raises ValueError: If the land use type is unknown or if 'share_burnt' column is not found.
 
 
    .. py:method:: get_national_burnt_average(landuse)
@@ -230,8 +367,10 @@ Classes
       :type catchment: str
       :param grassland_area: Optional; additional grassland area data, required if landuse is 'grassland'.
       :type grassland_area: Various, optional
-      :return: The share of burnt land within the specified land use area.
+
+      :returns: The share of burnt land within the specified land use area.
       :rtype: float
+
       :raises ValueError: If the land use type is unknown or if 'share_burnt' column is not found.
 
 
@@ -241,8 +380,9 @@ Classes
 
       :param catchment: The name of the catchment area.
       :type catchment: str
-      :return: A pandas DataFrame containing crop types within the specified catchment.
-      :rtype: pd.DataFrame
+
+      :returns: A DataFrame containing crop types within the specified catchment.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_total_spared_area(spared_area, sc)
@@ -257,8 +397,10 @@ Classes
       :type spared_area: pd.DataFrame
       :param sc: The scenario identifier for which the total spared area is to be retrieved.
       :type sc: str or int
-      :return: The total spared area for the given scenario.
+
+      :returns: The total spared area for the given scenario.
       :rtype: float
+
       :raises ValueError: If the scenario is not found in the spared_area DataFrame.
 
 
@@ -273,8 +415,10 @@ Classes
       :type grassland_area: pd.DataFrame or pd.Series
       :param sc: Optional; the scenario identifier for which the derived grassland area is calculated. Defaults to 0.
       :type sc: str or int, optional
-      :return: The derived grassland area for the specified scenario.
+
+      :returns: The derived grassland area for the specified scenario.
       :rtype: float
+
       :raises ValueError: If the scenario is not found in the grassland_area data.
 
 
@@ -293,9 +437,41 @@ Classes
       :type total_spared_area: pd.DataFrame or pd.Series
       :param sc: The scenario identifier used for the analysis.
       :type sc: str or int
-      :return: The area with available organic soils based on the specified scenario.
+
+      :returns: The area with available organic soils based on the specified scenario.
       :rtype: float
+
       :raises ValueError: If the specific scenario does not exist in the spared_breakdown or total_spared_area data.
+
+
+   .. py:method:: get_land_shares(key, landuse, catchment_name)
+
+      Retrieves the share of a specific soil type within a specified land use area in a catchment.
+
+      :param key: The type of share to retrieve (e.g., 'share_mineral', 'share_organic', 'share_organic_mineral', 'share_burnt').
+      :type key: str
+      :param landuse: The type of land use.
+      :type landuse: str
+      :param catchment_name: The name of the catchment area.
+      :type catchment_name: str
+
+      :returns: The share of the specified soil type within the land use area.
+      :rtype: float
+
+
+   .. py:method:: get_grassland_shares(key, catchment_name, grassland_area)
+
+      Retrieves the share of a specific soil type within the grassland area of a catchment.
+
+      :param key: The type of share to retrieve (e.g., 'share_mineral', 'share_organic', 'share_organic_mineral', 'share_burnt').
+      :type key: str
+      :param catchment_name: The name of the catchment area.
+      :type catchment_name: str
+      :param grassland_area: The total grassland area data.
+      :type grassland_area: Various (e.g., int, float, pd.Series)
+
+      :returns: The share of the specified soil type within the grassland area.
+      :rtype: float
 
 
 

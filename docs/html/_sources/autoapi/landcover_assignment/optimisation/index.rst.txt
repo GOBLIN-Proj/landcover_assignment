@@ -1,0 +1,15 @@
+:py:mod:`landcover_assignment.optimisation`
+===========================================
+
+.. py:module:: landcover_assignment.optimisation
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   landcover_optimisation/index.rst
+
+

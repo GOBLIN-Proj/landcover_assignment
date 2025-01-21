@@ -2,7 +2,7 @@
 Afforestation
 ======================
 
-This module provides functionalities for processing afforestation Irish national context scenarios, particularly for preparing inputs
+This module provides functionalities for processing afforestation scenarios in the Irish national context, particularly for preparing inputs
 for the Carbon Budget Model (CBM). It enables the generation of afforestation dataframes based on spared area
 breakdowns, scenario-based afforestation calculations, and structuring data to meet CBM requirements.
 
@@ -170,7 +170,7 @@ class Afforestation:
         :return: A DataFrame structured for CBM afforestation inputs.
         :rtype: pd.DataFrame
         """
-        cbm_default_data = self.data_manager_class.cbm_default_data
+        cbm_default_data = self.data_manager_class.get_cbm_default_data()
 
         cbm_df = pd.DataFrame(cbm_default_data)
 

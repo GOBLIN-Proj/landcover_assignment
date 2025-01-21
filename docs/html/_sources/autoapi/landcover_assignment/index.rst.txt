@@ -12,6 +12,7 @@ Subpackages
 
    database/index.rst
    geo_landcover_assignment/index.rst
+   optimisation/index.rst
    resource_manager/index.rst
 
 
@@ -24,7 +25,6 @@ Submodules
    afforestation/index.rst
    distribution/index.rst
    landcover/index.rst
-   landcover_data_manager/index.rst
    national_landcover/index.rst
    transition_matrix/index.rst
 

@@ -96,8 +96,12 @@ import pandas as pd
 
 class TransitionDataFetcher:
     def __init__(self, transition_data):
-        self.transition_matrix = transition_data
+        """
+        Initializes the TransitionDataFetcher with a pandas DataFrame containing transition data between different land use types.
 
+        :param transition_data: A pandas DataFrame containing transition matrices for various scenarios.
+        """
+        self.transition_matrix = transition_data
 
     def get_grassland_to_forest_areas(self):
         """
@@ -105,7 +109,6 @@ class TransitionDataFetcher:
 
         :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to forests.
         :rtype: pandas.DataFrame
-
         """
         data =[]
         for i in self.transition_matrix.index:
@@ -122,9 +125,9 @@ class TransitionDataFetcher:
 
     def get_grassland_to_grassland_areas(self):
         """
-        Retrieves the areas transitioning from grasslands to wetlands across all scenarios.
+        Retrieves the areas remaining as grasslands across all scenarios.
 
-        :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to wetlands.
+        :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas remaining as grasslands.
         :rtype: pandas.DataFrame
         """
         data =[]
@@ -163,7 +166,7 @@ class TransitionDataFetcher:
 
     def get_grassland_to_cropland_areas(self):
         """
-         Retrieves the areas transitioning from grasslands to croplands across all scenarios.
+        Retrieves the areas transitioning from grasslands to croplands across all scenarios.
 
         :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to croplands.
         :rtype: pandas.DataFrame
@@ -199,7 +202,7 @@ class TransitionDataFetcher:
 
     def get_grassland_to_wetland_soil_group_areas(self, spared_area_breakdown):
         """
-         Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.
+        Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.
 
         :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
         :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Wetland``.
@@ -230,7 +233,7 @@ class TransitionDataFetcher:
 
     def get_grassland_to_farmable_condition_soil_group_areas(self, spared_area_breakdown):
         """
-         Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.
+        Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.
 
         :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
         :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Farmable_Condition``.
@@ -245,7 +248,7 @@ class TransitionDataFetcher:
 
     def get_grassland_to_landuse_soil_group_area(self, spared_area_breakdown):
         """
-         Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
+        Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
 
         :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
         :return: A pandas DataFrame with transition areas categorized by soil group.
@@ -320,15 +323,13 @@ class TransitionDataFetcher:
 
     def _derive_soil_group_area(self, soil_group, soil_group_pool, transition_area_dict):
         """
-        _derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)
-
         Internal helper method to calculate the allocation of transition areas by soil group.
 
         :param soil_group: The soil group identifier.
         :param soil_group_pool: A dictionary containing available areas for each soil group.
         :param transition_area_dict: A dictionary containing the areas allocated for transition to different land uses.
         :return: A dictionary with updated transition area allocations by soil group.
-      :rtype: dict
+        :rtype: dict
         """
         transition_area_allocations = {
             "Grassland_to_Forest": 0,
@@ -374,13 +375,12 @@ class TransitionDataFetcher:
 
 
 
-        
-
-            
-            
 
 
-            
 
 
-        
+
+
+
+
+

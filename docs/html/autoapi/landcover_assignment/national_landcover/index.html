@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.national_landcover &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.national_landcover &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,14 +17,14 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="landcover_assignment.transition_matrix" href="../transition_matrix/index.html" />
-    <link rel="prev" title="landcover_assignment.landcover_data_manager" href="../landcover_data_manager/index.html" /> 
+    <link rel="prev" title="landcover_assignment.landcover" href="../landcover/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,7 +56,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../afforestation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.afforestation</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../distribution/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.distribution</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../landcover_data_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover_data_manager</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../transition_matrix/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.transition_matrix</span></code></a></li>
 </ul>
@@ -142,7 +141,7 @@ for each land use type.</p>
 <dd><p>An instance of Loader to access national datasets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../resource_manager/data_loader/index.html#id0" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -170,13 +169,33 @@ for each land use type.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._get_cached_data">
+<span class="sig-name descname"><span class="pre">_get_cached_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover._get_cached_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._get_cached_data" title="Link to this definition"></a></dt>
+<dd><p>Retrieve and cache the data for a specified land use type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>landuse</strong> (<em>str</em>) – The land use type to retrieve.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cached DataFrame for the specified land use type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified land use type is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_forest_data">
 <span class="sig-name descname"><span class="pre">get_forest_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_forest_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_data" title="Link to this definition"></a></dt>
 <dd><p>Retrieves summary data for forest land use including area, shares of mineral, organic, and organic-mineral soils,
 peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+<dd class="field-odd"><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A DataFrame containing summary data for forest land use.</p>
@@ -194,7 +213,7 @@ peat extraction, and rewetted areas for a given year.</p>
 peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+<dd class="field-odd"><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A DataFrame containing summary data for wetland land use.</p>
@@ -212,7 +231,7 @@ peat extraction, and rewetted areas for a given year.</p>
 peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+<dd class="field-odd"><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A DataFrame containing summary data for cropland use.</p>
@@ -228,12 +247,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <span class="sig-name descname"><span class="pre">get_grassland_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_grassland_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_data" title="Link to this definition"></a></dt>
 <dd><p>Retrieves summary data for grassland use including area, shares of mineral, organic, and organic-mineral soils,
 peat extraction, and rewetted areas, optionally adjusted by total grassland area for a given year.</p>
-<p>Area is derived from total grassland area calculated using the grassland_production module</p>
+<p>Area is derived from total grassland area calculated using the grassland_production module.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>total_grassland_area</strong> (<em>float</em>) – The total grassland area used for calculations.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -252,7 +271,7 @@ peat extraction, and rewetted areas, optionally adjusted by total grassland area
 peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>year</strong> – The year, as int, for which data is retrieved.</p>
+<dd class="field-odd"><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A DataFrame containing summary data for settlement land use.</p>
@@ -270,9 +289,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -294,9 +313,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -318,9 +337,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -342,9 +361,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -366,9 +385,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -390,9 +409,9 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -410,17 +429,17 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_rich_in_organic_grassland">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_rich_in_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_rich_in_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_rich_in_organic_grassland" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted rich organic for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -434,17 +453,17 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_poor_in_organic_grassland">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_poor_in_organic_grassland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_poor_in_organic_grassland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_poor_in_organic_grassland" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted poor organic for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -458,17 +477,17 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_organic">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_in_organic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_in_organic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_organic" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share rewetted in organic for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted organic soil for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share rewetted in organic for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted organic for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -482,17 +501,17 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_mineral">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_in_mineral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_in_mineral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_in_mineral" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share rewetted in mineral for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted mineral soil for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share rewetted in mineral for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted mineral for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -506,17 +525,16 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_domestic_peat_extraction">
 <span class="sig-name descname"><span class="pre">get_share_domestic_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_domestic_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_domestic_peat_extraction" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of domestic peat extraction for a specified land use type and year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share peat extraction for the specified land use type.</p>
+<dd class="field-even"><p>The share domestic peat extraction for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -530,17 +548,16 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_industrial_peat_extraction">
 <span class="sig-name descname"><span class="pre">get_share_industrial_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_industrial_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_industrial_peat_extraction" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of industrial peat extraction for a specified land use type and year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share peat extraction for the specified land use type.</p>
+<dd class="field-even"><p>The share industrial peat extraction for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -554,17 +571,16 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_domestic_peat_extraction">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_domestic_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_domestic_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_domestic_peat_extraction" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted domestic peat extraction for a specified land use type and year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share peat extraction for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted domestic peat extraction for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -578,17 +594,16 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_industrial_peat_extraction">
 <span class="sig-name descname"><span class="pre">get_share_rewetted_industrial_peat_extraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_rewetted_industrial_peat_extraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_rewetted_industrial_peat_extraction" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of rewetted industrial peat extraction for a specified land use type and year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share peat extraction for the specified land use type.</p>
+<dd class="field-even"><p>The share rewetted industrial peat extraction for the specified land use type.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -606,8 +621,8 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -629,8 +644,8 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -648,13 +663,13 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_share_burnt">
 <span class="sig-name descname"><span class="pre">get_share_burnt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_share_burnt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_share_burnt" title="Link to this definition"></a></dt>
-<dd><p>Retrieves the share of share burnt for a specified land use type and year. For grassland, the total area must be provided.</p>
+<dd><p>Retrieves the share of burnt areas for a specified land use type and year. For grassland, the total area must be provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The type of land use as string.</p></li>
-<li><p><strong>year</strong> – The year, as int, for which data is retrieved.</p></li>
-<li><p><strong>grassland_area</strong> – An optional parameter (float), relevant only for grassland land use.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Relevant only for grassland land use.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -675,7 +690,7 @@ peat extraction, and rewetted areas for a given year.</p>
 <dd><p>Calculates the national average of burnt areas for a specified land use type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>landuse</strong> – The type of land use for which the burnt average is calculated as string.</p>
+<dd class="field-odd"><p><strong>landuse</strong> (<em>str</em>) – The type of land use for which the burnt average is calculated.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The national average of burnt areas for the specified land use type.</p>
@@ -696,12 +711,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The land use type.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The total area in hectares as a float.</p>
+<dd class="field-even"><p>The total area in hectares.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -719,12 +734,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The land use type.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of mineral soil as a float.</p>
+<dd class="field-even"><p>The share of mineral soil.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -742,12 +757,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The land use type.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of organic soil as a float.</p>
+<dd class="field-even"><p>The share of organic soil.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -765,12 +780,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The land use type.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of organic soil as a float.</p>
+<dd class="field-even"><p>The share of organic soil.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -788,12 +803,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+<dd class="field-even"><p>The share of rich organic soil, returns 0.0 for non-grassland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -811,12 +826,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+<dd class="field-even"><p>The share of poor organic soil, returns 0.0 for non-grassland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -834,12 +849,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+<dd class="field-even"><p>The share of rich organic soil, returns 0.0 for non-grassland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -857,12 +872,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “grassland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “grassland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.</p>
+<dd class="field-even"><p>The share of poor organic soil, returns 0.0 for non-grassland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -880,12 +895,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of areas under peat extraction, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -903,12 +918,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of areas under peat extraction, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -926,12 +941,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of rewetted areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -949,12 +964,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of rewetted areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -972,12 +987,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rewetted organic areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of rewetted organic areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -995,12 +1010,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of rewetted mineral areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of rewetted mineral areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1018,12 +1033,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of unmanaged wetland areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of unmanaged wetland areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1041,12 +1056,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – Must be “wetland” for this calculation.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – Must be “wetland” for this calculation.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of near natural wetland areas as a float, returns 0.0 for non-wetland land uses.</p>
+<dd class="field-even"><p>The share of near natural wetland areas, returns 0.0 for non-wetland land uses.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1064,12 +1079,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>landuse</strong> – The land use type as a string.</p></li>
-<li><p><strong>year</strong> – The year for which data is retrieved as an integer.</p></li>
+<li><p><strong>landuse</strong> (<em>str</em>) – The land use type.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which data is retrieved.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The share of burnt areas as a float.</p>
+<dd class="field-even"><p>The share of burnt areas.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1087,12 +1102,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spared_area</strong> – A DataFrame containing spared area data.</p></li>
-<li><p><strong>sc</strong> – The scenario as a string or integer.</p></li>
+<li><p><strong>spared_area</strong> (<em>pandas.DataFrame</em>) – A DataFrame containing spared area data.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em>) – The scenario.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The total spared area as a float.</p>
+<dd class="field-even"><p>The total spared area.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1110,12 +1125,12 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>grassland_area</strong> – A DataFrame or Series containing grassland area data.</p></li>
-<li><p><strong>sc</strong> – The scenario as a string or integer, default is 0.</p></li>
+<li><p><strong>grassland_area</strong> (<em>pandas.DataFrame</em><em> or </em><em>pandas.Series</em>) – A DataFrame or Series containing grassland area data.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – The scenario, default is 0.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The derived national grassland area as a float.</p>
+<dd class="field-even"><p>The derived national grassland area.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -1133,19 +1148,85 @@ peat extraction, and rewetted areas for a given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spared_breakdown</strong> – A DataFrame containing spared area breakdown data.</p></li>
-<li><p><strong>total_spared_area</strong> – A DataFrame or Series containing total spared area data.</p></li>
-<li><p><strong>sc</strong> – The scenario as a string or integer.</p></li>
+<li><p><strong>spared_breakdown</strong> (<em>pandas.DataFrame</em>) – A DataFrame containing spared area breakdown data.</p></li>
+<li><p><strong>total_spared_area</strong> (<em>pandas.DataFrame</em><em> or </em><em>pandas.Series</em>) – A DataFrame or Series containing total spared area data.</p></li>
+<li><p><strong>sc</strong> (<em>str</em><em> or </em><em>int</em>) – The scenario.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The area with organic potential as a float.</p>
+<dd class="field-even"><p>The area with organic potential.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared breakdown dataset or if all values in the ‘area_ha’ column are zero.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_land_shares">
+<span class="sig-name descname"><span class="pre">get_land_shares</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_land_shares"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_land_shares" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the share of a specific land type for a given land use and year.
+Parameters:
+key (str): The key representing the specific land share to retrieve.
+land_use (str): The type of land use.
+year (int): The year for which the land share is to be retrieved.
+Returns:
+float: The share of the specified land type.
+Raises:
+KeyError: If the provided key is not found in the shares dictionary.
+Available keys:
+- “share_mineral”
+- “share_organic”
+- “share_drained_rich_organic”
+- “share_drained_poor_organic”
+- “share_rewetted_rich_organic”
+- “share_rewetted_poor_organic”
+- “share_organic_mineral”
+- “share_domestic_peat_extraction”
+- “share_industrial_peat_extraction”
+- “share_rewetted_domestic_peat_extraction”
+- “share_rewetted_industrial_peat_extraction”
+- “share_rewetted_in_mineral”
+- “share_rewetted_in_organic”
+- “share_near_natural_wetland”
+- “share_unmanaged_wetland”
+- “share_burnt”</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_grassland_shares">
+<span class="sig-name descname"><span class="pre">get_grassland_shares</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/national_landcover.html#NationalLandCover.get_grassland_shares"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_shares" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the share of a specific land type for grassland use and year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – The key representing the specific land share to retrieve.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The year for which the land share is to be retrieved.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em>) – The total grassland area used for calculations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The share of the specified land type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the provided key is not found in the shares dictionary.</p></li>
+<li><p><strong>Available keys:</strong> – </p></li>
+<li><p><strong>- &quot;share_mineral&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_organic&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_drained_rich_organic&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_drained_poor_organic&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_rewetted_rich_in_organic&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_rewetted_poor_in_organic&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_organic_mineral&quot;</strong> – </p></li>
+<li><p><strong>- &quot;share_burnt&quot;</strong> – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1160,7 +1241,7 @@ peat extraction, and rewetted areas for a given year.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../landcover_data_manager/index.html" class="btn btn-neutral float-left" title="landcover_assignment.landcover_data_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../landcover/index.html" class="btn btn-neutral float-left" title="landcover_assignment.landcover" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../transition_matrix/index.html" class="btn btn-neutral float-right" title="landcover_assignment.transition_matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

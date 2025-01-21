@@ -6,7 +6,7 @@ import os
 
 def main():
 
-    path = "./geo_data/"
+    path = "../geo_data/"
 
     baseline = 2020
     target_year = 2050
@@ -45,7 +45,7 @@ def main():
     print(land.combined_future_land_use_area())
     print("#"*50)
  
-    land.combined_future_land_use_area().to_csv(os.path.join(path,"land_uses.csv"))
+    land.combined_future_land_use_area().to_csv(os.path.join(path,"land_uses_0.2.0.csv"))
 
 
 

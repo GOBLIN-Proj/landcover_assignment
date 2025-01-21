@@ -1,0 +1,45 @@
+:py:mod:`landcover_assignment.optimisation.landcover_optimisation`
+==================================================================
+
+.. py:module:: landcover_assignment.optimisation.landcover_optimisation
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation
+
+
+
+
+.. py:class:: LandCoverOptimisation(solver='cplex_direct')
+
+
+   A class to manage optimisation tasks for land cover allocation and distribution.
+
+   Attributes:
+   ----------
+   solver : str
+       The optimization solver to use (e.g., 'cplex', 'gurobi', 'glpk').
+
+   Methods:
+   -------
+   optimise_mineral_spared_area_distribution(mineral_area_available, target_areas)
+       Optimises land distribution to minimize deviation from target areas.
+
+   .. py:method:: optimise_mineral_spared_area_distribution(mineral_area_available, target_areas)
+
+      Optimises land distribution to minimize deviation from target areas.
+      Includes a fallback mechanism for leftover area to "farmable condition."
+
+      :param mineral_area_available: Total mineral area available (float).
+      :param target_areas: Target areas for each land class (dict).
+      :return: Optimized land allocations (dict).
+
+
+

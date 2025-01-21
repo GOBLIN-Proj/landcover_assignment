@@ -8,7 +8,7 @@
    Afforestation
    ======================
 
-   This module provides functionalities for processing afforestation Irish national context scenarios, particularly for preparing inputs
+   This module provides functionalities for processing afforestation scenarios in the Irish national context, particularly for preparing inputs
    for the Carbon Budget Model (CBM). It enables the generation of afforestation dataframes based on spared area
    breakdowns, scenario-based afforestation calculations, and structuring data to meet CBM requirements.
 

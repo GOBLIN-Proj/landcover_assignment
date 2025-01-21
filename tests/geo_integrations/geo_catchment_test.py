@@ -4,7 +4,7 @@ import pandas as pd
 
 def main():
 
-    path = "./geo_data/"
+    path = "../geo_data/"
     catchment_names = pd.read_csv(os.path.join(path, "catchment_names.csv"))
     spared_area_breakdown = pd.read_csv(os.path.join(path, "spared_area_breakdown.csv"), index_col=0)
     spared_area = pd.read_csv(os.path.join(path, "spared_area.csv"), index_col=0)

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.geo_landcover_assignment.geo_landcover &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.geo_landcover_assignment.geo_landcover &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,7 +17,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -54,6 +54,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../resource_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
 </ul>
 </li>
@@ -110,12 +111,13 @@ scenario-specific changes.</p>
 <section id="dependencies">
 <h3>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code>: Used for data manipulation and analysis.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geo_landcover_assignment.geo_distribution.LandDistribution</span></code>: Manages land distribution scenarios.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geo_landcover_assignment.catchment_landcover.CatchmentLandCover</span></code>: Analyzes land cover within catchment areas.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.landcover_data_manager.DataManager</span></code>: Manages land cover data.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resource_manager.data_loader.Loader</span></code>: Loads required data resources.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resource_manager.scenario_data_fetcher.ScenarioDataFetcher</span></code>: Fetches scenario-specific data.</p></li>
+<li><p><cite>pandas</cite>: Used for data manipulation and analysis.</p></li>
+<li><p><cite>geo_landcover_assignment.geo_distribution.LandDistribution</cite>: Manages land distribution scenarios.</p></li>
+<li><p><cite>geo_landcover_assignment.catchment_landcover.CatchmentLandCover</cite>: Analyzes land cover within catchment areas.</p></li>
+<li><p><cite>landcover_assignment.landcover_data_manager.DataManager</cite>: Manages land cover data.</p></li>
+<li><p><cite>resource_manager.data_loader.Loader</cite>: Loads required data resources.</p></li>
+<li><p><cite>resource_manager.scenario_data_fetcher.ScenarioDataFetcher</cite>: Fetches scenario-specific data.</p></li>
+<li><p><cite>landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation</cite>: Optimizes land cover distribution.</p></li>
 </ul>
 </section>
 <section id="classes">
@@ -129,12 +131,15 @@ and their implications on land use distribution.</p>
 to grassland and spared lands. It provides methods to fill current area data, compute current and future land use areas,
 and analyze spared area breakdowns and grassland distributions based on scenario inputs.</p>
 <p>Methods include:
-- <cite>_fill_current_area_row</cite>: Fills data for the current area based on land use type.
-- <cite>compute_current_area</cite>: Computes the current area distribution for all land uses.
-- <cite>combined_future_land_use_area</cite>: Combines current and future land use areas under different scenarios.
-- <cite>spared_area_breakdown</cite>: Analyzes the breakdown of spared areas based on scenarios.
-- <cite>grassland_breakdown</cite>: Specifically analyzes the breakdown of grassland areas under scenarios.
-- <cite>_available_organic_area</cite>: Computes the available organic area for scenarios.</p>
+- _fill_current_area_row: Fills data for the current area based on land use type.
+- compute_current_area: Computes the current area distribution for all land uses.
+- combined_future_land_use_area: Combines current and future land use areas under different scenarios.
+- spared_area_breakdown: Analyzes the breakdown of spared areas based on scenarios.
+- grassland_breakdown: Specifically analyzes the breakdown of grassland areas under scenarios.
+- _available_organic_area: Computes the available organic area for scenarios.
+- _log_spared_area: Logs the spared area details for a specific scenario and land use.
+- get_spared_area_log: Returns the log of spared area details.
+- _calculate_rewetted_areas: Calculates the areas to be rewetted based on the scenario and target rewetted area.</p>
 </dd></dl>
 
 </section>
@@ -178,7 +183,7 @@ based on specific scenario inputs.</p>
 <dd><p>Manages land cover data and provides access to calibration and target year data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../landcover_data_manager/index.html#id0" title="landcover_assignment.landcover_data_manager.DataManager">DataManager</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../../resource_manager/database_manager/index.html#landcover_assignment.resource_manager.database_manager.DataManager" title="landcover_assignment.resource_manager.database_manager.DataManager">DataManager</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -189,7 +194,7 @@ based on specific scenario inputs.</p>
 <dd><p>Loads required data resources, including environmental and land use data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../resource_manager/data_loader/index.html#id0" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../../resource_manager/data_loader/index.html#landcover_assignment.resource_manager.data_loader.Loader" title="landcover_assignment.resource_manager.data_loader.Loader">Loader</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -286,8 +291,57 @@ based on specific scenario inputs.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._log_spared_area">
+<span class="sig-name descname"><span class="pre">_log_spared_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_organic_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._log_spared_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._log_spared_area" title="Link to this definition"></a></dt>
+<dd><p>Logs the spared area details for a specific scenario and land use.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.get_spared_area_log">
+<span class="sig-name descname"><span class="pre">get_spared_area_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.get_spared_area_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover.get_spared_area_log" title="Link to this definition"></a></dt>
+<dd><p>Returns the log of spared area details.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._calculate_rewetted_areas">
+<span class="sig-name descname"><span class="pre">_calculate_rewetted_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_rewetted</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._calculate_rewetted_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.geo_landcover_assignment.geo_landcover.LandCover._calculate_rewetted_areas" title="Link to this definition"></a></dt>
+<dd><p>Calculates the areas to be rewetted based on the scenario and target rewetted area.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">_fill_current_area_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">farm_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._fill_current_area_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_log_spared_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_organic_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._log_spared_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Logs the spared area details for a specific scenario and land use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>int</em>) – The scenario identifier.</p></li>
+<li><p><strong>land_use</strong> (<em>str</em>) – The type of land use.</p></li>
+<li><p><strong>mineral_area</strong> (<em>float</em>) – The amount of area spared on mineral soil.</p></li>
+<li><p><strong>organic_area</strong> (<em>float</em>) – The amount of area spared on organic soil.</p></li>
+<li><p><strong>mineral_organic_area</strong> (<em>float</em>) – The amount of area spared on mineral-organic soil.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">get_spared_area_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.get_spared_area_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Returns the log of spared area details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing the log of spared area details.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">_fill_current_area_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">farm_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._fill_current_area_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
 <dd><p>Fills a row of data representing the current state of a specific land use area.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -307,8 +361,8 @@ based on specific scenario inputs.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">compute_current_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.compute_current_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">compute_current_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.compute_current_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
 <dd><p>Computes the distribution of current land use areas based on the calibration year and available data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return pd.DataFrame<span class="colon">:</span></dt>
@@ -318,8 +372,8 @@ based on specific scenario inputs.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">combined_future_land_use_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.combined_future_land_use_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">combined_future_land_use_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.combined_future_land_use_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
 <dd><p>Combines the calculated current land use areas with projected future areas under different scenarios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return pd.DataFrame<span class="colon">:</span></dt>
@@ -329,8 +383,8 @@ based on specific scenario inputs.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">spared_area_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.spared_area_breakdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">spared_area_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.spared_area_breakdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
 <dd><p>Analyzes the breakdown of spared areas under a specific scenario, adjusting land use distributions accordingly.</p>
 <p>This method calculates how spared areas should be distributed among various land use types based on scenario-specific
 proportions and environmental considerations, such as the availability of organic soil.</p>
@@ -349,8 +403,8 @@ and areas for each type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">grassland_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.grassland_breakdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">grassland_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover.grassland_breakdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
 <dd><p>Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.</p>
 <p>This method computes how changes in land use, particularly the conversion of grassland to other types or
 its retention, affect the overall grassland area. It considers organic and mineral soil proportions and
@@ -370,8 +424,8 @@ of soil types.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">_available_organic_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._available_organic_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">_available_organic_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._available_organic_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
 <dd><p>Computes the available area for organic soil under a given scenario.</p>
 <p>This internal method calculates the maximum possible area that can be transitioned to organic soil-based
 land uses, such as wetlands, based on the current organic and organic-mineral soil areas and scenario-specific
@@ -385,6 +439,27 @@ spared area allocations.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">_calculate_rewetted_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_rewetted</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/geo_landcover_assignment/geo_landcover.html#LandCover._calculate_rewetted_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Calculates the areas to be rewetted based on the scenario and target rewetted area.</p>
+<p>This method computes the areas to be rewetted, considering the available organic and mineral-organic areas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>int</em>) – The scenario identifier for which the rewetted areas are calculated.</p></li>
+<li><p><strong>target_rewetted</strong> (<em>float</em>) – The target area to be rewetted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the rewetted area, rewetted organic area, and rewetted mineral-organic area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>

@@ -30,14 +30,20 @@ class NationalLandCover:
     The class leverages a data loader to access pre-defined national area datasets and performs calculations to return comprehensive summaries 
     for each land use type.
 
-    Attributes:
-        loader (Loader): An instance of Loader to access national datasets.
-        methods (dict): A mapping from land use types to their respective data retrieval methods.
-        national_areas (dict): A dictionary containing methods to retrieve national area data for different land use types.
+    Attributes
+    ----------
+    loader : Loader
+        An instance of Loader to access national datasets.
+    methods : dict
+        A mapping from land use types to their respective data retrieval methods.
+    national_areas : dict
+        A dictionary containing methods to retrieve national area data for different land use types.
     """
     def __init__(self):
  
         self.loader = Loader()
+
+        self.national_areas_cache = {}
 
         self.methods ={
             'forest': self.get_forest_data,
@@ -55,15 +61,51 @@ class NationalLandCover:
             "grassland": self.loader.national_grassland_areas,
         }
 
+    def _get_cached_data(self, landuse):
+        """
+        Retrieve and cache the data for a specified land use type.
+
+        Parameters
+        ----------
+        landuse : str
+            The land use type to retrieve.
+
+        Returns
+        -------
+        pandas.DataFrame
+            The cached DataFrame for the specified land use type.
+
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
+        """
+        # Validate land use type
+        if landuse not in self.national_areas:
+            raise ValueError(f"Unknown land use type: {landuse}")
+
+        # Check if the data is already cached
+        if landuse not in self.national_areas_cache:
+            # Cache the data if not already present
+            self.national_areas_cache[landuse] = self.national_areas[landuse]()()
+
+        return self.national_areas_cache[landuse].copy()
+    
 
     def get_forest_data(self, year):
         """
         Retrieves summary data for forest land use including area, shares of mineral, organic, and organic-mineral soils, 
         peat extraction, and rewetted areas for a given year.
 
-        :param year: The year, as int, for which data is retrieved.
-        :return: A DataFrame containing summary data for forest land use.
-        :rtype: pandas.DataFrame
+        Parameters
+        ----------
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing summary data for forest land use.
         """
         # Creating a summary DataFrame
         summary_data = {
@@ -95,9 +137,15 @@ class NationalLandCover:
         Retrieves summary data for wetland (peat) land use including area, shares of mineral, organic, and organic-mineral soils,
         peat extraction, and rewetted areas for a given year.
 
-        :param year: The year, as int, for which data is retrieved.
-        :return: A DataFrame containing summary data for wetland land use.
-        :rtype: pandas.DataFrame
+        Parameters
+        ----------
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing summary data for wetland land use.
         """
         # Creating a summary DataFrame
         summary_data = {
@@ -128,9 +176,15 @@ class NationalLandCover:
         Retrieves summary data for cropland use including area, shares of mineral, organic, and organic-mineral soils,
         peat extraction, and rewetted areas for a given year.
 
-        :param year: The year, as int, for which data is retrieved.
-        :return: A DataFrame containing summary data for cropland use.
-        :rtype: pandas.DataFrame
+        Parameters
+        ----------
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing summary data for cropland use.
         """
         # Creating a summary DataFrame
         summary_data = {
@@ -162,12 +216,19 @@ class NationalLandCover:
         Retrieves summary data for grassland use including area, shares of mineral, organic, and organic-mineral soils,
         peat extraction, and rewetted areas, optionally adjusted by total grassland area for a given year.
 
-        Area is derived from total grassland area calculated using the grassland_production module
+        Area is derived from total grassland area calculated using the grassland_production module.
 
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: A DataFrame containing summary data for grassland use.
-        :rtype: pandas.DataFrame
+        Parameters
+        ----------
+        year : int
+            The year for which data is retrieved.
+        total_grassland_area : float
+            The total grassland area used for calculations.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing summary data for grassland use.
         """
         
         derived_grassland_area = self.get_derived_national_grassland_area(total_grassland_area)
@@ -202,9 +263,15 @@ class NationalLandCover:
         Retrieves summary data for settlement land use including area, shares of mineral, organic, and organic-mineral soils,
         peat extraction, and rewetted areas for a given year.
 
-        :param year: The year, as int, for which data is retrieved.
-        :return: A DataFrame containing summary data for settlement land use.
-        :rtype: pandas.DataFrame
+        Parameters
+        ----------
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing summary data for settlement land use.
         """
         # Creating a summary DataFrame
         summary_data = {
@@ -235,12 +302,24 @@ class NationalLandCover:
         """
         Retrieves the total area for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The total area for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'area_ha' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The total area for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'area_ha' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 0.0
@@ -266,12 +345,24 @@ class NationalLandCover:
         """
         Retrieves the share of mineral soil for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share mineral for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_mineral' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share mineral for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_mineral' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 1.0
@@ -294,12 +385,24 @@ class NationalLandCover:
         """
         Retrieves the share of organic soil for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_organic' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 0.0
@@ -322,12 +425,24 @@ class NationalLandCover:
         """
         Retrieves the share of organic-mineral mixed soil for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share organic mineral for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_organic_mineral' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share organic mineral for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_organic_mineral' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 0.0
@@ -351,12 +466,24 @@ class NationalLandCover:
         """
         Retrieves the share of rich drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share rich organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_drained_rich_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share rich organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_drained_rich_organic' column is not found in the result.
         """
         if landuse != 'grassland':
             return 0.0
@@ -379,12 +506,24 @@ class NationalLandCover:
         """
         Retrieves the share of poor drained organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share poor organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_poor_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share poor organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_poor_organic' column is not found in the result.
         """
         if landuse != 'grassland':
             return 0.0
@@ -403,16 +542,29 @@ class NationalLandCover:
         else:
             raise ValueError(f"'share_drained_poor_organic' column not found in the result for land use: {landuse}")
         
+
     def get_share_rewetted_rich_in_organic_grassland(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of share rewetted in rich organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted rich organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share rewetted in organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_rich_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share rewetted rich organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_rich_organic' column is not found in the result.
         """
         if landuse != 'grassland':
             return 0.0
@@ -431,16 +583,29 @@ class NationalLandCover:
         else:
             raise ValueError(f"'share_rewetted_rich_organic' column not found in the result for land use: {landuse}")
         
+
     def get_share_rewetted_poor_in_organic_grassland(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of share rewetted in poor organic for grassland for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted poor organic soil for grassland for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share rewetted in organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_poor_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share rewetted poor organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_poor_organic' column is not found in the result.
         """
         if landuse != 'grassland':
             return 0.0
@@ -462,14 +627,26 @@ class NationalLandCover:
 
     def get_share_rewetted_in_organic(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of share rewetted in organic for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted organic soil for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share rewetted in organic for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_in_organic' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share rewetted organic for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_in_organic' column is not found in the result.
         """
 
         if landuse == 'farmable_condition':
@@ -491,14 +668,26 @@ class NationalLandCover:
     
     def get_share_rewetted_in_mineral(self, landuse, year, grassland_area=None):
         """
-        Retrieves the share of share rewetted in mineral for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted mineral soil for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share rewetted in mineral for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_in_mineral' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share rewetted mineral for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_in_mineral' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 0.0
@@ -519,14 +708,24 @@ class NationalLandCover:
 
     def get_share_domestic_peat_extraction(self, landuse, year):
         """
-        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of domestic peat extraction for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share peat extraction for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_domestic_peat_extraction' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share domestic peat extraction for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_domestic_peat_extraction' column is not found in the result.
         """
 
         if landuse != 'wetland':
@@ -547,14 +746,24 @@ class NationalLandCover:
 
     def get_share_industrial_peat_extraction(self, landuse, year):
         """
-        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of industrial peat extraction for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share peat extraction for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_industrial_peat_extraction' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share industrial peat extraction for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_industrial_peat_extraction' column is not found in the result.
         """
         if landuse != 'wetland':
             return 0.0
@@ -573,14 +782,24 @@ class NationalLandCover:
 
     def get_share_rewetted_domestic_peat_extraction(self, landuse, year):
         """
-        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted domestic peat extraction for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share peat extraction for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_domestic_peat_extraction' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share rewetted domestic peat extraction for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_domestic_peat_extraction' column is not found in the result.
         """
         if landuse != 'wetland':
             return 0.0
@@ -598,14 +817,24 @@ class NationalLandCover:
 
     def get_share_rewetted_industrial_peat_extraction(self, landuse, year):
         """
-        Retrieves the share of share of peat extraction for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of rewetted industrial peat extraction for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share peat extraction for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_rewetted_industrial_peat_extraction' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share rewetted industrial peat extraction for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_rewetted_industrial_peat_extraction' column is not found in the result.
         """
         if landuse != 'wetland':
             return 0.0
@@ -625,11 +854,22 @@ class NationalLandCover:
         """
         Retrieves the share of near natural wetland for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :return: The share near natural wetland for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_near_natural_wetland' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share near natural wetland for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_near_natural_wetland' column is not found in the result.
         """
         if landuse != 'wetland':
             return 0.0
@@ -648,11 +888,22 @@ class NationalLandCover:
         """
         Retrieves the share of unmanaged wetland for a specified land use type and year.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :return: The share unmanaged wetland for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_unmanaged_wetland' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share unmanaged wetland for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_unmanaged_wetland' column is not found in the result.
         """
         if landuse != 'wetland':
             return 0.0
@@ -670,14 +921,26 @@ class NationalLandCover:
         
     def get_share_burnt(self, landuse, year, grassland_area=None):   
         """
-        Retrieves the share of share burnt for a specified land use type and year. For grassland, the total area must be provided.
+        Retrieves the share of burnt areas for a specified land use type and year. For grassland, the total area must be provided.
 
-        :param landuse: The type of land use as string.
-        :param year: The year, as int, for which data is retrieved.
-        :param grassland_area: An optional parameter (float), relevant only for grassland land use.
-        :return: The share burnt for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown or if 'share_burnt' column is not found in the result.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use.
+        year : int
+            The year for which data is retrieved.
+        grassland_area : float, optional
+            Relevant only for grassland land use.
+        
+        Returns
+        -------
+        float
+            The share burnt for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown or if 'share_burnt' column is not found in the result.
         """
         if landuse == 'farmable_condition':
             return 0.0
@@ -701,10 +964,20 @@ class NationalLandCover:
         """
         Calculates the national average of burnt areas for a specified land use type.
 
-        :param landuse: The type of land use for which the burnt average is calculated as string.
-        :return: The national average of burnt areas for the specified land use type.
-        :rtype: float
-        :raises ValueError: If the land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The type of land use for which the burnt average is calculated.
+        
+        Returns
+        -------
+        float
+            The national average of burnt areas for the specified land use type.
+        
+        Raises
+        ------
+        ValueError
+            If the land use type is unknown.
         """
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
@@ -713,32 +986,64 @@ class NationalLandCover:
 
         return burn_average   
     
-    
     def get_national_area(self, landuse, year):
         """
         Retrieves the total area in hectares for a specified land use type and year from national datasets.
 
-        :param landuse: The land use type as a string.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The total area in hectares as a float.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The land use type.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The total area in hectares.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
         """
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
         
-        return self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        # Retrieve the cached data
+        data = self._get_cached_data(landuse)
+
+        # Check if year exists in the data
+        if year not in data.index:
+            raise ValueError(f"Year {year} not found for land use type {landuse}")
+        
+        # Ensure the required column exists
+        if "total_kha" not in data.columns:
+            raise ValueError(f"'total_kha' column missing for land use type {landuse}")
+        
+        return data.loc[year, "total_kha"].item()
     
 
     def get_national_mineral(self, landuse, year):
         """
         Calculates the share of mineral soil for a given land use type and year, based on national datasets.
 
-        :param landuse: The land use type as a string.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of mineral soil as a float.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The land use type.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of mineral soil.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
         """
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
@@ -746,7 +1051,8 @@ class NationalLandCover:
         if landuse == "forest":
             mineral = (1 - (self.get_national_organic_mineral("forest", year) + self.get_national_organic("forest", year)))
         else:
-            mineral = self.national_areas[landuse]()().loc[year,"mineral_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+            data = self._get_cached_data(landuse)
+            mineral = data.loc[year,"mineral_kha"].item() / data.loc[year,"total_kha"].item()
 
         return mineral
     
@@ -755,19 +1061,33 @@ class NationalLandCover:
         """
         Calculates the share of organic soil for a given land use type and year, based on national datasets.
 
-        :param landuse: The land use type as a string.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of organic soil as a float.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The land use type.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of organic soil.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
         """
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
         
+        data = self._get_cached_data(landuse)
+        
         if landuse == "forest":
-            organic = self.national_areas[landuse]()().loc[year,"organic_emitting_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+            
+            organic = data.loc[year,"organic_emitting_kha"].item() / data.loc[year,"total_kha"].item()
         else:
-            organic = self.national_areas[landuse]()().loc[year,"organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+            organic = data.loc[year,"organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return organic
 
@@ -776,11 +1096,22 @@ class NationalLandCover:
         """
         Calculates the share of organic soil for a given land use type and year, based on national datasets.
 
-        :param landuse: The land use type as a string.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of organic soil as a float.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The land use type.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of organic soil.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
         """
 
         if landuse != "forest":
@@ -789,7 +1120,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        organic_mineral = self.national_areas[landuse]()().loc[year,"organo_mineral_emitting_kha"].item()/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        organic_mineral = data.loc[year,"organo_mineral_emitting_kha"].item()/ data.loc[year,"total_kha"].item()
 
         return organic_mineral
     
@@ -798,51 +1130,90 @@ class NationalLandCover:
         """
         Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.
 
-        :param landuse: Must be "grassland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "grassland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rich organic soil, returns 0.0 for non-grassland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "grassland".
         """
         if landuse != "grassland":
             return 0.0
         
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
+        
+        data = self._get_cached_data(landuse)
 
-        rich_organic = self.national_areas[landuse]()().loc[year,"drained_rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        rich_organic = data.loc[year,"drained_rich_organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rich_organic
     
+
     def get_national_poor_drained_organic_grassland(self, landuse, year):
         """
         Calculates the share of poor drained organic soil for grassland in a given year, based on national datasets.
 
-        :param landuse: Must be "grassland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "grassland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of poor organic soil, returns 0.0 for non-grassland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "grassland".
         """
         if landuse != "grassland":
             return 0.0
         
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
+        
+        data = self._get_cached_data(landuse)
 
-        poor_organic = self.national_areas[landuse]()().loc[year,"drained_poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        poor_organic = data.loc[year,"drained_poor_organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return poor_organic
     
+
     def get_national_rich_rewetted_organic_grassland(self, landuse, year):
         """
         Calculates the share of rich rewetted organic soil for grassland in a given year, based on national datasets.
 
-        :param landuse: Must be "grassland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rich organic soil as a float, returns 0.0 for non-grassland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "grassland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rich organic soil, returns 0.0 for non-grassland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "grassland".
         """
         if landuse != "grassland":
             return 0.0
@@ -850,19 +1221,33 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rich_organic = self.national_areas[landuse]()().loc[year,"rewetted_rich_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+
+        rich_organic = data.loc[year,"rewetted_rich_organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rich_organic
     
+
     def get_national_poor_rewetted_organic_grassland(self, landuse, year):
         """
         Calculates the share of poor rewetted organic soil for grassland in a given year, based on national datasets.
 
-        :param landuse: Must be "grassland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of poor organic soil as a float, returns 0.0 for non-grassland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "grassland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "grassland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of poor organic soil, returns 0.0 for non-grassland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "grassland".
         """
         if landuse != "grassland":
             return 0.0
@@ -870,7 +1255,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        poor_organic = self.national_areas[landuse]()().loc[year,"rewetted_poor_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        poor_organic = data.loc[year,"rewetted_poor_organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return poor_organic
     
@@ -879,11 +1265,22 @@ class NationalLandCover:
         """
         Calculates the share of areas under domestic peat extraction for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of areas under peat extraction, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -891,19 +1288,33 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        peat_extraction = self.national_areas[landuse]()().loc[year,"domestic_peat_extraction_kha"].item()/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+
+        peat_extraction = data.loc[year,"domestic_peat_extraction_kha"].item()/ data.loc[year,"total_kha"].item()
 
         return peat_extraction
+    
     
     def get_national_industrial_peat_extraction(self, landuse, year):
         """
         Calculates the share of areas under industrial peat extraction for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of areas under peat extraction as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of areas under peat extraction, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -911,7 +1322,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        peat_extraction = self.national_areas[landuse]()().loc[year,"industrial_peat_extraction_kha"].item()/ self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        peat_extraction = data.loc[year,"industrial_peat_extraction_kha"].item()/ data.loc[year,"total_kha"].item()
 
         return peat_extraction
     
@@ -920,11 +1332,22 @@ class NationalLandCover:
         """
         Calculates the share of rewetted areas under domestic peat extraction for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rewetted areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -932,7 +1355,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rewetted = self.national_areas[landuse]()().loc[year,"rewetted_domestic_peat_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        rewetted = data.loc[year,"rewetted_domestic_peat_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rewetted
     
@@ -941,11 +1365,22 @@ class NationalLandCover:
         """
         Calculates the share of rewetted areas under industrial peat extraction for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rewetted areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rewetted areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -953,7 +1388,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rewetted = self.national_areas[landuse]()().loc[year,"rewetted_industrial_peat_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        rewetted = data.loc[year,"rewetted_industrial_peat_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rewetted
 
@@ -962,11 +1398,22 @@ class NationalLandCover:
         """
         Calculates the share of rewetted organic areas for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rewetted organic areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rewetted organic areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -974,7 +1421,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rewetted_in_organic = self.national_areas[landuse]()().loc[year,"rewetted_organic_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        rewetted_in_organic = data.loc[year,"rewetted_organic_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rewetted_in_organic
     
@@ -983,11 +1431,22 @@ class NationalLandCover:
         """
         Calculates the share of rewetted mineral areas for wetlands in a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of rewetted mineral areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of rewetted mineral areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """                
         if landuse != "wetland":
             return 0.0
@@ -995,19 +1454,32 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        rewetted_in_mineral = self.national_areas[landuse]()().loc[year,"rewetted_mineral_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        rewetted_in_mineral = data.loc[year,"rewetted_mineral_kha"].item() / data.loc[year,"total_kha"].item()
 
         return rewetted_in_mineral
     
+
     def get_national_unmanaged_wetland(self, landuse, year):
         """
         Calculates the share of unmanaged wetland areas for a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of unmanaged wetland areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of unmanaged wetland areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -1015,19 +1487,32 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        unmanaged = self.national_areas[landuse]()().loc[year,"unmanaged_wetland_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        unmanaged = data.loc[year,"unmanaged_wetland_kha"].item() / data.loc[year,"total_kha"].item()
 
         return unmanaged
     
+
     def get_national_near_natural_wetland(self, landuse, year):
         """
         Calculates the share of near natural wetland areas for a given year, based on national datasets.
 
-        :param landuse: Must be "wetland" for this calculation.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of near natural wetland areas as a float, returns 0.0 for non-wetland land uses.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown or not "wetland".
+        Parameters
+        ----------
+        landuse : str
+            Must be "wetland" for this calculation.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of near natural wetland areas, returns 0.0 for non-wetland land uses.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown or not "wetland".
         """
         if landuse != "wetland":
             return 0.0
@@ -1035,7 +1520,8 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
 
-        near_natural = self.national_areas[landuse]()().loc[year,"near_natural_wetland_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+        data = self._get_cached_data(landuse)
+        near_natural = data.loc[year,"near_natural_wetland_kha"].item() / data.loc[year,"total_kha"].item()
 
         return near_natural
     
@@ -1044,16 +1530,29 @@ class NationalLandCover:
         """
         Calculates the share of burnt areas for a given land use type and year, based on national datasets.
 
-        :param landuse: The land use type as a string.
-        :param year: The year for which data is retrieved as an integer.
-        :return: The share of burnt areas as a float.
-        :rtype: float
-        :raises ValueError: If the specified land use type is unknown.
+        Parameters
+        ----------
+        landuse : str
+            The land use type.
+        year : int
+            The year for which data is retrieved.
+        
+        Returns
+        -------
+        float
+            The share of burnt areas.
+        
+        Raises
+        ------
+        ValueError
+            If the specified land use type is unknown.
         """    
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
-    
-        burn = self.national_areas[landuse]()().loc[year,"burnt_kha"].item() / self.national_areas[landuse]()().loc[year,"total_kha"].item()
+
+        data = self._get_cached_data(landuse)
+
+        burn = data.loc[year,"burnt_kha"].item() / data.loc[year,"total_kha"].item()
 
         return burn
 
@@ -1062,11 +1561,22 @@ class NationalLandCover:
         """
         Retrieves the total spared area for a specific scenario from a spared area dataset.
 
-        :param spared_area: A DataFrame containing spared area data.
-        :param sc: The scenario as a string or integer.
-        :return: The total spared area as a float.
-        :rtype: float
-        :raises ValueError: If the scenario is not found in the spared area dataset.
+        Parameters
+        ----------
+        spared_area : pandas.DataFrame
+            A DataFrame containing spared area data.
+        sc : str or int
+            The scenario.
+        
+        Returns
+        -------
+        float
+            The total spared area.
+        
+        Raises
+        ------
+        ValueError
+            If the scenario is not found in the spared area dataset.
         """
         try:
             col = str(sc)
@@ -1087,12 +1597,22 @@ class NationalLandCover:
         """
         Derives the national grassland area for a given scenario.
 
-        :param grassland_area: A DataFrame or Series containing grassland area data.
-        :type grassland_area: 
-        :param sc: The scenario as a string or integer, default is 0.
-        :return: The derived national grassland area as a float.
-        :rtype: float
-        :raises ValueError: If the scenario is not found in the grassland area data.
+        Parameters
+        ----------
+        grassland_area : pandas.DataFrame or pandas.Series
+            A DataFrame or Series containing grassland area data.
+        sc : str or int, optional
+            The scenario, default is 0.
+        
+        Returns
+        -------
+        float
+            The derived national grassland area.
+        
+        Raises
+        ------
+        ValueError
+            If the scenario is not found in the grassland area data.
         """
         try:
             col = str(sc)
@@ -1111,12 +1631,24 @@ class NationalLandCover:
         """
         Calculates the area with organic potential based on a spared area breakdown for a specific scenario.
 
-        :param spared_breakdown: A DataFrame containing spared area breakdown data.
-        :param total_spared_area: A DataFrame or Series containing total spared area data.
-        :param sc: The scenario as a string or integer.
-        :return: The area with organic potential as a float.
-        :rtype: float
-        :raises ValueError: If the scenario is not found in the spared breakdown dataset or if all values in the 'area_ha' column are zero.
+        Parameters
+        ----------
+        spared_breakdown : pandas.DataFrame
+            A DataFrame containing spared area breakdown data.
+        total_spared_area : pandas.DataFrame or pandas.Series
+            A DataFrame or Series containing total spared area data.
+        sc : str or int
+            The scenario.
+        
+        Returns
+        -------
+        float
+            The area with organic potential.
+        
+        Raises
+        ------
+        ValueError
+            If the scenario is not found in the spared breakdown dataset or if all values in the 'area_ha' column are zero.
         """
         # Select only numeric columns 
         numeric_df = spared_breakdown.select_dtypes(include=[float, int])
@@ -1145,6 +1677,106 @@ class NationalLandCover:
 
 
         return area_ha
+
+
+    def get_land_shares(self,key, land_use, year):
+            
+        """
+        Retrieve the share of a specific land type for a given land use and year.
+        Parameters:
+        key (str): The key representing the specific land share to retrieve.
+        land_use (str): The type of land use.
+        year (int): The year for which the land share is to be retrieved.
+        Returns:
+        float: The share of the specified land type.
+        Raises:
+        KeyError: If the provided key is not found in the shares dictionary.
+        Available keys:
+        - "share_mineral"
+        - "share_organic"
+        - "share_drained_rich_organic"
+        - "share_drained_poor_organic"
+        - "share_rewetted_rich_organic"
+        - "share_rewetted_poor_organic"
+        - "share_organic_mineral"
+        - "share_domestic_peat_extraction"
+        - "share_industrial_peat_extraction"
+        - "share_rewetted_domestic_peat_extraction"
+        - "share_rewetted_industrial_peat_extraction"
+        - "share_rewetted_in_mineral"
+        - "share_rewetted_in_organic"
+        - "share_near_natural_wetland"
+        - "share_unmanaged_wetland"
+        - "share_burnt"
+        """
+            
+        shares ={
+            "share_mineral": self.get_share_mineral(land_use, year),
+            "share_organic":self.get_share_organic(land_use, year),
+            "share_drained_rich_organic":self.get_share_drained_rich_organic_grassland(land_use, year),
+            "share_drained_poor_organic":self.get_share_drained_poor_organic_grassland(land_use, year),
+            "share_rewetted_rich_organic":self.get_share_rewetted_rich_in_organic_grassland(land_use, year),
+            "share_rewetted_poor_organic":self.get_share_rewetted_poor_in_organic_grassland(land_use, year),
+            "share_organic_mineral":self.get_share_organic_mineral(land_use, year),
+            "share_domestic_peat_extraction":self.get_share_domestic_peat_extraction(land_use, year),
+            "share_industrial_peat_extraction":self.get_share_industrial_peat_extraction(land_use, year),
+            "share_rewetted_domestic_peat_extraction":self.get_share_rewetted_domestic_peat_extraction(land_use, year),
+            "share_rewetted_industrial_peat_extraction":self.get_share_rewetted_industrial_peat_extraction(land_use, year),
+            "share_rewetted_in_mineral":self.get_share_rewetted_in_mineral(land_use, year),
+            "share_rewetted_in_organic":self.get_share_rewetted_in_organic(land_use, year),
+            "share_near_natural_wetland":self.get_share_near_natural_wetland(land_use, year),
+            "share_unmanaged_wetland":self.get_share_unmanaged_wetland(land_use, year),
+            "share_burnt":self.get_share_burnt(land_use, year)
+        }
+
+        return shares[key]
+    
+
+    def get_grassland_shares(self, key, year, grassland_area):
+        """
+        Retrieve the share of a specific land type for grassland use and year.
+
+        Parameters
+        ----------
+        key : str
+            The key representing the specific land share to retrieve.
+        year : int
+            The year for which the land share is to be retrieved.
+        grassland_area : float
+            The total grassland area used for calculations.
+        
+        Returns
+        -------
+        float
+            The share of the specified land type.
+        
+        Raises
+        ------
+        KeyError
+            If the provided key is not found in the shares dictionary.
+        
+        Available keys:
+        - "share_mineral"
+        - "share_organic"
+        - "share_drained_rich_organic"
+        - "share_drained_poor_organic"
+        - "share_rewetted_rich_in_organic"
+        - "share_rewetted_poor_in_organic"
+        - "share_organic_mineral"
+        - "share_burnt"
+        """
+        shares ={
+                "share_mineral": self.get_share_mineral("grassland", year, grassland_area),
+                "share_organic": self.get_share_organic("grassland", year, grassland_area),
+                "share_drained_rich_organic": self.get_share_drained_rich_organic_grassland("grassland", year, grassland_area),
+                "share_drained_poor_organic": self.get_share_drained_poor_organic_grassland("grassland", year, grassland_area),
+                "share_rewetted_rich_in_organic": self.get_share_rewetted_rich_in_organic_grassland("grassland", year, grassland_area),
+                "share_rewetted_poor_in_organic": self.get_share_rewetted_poor_in_organic_grassland("grassland", year, grassland_area),
+                "share_organic_mineral": self.get_share_organic_mineral("grassland", year, grassland_area),
+                "share_burnt": self.get_share_burnt("grassland", year, grassland_area),
+            }
+
+        return shares[key]
 
 
 
