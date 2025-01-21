@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.distribution &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.distribution &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -16,7 +16,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -91,9 +91,9 @@
 
 <span class="sd">Dependencies:</span>
 <span class="sd">-------------</span>
-<span class="sd">- ``landcover_assignment.landcover_data_manager.DistributionManager``</span>
-<span class="sd">- ``landcover_assignment.national_landcover.NatioanlLandCover``</span>
-<span class="sd">- ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``</span>
+<span class="sd">- ``landcover_assignment.resource_manager.landcover_data_manager.DistributionManager``</span>
+<span class="sd">- ``landcover_assignment.national_landcover.NationalLandCover``</span>
+<span class="sd">- ``landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher``</span>
 <span class="sd">- ``pandas`` for data manipulation and analysis.</span>
 
 <span class="sd">Classes:</span>
@@ -104,18 +104,18 @@
 <span class="sd">   Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in</span>
 <span class="sd">   areas and soil composition.</span>
 
-<span class="sd">   .. method:: land_distribution(land_use, new_area)</span>
+<span class="sd">   .. method:: land_distribution(year, land_use, new_area)</span>
 <span class="sd">      Calculates and updates the distribution of land based on land use type and the area change. It supports special </span>
 <span class="sd">      handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other </span>
 <span class="sd">      soil types accordingly.</span>
 
-<span class="sd">   .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)</span>
+<span class="sd">   .. method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)</span>
 <span class="sd">      Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic</span>
 <span class="sd">      components, and recalculates the total remaining grassland area along with its composition.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">landcover_assignment.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DistributionManager</span>
+<span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DistributionManager</span>
 <span class="kn">from</span> <span class="nn">landcover_assignment.national_landcover</span> <span class="kn">import</span> <span class="n">NationalLandCover</span>
 <span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.scenario_data_fetcher</span> <span class="kn">import</span> <span class="n">ScenarioDataFetcher</span>
 
@@ -128,7 +128,7 @@
 
 <span class="sd">    This class provides methods to calculate and update land distribution based on changes in land use</span>
 <span class="sd">    types, including special considerations for grassland, wetland, and forest. It utilizes data from</span>
-<span class="sd">    land cover data managers, catchment analysis, and scenario-specific data fetchers to accurately</span>
+<span class="sd">    land cover data managers, national land cover analysis, and scenario-specific data fetchers to accurately</span>
 <span class="sd">    model land distribution adjustments under various scenarios.</span>
 
 <span class="sd">    Parameters</span>
@@ -142,27 +142,25 @@
 <span class="sd">    data_manager_class : DistributionManager</span>
 <span class="sd">        An instance of DistributionManager for managing land distribution data.</span>
 <span class="sd">    national_class : NationalLandCover</span>
-<span class="sd">        An instance of NatioanlLandCover for accessing and analyzing Irish national context land cover data.</span>
+<span class="sd">        An instance of NationalLandCover for accessing and analyzing Irish national context land cover data.</span>
 <span class="sd">    sc_fetcher_class : ScenarioDataFetcher</span>
 <span class="sd">        An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.</span>
 
-
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    land_distribution(land_use, new_area)</span>
+<span class="sd">    land_distribution(year, land_use, new_area)</span>
 <span class="sd">        Calculates and updates the distribution of land based on land use type and the area change.</span>
 <span class="sd">        It supports special handling for grassland, wetland, and forest types, among others, adjusting shares</span>
 <span class="sd">        of mineral, organic, and other soil types accordingly.</span>
 
-<span class="sd">    grassland_distribution(mineral_area, organic_area, grassland_area)</span>
+<span class="sd">    grassland_distribution(year, mineral_area, organic_area, grassland_area)</span>
 <span class="sd">        Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral</span>
 <span class="sd">        and organic components, and recalculates the total remaining grassland area along with its composition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span> <span class="o">=</span> <span class="n">DistributionManager</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span> <span class="o">=</span> <span class="n">NationalLandCover</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetcher_class</span> <span class="o">=</span> <span class="n">ScenarioDataFetcher</span><span class="p">(</span><span class="n">scenario_data</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">sc_fetcher_class</span> <span class="o">=</span> <span class="n">ScenarioDataFetcher</span><span class="p">(</span><span class="n">scenario_data</span><span class="p">,</span> <span class="n">validate_on_init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LandDistribution.land_distribution">
 <a class="viewcode-back" href="../../autoapi/landcover_assignment/distribution/index.html#landcover_assignment.distribution.LandDistribution.land_distribution">[docs]</a>
@@ -170,152 +168,104 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates and updates the land distribution based on land use type and area change.</span>
 
-<span class="sd">        :param year: The reference year for national land use data</span>
-<span class="sd">        :type year: int</span>
-<span class="sd">        :param land_use: The type of land use to calculate distribution for.</span>
-<span class="sd">        :type land_use: str</span>
-<span class="sd">        :param new_area: The area change to be applied to the land use type.</span>
-<span class="sd">        :type new_area: float</span>
-<span class="sd">        :return: A dictionary containing updated land distribution details.</span>
-<span class="sd">        :rtype: dict</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        year : int</span>
+<span class="sd">            The reference year for national land use data.</span>
+<span class="sd">        land_use : str</span>
+<span class="sd">            The type of land use to calculate distribution for.</span>
+<span class="sd">        new_area : float</span>
+<span class="sd">            The area change to be applied to the land use type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary containing updated land distribution details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;grassland&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        
+
+        <span class="n">land</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_distribution_keys</span><span class="p">()}</span>
+
+        <span class="n">current_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="n">shares</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_land_shares</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_share_keys</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Calculate total area</span>
+        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_area</span> <span class="o">+</span> <span class="p">(</span><span class="n">new_area</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Calculate updated shares</span>
+        <span class="k">if</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">share_value</span> <span class="ow">in</span> <span class="n">shares</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Adjust `share_mineral` differently if it&#39;s not &quot;wetland&quot;</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;share_mineral&quot;</span> <span class="ow">and</span> <span class="n">land_use</span> <span class="o">!=</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
+                    <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">current_area</span> <span class="o">*</span> <span class="n">share_value</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">new_area</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Proportionally adjust other shares</span>
+                    <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_area</span> <span class="o">*</span> <span class="n">share_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            
-            <span class="c1">#initialize land dictionary with default values </span>
+            <span class="c1"># Retain original shares if total area is zero</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">share_value</span> <span class="ow">in</span> <span class="n">shares</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">share_value</span>
 
-            <span class="n">land</span> <span class="o">=</span> <span class="p">{</span>            
-                <span class="s2">&quot;area_ha&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="p">}</span>
-
-            <span class="n">land_share_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_drained_rich_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_drained_rich_organic_grassland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_drained_poor_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_drained_poor_organic_grassland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_rich_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_rich_in_organic_grassland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_poor_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_poor_in_organic_grassland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_organic_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_domestic_peat_extraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_domestic_peat_extraction</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_industrial_peat_extraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_industrial_peat_extraction</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_domestic_peat_extraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_domestic_peat_extraction</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_industrial_peat_extraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_industrial_peat_extraction</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_in_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_in_mineral</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_rewetted_in_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_in_organic</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_near_natural_wetland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_near_natural_wetland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_unmanaged_wetland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_unmanaged_wetland</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_share_burnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">land_area_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="n">land_use</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">land</span></div>
 
 
-            <span class="c1">#calculate total wetland area </span>
-
-            <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
-                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">land_area_current</span> <span class="o">+</span> <span class="p">(</span><span class="n">new_area</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-
-            <span class="c1">#shares to calculate</span>
-            <span class="n">shares</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;share_mineral&quot;</span><span class="p">:</span> <span class="n">land_share_mineral</span><span class="p">,</span>
-                <span class="s2">&quot;share_organic&quot;</span><span class="p">:</span> <span class="n">land_share_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">:</span> <span class="n">land_share_drained_rich_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">:</span> <span class="n">land_share_drained_poor_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_rich_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_poor_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">:</span> <span class="n">land_share_organic_mineral</span><span class="p">,</span>
-                <span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_share_domestic_peat_extraction</span><span class="p">,</span>
-                <span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_share_industrial_peat_extraction</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_domestic_peat_extraction</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_industrial_peat_extraction</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_in_mineral</span><span class="p">,</span>
-                <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="n">land_share_rewetted_in_organic</span><span class="p">,</span>
-                <span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">:</span> <span class="n">land_share_near_natural_wetland</span><span class="p">,</span>
-                <span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">:</span> <span class="n">land_share_unmanaged_wetland</span><span class="p">,</span>
-                <span class="s2">&quot;share_burnt&quot;</span><span class="p">:</span> <span class="n">land_share_burnt</span>
-            <span class="p">}</span>
-
-            <span class="c1"># Calculate shares</span>
-            <span class="k">if</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">share_value</span> <span class="ow">in</span> <span class="n">shares</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;share_mineral&quot;</span> <span class="ow">and</span> <span class="n">land_use</span> <span class="o">!=</span> <span class="s2">&quot;wetland&quot;</span><span class="p">:</span>
-                        <span class="c1"># Adjust share_mineral specifically to reflect new_area</span>
-                        <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">land_area_current</span> <span class="o">*</span> <span class="n">share_value</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># Calculate other shares proportionally</span>
-                        <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">land_area_current</span> <span class="o">*</span> <span class="n">share_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># If area is zero, retain current shares</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">share_value</span> <span class="ow">in</span> <span class="n">shares</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">land</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">share_value</span>
-
-
-            <span class="k">return</span> <span class="n">land</span></div>
-
-
-
-<div class="viewcode-block" id="LandDistribution.grassland_distriubtion">
-<a class="viewcode-back" href="../../autoapi/landcover_assignment/distribution/index.html#landcover_assignment.distribution.LandDistribution.grassland_distriubtion">[docs]</a>
-    <span class="k">def</span> <span class="nf">grassland_distriubtion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">mineral_area</span><span class="p">,</span> <span class="n">organic_area</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">):</span>
+<div class="viewcode-block" id="LandDistribution.grassland_distribution">
+<a class="viewcode-back" href="../../autoapi/landcover_assignment/distribution/index.html#landcover_assignment.distribution.LandDistribution.grassland_distribution">[docs]</a>
+    <span class="k">def</span> <span class="nf">grassland_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">mineral_area</span><span class="p">,</span> <span class="n">organic_area</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.</span>
+<span class="sd">        Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.</span>
 
-<span class="sd">        :param year: The reference year for national land use data</span>
-<span class="sd">        :type year: int</span>
-<span class="sd">        :param mineral_area: The area of grassland to be converted to mineral soil.</span>
-<span class="sd">        :type mineral_area: float</span>
-<span class="sd">        :param organic_area: The area of grassland to be converted to rewetted organic soil.</span>
-<span class="sd">        :type organic_area: float</span>
-<span class="sd">        :param grassland_area: The total initial grassland area before distribution.</span>
-<span class="sd">        :type grassland_area: pandas.DataFrame</span>
-<span class="sd">        :return: A dictionary containing updated grassland distribution details.</span>
-<span class="sd">        :rtype: dict</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        year : int</span>
+<span class="sd">            The reference year for national land use data.</span>
+<span class="sd">        mineral_area : float</span>
+<span class="sd">            The area of mineral soil to be adjusted.</span>
+<span class="sd">        organic_area : float</span>
+<span class="sd">            The area of organic soil to be adjusted.</span>
+<span class="sd">        grassland_area : float</span>
+<span class="sd">            The total grassland area to be considered.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary containing updated grassland distribution details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">land</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_distribution</span>
+        <span class="c1"># Initialize land dictionary with default values</span>
+        <span class="n">land</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_distribution_keys</span><span class="p">()}</span>
 
-        <span class="n">current_grassland_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">grass_share_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_mineral</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">grass_share_organic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_organic</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">share_drained_rich_organic_grassland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_drained_rich_organic_grassland</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">share_drained_poor_organic_grassland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_drained_poor_organic_grassland</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">share_rewetted_rich_in_organic_grassland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_rich_in_organic_grassland</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">share_rewetted_poor_in_organic_grassland</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_rewetted_poor_in_organic_grassland</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">grass_share_organic_mineral</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_organic_mineral</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
-        <span class="n">grass_share_burnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_share_burnt</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span>
+        <span class="n">current_grassland_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_landuse_area</span><span class="p">(</span><span class="s2">&quot;grassland&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
 
-        <span class="n">grass_mineral_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">grass_share_mineral</span>
-        <span class="n">grass_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">grass_share_organic</span>
-        <span class="n">grass_organic_mineral_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">grass_share_organic_mineral</span>
-        <span class="n">grass_drained_rich_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">share_drained_rich_organic_grassland</span>
-        <span class="n">grass_drained_poor_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">share_drained_poor_organic_grassland</span>
-        <span class="n">grass_rewetted_rich_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">share_rewetted_rich_in_organic_grassland</span>
-        <span class="n">grass_rewetted_poor_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">share_rewetted_poor_in_organic_grassland</span>
+        <span class="c1"># Fetch all relevant shares dynamically</span>
+        <span class="n">shares</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">national_class</span><span class="o">.</span><span class="n">get_grassland_shares</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_grassland_share_keys</span><span class="p">()</span>
+        <span class="p">}</span>
 
+        <span class="c1"># Calculate areas</span>
+        <span class="n">grass_mineral_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span>
+        <span class="n">grass_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_organic&quot;</span><span class="p">]</span>
+        <span class="n">grass_organic_mineral_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">]</span>
+        <span class="n">grass_drained_rich_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">]</span>
+        <span class="n">grass_drained_poor_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">]</span>
+        <span class="n">grass_rewetted_rich_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_rewetted_rich_in_organic&quot;</span><span class="p">]</span>
+        <span class="n">grass_rewetted_poor_organic_area</span> <span class="o">=</span> <span class="n">current_grassland_area</span> <span class="o">*</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_rewetted_poor_in_organic&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Calculate rewetted areas and proportions</span>
         <span class="n">total_drained_area</span> <span class="o">=</span> <span class="n">grass_drained_rich_organic_area</span> <span class="o">+</span> <span class="n">grass_drained_poor_organic_area</span>
 
-        <span class="n">drained_rich_organic_proportion</span> <span class="o">=</span> <span class="n">grass_drained_rich_organic_area</span> <span class="o">/</span> <span class="n">total_drained_area</span>
-        <span class="n">drained_poor_organic_proportion</span> <span class="o">=</span> <span class="n">grass_drained_poor_organic_area</span> <span class="o">/</span> <span class="n">total_drained_area</span>
-
+        <span class="k">if</span> <span class="n">total_drained_area</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">drained_rich_organic_proportion</span> <span class="o">=</span> <span class="n">grass_drained_rich_organic_area</span> <span class="o">/</span> <span class="n">total_drained_area</span>
+            <span class="n">drained_poor_organic_proportion</span> <span class="o">=</span> <span class="n">grass_drained_poor_organic_area</span> <span class="o">/</span> <span class="n">total_drained_area</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">drained_rich_organic_proportion</span> <span class="o">=</span> <span class="n">drained_poor_organic_proportion</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">grass_remaining_mineral</span> <span class="o">=</span> <span class="n">grass_mineral_area</span> <span class="o">-</span> <span class="n">mineral_area</span>
-
         <span class="n">grass_remaining_drained_rich_organic</span> <span class="o">=</span> <span class="n">grass_drained_rich_organic_area</span> <span class="o">-</span> <span class="p">(</span><span class="n">organic_area</span> <span class="o">*</span> <span class="n">drained_rich_organic_proportion</span><span class="p">)</span>
         <span class="n">grass_remaining_drained_poor_organic</span> <span class="o">=</span> <span class="n">grass_drained_poor_organic_area</span> <span class="o">-</span> <span class="p">(</span><span class="n">organic_area</span> <span class="o">*</span> <span class="n">drained_poor_organic_proportion</span><span class="p">)</span>
 
@@ -324,24 +274,32 @@
 
         <span class="n">grass_total_remaining</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">+</span> <span class="n">grass_organic_area</span> <span class="o">+</span> <span class="n">grass_organic_mineral_area</span>
 
+        <span class="k">if</span> <span class="n">grass_total_remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Update land shares proportionally</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_organic_area</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_drained_rich_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_drained_poor_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_total_rich_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_total_poor_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_organic_mineral_area</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
+            <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shares</span><span class="p">[</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Set everything to zero to reflect no remaining grassland</span>
+            <span class="n">land</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">land</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
 
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;area_ha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_organic_area</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_drained_rich_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_drained_rich_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_drained_poor_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_drained_poor_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_rich_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_total_rich_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_poor_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_rewetted_total_poor_organic</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_organic_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_organic_mineral_area</span><span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_remaining_mineral</span> <span class="o">/</span> <span class="n">grass_total_remaining</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">land</span><span class="p">[</span><span class="s2">&quot;share_burnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grass_share_burnt</span>
+        <span class="c1"># Set fixed shares</span>
+        <span class="n">land</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;share_rewetted_in_mineral&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_in_organic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_domestic_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_rewetted_industrial_peat_extraction&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_near_natural_wetland&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;share_unmanaged_wetland&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">})</span>
 
         <span class="k">return</span> <span class="n">land</span></div>
 </div>

@@ -17,9 +17,10 @@ Dependencies:
 - ``pandas``: Used for data manipulation and analysis.
 - ``landcover_assignment.distribution.LandDistribution``: Manages land distribution scenarios.
 - ``landcover_assignment.national_landcover.NationalLandCover``: Analyzes land cover within national areas.
-- ``landcover_assignment.landcover_data_manager.DataManager``: Manages land cover data.
-- ``resource_manager.data_loader.Loader``: Loads required data resources.
-- ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+- ``landcover_assignment.resource_manager.landcover_data_manager.DataManager``: Manages land cover data.
+- ``landcover_assignment.resource_manager.data_loader.Loader``: Loads required data resources.
+- ``landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+- ``landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation``: Optimizes land cover distribution.
 
 Classes:
 --------
@@ -34,6 +35,8 @@ Classes:
    and analyze spared area breakdowns and grassland distributions based on scenario inputs.
 
    Methods include:
+   - `_log_spared_area`: Logs the spared area details for a specific scenario and land use.
+   - `get_spared_area_log`: Returns the log of spared area details.
    - `_fill_current_area_row`: Fills data for the current area based on land use type.
    - `_fill_future_area_row`: Fills data for the future area based on land use type.
    - `compute_current_area`: Computes the current area distribution for all land uses.
@@ -51,8 +54,7 @@ from landcover_assignment.national_landcover import NationalLandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 from landcover_assignment.resource_manager.data_loader import Loader
-
-
+from landcover_assignment.optimisation.landcover_optimisation import LandCoverOptimisation
 
 class LandCover:
     """
@@ -98,9 +100,13 @@ class LandCover:
 
     Methods
     -------
+    _log_spared_area(scenario, land_use, area, rewetted_area, mineral_area)
+        Logs the spared area details for a specific scenario and land use.
+    get_spared_area_log() -> pandas.DataFrame
+        Returns the log of spared area details.
     _fill_current_area_row(farm_id, year, land_use) -> dict
         Fills a row of data representing the current state of a specific land use area.
-    _fill_future_area_row(farm_id, year, land_use) -> dict
+    _fill_future_area_row(farm_id, refyear, target_year, land_use) -> dict
         Fills a row of data representing the future state of a specific land use area.
     compute_current_area() -> pandas.DataFrame
         Computes the current distribution of land use areas based on calibration year data.
@@ -127,26 +133,80 @@ class LandCover:
         )
         self.data_loader_class = Loader()
         self.national_class = NationalLandCover()
-        self.sc_fetch_class = ScenarioDataFetcher(scenario_inputs_df)
+        self.sc_fetch_class = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=True)
         self.land_dist_class = LandDistribution(scenario_inputs_df)
         self.total_grassland = total_grassland
         self.total_spared_area = total_spared_area
         self.total_spared_area_breakdown = spared_area_breakdown
         self.scenario_list = self.sc_fetch_class.get_scenario_list()
+        self._spared_area_log = pd.DataFrame()
 
+
+    def _log_spared_area(self, scenario, land_use, mineral_area, organic_area):
+        """
+        Logs the spared area details for a specific scenario and land use.
+
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier.
+        land_use : str
+            The type of land use.
+        mineral_area : float
+            The amount of area spared on mineral soil.
+        organic_area : float
+            The amount of area spared on organic soil.
+        """
+        new_entry = {
+            "scenario": scenario,
+            "land_use": land_use,
+            "mineral_area": mineral_area,
+            "organic_area": organic_area,
+        }
+        
+        # Handle the case where the log is empty
+        if self._spared_area_log.empty:
+            self._spared_area_log = pd.concat(
+                [self._spared_area_log, pd.DataFrame([new_entry])], ignore_index=True
+            )
+
+        # Append new entries if the combination of scenario and land use does not already exist
+        elif not ((self._spared_area_log["scenario"] == scenario) &
+                (self._spared_area_log["land_use"] == land_use)).any():
+            self._spared_area_log = pd.concat(
+                [self._spared_area_log, pd.DataFrame([new_entry])], ignore_index=True
+            )
+
+
+    def get_spared_area_log(self):
+        """
+        Returns the log of spared area details.
+
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing the log of spared area details.
+        """
+        return self._spared_area_log
+    
 
     def _fill_current_area_row(self, farm_id, year, land_use):
         """
         Fills a row of data representing the current state of a specific land use area.
         
-        :param farm_id: Identifier for the farm or land area.
-        :type farm_id: int
-        :param year: The year for which the data row is relevant.
-        :type year: int
-        :param land_use: The type of land use being considered.
-        :type land_use: str
-        :return: A dictionary containing filled data for the current area row.
-        :rtype: dict
+        Parameters
+        ----------
+        farm_id : int
+            Identifier, a legacy term that represents the scenario identifier.
+        year : int
+            The year for which the data row is relevant.
+        land_use : str
+            The type of land use being considered.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing filled data for the current area row.
         """
         if land_use == "grassland":
             
@@ -202,16 +262,21 @@ class LandCover:
         """
         Fills a row of data representing the future state of a specific land use area.
         
-        :param farm_id: Identifier for the farm or land area.
-        :type farm_id: int
-        :param refyear: The year for which the data row is relevant.
-        :type ref_year: int
-        :param target_year: The future year for which the data row is relevant.
-        :type target_year: int
-        :param land_use: The type of land use being considered.
-        :type land_use: str
-        :return: A dictionary containing filled data for the future area row.
-        :rtype: dict
+        Parameters
+        ----------
+        farm_id : int
+            Identifier, a legacy term that represents the scenario identifier.
+        refyear : int
+            The year for which the data row is relevant.
+        target_year : int
+            The future year for which the data row is relevant.
+        land_use : str
+            The type of land use being considered.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing filled data for the future area row.
         """
         return {
             "farm_id": farm_id,
@@ -241,8 +306,10 @@ class LandCover:
         """
         Computes the distribution of current land use areas based on the calibration year and available data.
         
-        :return A DataFrame containing the computed current land use areas.
-        :rtype: pandas.DataFrame
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing the computed current land use areas.
         """
         calibration_year = self.data_manager_class.calibration_year
         landuses = self.data_manager_class.land_use_columns
@@ -260,8 +327,10 @@ class LandCover:
         """
         Combines the calculated current land use areas with projected future areas under different scenarios.
         
-        :return: A DataFrame containing both current and projected future land use areas.
-        :rtype: pandas.DataFrame
+        Returns
+        -------
+        pandas.DataFrame
+            A DataFrame containing both current and projected future land use areas.
         """
         target_year = self.data_manager_class.target_year
         calibration_year = self.data_manager_class.calibration_year
@@ -278,8 +347,7 @@ class LandCover:
         for sc in scenarios:
             land_use_data_future = self.spared_area_breakdown(sc)
             grassland_data_future = self.grassland_breakdown(sc)
-            for landuse in land_use_columns:
-                
+            for landuse in land_use_columns:         
                 if landuse == "grassland":
                
                     row ={
@@ -333,7 +401,6 @@ class LandCover:
 
                     data.append(row)
                 
-
                 else:
 
                     row ={
@@ -394,77 +461,64 @@ class LandCover:
 
     def spared_area_breakdown(self, scenario):
         """
-        Analyzes the breakdown of spared areas under a specific scenario, adjusting land use distributions accordingly.
+        Analyzes the breakdown of spared areas under a specific scenario.
 
-        This method calculates how spared areas should be distributed among various land use types based on scenario-specific
-        proportions and environmental considerations, such as the availability of organic soil.
-
-        :param scenario (int): The scenario identifier for which the spared area breakdown is calculated.
-        :type scenario: int
-        :return: A dictionary containing the breakdown of spared areas by land use type, with detailed proportions
-                and areas for each type.
-        :rtype: dict
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier for which the spared area breakdown is calculated.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing the breakdown of spared areas for the given scenario.
         """
         result_dict = {}
 
         year = self.data_manager_class.calibration_year
-
-        spared_land_use_dict = self.data_manager_class.spared_area_dict
+        spared_land_use_dict = self.data_manager_class.get_spared_area_dict()
 
         max_organic_available = self._available_organic_area(scenario)["available_organic"]
         initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
-        adjusted_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
 
-        for land_use in spared_land_use_dict.keys():
+        # Step 1: Handle wetlands (special case)
+        rewet_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)  # Target proportion for wetlands
+        target_rewetted = initial_spared_area * rewet_proportion  # Area to be rewetted (from grassland)
+        rewetted_area = min(max_organic_available, target_rewetted)  # Limit rewetted area to organic availability
 
-            result_dict[land_use] = {}
-            method_name = f"get_{land_use}_proportion"
-            method = getattr(self.sc_fetch_class, method_name, None)
+        self._log_spared_area(scenario, "rewet_grassland", 0, rewetted_area)
 
-            if land_use == "wetland":
-                # wetland area does not increase, transfer is between categories in grassland
-                # however, spared area must still be accounted for
+        # Update spared area by subtracting the rewetted area
+        mineral_spared_area = initial_spared_area - rewetted_area
 
-                land_use_proportion = method(scenario)
-                target_wetland = initial_spared_area * land_use_proportion
+        # Generate wetland data and add to results
+        wetland_data = self.land_dist_class.land_distribution(year, "wetland", None)  # Wetlands don't increase
+        result_dict["wetland"] = wetland_data
 
-                spared_area_reduction = min(max_organic_available,target_wetland)
+        # Step 2: Define target shares
+        target_areas = {
+            land_use: (initial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
+            for land_use in spared_land_use_dict.keys()
+            if land_use not in ["farmable_condition", "rewetted"]# Exclude "farmable condition" (fallback) & rewetted
+        }
 
-                generated_land_use_data = self.land_dist_class.land_distribution(
-                    year, land_use, None
-                )
+        # Step 3: Optimize spared area distribution
+        optimizer = LandCoverOptimisation()
+        optimised_allocations = optimizer.optimise_mineral_spared_area_distribution(
+            mineral_area_available=mineral_spared_area,
+            target_areas=target_areas,
+        )
 
-                result_dict[land_use] = generated_land_use_data
+        # Step 4: Distribute spared area based on optimised allocations
+        for land_use, allocated_area in optimised_allocations.items():
+            generated_land_use_data = self.land_dist_class.land_distribution(
+                year, land_use, allocated_area
+            )
 
-                adjusted_spared_area = initial_spared_area - spared_area_reduction
+            self._log_spared_area(scenario, land_use, allocated_area, 0)
+            result_dict[land_use] = generated_land_use_data
 
-            elif land_use != "farmable_condition":
-
-                land_use_proportion = method(scenario)
-
-                target_area = initial_spared_area * land_use_proportion
-
-                
-                new_land_use_area = min(adjusted_spared_area,target_area)
-
-                if new_land_use_area < 0:
-                    new_land_use_area = 0
-
-                generated_land_use_data = self.land_dist_class.land_distribution(year, land_use, new_land_use_area)
-
-
-                result_dict[land_use] = generated_land_use_data
-
-                adjusted_spared_area -= new_land_use_area
-
-            else:
-                generated_land_use_data = self.land_dist_class.land_distribution(
-                    year, land_use, adjusted_spared_area
-                )
-
-                result_dict[land_use] = generated_land_use_data
-
-        return result_dict    
+        return result_dict
 
 
     def grassland_breakdown(self, scenario):
@@ -475,11 +529,16 @@ class LandCover:
         its retention, affect the overall grassland area. It considers organic and mineral soil proportions and
         adjusts them based on scenario inputs.
 
-        :param scenario: The scenario identifier for which the grassland distribution is calculated.
-        :type scenario: int
-        :return: A dictionary containing updated grassland distribution details, including areas and proportions
-                of soil types.
-        :rtype: dict
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier for which the grassland distribution is calculated.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing updated grassland distribution details, including areas and proportions
+            of soil types.
         """
         result_dict = {}
 
@@ -490,15 +549,15 @@ class LandCover:
 
         max_organic_available = self._available_organic_area(scenario)["available_organic"]
 
-        sc_wetland_proportion = self.sc_fetch_class.get_wetland_proportion(scenario)
-        target_rewet= initial_spared_area * sc_wetland_proportion
+        sc_rewetted_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)
+        target_rewet= initial_spared_area * sc_rewetted_proportion
 
         new_rewetted_area_achieved = min(max_organic_available,target_rewet)
 
 
         spared_mineral_achieved = initial_spared_area - new_rewetted_area_achieved
 
-        generated_land_use_data = self.land_dist_class.grassland_distriubtion(
+        generated_land_use_data = self.land_dist_class.grassland_distribution(
             calibration_year, spared_mineral_achieved, new_rewetted_area_achieved, self.total_grassland
         )
 
@@ -517,23 +576,25 @@ class LandCover:
         land uses, such as wetlands, based on the current organic and organic-mineral soil areas and scenario-specific
         spared area allocations.
 
-        :param scenario (int): The scenario identifier for which the available organic area is calculated.
-        :type scenario: int
-        :return: A dictionary containing the available organic area and available mineral-organic area.
-        :rtype: dict
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier for which the available organic area is calculated.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing the available organic area and available mineral-organic area.
         """
         year = self.data_manager_class.calibration_year
 
-        #initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
         organic_potential = self.national_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
+        
         drained_rich_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
         drained_poor_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
+        
         total_drained = drained_rich_current_organic_area + drained_poor_current_organic_area
 
-        current_mineral_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_organic_mineral("grassland", year, self.total_grassland)
-
         max_organic_spared = min(organic_potential, total_drained)
-
-        #max_mineral_organic_spared = min(initial_spared_area,current_mineral_organic_area)
 
         return {"available_organic":max_organic_spared}

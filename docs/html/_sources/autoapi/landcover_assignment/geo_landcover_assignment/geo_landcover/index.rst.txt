@@ -5,7 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   Geo landcover
+   Geo Landcover
    ================
    This module facilitates the management and analysis of land cover changes within specified geographic areas, focusing on the dynamics of land use
    transitions under various scenarios. It leverages data from land cover assignments, catchment analyses, and scenario-driven land distribution calculations
@@ -20,12 +20,13 @@
 
    Dependencies:
    -------------
-   - ``pandas``: Used for data manipulation and analysis.
-   - ``geo_landcover_assignment.geo_distribution.LandDistribution``: Manages land distribution scenarios.
-   - ``geo_landcover_assignment.catchment_landcover.CatchmentLandCover``: Analyzes land cover within catchment areas.
-   - ``landcover_assignment.landcover_data_manager.DataManager``: Manages land cover data.
-   - ``resource_manager.data_loader.Loader``: Loads required data resources.
-   - ``resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
+   - `pandas`: Used for data manipulation and analysis.
+   - `geo_landcover_assignment.geo_distribution.LandDistribution`: Manages land distribution scenarios.
+   - `geo_landcover_assignment.catchment_landcover.CatchmentLandCover`: Analyzes land cover within catchment areas.
+   - `landcover_assignment.landcover_data_manager.DataManager`: Manages land cover data.
+   - `resource_manager.data_loader.Loader`: Loads required data resources.
+   - `resource_manager.scenario_data_fetcher.ScenarioDataFetcher`: Fetches scenario-specific data.
+   - `landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation`: Optimizes land cover distribution.
 
    Classes:
    --------
@@ -40,12 +41,15 @@
       and analyze spared area breakdowns and grassland distributions based on scenario inputs.
 
       Methods include:
-      - `_fill_current_area_row`: Fills data for the current area based on land use type.
-      - `compute_current_area`: Computes the current area distribution for all land uses.
-      - `combined_future_land_use_area`: Combines current and future land use areas under different scenarios.
-      - `spared_area_breakdown`: Analyzes the breakdown of spared areas based on scenarios.
-      - `grassland_breakdown`: Specifically analyzes the breakdown of grassland areas under scenarios.
-      - `_available_organic_area`: Computes the available organic area for scenarios.
+      - _fill_current_area_row: Fills data for the current area based on land use type.
+      - compute_current_area: Computes the current area distribution for all land uses.
+      - combined_future_land_use_area: Combines current and future land use areas under different scenarios.
+      - spared_area_breakdown: Analyzes the breakdown of spared areas based on scenarios.
+      - grassland_breakdown: Specifically analyzes the breakdown of grassland areas under scenarios.
+      - _available_organic_area: Computes the available organic area for scenarios.
+      - _log_spared_area: Logs the spared area details for a specific scenario and land use.
+      - get_spared_area_log: Returns the log of spared area details.
+      - _calculate_rewetted_areas: Calculates the areas to be rewetted based on the scenario and target rewetted area.
 
 
 
@@ -154,6 +158,44 @@ Classes
 
       Computes the available area for organic soil-based land uses under a given scenario.
 
+   .. method:: _log_spared_area(scenario, land_use, mineral_area, organic_area, mineral_organic_area)
+
+      Logs the spared area details for a specific scenario and land use.
+
+   .. method:: get_spared_area_log() -> pandas.DataFrame
+
+      Returns the log of spared area details.
+
+   .. method:: _calculate_rewetted_areas(scenario, target_rewetted) -> tuple
+
+      Calculates the areas to be rewetted based on the scenario and target rewetted area.
+
+
+   .. py:method:: _log_spared_area(scenario, land_use, mineral_area, organic_area, mineral_organic_area)
+
+      Logs the spared area details for a specific scenario and land use.
+
+      :param scenario: The scenario identifier.
+      :type scenario: int
+      :param catchment_name: The name of the catchment area.
+      :type catchment_name: str
+      :param land_use: The type of land use.
+      :type land_use: str
+      :param mineral_area: The amount of area spared on mineral soil.
+      :type mineral_area: float
+      :param organic_area: The amount of area spared on organic soil.
+      :type organic_area: float
+      :param mineral_organic_area: The amount of area spared on mineral-organic soil.
+      :type mineral_organic_area: float
+
+
+   .. py:method:: get_spared_area_log()
+
+      Returns the log of spared area details.
+
+      :returns: A DataFrame containing the log of spared area details.
+      :rtype: pandas.DataFrame
+
 
    .. py:method:: _fill_current_area_row(farm_id, year, land_use)
 
@@ -224,6 +266,22 @@ Classes
       :type scenario: int
       :return: A dictionary containing the available organic area and available mineral-organic area.
       :rtype: dict
+
+
+   .. py:method:: _calculate_rewetted_areas(scenario, target_rewetted)
+
+      Calculates the areas to be rewetted based on the scenario and target rewetted area.
+
+      This method computes the areas to be rewetted, considering the available organic and mineral-organic areas
+
+      :param scenario: The scenario identifier for which the rewetted areas are calculated.
+      :type scenario: int
+      :param target_rewetted: The target area to be rewetted.
+      :type target_rewetted: float
+      :return: A tuple containing the rewetted area, rewetted organic area, and rewetted mineral-organic area.
+      :rtype: tuple
+
+
 
 
 

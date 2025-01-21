@@ -11,7 +11,7 @@ class TestTransitions(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up method to prepare the environment before running tests."""
-        cls.path = "./geo_data/"
+        cls.path = "../geo_data/"
 
         cls.baseline = 2020
         cls.target_year = 2050

@@ -32,7 +32,7 @@ Classes:
       handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other 
       soil types accordingly.
 
-   .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)
+   .. method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
       components, and recalculates the total remaining grassland area along with its composition.
 
@@ -77,14 +77,14 @@ class LandDistribution:
         It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
         of mineral, organic, and other soil types accordingly.
 
-    grassland_distribution(mineral_area, organic_area, grassland_area)
+    grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
         Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
         and organic components, and recalculates the total remaining grassland area along with its composition.
     """
     def __init__(self, scenario_data):
         self.data_manager_class = DistributionManager()
         self.catchment_class = CatchmentLandCover()
-        self.sc_fetcher_class = ScenarioDataFetcher(scenario_data)
+        self.sc_fetcher_class = ScenarioDataFetcher(scenario_data, validate_on_init=True)
         self.catchment_name = self.sc_fetcher_class.get_catchment_name()
 
 
@@ -103,56 +103,35 @@ class LandDistribution:
             return None
         else:
             
-            land = {
-                "area_ha": 0,
-                "share_mineral": 0,
-                "share_organic": 0,
-                "share_organic_mineral": 0,
-                "share_peat_extraction": 0,
-                "share_rewetted_in_mineral": 0,
-                "share_rewetted_in_organic": 0,
-                "share_rewetted_in_organic_mineral": 0,
-                "share_burnt": 0
-            }
+            land = {key: 0 for key in self.data_manager_class.get_geoland_distribution_keys()}
 
-            land_share_mineral = self.catchment_class.get_share_mineral(land_use, self.catchment_name) or 0
-            land_share_organic = self.catchment_class.get_share_organic(land_use, self.catchment_name) or 0
-            land_share_organic_mineral = self.catchment_class.get_share_organic_mineral(land_use, self.catchment_name) or 0
-            land_share_burnt = self.catchment_class.get_share_burnt(land_use, self.catchment_name) or 0
-
-            land_area_current = self.catchment_class.get_landuse_area(land_use, self.catchment_name) or 0
-
-            if land_use == "wetland":
-                land["area_ha"] = land_area_current
-            else:
-                land["area_ha"] = land_area_current + (new_area or 0)
+            current_area = self.catchment_class.get_landuse_area(land_use, self.catchment_name) or 0
 
             shares = {
-                "share_mineral": land_share_mineral,
-                "share_organic": land_share_organic,
-                "share_organic_mineral": land_share_organic_mineral,
-                "share_burnt": land_share_burnt
-
+                key: self.catchment_class.get_land_shares(key, land_use, self.catchment_name) or 0
+                for key in self.data_manager_class.get_geoland_share_keys()
             }
+            # Calculate total area
+            land["area_ha"] = current_area + (new_area or 0)
+
 
             # Calculate shares
             if land["area_ha"] != 0:
                 for key, share_value in shares.items():
                     if key == "share_mineral" and land_use != "wetland":                    
-                        land[key] = ((land_area_current * share_value) + (new_area or 0)) / land["area_ha"]
+                        land[key] = ((current_area * share_value) + (new_area or 0)) / land["area_ha"]
                     else:
                         # Calculate other shares proportionally
-                        land[key] = (land_area_current * share_value) / land["area_ha"]
+                        land[key] = (current_area * share_value) / land["area_ha"]
             else:
                 # If area is zero, retain current shares
                 for key, share_value in shares.items():
                     land[key] = share_value
 
-
             return land
 
 
-    def grassland_distriubtion(self, mineral_area, organic_area, organic_mineral_area, grassland_area):
+    def grassland_distribution(self, mineral_area, organic_area, organic_mineral_area, grassland_area):
         """
         Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.
 
@@ -160,22 +139,28 @@ class LandDistribution:
         :type mineral_area: float
         :param organic_area: The area of grassland to be converted to organic soil.
         :type organic_area: float
+        :param organic_mineral_area: The area of grassland to be converted to organic-mineral soil.
+        :type organic_mineral_area: float
         :param grassland_area: The total initial grassland area before distribution.
-        :type grassland_area: pandas.DataFrame
+        :type grassland_area: float
         :return: A dictionary containing updated grassland distribution details.
         :rtype: dict
         """
-        land = self.data_manager_class.land_distribution
+        land = {key: 0 for key in self.data_manager_class.get_geoland_distribution_keys()}
 
         current_grassland_area = self.catchment_class.get_landuse_area("grassland", self.catchment_name, grassland_area)
-        grass_share_mineral = self.catchment_class.get_share_mineral("grassland", self.catchment_name, grassland_area)
-        grass_share_organic = self.catchment_class.get_share_organic("grassland", self.catchment_name, grassland_area)
-        grass_share_organic_mineral = self.catchment_class.get_share_organic_mineral("grassland", self.catchment_name, grassland_area)
-        grass_share_burnt = self.catchment_class.get_share_burnt("grassland", self.catchment_name, grassland_area)
 
-        grass_mineral_area = current_grassland_area * grass_share_mineral
-        grass_organic_area = current_grassland_area * grass_share_organic
-        grass_organic_mineral_area = current_grassland_area * grass_share_organic_mineral
+        # Fetch all relevant shares dynamically
+        shares = {
+            key: self.catchment_class.get_grassland_shares(key, self.catchment_name, grassland_area) or 0
+            for key in self.data_manager_class.get_geoland_share_keys()
+        }
+
+        # Calculate areas
+        grass_mineral_area = current_grassland_area * shares["share_mineral"]
+        grass_organic_area = current_grassland_area * shares["share_organic"]
+        grass_organic_mineral_area = current_grassland_area * shares["share_organic_mineral"]
+
 
         grass_remaining_mineral = grass_mineral_area - mineral_area
         grass_remaining_organic = grass_organic_area - organic_area
@@ -185,14 +170,19 @@ class LandDistribution:
 
         grass_total_remaining = grass_remaining_mineral + grass_remaining_organic + grass_remaining_organic_mineral_area + grass_rewetted_in_organic + grass_rewetted_in_organic_mineral
 
-        land["area_ha"] = grass_total_remaining
-        land["share_organic"] = grass_remaining_organic / grass_total_remaining
-        land["share_organic_mineral"] = grass_remaining_organic_mineral_area/ grass_total_remaining
-        land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
-        land["share_rewetted_in_mineral"] = 0
-        land["share_rewetted_in_organic"] = grass_rewetted_in_organic / grass_total_remaining
-        land["share_rewetted_in_organic_mineral"] = grass_rewetted_in_organic_mineral / grass_total_remaining
-        land["share_peat_extraction"] = 0
-        land["share_burnt"] = grass_share_burnt
+        if grass_total_remaining > 0:
+            land["area_ha"] = grass_total_remaining
+            land["share_organic"] = grass_remaining_organic / grass_total_remaining
+            land["share_organic_mineral"] = grass_remaining_organic_mineral_area/ grass_total_remaining
+            land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
+            land["share_rewetted_in_mineral"] = 0
+            land["share_rewetted_in_organic"] = grass_rewetted_in_organic / grass_total_remaining
+            land["share_rewetted_in_organic_mineral"] = grass_rewetted_in_organic_mineral / grass_total_remaining
+            land["share_peat_extraction"] = 0
+            land["share_burnt"] = shares["share_burnt"]
+        else:
+
+            # Set everything to zero to reflect no remaining grassland
+            land = {key: 0 for key in land.keys()}
 
         return land

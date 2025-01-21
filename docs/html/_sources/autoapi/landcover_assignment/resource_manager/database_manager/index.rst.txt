@@ -12,72 +12,50 @@
    related to national land cover areas such as forests, wetlands, croplands, grasslands, and settlements, as well as soil yield mappings for forests.
    This class is designed to support environmental data analysis and modeling tasks by providing structured access to key land use datasets.
 
-   .. class:: DataManager()
+   .. attribute:: database_dir
 
-      Initializes the DataManager class, setting up a connection to a SQLite database containing land use data.
+      Directory where the database file is located.
 
-      **Attributes**
+      :type: str
 
-      - ``database_dir`` (str): Directory where the database file is located.
-      - ``engine`` (:class:`sqlalchemy.engine.Engine`): SQLAlchemy engine object for database connection.
+   .. attribute:: engine
 
-      **Methods**
+      SQLAlchemy engine object for database connection.
 
-      .. method:: data_engine_creater()
+      :type: sqlalchemy.engine.Engine
 
-         Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+   .. method:: data_engine_creater()
 
-         :return: A SQLAlchemy engine instance connected to the land use database.
-         :rtype: :class:`sqlalchemy.engine.Engine`
+      Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
 
-      .. method:: get_national_inventory_areas()
+   .. method:: get_national_inventory_areas()
 
-         Retrieves national inventory area data from the database and scales the values by 1000.
+      Retrieves national inventory area data from the database and scales the values by 1000.
 
-         :return: A pandas DataFrame containing national inventory area data with the area values scaled.
-         :rtype: pandas.DataFrame
+   .. method:: get_national_forest_areas()
 
-      .. method:: get_national_forest_areas()
+      Retrieves national forest area data from the database and scales the values by 1000.
 
-         Retrieves national forest area data from the database and scales the values by 1000.
+   .. method:: get_national_settlement_areas()
 
-         :return: A pandas DataFrame containing national forest area data with the area values scaled.
-         :rtype: pandas.DataFrame
+      Retrieves national settlement area data from the database and scales the values by 1000.
 
-      .. method:: get_national_settlement_areas()
+   .. method:: get_national_grassland_areas()
 
-         Retrieves national settlement area data from the database and scales the values by 1000.
+      Retrieves national grassland area data from the database and scales the values by 1000.
 
-         :return: A pandas DataFrame containing national settlement area data with the area values scaled.
-         :rtype: pandas.DataFrame
+   .. method:: get_national_cropland_areas()
 
-      .. method:: get_national_grassland_areas()
+      Retrieves national cropland area data from the database and scales the values by 1000.
 
-         Retrieves national grassland area data from the database and scales the values by 1000.
+   .. method:: get_national_wetland_areas()
 
-         :return: A pandas DataFrame containing national grassland area data with the area values scaled.
-         :rtype: pandas.DataFrame
+      Retrieves national wetland area data from the database and scales the values by 1000.
 
-      .. method:: get_national_cropland_areas()
+   .. method:: get_soil_yield_mapping()
 
-         Retrieves national cropland area data from the database and scales the values by 1000.
-
-         :return: A pandas DataFrame containing national cropland area data with the area values scaled.
-         :rtype: pandas.DataFrame
-
-      .. method:: get_national_wetland_areas()
-
-         Retrieves national wetland area data from the database and scales the values by 1000.
-
-         :return: A pandas DataFrame containing national wetland area data with the area values scaled.
-         :rtype: pandas.DataFrame
-
-      .. method:: get_soil_yield_mapping()
-
-         Retrieves forest soil yield mapping data from the database without scaling.
-
-         :return: A pandas DataFrame containing forest soil yield mapping data.
-         :rtype: pandas.DataFrame
+      Retrieves forest soil yield mapping data from the database without scaling.
+      
 
 
 
@@ -99,26 +77,66 @@ Classes
 
    .. py:method:: data_engine_creater()
 
+      Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+
+      :returns: A SQLAlchemy engine instance connected to the land use database.
+      :rtype: sqlalchemy.engine.Engine
+
 
    .. py:method:: get_national_inventory_areas()
+
+      Retrieves national inventory area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national inventory area data with the area values scaled.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_national_forest_areas()
 
+      Retrieves national forest area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national forest area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
 
    .. py:method:: get_national_settlement_areas()
+
+      Retrieves national settlement area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national settlement area data with the area values scaled.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_national_grassland_areas()
 
+      Retrieves national grassland area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national grassland area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
 
    .. py:method:: get_national_cropland_areas()
+
+      Retrieves national cropland area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national cropland area data with the area values scaled.
+      :rtype: pandas.DataFrame
 
 
    .. py:method:: get_national_wetland_areas()
 
+      Retrieves national wetland area data from the database and scales the values by 1000.
+
+      :returns: A DataFrame containing national wetland area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
 
    .. py:method:: get_soil_yield_mapping()
+
+      Retrieves forest soil yield mapping data from the database without scaling.
+
+      :returns: A DataFrame containing forest soil yield mapping data.
+      :rtype: pandas.DataFrame
 
 
 

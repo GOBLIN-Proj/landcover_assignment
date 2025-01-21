@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.geo_landcover_assignment.geo_transition_matrix &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.geo_landcover_assignment.geo_transition_matrix &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -94,7 +94,7 @@
 <span class="sd">- `pandas` for data manipulation and analysis.</span>
 <span class="sd">- `numpy` for numerical calculations.</span>
 <span class="sd">- `geo_landcover_assignment.geo_landcover.LandCover` for accessing combined future land use areas.</span>
-<span class="sd">- `landcover_assignment.landcover_data_manager.DataManager` for accessing land use columns and other data management tasks.</span>
+<span class="sd">- `landcover_assignment.resource_manager.landcover_data_manager.DataManager` for accessing land use columns and other data management tasks.</span>
 
 <span class="sd">Class Documentation:</span>
 <span class="sd">--------------------</span>
@@ -122,8 +122,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">landcover_assignment.geo_landcover_assignment.geo_landcover</span> <span class="kn">import</span> <span class="n">LandCover</span>
-<span class="kn">from</span> <span class="nn">landcover_assignment.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DataManager</span>
-
+<span class="kn">from</span> <span class="nn">landcover_assignment.resource_manager.landcover_data_manager</span> <span class="kn">import</span> <span class="n">DataManager</span>
 
 <div class="viewcode-block" id="TransitionMatrix">
 <a class="viewcode-back" href="../../../autoapi/landcover_assignment/geo_landcover_assignment/geo_transition_matrix/index.html#landcover_assignment.geo_landcover_assignment.geo_transition_matrix.TransitionMatrix">[docs]</a>
@@ -183,7 +182,7 @@
 
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">transition_matrix</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_use_columns</span><span class="p">():</span>
 
                     <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;settlement&quot;</span><span class="p">:</span>
                         <span class="k">continue</span>
@@ -200,7 +199,7 @@
                             <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;Grassland_to_&quot;</span> <span class="o">+</span> <span class="n">land_use</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
                         <span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">transition_diff</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_use_columns</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">land_use</span> <span class="o">==</span> <span class="s2">&quot;settlement&quot;</span><span class="p">:</span>
                         <span class="k">continue</span>
 
@@ -224,7 +223,7 @@
 <span class="sd">        :param calibration_year: Initial year for transition.</span>
 <span class="sd">        :type calibration_year: int</span>
 <span class="sd">        :param target_year: Target year for transition.</span>
-<span class="sd">        :type targe_year: int</span>
+<span class="sd">        :type target_year: int</span>
 <span class="sd">        :param land_cover_df: DataFrame containing land cover data.</span>
 <span class="sd">        :type land_cover_df: pandas.DataFrame</span>
 <span class="sd">        :return: The difference in area for the specified land use between years.</span>
@@ -261,8 +260,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">col_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">land_use</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;_to_&quot;</span> <span class="o">+</span> <span class="n">landuse1</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span>
-            <span class="k">for</span> <span class="n">landuse1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">land_use_columns</span>
+            <span class="k">for</span> <span class="n">land_use</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_use_columns</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">landuse1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager_class</span><span class="o">.</span><span class="n">get_land_use_columns</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">land_use</span> <span class="o">!=</span> <span class="s2">&quot;settlement&quot;</span> <span class="ow">and</span> <span class="n">landuse1</span> <span class="o">!=</span> <span class="s2">&quot;settlement&quot;</span>
         <span class="p">]</span>
         <span class="n">index_df</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">land_cover_df</span><span class="o">.</span><span class="n">farm_id</span><span class="o">.</span><span class="n">unique</span><span class="p">()]</span>

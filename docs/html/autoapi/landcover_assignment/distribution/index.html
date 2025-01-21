@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.distribution &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.distribution &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,7 +17,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -56,7 +56,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../afforestation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.afforestation</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.distribution</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../landcover_data_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.landcover_data_manager</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../national_landcover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../transition_matrix/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.transition_matrix</span></code></a></li>
 </ul>
@@ -112,9 +111,9 @@ changes in mineral and organic components.</p></li>
 <section id="dependencies">
 <h3>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.landcover_data_manager.DistributionManager</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover.NatioanlLandCover</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resource_manager.scenario_data_fetcher.ScenarioDataFetcher</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.landcover_data_manager.DistributionManager</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover.NationalLandCover</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> for data manipulation and analysis.</p></li>
 </ul>
 </section>
@@ -127,7 +126,7 @@ changes in mineral and organic components.</p></li>
 areas and soil composition.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.land_distribution">
-<span class="sig-name descname"><span class="pre">land_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.land_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.land_distribution" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">land_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.land_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.land_distribution" title="Link to this definition"></a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">Calculates</span> <span class="pre">and</span> <span class="pre">updates</span> <span class="pre">the</span> <span class="pre">distribution</span> <span class="pre">of</span> <span class="pre">land</span> <span class="pre">based</span> <span class="pre">on</span> <span class="pre">land</span> <span class="pre">use</span> <span class="pre">type</span> <span class="pre">and</span> <span class="pre">the</span> <span class="pre">area</span> <span class="pre">change.</span> <span class="pre">It</span> <span class="pre">supports</span> <span class="pre">special</span></span></dt>
 <dt class="sig sig-object py">
@@ -138,7 +137,7 @@ areas and soil composition.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.grassland_distribution">
-<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.grassland_distribution" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.grassland_distribution" title="Link to this definition"></a></dt>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">Specifically</span> <span class="pre">handles</span> <span class="pre">the</span> <span class="pre">distribution</span> <span class="pre">and</span> <span class="pre">adjustment</span> <span class="pre">of</span> <span class="pre">grassland</span> <span class="pre">areas,</span> <span class="pre">considering</span> <span class="pre">changes</span> <span class="pre">in</span> <span class="pre">mineral</span> <span class="pre">and</span> <span class="pre">organic</span></span></dt>
 <dt class="sig sig-object py">
@@ -167,7 +166,7 @@ areas and soil composition.</p>
 adjusting for changes in areas and soil composition.</p>
 <p>This class provides methods to calculate and update land distribution based on changes in land use
 types, including special considerations for grassland, wetland, and forest. It utilizes data from
-land cover data managers, catchment analysis, and scenario-specific data fetchers to accurately
+land cover data managers, national land cover analysis, and scenario-specific data fetchers to accurately
 model land distribution adjustments under various scenarios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -181,7 +180,7 @@ names and drive the scenario-based calculations for land distribution adjustment
 <dd><p>An instance of DistributionManager for managing land distribution data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../landcover_data_manager/index.html#id1" title="landcover_assignment.landcover_data_manager.DistributionManager">DistributionManager</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../resource_manager/landcover_data_manager/index.html#id7" title="landcover_assignment.resource_manager.landcover_data_manager.DistributionManager">DistributionManager</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -189,7 +188,7 @@ names and drive the scenario-based calculations for land distribution adjustment
 <dl class="py attribute">
 <dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.national_class">
 <span class="sig-name descname"><span class="pre">national_class</span></span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.national_class" title="Link to this definition"></a></dt>
-<dd><p>An instance of NatioanlLandCover for accessing and analyzing Irish national context land cover data.</p>
+<dd><p>An instance of NationalLandCover for accessing and analyzing Irish national context land cover data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="../national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover" title="landcover_assignment.national_landcover.NationalLandCover">NationalLandCover</a></p>
@@ -210,7 +209,7 @@ names and drive the scenario-based calculations for land distribution adjustment
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">land_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.land_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">land_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.land_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
 <dd><p>Calculates and updates the distribution of land based on land use type and the area change.
 It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
 of mineral, organic, and other soil types accordingly.</p>
@@ -218,7 +217,7 @@ of mineral, organic, and other soil types accordingly.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
 <dd><p>Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
 and organic components, and recalculates the total remaining grassland area along with its composition.</p>
 </dd></dl>
@@ -230,7 +229,7 @@ and organic components, and recalculates the total remaining grassland area alon
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data.</p></li>
 <li><p><strong>land_use</strong> (<em>str</em>) – The type of land use to calculate distribution for.</p></li>
 <li><p><strong>new_area</strong> (<em>float</em>) – The area change to be applied to the land use type.</p></li>
 </ul>
@@ -245,16 +244,16 @@ and organic components, and recalculates the total remaining grassland area alon
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.grassland_distriubtion">
-<span class="sig-name descname"><span class="pre">grassland_distriubtion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.grassland_distriubtion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.grassland_distriubtion" title="Link to this definition"></a></dt>
-<dd><p>Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.</p>
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/distribution.html#LandDistribution.grassland_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data</p></li>
-<li><p><strong>mineral_area</strong> (<em>float</em>) – The area of grassland to be converted to mineral soil.</p></li>
-<li><p><strong>organic_area</strong> (<em>float</em>) – The area of grassland to be converted to rewetted organic soil.</p></li>
-<li><p><strong>grassland_area</strong> (<em>pandas.DataFrame</em>) – The total initial grassland area before distribution.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data.</p></li>
+<li><p><strong>mineral_area</strong> (<em>float</em>) – The area of mineral soil to be adjusted.</p></li>
+<li><p><strong>organic_area</strong> (<em>float</em>) – The area of organic soil to be adjusted.</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em>) – The total grassland area to be considered.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

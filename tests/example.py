@@ -28,9 +28,14 @@ def main():
     
     #create_combined_future_land_use_area
     print("combined future land use area")
-    print(land.combined_future_land_use_area())
-    land.combined_future_land_use_area().to_csv(os.path.join(path,"combined_future_land_use_area_results.csv"))
+    future_area = land.combined_future_land_use_area()
+    future_area.to_csv(os.path.join(path,"combined_future_land_use_area_results.csv"))
     print("#"*50)
+
+    #get spared area log and save
+    print("spared area log")
+    print(land.get_spared_area_log())
+    land.get_spared_area_log().to_csv(os.path.join(path,"spared_area_log_results.csv"))
 
     #create_transition_matrix
     transition_matrix = transition.create_transition_matrix()
@@ -41,6 +46,8 @@ def main():
     #create afforestation 
     affor = Afforestation(baseline, target_year, scenario_dataframe, transition_matrix)
     print(affor.gen_cbm_afforestation_dataframe(spared_area_breakdown))
+
+
 
 if __name__ == "__main__":
     main()

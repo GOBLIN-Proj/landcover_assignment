@@ -91,7 +91,6 @@ class TransitionMatrix:
         """
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
-        
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
         """
@@ -103,10 +102,8 @@ class TransitionMatrix:
 
         for index in transition_matrix.index:
             if index >= 0:
-                for land_use in self.data_manager_class.land_use_columns:
-
+                for land_use in self.data_manager_class.get_land_use_columns():
                     if land_use != "grassland":
-      
                         transition_diff = self._transition_difference(land_use, index, calibration_year, target_year, land_cover_df)
                         transition_matrix.at[
                             index, "Grassland_to_" + land_use.title()
@@ -116,12 +113,10 @@ class TransitionMatrix:
                         transition_matrix.at[
                             index, "Grassland_to_" + land_use.title()
                         ] = -transition_diff
-                   
 
         return transition_matrix
 
-
-    def _transition_difference(self, landuse, index, calibration_year,target_year, land_cover_df):
+    def _transition_difference(self, landuse, index, calibration_year, target_year, land_cover_df):
         """
         Calculates the difference in area for a specific land use between the calibration and target years.
 
@@ -132,7 +127,7 @@ class TransitionMatrix:
         :param calibration_year: Initial year for transition.
         :type calibration_year: int
         :param target_year: Target year for transition.
-        :type targe_year: int
+        :type target_year: int
         :param land_cover_df: DataFrame containing land cover data.
         :type land_cover_df: pandas.DataFrame
         :return: The difference in area for the specified land use between years.
@@ -152,13 +147,11 @@ class TransitionMatrix:
             ].item()
         )
         return transition_diff
-    
 
     def _create_transition_frame(self, land_cover_df):
         """
         Initializes the structure of the transition matrix based on land use columns and scenario data.
 
-        
         :param land_cover_df: DataFrame containing combined future land use areas.
         :type land_cover_df: pandas.DataFrame
         :return: An empty DataFrame structured to represent the transition matrix.
@@ -166,8 +159,8 @@ class TransitionMatrix:
         """
         col_list = [
             land_use.title() + "_to_" + landuse1.title()
-            for land_use in self.data_manager_class.land_use_columns
-            for landuse1 in self.data_manager_class.land_use_columns
+            for land_use in self.data_manager_class.get_land_use_columns()
+            for landuse1 in self.data_manager_class.get_land_use_columns()
         ]
         index_df = [int(x) for x in land_cover_df.farm_id.unique()]
         data_df = len(index_df)

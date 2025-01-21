@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.resource_manager.scenario_data_fetcher &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.resource_manager.scenario_data_fetcher &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,14 +17,14 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="landcover_assignment.resource_manager.transition_data_fetcher" href="../transition_data_fetcher/index.html" />
-    <link rel="prev" title="landcover_assignment.resource_manager.database_manager" href="../database_manager/index.html" /> 
+    <link rel="prev" title="landcover_assignment.resource_manager.landcover_data_manager" href="../landcover_data_manager/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,6 +54,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../geo_landcover_assignment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
 </ul>
 </li>
@@ -98,17 +99,20 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">ScenarioDataFetcher</span></code> class is designed to extract specific pieces of information from a scenario dataset. It enables the retrieval of land use proportions, harvest proportions, afforestation end years, and other scenario-specific data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">ScenarioDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">ScenarioDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_on_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher" title="Link to this definition"></a></dt>
 <dd><p>Initializes the ScenarioDataFetcher class with a pandas DataFrame containing scenario data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scenario_data</strong> – A pandas DataFrame containing various scenarios and their respective data points.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario_data</strong> – A pandas DataFrame containing various scenarios and their respective data points.</p></li>
+<li><p><strong>validate_on_init</strong> – A boolean indicating whether to validate proportions on initialization.</p></li>
+</ul>
 </dd>
 </dl>
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_wetland_proportion">
-<span class="sig-name descname"><span class="pre">get_wetland_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_wetland_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_wetland_proportion" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_wetland_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_wetland_proportion" title="Link to this definition"></a></dt>
 <dd><p>Retrieves the proportion of wetland area for a specified scenario.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -287,6 +291,31 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_proportions">
+<span class="sig-name descname"><span class="pre">validate_proportions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the sum of cropland, forestland, and rewetted area proportions equals 1 for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the proportions do not sum to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_proportions">
+<span class="sig-name descname"><span class="pre">validate_all_proportions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the proportions for all scenarios in the dataset sum to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If any scenario has invalid proportions.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -303,61 +332,262 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="id0">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">ScenarioDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.</span></span><span class="sig-name descname"><span class="pre">ScenarioDataFetcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_on_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_forest_thinning_and_harvest_proportions">
+<span class="sig-name descname"><span class="pre">validate_forest_thinning_and_harvest_proportions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_forest_thinning_and_harvest_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_forest_thinning_and_harvest_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the sum of conifer and broadleaf tree proportions equals 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> (<em>int</em><em> or </em><em>str</em>) – The scenario identifier to validate.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the proportions do not sum to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_forest_thinning_and_harvest_proportions">
+<span class="sig-name descname"><span class="pre">validate_all_forest_thinning_and_harvest_proportions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_all_forest_thinning_and_harvest_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_forest_thinning_and_harvest_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the proportions for all scenarios in the dataset sum to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If any scenario has invalid proportions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_species_proportions">
+<span class="sig-name descname"><span class="pre">validate_species_proportions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_species_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_species_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the sum of conifer and broadleaf tree proportions equals 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> (<em>int</em><em> or </em><em>str</em>) – The scenario identifier to validate.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the proportions do not sum to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_species_proportions">
+<span class="sig-name descname"><span class="pre">validate_all_species_proportions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_all_species_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_species_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the proportions for all scenarios in the dataset sum to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If any scenario has invalid proportions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_landuse_proportions">
+<span class="sig-name descname"><span class="pre">validate_landuse_proportions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_landuse_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_landuse_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the sum of cropland, forestland, and rewetted area proportions equals 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> (<em>int</em><em> or </em><em>str</em>) – The scenario identifier to validate.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the proportions do not sum to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_spared_area_proportions">
+<span class="sig-name descname"><span class="pre">validate_all_spared_area_proportions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.validate_all_spared_area_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.validate_all_spared_area_proportions" title="Link to this definition"></a></dt>
+<dd><p>Validates that the proportions for all scenarios in the dataset sum to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If any scenario has invalid proportions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_rewetted_proportion">
+<span class="sig-name descname"><span class="pre">get_rewetted_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_rewetted_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher.get_rewetted_proportion" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the proportion of rewetted area for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rewetted area proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">get_wetland_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_wetland_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_forest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_forest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the proportion of forest area for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The forest proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">get_forest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_forest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_cropland_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_cropland_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the proportion of cropland area for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cropland proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">get_cropland_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_cropland_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_conifer_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the proportion of conifer trees for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conifer proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">get_conifer_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_broadleaf_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_broadleaf_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the proportion of broadleaf trees for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The broadleaf proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">get_broadleaf_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_broadleaf_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_broadleaf_harvest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_broadleaf_harvest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the harvest proportion of broadleaf trees for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The broadleaf harvest proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">get_broadleaf_harvest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_broadleaf_harvest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_conifer_harvest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_harvest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the harvest proportion of conifer trees for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conifer harvest proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">get_conifer_harvest_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_harvest_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_conifer_thinned_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_thinned_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the thinned proportion of conifer trees for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conifer thinned proportion as a float.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">get_conifer_thinned_proportion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_conifer_thinned_proportion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_afforest_end_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_afforest_end_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the end year for afforestation activities for a specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario</strong> – The scenario identifier as a string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The afforestation end year as an integer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">get_afforest_end_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_afforest_end_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_catchment_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_catchment_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the name of the catchment area defined in the scenario data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The catchment name as a string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">get_catchment_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_catchment_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">get_scenario_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_scenario_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_scenario_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/scenario_data_fetcher.html#ScenarioDataFetcher.get_scenario_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a list of all scenarios present in the scenario data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of scenario identifiers.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -369,7 +599,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../database_manager/index.html" class="btn btn-neutral float-left" title="landcover_assignment.resource_manager.database_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../landcover_data_manager/index.html" class="btn btn-neutral float-left" title="landcover_assignment.resource_manager.landcover_data_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../transition_data_fetcher/index.html" class="btn btn-neutral float-right" title="landcover_assignment.resource_manager.transition_data_fetcher" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

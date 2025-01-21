@@ -12,6 +12,7 @@ Submodules
 
    data_loader/index.rst
    database_manager/index.rst
+   landcover_data_manager/index.rst
    scenario_data_fetcher/index.rst
    transition_data_fetcher/index.rst
 

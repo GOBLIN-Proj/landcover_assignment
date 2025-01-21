@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.optimisation.landcover_optimisation &mdash; LandCover Assignment 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.optimisation.landcover_optimisation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for landcover_assignment.optimisation.landcover_optimisation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
+<span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyomo.opt</span> <span class="kn">import</span> <span class="n">SolverFactory</span>
+
+
+<div class="viewcode-block" id="LandCoverOptimisation">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/optimisation/landcover_optimisation/index.html#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation">[docs]</a>
+<span class="k">class</span> <span class="nc">LandCoverOptimisation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to manage optimisation tasks for land cover allocation and distribution.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    solver : str</span>
+<span class="sd">        The optimization solver to use (e.g., &#39;cplex&#39;, &#39;gurobi&#39;, &#39;glpk&#39;).</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">    -------</span>
+<span class="sd">    optimise_mineral_spared_area_distribution(mineral_area_available, target_areas)</span>
+<span class="sd">        Optimises land distribution to minimize deviation from target areas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;cplex_direct&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the optimisation class with a specified solver.</span>
+
+<span class="sd">        :param solver: Solver to use for optimisation (default: &#39;cplex&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+
+
+<div class="viewcode-block" id="LandCoverOptimisation.optimise_mineral_spared_area_distribution">
+<a class="viewcode-back" href="../../../autoapi/landcover_assignment/optimisation/landcover_optimisation/index.html#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.optimise_mineral_spared_area_distribution">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimise_mineral_spared_area_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mineral_area_available</span><span class="p">,</span> <span class="n">target_areas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimises land distribution to minimize deviation from target areas.</span>
+<span class="sd">        Includes a fallback mechanism for leftover area to &quot;farmable condition.&quot;</span>
+
+<span class="sd">        :param mineral_area_available: Total mineral area available (float).</span>
+<span class="sd">        :param target_areas: Target areas for each land class (dict).</span>
+<span class="sd">        :return: Optimized land allocations (dict).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define scale factor as the total mineral area available</span>
+        <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">mineral_area_available</span>
+
+        <span class="c1"># Normalize inputs</span>
+        <span class="n">normalized_target_areas</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="o">/</span> <span class="n">scale_factor</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">target_areas</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">normalized_available_area</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Normalize total area to 1</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
+
+        <span class="c1"># Define Sets</span>
+        <span class="n">land_uses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target_areas</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">land_uses</span><span class="p">)</span>
+
+        <span class="c1"># Define Parameters</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">target_area</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">normalized_target_areas</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">actual_mineral_area_available</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="n">normalized_available_area</span><span class="p">)</span>
+
+
+        <span class="c1"># Decision Variables</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fallback_area</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">NonNegativeReals</span><span class="p">)</span>
+
+        <span class="c1"># Objective Function</span>
+        <span class="k">def</span> <span class="nf">objective_function</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+            <span class="c1"># Minimize the deviation from target areas and handle spillover</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">target_area</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">i</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">fallback_area</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">objective_function</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">pyo</span><span class="o">.</span><span class="n">minimize</span><span class="p">)</span>
+
+        <span class="c1"># Constraints</span>
+        <span class="k">def</span> <span class="nf">total_area_constraint</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+            <span class="c1"># Ensure total allocation matches available area</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">fallback_area</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">actual_mineral_area_available</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">total_area_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">total_area_constraint</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">cap_target_area_constraint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+            <span class="c1"># Prevent allocation from exceeding the target area for each land class</span>
+            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">target_area</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">cap_target_area_constraint</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">cap_target_area_constraint</span><span class="p">)</span>
+
+        <span class="c1"># Solve</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">)</span> 
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span> <span class="o">==</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TerminationCondition</span><span class="o">.</span><span class="n">optimal</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Land use Assignment Solution is optimal!&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span> <span class="o">==</span> <span class="n">pyo</span><span class="o">.</span><span class="n">TerminationCondition</span><span class="o">.</span><span class="n">infeasible</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Land use Assignment Solution is infeasible!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Infeasible solution!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Solver terminated with condition: </span><span class="si">{</span><span class="n">results</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">termination_condition</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Land use Assignment Solver did not find an optimal solution!&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Rescale results</span>
+        <span class="n">optimised_allocations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">i</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">scale_factor</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">i</span>
+        <span class="p">}</span>
+        <span class="n">optimised_allocations</span><span class="p">[</span><span class="s2">&quot;farmable_condition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fallback_area</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">scale_factor</span>
+
+        <span class="k">return</span> <span class="n">optimised_allocations</span></div>
+</div>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

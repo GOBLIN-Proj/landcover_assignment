@@ -17,7 +17,7 @@ Dependencies:
 - `pandas` for data manipulation and analysis.
 - `numpy` for numerical calculations.
 - `geo_landcover_assignment.geo_landcover.LandCover` for accessing combined future land use areas.
-- `landcover_assignment.landcover_data_manager.DataManager` for accessing land use columns and other data management tasks.
+- `landcover_assignment.resource_manager.landcover_data_manager.DataManager` for accessing land use columns and other data management tasks.
 
 Class Documentation:
 --------------------
@@ -46,7 +46,6 @@ import pandas as pd
 import numpy as np
 from landcover_assignment.geo_landcover_assignment.geo_landcover import LandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
-
 
 class TransitionMatrix:
     """
@@ -102,7 +101,7 @@ class TransitionMatrix:
 
         for index in transition_matrix.index:
             if index >= 0:
-                for land_use in self.data_manager_class.land_use_columns:
+                for land_use in self.data_manager_class.get_land_use_columns():
 
                     if land_use == "settlement":
                         continue
@@ -119,7 +118,7 @@ class TransitionMatrix:
                             index, "Grassland_to_" + land_use.title()
                         ] = -transition_diff
             else:
-                for land_use in self.data_manager_class.land_use_columns:
+                for land_use in self.data_manager_class.get_land_use_columns():
                     if land_use == "settlement":
                         continue
 
@@ -140,7 +139,7 @@ class TransitionMatrix:
         :param calibration_year: Initial year for transition.
         :type calibration_year: int
         :param target_year: Target year for transition.
-        :type targe_year: int
+        :type target_year: int
         :param land_cover_df: DataFrame containing land cover data.
         :type land_cover_df: pandas.DataFrame
         :return: The difference in area for the specified land use between years.
@@ -174,8 +173,8 @@ class TransitionMatrix:
         """
         col_list = [
             land_use.title() + "_to_" + landuse1.title()
-            for land_use in self.data_manager_class.land_use_columns
-            for landuse1 in self.data_manager_class.land_use_columns
+            for land_use in self.data_manager_class.get_land_use_columns()
+            for landuse1 in self.data_manager_class.get_land_use_columns()
             if land_use != "settlement" and landuse1 != "settlement"
         ]
         index_df = [int(x) for x in land_cover_df.farm_id.unique()]

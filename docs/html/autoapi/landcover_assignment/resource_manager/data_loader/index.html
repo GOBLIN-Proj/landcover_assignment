@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.resource_manager.data_loader &mdash; LandCover Assignment 0.3.2 documentation</title>
+  <title>landcover_assignment.resource_manager.data_loader &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -17,7 +17,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=71d9d8e6"></script>
+        <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -54,6 +54,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../geo_landcover_assignment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
 </ul>
 </li>
@@ -96,18 +97,82 @@
 <span id="landcover-assignment-resource-manager-data-loader"></span><h1><a class="reference internal" href="#module-landcover_assignment.resource_manager.data_loader" title="landcover_assignment.resource_manager.data_loader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.data_loader</span></code></a><a class="headerlink" href="#module-landcover_assignment.resource_manager.data_loader" title="Link to this heading"></a></h1>
 <section id="loader-class-documentation">
 <p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class serves as an interface to access various national land cover and land use area datasets. It utilizes the <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> to retrieve specific datasets related to inventory areas, forest areas, cropland areas, grassland areas, wetland areas, settlement areas, and forest soil yield mappings.</p>
-<dl class="py class" id="loader-class">
+<p><strong>Usage</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class is primarily used within environmental data analysis applications, where accessing standardized datasets on land cover and land use is essential. It abstracts the complexity of data retrieval processes, allowing users to focus on analyzing the data rather than managing data access.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.resource_manager.data_loader.Loader" title="landcover_assignment.resource_manager.data_loader.Loader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Loader</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class serves as an interface to access various national land cover and land use area datasets.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.data_loader.</span></span><span class="sig-name descname"><span class="pre">Loader</span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader" title="Link to this definition"></a></dt>
-<dd><p>Initializes the Loader class with a connection to the data management system for retrieving national land cover datasets.</p>
-<p><strong>Attributes</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dataframes</span></code> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataManager</span></code>): An instance of the DataManager class for accessing land cover data.</p></li>
-</ul>
-<p><strong>Methods</strong></p>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class serves as an interface to access various national land cover and land use area datasets.
+It utilizes the <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> to retrieve specific datasets related to inventory areas, forest areas, cropland areas,
+grassland areas, wetland areas, settlement areas, and forest soil yield mappings.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.dataframes">
+<span class="sig-name descname"><span class="pre">dataframes</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.dataframes" title="Link to this definition"></a></dt>
+<dd><p>An instance of the DataManager class for accessing land cover data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../database_manager/index.html#landcover_assignment.resource_manager.database_manager.DataManager" title="landcover_assignment.resource_manager.database_manager.DataManager">DataManager</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_inventory_areas">
 <span class="sig-name descname"><span class="pre">national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_inventory_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_inventory_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national inventory areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_forest_areas">
+<span class="sig-name descname"><span class="pre">national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national forest areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_cropland_areas">
+<span class="sig-name descname"><span class="pre">national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_cropland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national cropland areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_grassland_areas">
+<span class="sig-name descname"><span class="pre">national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_grassland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national grassland areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_wetland_areas">
+<span class="sig-name descname"><span class="pre">national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_wetland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national wetland areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_settlement_areas">
+<span class="sig-name descname"><span class="pre">national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_settlement_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_settlement_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national settlement areas dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping">
+<span class="sig-name descname"><span class="pre">forest_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.forest_soil_yield_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping" title="Link to this definition"></a></dt>
+<dd><p>Retrieves forest soil yield mapping to soil groups dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_inventory_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
 <dd><p>Retrieves national inventory areas dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -120,142 +185,88 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_forest_areas">
-<span class="sig-name descname"><span class="pre">national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_forest_areas" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
 <dd><p>Retrieves national forest areas dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing national forest areas data.</p>
+<dd class="field-odd"><p>A DataFrame containing national forest areas data.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
+<dd class="field-even"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_cropland_areas">
-<span class="sig-name descname"><span class="pre">national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_cropland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national cropland areas dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing national cropland areas data.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_grassland_areas">
-<span class="sig-name descname"><span class="pre">national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_grassland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national grassland areas dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing national grassland areas data.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_wetland_areas">
-<span class="sig-name descname"><span class="pre">national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_wetland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national wetland areas dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing national wetland areas data.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_settlement_areas">
-<span class="sig-name descname"><span class="pre">national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_settlement_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_settlement_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national settlement areas dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing national settlement areas data.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping">
-<span class="sig-name descname"><span class="pre">forest_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.forest_soil_yield_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping" title="Link to this definition"></a></dt>
-<dd><p>Retrieves forest soil yield mapping to soil groups dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A method object that when called, returns a DataFrame containing forest soil yield mappings.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>method</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<p><strong>Usage</strong></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class is primarily used within environmental data analysis applications, where accessing standardized datasets on land cover and land use is essential. It abstracts the complexity of data retrieval processes, allowing users to focus on analyzing the data rather than managing data access.</p>
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
-<section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="landcover_assignment.resource_manager.data_loader.Loader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Loader</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.data_loader.</span></span><span class="sig-name descname"><span class="pre">Loader</span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_inventory_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national cropland areas dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing national cropland areas data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national grassland areas dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing national grassland areas data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national wetland areas dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing national wetland areas data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_settlement_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national settlement areas dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing national settlement areas data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.national_settlement_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">forest_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.forest_soil_yield_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">forest_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/data_loader.html#Loader.forest_soil_yield_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Retrieves forest soil yield mapping to soil groups dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing forest soil yield mappings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def main():
-    path = "./geo_data"
+    path = "../geo_data"
 
     calibration = 2020
     target = 2050

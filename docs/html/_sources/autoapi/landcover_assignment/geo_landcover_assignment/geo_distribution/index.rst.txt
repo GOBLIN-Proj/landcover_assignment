@@ -38,7 +38,7 @@
          handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other
          soil types accordingly.
 
-      .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)
+      .. method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
          Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
          components, and recalculates the total remaining grassland area along with its composition.
 
@@ -104,7 +104,7 @@ Classes
       of mineral, organic, and other soil types accordingly.
 
 
-   .. method:: grassland_distribution(mineral_area, organic_area, grassland_area)
+   .. method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
 
       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
       and organic components, and recalculates the total remaining grassland area along with its composition.
@@ -122,7 +122,7 @@ Classes
       :rtype: dict
 
 
-   .. py:method:: grassland_distriubtion(mineral_area, organic_area, organic_mineral_area, grassland_area)
+   .. py:method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
 
       Manages the distribution of grassland areas, taking into account changes in mineral and organic areas.
 
@@ -130,8 +130,10 @@ Classes
       :type mineral_area: float
       :param organic_area: The area of grassland to be converted to organic soil.
       :type organic_area: float
+      :param organic_mineral_area: The area of grassland to be converted to organic-mineral soil.
+      :type organic_mineral_area: float
       :param grassland_area: The total initial grassland area before distribution.
-      :type grassland_area: pandas.DataFrame
+      :type grassland_area: float
       :return: A dictionary containing updated grassland distribution details.
       :rtype: dict
 
