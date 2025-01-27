@@ -326,7 +326,7 @@ class LandCover:
     def combined_future_land_use_area(self):
         """
         Combines the calculated current land use areas with projected future areas under different scenarios.
-        
+
         Returns
         -------
         pandas.DataFrame
@@ -335,131 +335,113 @@ class LandCover:
         target_year = self.data_manager_class.target_year
         calibration_year = self.data_manager_class.calibration_year
 
-        scenarios = self.scenario_list
-
-        land_use_columns = self.data_manager_class.land_use_columns
-
+        # Step 1: Compute current areas
         current_area_pd = self.compute_current_area()
 
-        future_area_pd = pd.DataFrame(columns=current_area_pd.columns)
-
+        # Step 2: Initialize list to collect future data
         data = []
-        for sc in scenarios:
-            land_use_data_future = self.spared_area_breakdown(sc)
-            grassland_data_future = self.grassland_breakdown(sc)
-            for landuse in land_use_columns:         
-                if landuse == "grassland":
-               
-                    row ={
-                            "farm_id": sc,
-                            "year": target_year,
-                            "land_use": landuse,
-                            "area_ha": grassland_data_future[landuse]["area_ha"],
-                            "share_mineral": grassland_data_future[landuse][
-                                "share_mineral"
-                            ],
-                            "share_organic": grassland_data_future[landuse][
-                                "share_organic"
-                            ],
-                            "share_drained_rich_organic": grassland_data_future[landuse]["share_drained_rich_organic"],
 
-                            "share_drained_poor_organic": grassland_data_future[landuse]["share_drained_poor_organic"],
+        # Step 3: Iterate through scenarios, calculate spared/grassland breakdown once
+        for sc in self.scenario_list:
+            
+            # Calculate spared area breakdown and grassland breakdown
+            spared_area_breakdown, grassland_breakdown = self.calculate_spared_area_allocation(sc)
 
-                            "share_rewetted_rich_organic": grassland_data_future[landuse]["share_rewetted_rich_organic"],
-
-                            "share_rewetted_poor_organic": grassland_data_future[landuse]["share_rewetted_poor_organic"],
-
-                            "share_organic_mineral": grassland_data_future[landuse][
-                                "share_organic_mineral"
-                            ],
-                            "share_rewetted_in_organic": grassland_data_future[landuse][
-                                "share_rewetted_in_organic"
-                            ],
-                            "share_rewetted_in_mineral": grassland_data_future[landuse][
-                                "share_rewetted_in_mineral"
-                            ],
-                            "share_domestic_peat_extraction": grassland_data_future[landuse][
-                                "share_domestic_peat_extraction"
-                            ],
-                            "share_industrial_peat_extraction": grassland_data_future[landuse][
-                                "share_industrial_peat_extraction"
-                            ],
-                            "share_rewetted_industrial_peat_extraction": grassland_data_future[landuse][
-                                "share_rewetted_industrial_peat_extraction"
-                            ],
-                            "share_rewetted_domestic_peat_extraction": grassland_data_future[landuse][
-                                "share_rewetted_domestic_peat_extraction"
-                            ],
-                            "share_near_natural_wetland": grassland_data_future[landuse]["share_near_natural_wetland"],
-                            "share_unmanaged_wetland": grassland_data_future[landuse]["share_unmanaged_wetland"],
-                            "share_burnt": grassland_data_future[landuse]["share_burnt"],
-                        }
-                    data.append(row)
-
-                elif landuse == "settlement":
-                    row =self._fill_future_area_row(sc, calibration_year, target_year, landuse)
-
-                    data.append(row)
+            # Step 4: Process land uses from spared and grassland breakdowns
+            for land_use, land_use_data in {**spared_area_breakdown, **grassland_breakdown}.items():
                 
-                else:
+                row = {
+                    "farm_id": sc,
+                    "year": target_year,
+                    "land_use": land_use,
+                    "area_ha": land_use_data.get("area_ha", 0),
+                    "share_mineral": land_use_data.get("share_mineral", 0),
+                    "share_organic": land_use_data.get("share_organic", 0),
+                    "share_drained_rich_organic": land_use_data.get("share_drained_rich_organic", 0),
+                    "share_drained_poor_organic": land_use_data.get("share_drained_poor_organic", 0),
+                    "share_rewetted_rich_organic": land_use_data.get("share_rewetted_rich_organic", 0),
+                    "share_rewetted_poor_organic": land_use_data.get("share_rewetted_poor_organic", 0),
+                    "share_organic_mineral": land_use_data.get("share_organic_mineral", 0),
+                    "share_rewetted_in_organic": land_use_data.get("share_rewetted_in_organic", 0),
+                    "share_rewetted_in_mineral": land_use_data.get("share_rewetted_in_mineral", 0),
+                    "share_domestic_peat_extraction": land_use_data.get("share_domestic_peat_extraction", 0),
+                    "share_industrial_peat_extraction": land_use_data.get("share_industrial_peat_extraction", 0),
+                    "share_rewetted_industrial_peat_extraction": land_use_data.get("share_rewetted_industrial_peat_extraction", 0),
+                    "share_rewetted_domestic_peat_extraction": land_use_data.get("share_rewetted_domestic_peat_extraction", 0),
+                    "share_near_natural_wetland": land_use_data.get("share_near_natural_wetland", 0),
+                    "share_unmanaged_wetland": land_use_data.get("share_unmanaged_wetland", 0),
+                    "share_burnt": land_use_data.get("share_burnt", 0),
+                }
+                data.append(row)
 
-                    row ={
-                            "farm_id": sc,
-                            "year": target_year,
-                            "land_use": landuse,
-                            "area_ha": land_use_data_future[landuse]["area_ha"],
-                            "share_mineral": land_use_data_future[landuse][
-                                "share_mineral"
-                            ],
-                            "share_organic": land_use_data_future[landuse][
-                                "share_organic"
-                            ],
-                            "share_drained_rich_organic": land_use_data_future[landuse]["share_drained_rich_organic"],
+            # Step 5: Add settlement data
+            settlement_data = self.handle_settlement(sc, calibration_year, target_year)
+            data.append(settlement_data)
 
-                            "share_drained_poor_organic": land_use_data_future[landuse]["share_drained_poor_organic"],
-
-                            "share_rewetted_rich_organic": land_use_data_future[landuse]["share_rewetted_rich_organic"],
-
-                            "share_rewetted_poor_organic": land_use_data_future[landuse]["share_rewetted_poor_organic"],
-
-                            "share_organic_mineral": land_use_data_future[landuse][
-                                "share_organic_mineral"
-                            ],
-                            "share_rewetted_in_organic": land_use_data_future[landuse][
-                                "share_rewetted_in_organic"
-                            ],
-                            "share_rewetted_in_mineral": land_use_data_future[landuse][
-                                "share_rewetted_in_mineral"
-                            ],
-                            "share_domestic_peat_extraction": land_use_data_future[landuse][
-                                "share_domestic_peat_extraction"
-                            ],
-                            "share_industrial_peat_extraction": land_use_data_future[landuse][
-                                "share_industrial_peat_extraction"
-                            ],
-                            "share_rewetted_industrial_peat_extraction": land_use_data_future[landuse][
-                                "share_rewetted_industrial_peat_extraction"
-                            ],
-                            "share_rewetted_domestic_peat_extraction": land_use_data_future[landuse][
-                                "share_rewetted_domestic_peat_extraction"
-                            ],
-                            "share_near_natural_wetland": land_use_data_future[landuse]["share_near_natural_wetland"],
-                            "share_unmanaged_wetland": land_use_data_future[landuse]["share_unmanaged_wetland"],
-                            "share_burnt": land_use_data_future[landuse]["share_burnt"],
-                        }
-                    
-                    
-
-                    data.append(row)
-        
+        # Step 6: Combine current and future areas into a single DataFrame
         future_area_pd = pd.DataFrame(data)
-
         combined_df = pd.concat([current_area_pd, future_area_pd], ignore_index=True)
-        
+
         return combined_df
 
 
-    def spared_area_breakdown(self, scenario):
+    def calculate_spared_area_allocation(self, scenario):
+        """
+        Wrapper function to handle spared area allocation across mineral and organic soils
+        before passing clean parameters to breakdown methods.
+
+        Parameters
+        ----------
+        scenario : int
+            Scenario identifier.
+
+        Returns
+        -------
+        spared_area_breakdown, grassland_breakdown : tuple
+            Two dictionaries representing the spared area and grassland area breakdowns.
+        """
+        # Step 1: Fetch total spared area and max available areas
+        initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
+        max_organic_available = self._available_organic_area(scenario)["available_organic"]
+        max_mineral_available = self._available_mineral_area()["available_mineral"]
+
+        # Step 2: Calculate rewetting (organic allocation)
+        rewet_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)
+        target_rewetted = initial_spared_area * rewet_proportion
+        actual_rewetted_area = min(max_organic_available, target_rewetted)
+
+        # Step 3: Calculate remaining mineral area after rewetting
+        required_mineral_area = initial_spared_area - actual_rewetted_area
+        actual_mineral_area = min(max_mineral_available, required_mineral_area)
+
+        # Step 4: Handle spillover (excess spared area beyond mineral availability)
+        spillover_area = 0
+        if required_mineral_area > max_mineral_available:
+            spillover_area = required_mineral_area - max_mineral_available
+            actual_rewetted_area += spillover_area
+
+        # Step 5: Calculate area previously drained
+        area_previously_drained = min(max_organic_available,actual_rewetted_area)
+
+        # Step 6: Generate spared area breakdown
+        spared_area_breakdown = self.spared_area_breakdown(
+            scenario,
+            intial_spared_area=initial_spared_area,
+            actual_rewetted_area=actual_rewetted_area,
+            actual_mineral_area=actual_mineral_area,
+        )
+
+        # Step 7: Generate grassland breakdown, including spillover adjustments
+        grassland_breakdown = self.grassland_breakdown(
+            area_previously_drained=area_previously_drained,
+            actual_mineral_area=actual_mineral_area,
+        )
+
+        # Step 8: Return results
+        return spared_area_breakdown, grassland_breakdown
+
+
+    def spared_area_breakdown(self, scenario, intial_spared_area, actual_rewetted_area, actual_mineral_area):
         """
         Analyzes the breakdown of spared areas under a specific scenario.
 
@@ -478,18 +460,9 @@ class LandCover:
         year = self.data_manager_class.calibration_year
         spared_land_use_dict = self.data_manager_class.get_spared_area_dict()
 
-        max_organic_available = self._available_organic_area(scenario)["available_organic"]
-        initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
-
         # Step 1: Handle wetlands (special case)
-        rewet_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)  # Target proportion for wetlands
-        target_rewetted = initial_spared_area * rewet_proportion  # Area to be rewetted (from grassland)
-        rewetted_area = min(max_organic_available, target_rewetted)  # Limit rewetted area to organic availability
+        self._log_spared_area(scenario, "rewet_grassland", 0, actual_rewetted_area)
 
-        self._log_spared_area(scenario, "rewet_grassland", 0, rewetted_area)
-
-        # Update spared area by subtracting the rewetted area
-        mineral_spared_area = initial_spared_area - rewetted_area
 
         # Generate wetland data and add to results
         wetland_data = self.land_dist_class.land_distribution(year, "wetland", None)  # Wetlands don't increase
@@ -497,7 +470,7 @@ class LandCover:
 
         # Step 2: Define target shares
         target_areas = {
-            land_use: (initial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
+            land_use: (intial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
             for land_use in spared_land_use_dict.keys()
             if land_use not in ["farmable_condition", "rewetted"]# Exclude "farmable condition" (fallback) & rewetted
         }
@@ -505,7 +478,7 @@ class LandCover:
         # Step 3: Optimize spared area distribution
         optimizer = LandCoverOptimisation()
         optimised_allocations = optimizer.optimise_mineral_spared_area_distribution(
-            mineral_area_available=mineral_spared_area,
+            mineral_area_available=actual_mineral_area,
             target_areas=target_areas,
         )
 
@@ -521,7 +494,7 @@ class LandCover:
         return result_dict
 
 
-    def grassland_breakdown(self, scenario):
+    def grassland_breakdown(self, area_previously_drained, actual_mineral_area):
         """
         Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.
 
@@ -544,21 +517,8 @@ class LandCover:
 
         calibration_year = self.data_manager_class.calibration_year
 
-        initial_spared_area = self.national_class.get_total_spared_area(self.total_spared_area, scenario)
-
-
-        max_organic_available = self._available_organic_area(scenario)["available_organic"]
-
-        sc_rewetted_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)
-        target_rewet= initial_spared_area * sc_rewetted_proportion
-
-        new_rewetted_area_achieved = min(max_organic_available,target_rewet)
-
-
-        spared_mineral_achieved = initial_spared_area - new_rewetted_area_achieved
-
         generated_land_use_data = self.land_dist_class.grassland_distribution(
-            calibration_year, spared_mineral_achieved, new_rewetted_area_achieved, self.total_grassland
+            calibration_year, actual_mineral_area, area_previously_drained, self.total_grassland
         )
 
         result_dict["grassland"] = generated_land_use_data
@@ -598,3 +558,50 @@ class LandCover:
         max_organic_spared = min(organic_potential, total_drained)
 
         return {"available_organic":max_organic_spared}
+    
+
+    def _available_mineral_area(self):
+        """
+        Computes the available area for mineral soil under a given scenario.
+
+        This internal method calculates the maximum possible area that can be transitioned to mineral soil-based
+        land uses, such as wetlands, based on the current mineral and soil areas and scenario-specific
+        spared area allocations.
+
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier for which the available mineral area is calculated.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing the available mineral area.
+        """
+        year = self.data_manager_class.calibration_year
+
+        mineral_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_mineral("grassland", year, self.total_grassland)
+    
+        return {"available_mineral":mineral_area}
+
+
+    def handle_settlement(self, scenario, calibration_year, target_year):
+        """
+        Handles settlement data, which remains relatively constant and requires specific logic.
+
+        Parameters
+        ----------
+        scenario : int
+            The scenario identifier for which the settlement data is being processed.
+        calibration_year : int
+            The baseline year for settlement data.
+        target_year : int
+            The target year for settlement projections.
+
+        Returns
+        -------
+        dict
+            A dictionary representing settlement data for the specified scenario and target year.
+        """
+        settlement_data = self._fill_future_area_row(scenario, calibration_year, target_year, "settlement")
+        return settlement_data

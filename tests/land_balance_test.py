@@ -41,27 +41,39 @@ class TestLandCoverSystem(unittest.TestCase):
 
 
     def test_spared_area(self):
-        matrix = self.transition.create_transition_matrix()
-        landcover_data = self.land.combined_future_land_use_area()
 
-        rewetted_area_base_mask = (landcover_data.year == self.baseline) & (landcover_data.land_use == "grassland")
+        self.land.combined_future_land_use_area()
 
-        for farm_id in matrix.index:
-            if farm_id > 0:
-                rewetted_area_target_mask = (landcover_data.year == self.target_year) &(landcover_data.farm_id == farm_id) & (landcover_data.land_use == "grassland")
+        spared_area_log = self.land.get_spared_area_log()
 
-                rewetted_area_target_rich = landcover_data.loc[rewetted_area_target_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_target_mask, "share_rewetted_rich_organic"].item()
-                rewetted_area_target_poor = landcover_data.loc[rewetted_area_target_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_target_mask, "share_rewetted_poor_organic"].item()
+        
 
-                rewetted_area_base_rich = landcover_data.loc[rewetted_area_base_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_base_mask, "share_rewetted_rich_organic"].item()
-                rewetted_area_base_poor = landcover_data.loc[rewetted_area_base_mask, "area_ha"].item() * landcover_data.loc[rewetted_area_base_mask, "share_rewetted_poor_organic"].item()
+        for sc in spared_area_log["scenario"].unique():
+            if sc > 0:
 
-                total_rewetted_area_target = (rewetted_area_base_rich + rewetted_area_base_poor)-(rewetted_area_target_rich + rewetted_area_target_poor)
-                
-                print(f"total_rewetted_area_target: {total_rewetted_area_target}")
+                print(f"Scenario: {sc}")
 
-                self.assertAlmostEqual(abs(matrix.loc[farm_id, "Grassland_to_Grassland"].item()), (self.spared_area.loc[self.target_year, farm_id].item()+ total_rewetted_area_target))
-            
+                # Filter spared area log for the specific scenario
+                spared_area_mask = (spared_area_log["scenario"] == sc)
+                spared_area = spared_area_log.loc[spared_area_mask, ["organic_area", "mineral_area"]].sum().sum()  # Sum both columns and their values
+
+                # Get grassland area for the target year
+                grassland_area = self.grassland_area.loc[self.target_year, sc].item()
+
+                print(f"Spared area: {spared_area}")
+                print(f"Grassland area: {grassland_area}")
+
+
+                # Calculate the total initial grassland area
+                total_area = self.grassland_area.loc[self.baseline, sc].item()
+
+                print(f"Total area: {total_area}")
+
+                # Assert that the spared area + remaining grassland matches the total initial area
+                self.assertAlmostEqual((spared_area + grassland_area), total_area, places=5)
+
+
+
     def test_land_balance(self):
         landcover_data = self.land.combined_future_land_use_area()
         matrix = self.transition.create_transition_matrix()
