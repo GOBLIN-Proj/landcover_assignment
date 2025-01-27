@@ -46,8 +46,6 @@ class TestLandCoverSystem(unittest.TestCase):
 
         spared_area_log = self.land.get_spared_area_log()
 
-        
-
         for sc in spared_area_log["scenario"].unique():
             if sc > 0:
 
