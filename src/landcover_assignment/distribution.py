@@ -83,6 +83,7 @@ class LandDistribution:
         self.national_class = NationalLandCover()
         self.sc_fetcher_class = ScenarioDataFetcher(scenario_data, validate_on_init=True)
 
+
     def land_distribution(self, year, land_use, new_area):
         """
         Calculates and updates the land distribution based on land use type and area change.
@@ -132,7 +133,8 @@ class LandDistribution:
 
         return land
 
-    def grassland_distribution(self, year, mineral_area, organic_area, grassland_area):
+
+    def grassland_distribution(self, year, mineral_area, organic_area_to_wet, grassland_area):
         """
         Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.
 
@@ -182,11 +184,11 @@ class LandDistribution:
             drained_rich_organic_proportion = drained_poor_organic_proportion = 0
 
         grass_remaining_mineral = grass_mineral_area - mineral_area
-        grass_remaining_drained_rich_organic = grass_drained_rich_organic_area - (organic_area * drained_rich_organic_proportion)
-        grass_remaining_drained_poor_organic = grass_drained_poor_organic_area - (organic_area * drained_poor_organic_proportion)
+        grass_remaining_drained_rich_organic = grass_drained_rich_organic_area - (organic_area_to_wet * drained_rich_organic_proportion)
+        grass_remaining_drained_poor_organic = grass_drained_poor_organic_area - (organic_area_to_wet * drained_poor_organic_proportion)
 
-        grass_rewetted_total_rich_organic = grass_rewetted_rich_organic_area + (organic_area * drained_rich_organic_proportion)
-        grass_rewetted_total_poor_organic = grass_rewetted_poor_organic_area + (organic_area * drained_poor_organic_proportion)
+        grass_rewetted_total_rich_organic = grass_rewetted_rich_organic_area + (organic_area_to_wet * drained_rich_organic_proportion)
+        grass_rewetted_total_poor_organic = grass_rewetted_poor_organic_area + (organic_area_to_wet * drained_poor_organic_proportion)
 
         grass_total_remaining = grass_remaining_mineral + grass_organic_area + grass_organic_mineral_area
 
