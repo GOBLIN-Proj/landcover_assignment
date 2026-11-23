@@ -38,12 +38,21 @@
   - the `spared_area_breakdown` keyword `intial_spared_area` → `initial_spared_area`.
   - README typos are fixed. `tests/test_spelling.py` stops them coming back.
 - CI runs the new test suite.
+- **Simplification (results unchanged, outputs bit-identical):**
+  - **National shares:** the national land-use rows are built from one share table (`national_landcover.SHARE_SOURCES`); 1,833 → 481 lines. The `get_share_*` / `get_national_*` names remain as one-line wrappers.
+  - **`Loader`:** `Loader.national_*_areas` return the tables, not bound methods.
+  - **One allocation per instance:** `combined_future_land_use_area()` builds the table once per `LandCover` instance and returns copies.
+  - **Catchment `Afforestation`:** a subclass of the national one that validates the scenario table; the import path and constructor are unchanged.
 - **National validation of grassland**: with the balance, grassland is checked in hectares and in shares against the national inventory. The total-land check compares the table with the national total less other land.
 
 ### Fixed
 - **Zero mineral area**: when no spared mineral area is available (all of it rewetted, or no mineral grassland left), the optimiser returns zeros. Before, it raised `ZeroDivisionError`.
 
 ### Removed
+- Dead code:
+  - the catchment `combined_future_land_use_area_old`;
+  - the crop-type lookups in `CatchmentLandCover`, which called each other forever if used, and their unused `Crops()` object;
+  - the unused `LandCover.data_loader_class` and `DataManager.landuse_dict` / `get_landuse_dict`.
 - The built HTML docs (`docs/html`, `docs/index.html`, `docs/.nojekyll`) are no longer committed. The docs are built by Read the Docs (`.readthedocs.yaml`) and checked by CI.
 - The old print-script tests, and test files that no longer ran. Their land-balance and area checks are now in `tests/test_land_balance.py`.
 

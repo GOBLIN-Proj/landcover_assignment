@@ -57,11 +57,14 @@ class Afforestation:
         data_loader (Loader): An instance for loading necessary data resources.
         yield_mapping (pd.DataFrame): A DataFrame containing yield mapping for different forest soil groups.
     """
+    # The catchment subclass (geo_afforestation.Afforestation) validates the scenario table on construction.
+    validate_scenarios = False
+
     def __init__(self, calibration_year, target_year, scenario_inputs_df, transition_matrix):
         self.data_manager_class = DataManager(
             calibration_year, target_year
         )
-        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df)
+        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=self.validate_scenarios)
         self.transition_data_fetcher = TransitionDataFetcher(transition_matrix)
         self.data_loader = Loader()
         self.yield_mapping = self.data_loader.forest_soil_yield_mapping()
