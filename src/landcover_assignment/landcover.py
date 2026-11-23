@@ -141,6 +141,7 @@ class LandCover:
         self.total_spared_area_breakdown = spared_area_breakdown
         self.scenario_list = self.sc_fetch_class.get_scenario_list()
         self._spared_area_log = pd.DataFrame()
+        self._combined_land_use = None
 
 
     def _log_spared_area(self, scenario, land_use, mineral_area, organic_area):
@@ -378,6 +379,13 @@ class LandCover:
         pandas.DataFrame
             A DataFrame containing both current and projected future land use areas.
         """
+        # Computed once per instance (the allocation is the expensive part); callers get a copy.
+        if self._combined_land_use is None:
+            self._combined_land_use = self._build_combined_future_land_use_area()
+        return self._combined_land_use.copy()
+
+    def _build_combined_future_land_use_area(self):
+        """Builds the table returned by :meth:`combined_future_land_use_area`."""
         target_year = self.data_manager_class.target_year
         calibration_year = self.data_manager_class.calibration_year
 

@@ -105,5 +105,23 @@ class SoilGroupSplit(unittest.TestCase):
                                    tm.loc[sc, "Grassland_to_Farmable_Condition"], delta=1e-2)
 
 
+
+class ComputedOnce(unittest.TestCase):
+    """combined_future_land_use_area() runs the allocation once per LandCover instance and returns copies."""
+
+    def test_second_call_reuses_the_table(self):
+        from unittest import mock
+        from _helpers import CASES, CAL, TARGET, classes
+        for tree, case in (("national", "national"), ("geo", "geo")):
+            LandCover = classes(tree)[0]
+            land = LandCover(CAL, TARGET, *CASES[case][1]())
+            first = land.combined_future_land_use_area()
+            with mock.patch.object(land, "calculate_spared_area_allocation",
+                                   side_effect=AssertionError("allocation ran again")):
+                second = land.combined_future_land_use_area()
+            pd.testing.assert_frame_equal(first, second)
+            first.loc[:, "area_ha"] = -1.0                      # changing a returned table changes nothing else
+            pd.testing.assert_frame_equal(land.combined_future_land_use_area(), second)
+
 if __name__ == "__main__":
     unittest.main()
