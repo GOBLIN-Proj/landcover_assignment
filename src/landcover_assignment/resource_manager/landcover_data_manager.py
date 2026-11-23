@@ -18,14 +18,12 @@ DataManager Class
 
    **Attributes**
 
-   - ``data_loader_class`` (:class:`Loader`): An instance of the Loader class to access land cover datasets.
    - ``calibration_year`` (int): The year used as a reference for calibration.
    - ``target_year`` (int): The year to which data projections are made.
    - ``default_calibration_year`` (int): The default year for calibration if none is specified.
    - ``land_use_columns`` (list): A list of strings representing different land use types.
    - ``cbm_default_data`` (dict): Default data structure for initializing CBM data inputs.
    - ``areas_dataframe_cols`` (list): Column names for the areas DataFrame.
-   - ``landuse_dict`` (dict): A dictionary mapping land use types to their corresponding data access methods.
    - ``spared_area_dict`` (dict): A dictionary defining how spared areas are categorized by land use type.
 
    **Methods**
@@ -58,9 +56,6 @@ DataManager Class
       :return: A list of column names for the areas DataFrame.
       :rtype: list
 
-   ``get_landuse_dict()``
-
-      Returns the dictionary mapping land use types to their corresponding data access methods.
 
       :return: A dictionary mapping land use types to data access methods.
       :rtype: dict
@@ -126,12 +121,10 @@ DistributionManager Class
       :rtype: list
 """
 
-from landcover_assignment.resource_manager.data_loader import Loader
 
 
 class DataManager:
     def __init__(self, calibration_year, target_year):
-        self.data_loader_class = Loader()
         self.calibration_year = calibration_year
         self.target_year = target_year
 
@@ -176,14 +169,6 @@ class DataManager:
             "share_burnt",
         ]
 
-        self.landuse_dict = {
-            "forest": self.data_loader_class.national_forest_areas,
-            "cropland": self.data_loader_class.national_cropland_areas,
-            "wetland": self.data_loader_class.national_wetland_areas,
-            "settlement": self.data_loader_class.national_settlement_areas,
-            "grassland": self.data_loader_class.national_grassland_areas,
-        }
-
         self.spared_area_dict = {
             "rewetted": "Wetland area",
             "forest": "Forest area",
@@ -226,15 +211,6 @@ class DataManager:
             list: A list of column names for the areas DataFrame.
         """
         return self.areas_dataframe_cols
-    
-    def get_landuse_dict(self):
-        """
-        Returns the dictionary mapping land use types to their corresponding data access methods.
-
-        Returns:
-            dict: A dictionary mapping land use types to data access methods.
-        """
-        return self.landuse_dict
     
     def get_spared_area_dict(self):
         """

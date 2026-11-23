@@ -8,7 +8,6 @@ various APIs and data sources to offer a comprehensive set of functionalities fo
 Dependencies
 ------------
 - ``catchment_data_api.catchment_data_api.CatchmentDataAPI``
-- ``catchment_data_api.crops.Crops``
 - ``resource_manager.data_loader.Loader``
 - ``pandas`` as ``pd``
 
@@ -62,9 +61,6 @@ Classes
       
       Retrieves the national average share of burnt land for a specified land use type.
 
-   ``get_catchment_crop_type(catchment)``
-      
-      Retrieves the types of crops grown within a specified catchment.
 
    ``get_total_spared_area(spared_area, sc)``
       
@@ -89,7 +85,6 @@ Classes
 """
 
 from catchment_data_api.catchment_data_api import CatchmentDataAPI
-from catchment_data_api.crops import Crops
 from landcover_assignment.resource_manager.data_loader import Loader
 from functools import lru_cache
 import pandas as pd 
@@ -104,17 +99,14 @@ class CatchmentLandCover:
 
     Attributes:
         api (CatchmentDataAPI): An instance of the CatchmentDataAPI for accessing catchment data.
-        crops_api (Crops): An instance of the Crops API for accessing crops data.
         loader (Loader): An instance of the Loader for accessing national area data.
         methods (dict): A dictionary mapping land use types to their respective methods.
         national_areas (dict): A dictionary mapping land use types to their national areas data.
         cached_national_areas (dict): A dictionary for caching national areas data.
         cached_burnt_averages (dict): A dictionary for caching burnt averages data.
-        cached_crops (dict): A dictionary for caching crop data.
     """
     def __init__(self):
         self.api = CatchmentDataAPI()
-        self.crops_api = Crops()
         self.loader = Loader()
 
         self.methods ={
@@ -135,29 +127,6 @@ class CatchmentLandCover:
         self.cached_national_areas = {}
 
         self.cached_burnt_averages = {}
-
-        self.cached_crops = {}
-
-    def _get_cached_crops(self, catchment):
-        """
-        Retrieve and cache the data for a specified catchment.
-
-        Parameters
-        ----------
-        catchment : str
-            The name of the catchment area.
-
-        Returns
-        -------
-        pandas.DataFrame
-            The cached DataFrame for the specified catchment.
-        """
-        # Check if the data is already cached
-        if catchment not in self.cached_crops:
-            # Cache the data if not already present
-            self.cached_crops[catchment] = self.get_catchment_crop_type(catchment)
-
-        return self.cached_crops[catchment].copy()
 
 
     def _get_cached_burnt_averages(self, landuse):
@@ -715,25 +684,6 @@ class CatchmentLandCover:
         return burn_average   
 
 
-    def get_catchment_crop_type(self, catchment):
-        """
-        Retrieves the types of crops grown within a specified catchment.
-
-        Parameters
-        ----------
-        catchment : str
-            The name of the catchment area.
-
-        Returns
-        -------
-        pandas.DataFrame
-            A DataFrame containing crop types within the specified catchment.
-        """
-
-        crop_df = self._get_cached_crops(catchment)
-
-        return crop_df
-    
     def get_total_spared_area(self, spared_area, sc):
         """
         Retrieves the total spared area for a given scenario.

@@ -18,7 +18,6 @@ Dependencies:
 - ``landcover_assignment.distribution.LandDistribution``: Manages land distribution scenarios.
 - ``landcover_assignment.national_landcover.NationalLandCover``: Analyzes land cover within national areas.
 - ``landcover_assignment.resource_manager.landcover_data_manager.DataManager``: Manages land cover data.
-- ``landcover_assignment.resource_manager.data_loader.Loader``: Loads required data resources.
 - ``landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher``: Fetches scenario-specific data.
 - ``landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation``: Optimizes land cover distribution.
 
@@ -54,7 +53,6 @@ from landcover_assignment.distribution import LandDistribution
 from landcover_assignment.national_landcover import NationalLandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
-from landcover_assignment.resource_manager.data_loader import Loader
 from landcover_assignment.optimisation.landcover_optimisation import LandCoverOptimisation
 
 class LandCover:
@@ -88,8 +86,6 @@ class LandCover:
     ----------
     data_manager_class : landcover_assignment.resource_manager.landcover_data_manager.DataManager
         Manages land cover data and provides access to calibration and target year data.
-    data_loader_class : Loader
-        Loads required data resources, including environmental and land use data.
     national_class : NationalLandCover
         Provides functionalities for accessing and analyzing national land cover data.
     sc_fetch_class : ScenarioDataFetcher
@@ -132,7 +128,6 @@ class LandCover:
         self.data_manager_class = DataManager(
             calibration_year, target_year
         )
-        self.data_loader_class = Loader()
         self.national_class = NationalLandCover()
         self.sc_fetch_class = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=True)
         self.land_dist_class = LandDistribution(scenario_inputs_df)

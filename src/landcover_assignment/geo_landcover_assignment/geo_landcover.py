@@ -18,7 +18,6 @@ Dependencies:
 - `geo_landcover_assignment.geo_distribution.LandDistribution`: Manages land distribution scenarios.
 - `geo_landcover_assignment.catchment_landcover.CatchmentLandCover`: Analyzes land cover within catchment areas.
 - `landcover_assignment.landcover_data_manager.DataManager`: Manages land cover data.
-- `resource_manager.data_loader.Loader`: Loads required data resources.
 - `resource_manager.scenario_data_fetcher.ScenarioDataFetcher`: Fetches scenario-specific data.
 - `landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation`: Optimizes land cover distribution.
 
@@ -50,7 +49,6 @@ from landcover_assignment._deprecation import renamed_attribute, renamed_keyword
 from landcover_assignment.geo_landcover_assignment.geo_distribution import LandDistribution
 from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
-from landcover_assignment.resource_manager.data_loader import Loader
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 from landcover_assignment.optimisation.landcover_optimisation import LandCoverOptimisation
 
@@ -85,8 +83,6 @@ class LandCover:
     ----------
     data_manager_class : landcover_assignment.resource_manager.landcover_data_manager.DataManager
         Manages land cover data and provides access to calibration and target year data.
-    data_loader_class : Loader
-        Loads required data resources, including environmental and land use data.
     catchment_class : CatchmentLandCover
         Provides functionalities for accessing and analyzing catchment land cover data.
     sc_fetch_class : ScenarioDataFetcher
@@ -133,7 +129,6 @@ class LandCover:
         self.data_manager_class = DataManager(
             calibration_year, target_year
         )
-        self.data_loader_class = Loader()
         self.catchment_class = CatchmentLandCover()
         self.sc_fetch_class = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=True)
         self.land_dist_class = LandDistribution(scenario_inputs_df)
@@ -322,99 +317,6 @@ class LandCover:
 
         return combined_df
 
-
-    def combined_future_land_use_area_old(self):
-        """
-        Combines the calculated current land use areas with projected future areas under different scenarios.
-        
-        :return pd.DataFrame: A DataFrame containing both current and projected future land use areas.
-        """
-        target_year = self.data_manager_class.target_year
-
-        scenarios = self.scenario_list
-
-        land_use_columns = self.data_manager_class.get_land_use_columns()
-
-        current_area_pd = self.compute_current_area()
-
-        future_area_pd = pd.DataFrame(columns=current_area_pd.columns)
-
-        data = []
-        for sc in scenarios:
-            land_use_data_future, grassland_data_future = self.calculate_spared_area_allocation(sc)
-            for landuse in land_use_columns:
-                if landuse == "grassland":
-               
-                    row ={
-                            "farm_id": sc,
-                            "year": target_year,
-                            "land_use": landuse,
-                            "area_ha": grassland_data_future[landuse]["area_ha"],
-                            "share_mineral": grassland_data_future[landuse][
-                                "share_mineral"
-                            ],
-                            "share_organic": grassland_data_future[landuse][
-                                "share_organic"
-                            ],
-                            "share_organic_mineral": grassland_data_future[landuse][
-                                "share_organic_mineral"
-                            ],
-                            "share_rewetted_in_organic": grassland_data_future[landuse][
-                                "share_rewetted_in_organic"
-                            ],
-                            "share_rewetted_in_mineral": grassland_data_future[landuse][
-                                "share_rewetted_in_mineral"
-                            ],
-                            "share_rewetted_in_organic_mineral": grassland_data_future[landuse][
-                                "share_rewetted_in_organic_mineral"
-                            ],
-                            "share_peat_extraction": grassland_data_future[landuse][
-                                "share_peat_extraction"
-                            ],
-                            "share_burnt": grassland_data_future[landuse]["share_burnt"],
-                        }
-                    data.append(row)
-
-
-                elif landuse != "settlement":
-
-                    row ={
-                            "farm_id": sc,
-                            "year": target_year,
-                            "land_use": landuse,
-                            "area_ha": land_use_data_future[landuse]["area_ha"],
-                            "share_mineral": land_use_data_future[landuse][
-                                "share_mineral"
-                            ],
-                            "share_organic": land_use_data_future[landuse][
-                                "share_organic"
-                            ],
-                            "share_organic_mineral": land_use_data_future[landuse][
-                                "share_organic_mineral"
-                            ],
-                            "share_rewetted_in_organic": land_use_data_future[landuse][
-                                "share_rewetted_in_organic"
-                            ],
-                            "share_rewetted_in_mineral": land_use_data_future[landuse][
-                                "share_rewetted_in_mineral"
-                            ],
-                            "share_rewetted_in_organic_mineral": land_use_data_future[landuse][
-                                "share_rewetted_in_organic_mineral"
-                            ],
-                            "share_peat_extraction": land_use_data_future[landuse][
-                                "share_peat_extraction"
-                            ],
-                            "share_burnt": land_use_data_future[landuse]["share_burnt"],
-                        }
-
-                    data.append(row)
-        
-        future_area_pd = pd.DataFrame(data)
-
-        combined_df = pd.concat([current_area_pd, future_area_pd], ignore_index=True)
-
-        return combined_df
-    
 
     def calculate_spared_area_allocation(self, scenario):
         """
