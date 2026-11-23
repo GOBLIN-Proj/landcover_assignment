@@ -1,0 +1,13 @@
+,scenario,catchment_name,land_use,mineral_area,organic_area,mineral_organic_area
+0,0,Blackwater (Munster),rewet_grassland,0.0,513.1659078369997,731.2198746947902
+1,0,Blackwater (Munster),forest,12928.683454875742,0.0,0.0
+2,0,Blackwater (Munster),cropland,0.0,0.0,0.0
+3,0,Blackwater (Munster),farmable_condition,1987.785081187145,0.0,0.0
+4,1,Blackwater (Munster),rewet_grassland,0.0,4191.351790693097,5972.336985733439
+5,1,Blackwater (Munster),forest,171149.5447574704,0.0,0.0
+6,1,Blackwater (Munster),cropland,0.0,0.0,0.0
+7,1,Blackwater (Munster),farmable_condition,32623.697412941056,0.0,0.0
+8,2,Blackwater (Munster),rewet_grassland,0.0,4191.351790693097,5972.336985733439
+9,2,Blackwater (Munster),forest,0.0,0.0,0.0
+10,2,Blackwater (Munster),cropland,0.0,0.0,0.0
+11,2,Blackwater (Munster),farmable_condition,224158.45200598857,0.0,0.0
