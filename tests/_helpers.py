@@ -45,6 +45,26 @@ def load_goblin_lite():
         "total_spared_area_by_soil_group.csv"))
 
 
+def input_grassland_area(name, year, scenario=None):
+    """Herd-derived grassland area (ha) from a case's total_grassland input, read directly from the input file.
+    The calibration-year area is the same for every scenario; scenario=None takes the first scenario column."""
+    grass = CASES[name][1]()[1]
+    if "index" in grass.columns:                      # goblin_lite's files are read without index_col
+        grass = grass.set_index("index")
+    grass.index = grass.index.astype(int)
+    grass.columns = [str(c) for c in grass.columns]
+    return float(grass.loc[year].iloc[0] if scenario is None else grass.loc[year, str(scenario)])
+
+
+def national_grassland_area(year):
+    """National grassland area (ha) in the package database (grassland_data.total_kha; CRF 2024 Table 4.C total)."""
+    import sqlite3
+    from landcover_assignment.database import get_local_dir
+    con = sqlite3.connect(Path(get_local_dir()) / "land_use_database.db")
+    (kha,) = con.execute("select total_kha from grassland_data where year = ?", (year,)).fetchone()
+    return kha * 1000
+
+
 CASES = {"national": ("national", load_national), "geo": ("geo", load_geo),
          "goblin_lite": ("national", load_goblin_lite)}
 

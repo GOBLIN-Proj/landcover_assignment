@@ -21,8 +21,9 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_frozen_interface.py` | The import paths, signatures, table columns and index conventions that goblin_lite, geo_goblin_py, landcover_lca and cbm_runner use. Also checks the rule that **rewetted grassland stays grassland** (see `docs/rewetting.md`). |
 | `test_land_balance.py` | Land is conserved in every scenario. The land-use table, transition matrix, spared-area log, soil-group split and afforestation table must agree. |
 | `test_optimisation.py` | The spared mineral-area allocation (Pyomo with HiGHS). |
-| `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Grassland is checked as **shares** of the national area, and its `area_ha` against the input: the grassland area is herd-derived by design (`docs/grassland_area.md`). Each known gap names its cause (D1-D10). |
+| `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Grassland (herd + balance) is checked in hectares and shares. Each known gap names its cause (D1-D10). |
 | `test_inventory_coverage.py` | `land_use_database.db` against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
+| `test_grassland_balance.py` | Dossier LA2: grassland row = herd grassland + national balance (calibration year). The balance is constant in every scenario and never spared. `get_grassland_area_breakdown()` adds up. Edge cases: other calibration years, a negative balance, a year missing from the database. |
 | `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
 | `_helpers.py` | Paths, input loaders, and a cached pipeline run. |
 
@@ -36,3 +37,6 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 
 ## Golden files
 `golden/<case>_<table>.csv` was made from landcover_assignment 0.4.0 at c0d03eb, solved with HiGHS (2026-11-23). It gives identical results on pandas 2.1.4 / numpy 1.26 / SQLAlchemy 1.4 and on pandas 3.1 / numpy 2.5 / SQLAlchemy 2.1.
+
+Changes since then, each made by an approved dossier in the same commit:
+- **LA2, grassland balance:** the grassland rows of `national_landuse.csv` and `goblin_lite_landuse.csv` (each grassland sub-area + the balance). The geo files and all other tables are unchanged.

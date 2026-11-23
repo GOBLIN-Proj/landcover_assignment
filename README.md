@@ -103,9 +103,11 @@ if __name__ == "__main__":
 ```
 ## Where the grassland area comes from
 
-The grassland area is **not** an inventory area. It is the `total_grassland` input from grassland_production: the area the herd needs for its grass (grass eaten ÷ yield ÷ utilisation rate). The spared area is the fall in that area between the calibration and target years.
+The grassland row holds two parts:
+- **herd grassland**, the `total_grassland` input from grassland_production: the area the herd needs for its grass (grass eaten ÷ yield ÷ utilisation rate). Only this can be spared; the spared area is its fall between the calibration and target years.
+- **other grassland (the balance)**, the national grassland area in the calibration year minus the herd grassland. It is fixed, never spared, and included so that its emissions are counted (national tree only).
 
-Only the grassland shares (mineral, organic, rewet status, burnt) come from the national inventory. The grassland hectares are therefore below the inventory's grassland area (2020: 3.90 against 4.22 Mha), by design.
+The grassland row therefore equals the national grassland area in the baseline, and the national shares apply to all of it. `LandCover.get_grassland_area_breakdown()` reports the parts for the baseline and each scenario.
 
 See [docs/grassland_area.md](docs/grassland_area.md).
 

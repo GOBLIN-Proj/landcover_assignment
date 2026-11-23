@@ -4,10 +4,10 @@ The reference is `data_sources/national_reference_areas.csv`, built by `tools/bu
 CRT 2026, NID 2026 and CRF 2024 (burnt area). Every area the package implies (area_ha, or area_ha x share) is compared
 with its national counterpart, within TOLERANCE.
 
-Grassland is a special case, by design: its area_ha is the herd-derived area from grassland_production (the area the
-herd needs for its grass dry matter), not the inventory 4.C area. So grassland is validated as **shares** of the
-national 4.C area, and its area_ha is checked against the input. See docs/grassland_area.md and the shared context
-.goblin-context/pipeline/goblin_lite-land-flow.md.
+Grassland: the herd-derived area from grassland_production (the area the herd needs for its grass) plus the national
+balance (the grassland the herd doesn't need, dossier LA2) equals the national grassland area, so grassland is checked
+in hectares like the other land uses, and its shares are checked too. See docs/grassland_area.md and the shared
+context .goblin-context/pipeline/goblin_lite-land-flow.md.
 
 Known gaps are expected failures, and each names its cause, a data decision (D1-D10). A gap that is fixed turns its
 test into an unexpected success, and its marker must then be removed.
@@ -18,14 +18,13 @@ import unittest
 
 import pandas as pd
 
-from _helpers import CAL, ROOT, load_goblin_lite, load_national, run_case
+from _helpers import CAL, ROOT, input_grassland_area, load_goblin_lite, load_national, national_grassland_area, run_case
 
 TOLERANCE = 0.01          # 1 %
 reference = pd.read_csv(ROOT / "data_sources/national_reference_areas.csv")
 reference = reference[reference.year == CAL].set_index(["land_use", "quantity"]).value_ha
 
-# (land_use, quantity): (shares multiplied by area_ha (none = area itself), known gap or None). Grassland is in
-# GRASSLAND_SHARES below, not here.
+# (land_use, quantity): (shares multiplied by area_ha (none = area itself), known gap or None).
 CHECKS = {
     ("forest", "area"): ([], "refresh: CRF 2024 776.4 kha -> CRT 2026 798.7 kha"),
     ("forest", "mineral"): (["share_mineral"], "D3: forest mineral share = 1 - emitting shares (0.68), CRT 0.46"),
@@ -35,6 +34,11 @@ CHECKS = {
     ("cropland", "area"): ([], None),
     ("cropland", "mineral"): (["share_mineral"], None),
     ("cropland", "burnt"): (["share_burnt"], None),
+    ("grassland", "area"): ([], None),
+    ("grassland", "mineral"): (["share_mineral"], None),
+    ("grassland", "drained_organic"): (["share_drained_rich_organic", "share_drained_poor_organic"], None),
+    ("grassland", "rewet_status_organic"): (["share_rewetted_rich_organic", "share_rewetted_poor_organic"], None),
+    ("grassland", "burnt"): (["share_burnt"], None),
     ("wetland", "area"): ([], "D2: CRF 2024 1225.2 kha -> CRT 2026 1212.5 kha"),
     ("wetland", "domestic_peat_extraction"): (["share_domestic_peat_extraction"], None),
     ("wetland", "industrial_peat_extraction"): (["share_industrial_peat_extraction"], "D1: CRF 2024 77.8 kha; CRT 4(II) 55.5, 4.D 98.3"),
@@ -69,30 +73,24 @@ def package_area(case, land_use, shares):
     return row.area_ha * (sum(row[s] for s in shares) if shares else 1.0)
 
 
-def input_grassland_area(case):
-    """The calibration-year grassland area that grassland_production passed in (same for every scenario)."""
-    grass = CASES[case]()[1]
-    if "index" in grass.columns:                      # goblin_lite's files are read without index_col
-        grass = grass.set_index("index")
-    grass.index = grass.index.astype(int)
-    return float(grass.loc[CAL].iloc[0])
-
-
 class NationalValidation(unittest.TestCase):
-    def test_grassland_area_is_the_herd_derived_input(self):
-        """Grassland area_ha is grassland_production's herd-derived area, by design (not CRT 4.C)."""
+    def test_grassland_area_is_herd_plus_balance(self):
+        """Grassland area_ha = grassland_production's herd-derived area + the national balance = the national
+        grassland area in the package database (dossier LA2)."""
         for case in CASES:
-            self.assertAlmostEqual(baseline_row(case, "grassland").area_ha, input_grassland_area(case), delta=1e-6)
+            herd = input_grassland_area(case, CAL)
+            balance = national_grassland_area(CAL) - herd
+            self.assertGreater(balance, 0)
+            self.assertAlmostEqual(baseline_row(case, "grassland").area_ha, herd + balance, delta=1e-3)
 
     def test_total_land_area(self):
-        """All land in the 2020 table, plus the grassland outside the herd area (4.C minus the herd area), equals the
-        national total (CRT Table4.1, 7,111,785 ha) less other land, which the package does not model."""
+        """All land in the 2020 table equals the national total (CRT Table4.1, 7,111,785 ha) less other land, which the
+        package does not model."""
         national_total = reference[("all", "area")]
         other_land = national_total - sum(reference[(lu, "area")] for lu in LAND_USES)
         for case in CASES:
             lu = run_case(case)["landuse"]
-            herd_gap = reference[("grassland", "area")] - input_grassland_area(case)
-            have = lu[lu.farm_id == -CAL].area_ha.sum() + herd_gap
+            have = lu[lu.farm_id == -CAL].area_ha.sum()
             self.assertLessEqual(abs(have - (national_total - other_land)), TOLERANCE * national_total,
                                  f"{case}: {have:,.0f} ha vs {national_total - other_land:,.0f} ha")
 
@@ -117,7 +115,7 @@ def make_grassland_share_test(quantity, shares):
             have = sum(row[s] for s in shares)
             self.assertLessEqual(abs(have - want), TOLERANCE * abs(want),
                                  f"{case} grassland {quantity} share: package {have:.5f} vs national {want:.5f}")
-    test.__doc__ = f"grassland {quantity}, as a share of all grassland (the area itself is herd-derived)"
+    test.__doc__ = f"grassland {quantity}, as a share of all grassland"
     return test
 
 

@@ -179,6 +179,51 @@ class LandCover:
             )
 
 
+    def _herd_grassland_area(self):
+        """Herd-derived grassland area in the calibration year (grassland_production's total_grassland input). This,
+        not the grassland row (which also holds the national balance), is the area that can be spared."""
+        return self.national_class.get_derived_national_grassland_area(self.total_grassland)
+
+    def get_grassland_area_breakdown(self):
+        """
+        Reports how much of the grassland row is herd grassland, rewetted spared grassland, and other grassland (the
+        national balance), for the baseline and each scenario. Reporting only: it doesn't change any output.
+
+        - ``herd_grassland_ha``: grassland the herd needs (grassland_production's total_grassland input): the
+          calibration-year area for the baseline; for a scenario, the calibration-year area minus its spared area.
+        - ``rewetted_spared_ha``: spared organic grassland that is rewetted and stays in the grassland row with rewet
+          status (docs/rewetting.md); 0 in the baseline.
+        - ``other_grassland_ha``: national grassland the herd doesn't need, in the calibration year (national area
+          from the package database, grassland_data.total_kha, minus the herd area). The same in every row and never
+          spared (docs/grassland_area.md).
+        - ``total_grassland_ha``: the sum, equal to the grassland row's ``area_ha`` in
+          :meth:`combined_future_land_use_area`.
+
+        Returns
+        -------
+        pandas.DataFrame
+            Columns ``farm_id, year, herd_grassland_ha, rewetted_spared_ha, other_grassland_ha,
+            total_grassland_ha``; baseline row ``farm_id = -calibration_year``, then one row per scenario.
+        """
+        calibration_year = self.data_manager_class.calibration_year
+        target_year = self.data_manager_class.target_year
+        land_use = self.combined_future_land_use_area()
+        grassland = land_use[land_use["land_use"] == "grassland"].set_index("farm_id")["area_ha"]
+
+        herd_baseline = self._herd_grassland_area()
+        other = self.national_class.get_grassland_balance_area(calibration_year, self.total_grassland)
+
+        rows = [{"farm_id": -calibration_year, "year": calibration_year, "herd_grassland_ha": herd_baseline,
+                 "rewetted_spared_ha": 0.0, "other_grassland_ha": other,
+                 "total_grassland_ha": grassland[-calibration_year]}]
+        for scenario in self.scenario_list:
+            herd = herd_baseline - self.national_class.get_total_spared_area(self.total_spared_area, scenario)
+            total = grassland[scenario]
+            rows.append({"farm_id": scenario, "year": target_year, "herd_grassland_ha": herd,
+                         "rewetted_spared_ha": total - herd - other, "other_grassland_ha": other,
+                         "total_grassland_ha": total})
+        return pd.DataFrame(rows)
+
     def get_spared_area_log(self):
         """
         Returns the log of spared area details.
@@ -564,8 +609,10 @@ class LandCover:
 
         organic_potential = self.national_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
         
-        drained_rich_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
-        drained_poor_current_organic_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
+        # Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared.
+        herd_area = self._herd_grassland_area()
+        drained_rich_current_organic_area = herd_area * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
+        drained_poor_current_organic_area = herd_area * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
         
         total_drained = drained_rich_current_organic_area + drained_poor_current_organic_area
 
@@ -594,7 +641,8 @@ class LandCover:
         """
         year = self.data_manager_class.calibration_year
 
-        mineral_area = self.national_class.get_landuse_area("grassland", year, self.total_grassland) * self.national_class.get_share_mineral("grassland", year, self.total_grassland)
+        # Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared.
+        mineral_area = self._herd_grassland_area() * self.national_class.get_share_mineral("grassland", year, self.total_grassland)
     
         return {"available_mineral":mineral_area}
 

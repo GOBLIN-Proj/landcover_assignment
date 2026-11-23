@@ -19,9 +19,13 @@ Dependencies:
 - ``resource_manager.data_loader.Loader``: For loading national land cover datasets.
 - ``pandas``: For data manipulation and analysis.
 """
+import logging
+
 from landcover_assignment.resource_manager.data_loader import Loader
 import pandas as pd 
 from landcover_assignment._deprecation import renamed_method
+
+logger = logging.getLogger(__name__)
 
 class NationalLandCover:
     """
@@ -232,12 +236,15 @@ class NationalLandCover:
             A DataFrame containing summary data for grassland use.
         """
         
+        # Herd-derived grassland (grassland_production) plus the national balance, which the herd doesn't need. The
+        # balance is never available to be spared (spareable areas use get_derived_national_grassland_area only).
+        # See docs/grassland_area.md.
         derived_grassland_area = self.get_derived_national_grassland_area(total_grassland_area)
+        grassland_area = derived_grassland_area + self.get_grassland_balance_area(year, total_grassland_area)
 
-     
         # Creating a summary DataFrame
         summary_data = {
-            'area_ha': derived_grassland_area,
+            'area_ha': grassland_area,
             'share_mineral': self.get_national_mineral('grassland', year),
             'share_organic': self.get_national_organic('grassland', year),
             'share_organic_mineral': self.get_national_organic_mineral('grassland', year),
@@ -1597,6 +1604,46 @@ class NationalLandCover:
                 raise ValueError(f"Scenario {sc} not found in spared_area.")
             
     
+    def get_grassland_balance_area(self, year, total_grassland_area):
+        """
+        National grassland that the herd doesn't need: the national grassland area minus the herd-derived grassland
+        area, in ``year`` (the calibration year). It is added to the grassland row so that its emissions are counted,
+        it stays the same in every scenario, and it is never available to be spared. National tree only.
+
+        Sources:
+
+        - national grassland area: package database, ``grassland_data.total_kha`` (EPA CRF 2024 Table 4.C, total
+          grassland, 1990-2022), via :meth:`get_national_area`;
+        - herd-derived grassland area: grassland_production's ``total_grassland`` input, calibration-year row, via
+          :meth:`get_derived_national_grassland_area`.
+
+        Parameters
+        ----------
+        year : int
+            The calibration year.
+        total_grassland_area : pandas.DataFrame
+            The total_grassland input (grassland_production).
+
+        Returns
+        -------
+        float
+            The balance (ha). If the herd area exceeds the national area, 0, with a warning.
+
+        Raises
+        ------
+        ValueError
+            If ``year`` is not in the database.
+        """
+        national_area = self.get_national_area("grassland", year)
+        herd_area = self.get_derived_national_grassland_area(total_grassland_area)
+        balance = national_area - herd_area
+        if balance < 0:
+            logger.warning(
+                "Herd-derived grassland (%.0f ha) exceeds the national grassland area in %s (%.0f ha); "
+                "grassland balance set to 0.", herd_area, year, national_area)
+            return 0.0
+        return balance
+
     def get_derived_national_grassland_area(self, grassland_area, sc=0):
         """
         Derives the national grassland area for a given scenario.
