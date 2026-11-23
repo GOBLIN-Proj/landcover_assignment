@@ -2,8 +2,7 @@
 
 The paths are absolute, so the tests run from any folder. No test writes into a data folder.
 
-The optimiser's default solver is still `cplex_direct`. Until the solver change (step 3 of the 0.5.0 plan),
-`use_highs()` switches the default to the open-source HiGHS solver at run time. The source is not edited.
+The optimiser uses the open-source HiGHS solver by default (Pyomo "highs"); no solver switch is needed.
 """
 import io
 from pathlib import Path
@@ -14,20 +13,6 @@ TESTS = Path(__file__).resolve().parent
 ROOT = TESTS.parent
 GOLDEN = TESTS / "golden"
 CAL, TARGET = 2020, 2050
-
-
-def use_highs():
-    from landcover_assignment.optimisation import landcover_optimisation as lo
-
-    if getattr(lo.LandCoverOptimisation.__init__, "_highs_patch", False):
-        return
-    original = lo.LandCoverOptimisation.__init__
-
-    def init(self, solver="highs"):
-        original(self, solver=solver)
-
-    init._highs_patch = True
-    lo.LandCoverOptimisation.__init__ = init
 
 
 def load_national():
@@ -82,7 +67,6 @@ _CACHE = {}
 def run_case(name):
     """Run the full pipeline for one case, the way goblin_lite and geo_goblin_py call it. The result is cached."""
     if name not in _CACHE:
-        use_highs()
         tree, loader = CASES[name]
         LandCover, TransitionMatrix, Afforestation = classes(tree)
         sc, grass, spared, breakdown = loader()

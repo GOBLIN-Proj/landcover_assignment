@@ -8,8 +8,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pyomo = "^6.8.0"
-cplex = "^22.1.2.0" 
+pyomo = "^6.9.4"
+highspy = ">=1.7.2"
 pandas = "2.1.4"
 numpy = "^1.25.0"
 sqlalchemy = "^1.4.0"

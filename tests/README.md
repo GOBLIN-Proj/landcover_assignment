@@ -17,7 +17,7 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_optimisation.py` | The spared mineral-area allocation (Pyomo with HiGHS). |
 | `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Each known gap names its cause (D1-D10, or LA2). |
 | `test_inventory_coverage.py` | `land_use_database.db` against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
-| `_helpers.py` | Paths, input loaders, and a cached pipeline run. Until the optimiser moves off CPLEX, `use_highs()` switches the solver to HiGHS at run time. |
+| `_helpers.py` | Paths, input loaders, and a cached pipeline run. |
 
 ## Input sets
 - **`data/`** (national): `scenario_dataframe.csv`, `total_grassland_area.csv`, `spared_area.csv`, `spared_area_breakdown.csv`. `docs/example.ipynb` also uses them.

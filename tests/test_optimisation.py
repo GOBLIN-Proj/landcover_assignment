@@ -1,14 +1,13 @@
-"""Behaviour of the spared mineral-area allocation (Pyomo model, solved with HiGHS).
+"""Behaviour of the spared mineral-area allocation (Pyomo model, solved with the open-source HiGHS solver).
 
 These tests characterise what the model does now. Expected failures mark known bugs; each names its finding in the
 plan, and the fix removes the marker.
 """
 import unittest
 
-from _helpers import use_highs
+import pyomo.environ as pyo
 
-use_highs()
-from landcover_assignment.optimisation.landcover_optimisation import LandCoverOptimisation  # noqa: E402
+from landcover_assignment.optimisation.landcover_optimisation import LandCoverOptimisation
 
 
 def solve(area, targets):
@@ -43,11 +42,29 @@ class Allocation(unittest.TestCase):
         self.assertAlmostEqual(out["willow"], 100.0, places=4)
         self.assertAlmostEqual(out["farmable_condition"], 400.0, places=4)
 
-    @unittest.expectedFailure
     def test_zero_area(self):
-        """Finding 1: divides by the available area (ZeroDivisionError). The result should be all zeros."""
+        """Finding 1 (fixed in step 3): no available area returns all zeros instead of ZeroDivisionError."""
         out = solve(0.0, {"forest": 100.0, "cropland": 50.0})
-        self.assertEqual(sum(out.values()), 0.0)
+        self.assertEqual(out, {"forest": 0.0, "cropland": 0.0, "farmable_condition": 0.0})
+
+    def test_extra_constraint(self):
+        """Extra constraints can be added without changing the class (extensibility)."""
+        def cap_cropland(model):
+            model.cap_cropland = pyo.Constraint(expr=model.allocation["cropland"] <= 0.05)   # share of the area
+
+        out = LandCoverOptimisation().optimise_mineral_spared_area_distribution(
+            1000.0, {"forest": 300.0, "cropland": 200.0}, extra_constraints=[cap_cropland])
+        self.assertAlmostEqual(out["cropland"], 50.0, places=4)
+        self.assertAlmostEqual(out["forest"], 300.0, places=4)
+        self.assertAlmostEqual(out["farmable_condition"], 650.0, places=4)
+
+    def test_default_solver_is_open_source(self):
+        self.assertEqual(LandCoverOptimisation().solver, "highs")
+
+    def test_unavailable_solver_raises(self):
+        with self.assertRaises(RuntimeError):
+            LandCoverOptimisation(solver="no_such_solver").optimise_mineral_spared_area_distribution(
+                100.0, {"forest": 50.0})
 
 
 if __name__ == "__main__":

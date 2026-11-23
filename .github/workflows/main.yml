@@ -28,7 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         curl -sSL https://install.python-poetry.org | python3 -
         python -m pip install .
-        python -m pip install highspy
 
     - name: Print current directory
       run: |
