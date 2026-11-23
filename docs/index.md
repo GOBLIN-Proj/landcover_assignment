@@ -6,6 +6,7 @@
 :hidden:
 
 INSTALLATION.md
+grassland_area.md
 rewetting.md
 CONTRIBUTING.md
 autoapi/index

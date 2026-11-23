@@ -101,6 +101,14 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+## Where the grassland area comes from
+
+The grassland area is **not** an inventory area. It is the `total_grassland` input from grassland_production: the area the herd needs for its grass (grass eaten ÷ yield ÷ utilisation rate). The spared area is the fall in that area between the calibration and target years.
+
+Only the grassland shares (mineral, organic, rewet status, burnt) come from the national inventory. The grassland hectares are therefore below the inventory's grassland area (2020: 3.90 against 4.22 Mha), by design.
+
+See [docs/grassland_area.md](docs/grassland_area.md).
+
 ## Spared area and rewetting
 
 A scenario's spared grassland is divided into:

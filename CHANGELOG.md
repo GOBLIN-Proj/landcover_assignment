@@ -7,12 +7,14 @@
 - **Inventory tooling** (`tools/`): `extract_inventory.py` (CRT 2026, 1990-2024; CRF 2024 burnt area), `transcribe_nid_forest.py` (NID 2026 Tables 6.7 and 6.15) and `build_provenance.py` (database vs inventory audit). Outputs are in `data_sources/`.
 - **Documentation**: `docs/rewetting.md` explains how spared area is divided, and that rewetted spared grassland stays grassland with rewet status. The same rule is now in the README and in the docstrings of `calculate_spared_area_allocation`, `grassland_breakdown`, `grassland_distribution` and `create_transition_matrix` (national and catchment). No change in behaviour.
 - **National reference areas**: `data_sources/national_reference_areas.csv` (`tools/build_national_reference.py`) holds national land areas for 1990-2024, from CRT 2026, NID 2026 and CRF 2024 (burnt area), in the land-use table's terms. `tests/test_national_validation.py` checks the 2020 land-use table against it.
+- **Documentation**: `docs/grassland_area.md` and a README section explain that the grassland area is grassland_production's herd-derived area (by design), not the inventory area. Only the grassland shares come from the inventory.
 - **Optimiser extensibility**: `optimise_mineral_spared_area_distribution(..., extra_constraints=[...])` takes functions that add constraints to the Pyomo model. New land uses only need an entry in `target_areas`.
 
 ### Changed
 - **Open-source solver**: the optimiser uses HiGHS (Pyomo `"highs"`, through `highspy`) by default, not CPLEX (`"cplex_direct"`). The objective is strictly convex, so results are unchanged (checked against the golden outputs). Dependencies: `cplex` is removed, `highspy >=1.7.2` is added, and the Pyomo floor rises to 6.9.4, the first version whose `"highs"` interface accepts the quadratic objective. Pyomo's `"appsi_highs"` interface does not.
 - **Optimiser structure**: the model is documented (sets, parameters, variables, objective, constraints). Its rules are named functions. It checks that the solver is available and that the solution is optimal, and it logs instead of printing.
 - CI runs the new test suite.
+- **National validation of grassland**: grassland is checked as shares of the national 4.C area, and its `area_ha` against the herd-derived input, not as hectares against 4.C. The total-land check adds back the grassland outside the herd area.
 
 ### Fixed
 - **Zero mineral area**: when no spared mineral area is available (all of it rewetted, or no mineral grassland left), the optimiser returns zeros. Before, it raised `ZeroDivisionError`.
