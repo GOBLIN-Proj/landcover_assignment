@@ -36,6 +36,7 @@
 - **Zero mineral area**: when no spared mineral area is available (all of it rewetted, or no mineral grassland left), the optimiser returns zeros. Before, it raised `ZeroDivisionError`.
 
 ### Removed
+- The built HTML docs (`docs/html`, `docs/index.html`, `docs/.nojekyll`) are no longer committed. The docs are built by Read the Docs (`.readthedocs.yaml`) and checked by CI.
 - The old print-script tests, and test files that no longer ran. Their land-balance and area checks are now in `tests/test_land_balance.py`.
 
 ---
