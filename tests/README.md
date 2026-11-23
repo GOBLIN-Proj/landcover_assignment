@@ -6,6 +6,12 @@ Run everything from the repo root (any folder works; paths are absolute):
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
+CI runs the same command with warnings as errors, on the oldest and the latest dependency sets (`.github/workflows/main.yml`):
+
+```bash
+python -W error -W "ignore:::catchment_data_api.catchment_data_api" -m unittest discover -s tests -p "test_*.py"
+```
+
 No test writes into a data folder. Expected failures mark known bugs and data gaps; each one names the finding
 (1-14) or data decision (D1-D10) in the 0.5.0 plan that removes it.
 
@@ -17,6 +23,7 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_optimisation.py` | The spared mineral-area allocation (Pyomo with HiGHS). |
 | `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Grassland is checked as **shares** of the national area, and its `area_ha` against the input: the grassland area is herd-derived by design (`docs/grassland_area.md`). Each known gap names its cause (D1-D10). |
 | `test_inventory_coverage.py` | `land_use_database.db` against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
+| `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
 | `_helpers.py` | Paths, input loaders, and a cached pipeline run. |
 
 ## Input sets

@@ -5,7 +5,7 @@ Transition Data Fetcher Documentation
 The ``TransitionDataFetcher`` class is designed to process and analyze transition data from grasslands to various land uses based on specific scenarios. 
 This class simplifies the process of extracting transition area data and supports detailed environmental and land use planning analyses.
 
-.. class:: TransitionDataFetcher(transition_data)
+``TransitionDataFetcher(transition_data)``
 
    Initializes the TransitionDataFetcher with a pandas DataFrame containing transition data between different land use types.
 
@@ -13,35 +13,35 @@ This class simplifies the process of extracting transition area data and support
 
    **Methods**
 
-   .. method:: get_grassland_to_forest_areas()
+   ``get_grassland_to_forest_areas()``
 
       Retrieves the areas transitioning from grasslands to forests across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to forests.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_grassland_areas()
+   ``get_grassland_to_grassland_areas()``
 
       Retrieves the areas remaining as grasslands across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas remaining as grasslands.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_wetland_areas()
+   ``get_grassland_to_wetland_areas()``
 
       Retrieves the areas transitioning from grasslands to wetlands across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to wetlands.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_cropland_areas()
+   ``get_grassland_to_cropland_areas()``
 
       Retrieves the areas transitioning from grasslands to croplands across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to croplands.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_forest_soil_group_areas(spared_area_breakdown)
+   ``get_grassland_to_forest_soil_group_areas(spared_area_breakdown)``
 
       Retrieves the areas transitioning from grasslands to forests, categorized by soil groups, based on spared area breakdown.
 
@@ -49,7 +49,7 @@ This class simplifies the process of extracting transition area data and support
       :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Forest``.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_wetland_soil_group_areas(spared_area_breakdown)
+   ``get_grassland_to_wetland_soil_group_areas(spared_area_breakdown)``
 
       Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.
 
@@ -57,7 +57,7 @@ This class simplifies the process of extracting transition area data and support
       :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Wetland``.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_cropland_soil_group_areas(spared_area_breakdown)
+   ``get_grassland_to_cropland_soil_group_areas(spared_area_breakdown)``
 
       Retrieves the areas transitioning from grasslands to croplands, categorized by soil groups, based on spared area breakdown.
 
@@ -65,7 +65,7 @@ This class simplifies the process of extracting transition area data and support
       :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Cropland``.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_farmable_condition_soil_group_areas(spared_area_breakdown)
+   ``get_grassland_to_farmable_condition_soil_group_areas(spared_area_breakdown)``
 
       Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.
 
@@ -73,7 +73,7 @@ This class simplifies the process of extracting transition area data and support
       :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Farmable_Condition``.
       :rtype: pandas.DataFrame
 
-   .. method:: get_grassland_to_landuse_soil_group_area(spared_area_breakdown)
+   ``get_grassland_to_landuse_soil_group_area(spared_area_breakdown)``
 
       Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
 
@@ -81,7 +81,7 @@ This class simplifies the process of extracting transition area data and support
       :return: A pandas DataFrame with transition areas categorized by soil group.
       :rtype: pandas.DataFrame
 
-   .. method:: _derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)
+   ``_derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)``
 
       Internal helper method to calculate the allocation of transition areas by soil group.
 

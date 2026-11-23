@@ -8,9 +8,9 @@ to provide tools for detailed land cover change analysis.
 Features:
 ---------
 - **Land Cover Analysis**: Provides functionalities to analyze and compute land cover distributions and transitions based on calibration and target years, 
-scenario inputs, and specific land area considerations.
+  scenario inputs, and specific land area considerations.
 - **Scenario-driven Land Distribution**: Manages the distribution and transition of land areas across different land use types, adjusting for 
-scenario-specific changes.
+  scenario-specific changes.
 
 Dependencies:
 -------------
@@ -24,8 +24,7 @@ Dependencies:
 
 Classes:
 --------
-.. class:: LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-   :noindex:
+``LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)``
 
    Manages the computation and analysis of land cover changes, focusing on the adjustments of land areas under different scenarios 
    and their implications on land use distribution.
@@ -35,6 +34,7 @@ Classes:
    and analyze spared area breakdowns and grassland distributions based on scenario inputs.
 
    Methods include:
+
    - _fill_current_area_row: Fills data for the current area based on land use type.
    - compute_current_area: Computes the current area distribution for all land uses.
    - combined_future_land_use_area: Combines current and future land use areas under different scenarios.
@@ -46,6 +46,7 @@ Classes:
    - _calculate_rewetted_areas: Calculates the areas to be rewetted based on the scenario and target rewetted area.
 """
 import pandas as pd
+from landcover_assignment._deprecation import renamed_attribute, renamed_keyword
 from landcover_assignment.geo_landcover_assignment.geo_distribution import LandDistribution
 from landcover_assignment.geo_landcover_assignment.catchment_landcover import CatchmentLandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
@@ -82,7 +83,7 @@ class LandCover:
 
     Attributes
     ----------
-    data_manager_class : DataManager
+    data_manager_class : landcover_assignment.resource_manager.landcover_data_manager.DataManager
         Manages land cover data and provides access to calibration and target year data.
     data_loader_class : Loader
         Loads required data resources, including environmental and land use data.
@@ -90,7 +91,7 @@ class LandCover:
         Provides functionalities for accessing and analyzing catchment land cover data.
     sc_fetch_class : ScenarioDataFetcher
         Fetches scenario-specific information from the input data.
-    land_dist_class : LandDistribution
+    land_dist_class : landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution
         Manages the distribution and transition of land areas across different land use types.
     catchment_name : str
         The name of the catchment area, derived from scenario data, used in land cover calculations.
@@ -118,6 +119,8 @@ class LandCover:
     _calculate_rewetted_areas(scenario, target_rewetted) -> tuple
         Calculates the areas to be rewetted based on the scenario and target rewetted area.
     """
+    catchemnt_class = renamed_attribute("catchment_class", "catchemnt_class")  # DEPRECATED_NAME
+
     def __init__(
         self,
         calibration_year,
@@ -131,7 +134,7 @@ class LandCover:
             calibration_year, target_year
         )
         self.data_loader_class = Loader()
-        self.catchemnt_class = CatchmentLandCover()
+        self.catchment_class = CatchmentLandCover()
         self.sc_fetch_class = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=True)
         self.land_dist_class = LandDistribution(scenario_inputs_df)
         self.total_grassland = total_grassland
@@ -215,15 +218,15 @@ class LandCover:
                 "farm_id": farm_id,
                 "year": year,
                 "land_use": land_use,
-                "area_ha": self.catchemnt_class.get_landuse_area(land_use, self.catchment_name, self.total_grassland),
-                "share_mineral": self.catchemnt_class.get_share_mineral(land_use, self.catchment_name, self.total_grassland),
-                "share_organic": self.catchemnt_class.get_share_organic(land_use, self.catchment_name, self.total_grassland),
-                "share_organic_mineral": self.catchemnt_class.get_share_organic_mineral(land_use, self.catchment_name, self.total_grassland),
+                "area_ha": self.catchment_class.get_landuse_area(land_use, self.catchment_name, self.total_grassland),
+                "share_mineral": self.catchment_class.get_share_mineral(land_use, self.catchment_name, self.total_grassland),
+                "share_organic": self.catchment_class.get_share_organic(land_use, self.catchment_name, self.total_grassland),
+                "share_organic_mineral": self.catchment_class.get_share_organic_mineral(land_use, self.catchment_name, self.total_grassland),
                 "share_rewetted_in_organic": 0.0,
                 "share_rewetted_in_mineral": 0.0,
                 "share_rewetted_in_organic_mineral":0.0,
                 "share_peat_extraction": 0.0,
-                "share_burnt": self.catchemnt_class.get_share_burnt(land_use, self.catchment_name, self.total_grassland),
+                "share_burnt": self.catchment_class.get_share_burnt(land_use, self.catchment_name, self.total_grassland),
             }
         
         else:
@@ -232,15 +235,15 @@ class LandCover:
                 "farm_id": farm_id,
                 "year": year,
                 "land_use": land_use,
-                "area_ha": self.catchemnt_class.get_landuse_area(land_use, self.catchment_name),
-                "share_mineral": self.catchemnt_class.get_share_mineral(land_use, self.catchment_name),
-                "share_organic": self.catchemnt_class.get_share_organic(land_use, self.catchment_name),
-                "share_organic_mineral": self.catchemnt_class.get_share_organic_mineral(land_use, self.catchment_name),
+                "area_ha": self.catchment_class.get_landuse_area(land_use, self.catchment_name),
+                "share_mineral": self.catchment_class.get_share_mineral(land_use, self.catchment_name),
+                "share_organic": self.catchment_class.get_share_organic(land_use, self.catchment_name),
+                "share_organic_mineral": self.catchment_class.get_share_organic_mineral(land_use, self.catchment_name),
                 "share_rewetted_in_organic": 0.0,
                 "share_rewetted_in_mineral": 0.0,
                 "share_rewetted_in_organic_mineral":0.0,
                 "share_peat_extraction": 0.0,
-                "share_burnt": self.catchemnt_class.get_share_burnt(land_use, self.catchment_name),
+                "share_burnt": self.catchment_class.get_share_burnt(land_use, self.catchment_name),
             }
         
 
@@ -425,7 +428,7 @@ class LandCover:
             Two dictionaries representing the spared area and grassland area breakdowns.
         """
         # Step 1: Fetch total spared area and max available areas
-        initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)
+        initial_spared_area = self.catchment_class.get_total_spared_area(self.total_spared_area, scenario)
         max_mineral_available = self._available_mineral_area()["available_mineral"]
 
 
@@ -448,7 +451,7 @@ class LandCover:
         # Step 5: Generate spared area breakdown
         spared_area_breakdown = self.spared_area_breakdown(
             scenario,
-            intial_spared_area=initial_spared_area,
+            initial_spared_area=initial_spared_area,
             actual_rewetted_area_organic=rewetted_organic_area,
             actual_rewetted_area_mineral_organic=rewetted_mineral_organic_area,
             actual_mineral_area=actual_mineral_area,
@@ -465,8 +468,9 @@ class LandCover:
         return spared_area_breakdown, grassland_breakdown
 
 
+    @renamed_keyword("intial_spared_area", "initial_spared_area")  # DEPRECATED_NAME
     def spared_area_breakdown(self, scenario, 
-                              intial_spared_area, 
+                              initial_spared_area, 
                               actual_rewetted_area_organic, 
                               actual_rewetted_area_mineral_organic,
                               actual_mineral_area):
@@ -502,7 +506,7 @@ class LandCover:
 
         # Step 2: Define target shares
         target_areas = {
-            land_use: (intial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
+            land_use: (initial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
             for land_use in spared_land_use_dict.keys()
             if land_use not in ["farmable_condition", "rewetted"]# Exclude "farmable condition" (fallback) & rewetted
         }
@@ -567,10 +571,10 @@ class LandCover:
         :return: A dictionary containing the available organic area and available mineral-organic area.
         :rtype: dict
         """
-        #initial_spared_area = self.catchemnt_class.get_total_spared_area(self.total_spared_area, scenario)
-        organic_potential = self.catchemnt_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
-        current_organic_area = self.catchemnt_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchemnt_class.get_share_organic("grassland", self.catchment_name, self.total_grassland)
-        current_mineral_organic_area = self.catchemnt_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchemnt_class.get_share_organic_mineral("grassland", self.catchment_name, self.total_grassland)
+        #initial_spared_area = self.catchment_class.get_total_spared_area(self.total_spared_area, scenario)
+        organic_potential = self.catchment_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
+        current_organic_area = self.catchment_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchment_class.get_share_organic("grassland", self.catchment_name, self.total_grassland)
+        current_mineral_organic_area = self.catchment_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchment_class.get_share_organic_mineral("grassland", self.catchment_name, self.total_grassland)
 
         total_organic_area = current_organic_area + current_mineral_organic_area
 
@@ -603,7 +607,7 @@ class LandCover:
         dict
             A dictionary containing the available mineral area.
         """
-        mineral_area = self.catchemnt_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchemnt_class.get_share_mineral("grassland", self.catchment_name, self.total_grassland)
+        mineral_area = self.catchment_class.get_landuse_area("grassland", self.catchment_name, self.total_grassland) * self.catchment_class.get_share_mineral("grassland", self.catchment_name, self.total_grassland)
 
         return {"available_mineral":mineral_area}
     

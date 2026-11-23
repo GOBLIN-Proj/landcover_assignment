@@ -19,7 +19,7 @@ class Loader:
     grassland areas, wetland areas, settlement areas, and forest soil yield mappings.
 
     Attributes:
-        dataframes (DataManager): An instance of the DataManager class for accessing land cover data.
+        dataframes (landcover_assignment.resource_manager.database_manager.DataManager): An instance of the DataManager class for accessing land cover data.
 
     Methods:
         national_inventory_areas(): Retrieves national inventory areas dataset.

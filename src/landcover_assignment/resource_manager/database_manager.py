@@ -11,7 +11,7 @@ Attributes:
     engine (sqlalchemy.engine.Engine): SQLAlchemy engine object for database connection.
 
 Methods:
-    data_engine_creater(): Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+    data_engine_creator(): Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
     get_national_inventory_areas(): Retrieves national inventory area data from the database and scales the values by 1000.
     get_national_forest_areas(): Retrieves national forest area data from the database and scales the values by 1000.
     get_national_settlement_areas(): Retrieves national settlement area data from the database and scales the values by 1000.
@@ -25,6 +25,7 @@ import sqlalchemy as sqa
 import pandas as pd
 from landcover_assignment.database import get_local_dir
 import os
+from landcover_assignment._deprecation import renamed_method
 
 
 class DataManager:
@@ -33,9 +34,9 @@ class DataManager:
         Initializes the DataManager class, setting up a connection to a SQLite database containing land use data.
         """
         self.database_dir = get_local_dir()
-        self.engine = self.data_engine_creater()
+        self.engine = self.data_engine_creator()
 
-    def data_engine_creater(self):
+    def data_engine_creator(self):
         """
         Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
 
@@ -48,6 +49,8 @@ class DataManager:
         engine_url = f"sqlite:///{database_path}"
 
         return sqa.create_engine(engine_url)
+
+    data_engine_creater = renamed_method("data_engine_creator", "data_engine_creater")  # DEPRECATED_NAME
 
     def get_national_inventory_areas(self):
         """

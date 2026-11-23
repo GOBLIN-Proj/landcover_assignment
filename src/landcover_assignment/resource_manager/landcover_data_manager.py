@@ -8,7 +8,7 @@ and land use data. These classes facilitate access to national datasets, scenari
 DataManager Class
 -----------------
 
-.. class:: DataManager(calibration_year, target_year)
+``DataManager(calibration_year, target_year)``
 
    The DataManager class is responsible for loading and organizing land cover data for a given calibration and target year. 
    It provides structured access to land use information, default Carbon Budget Model (CBM) data, and utilities for scenario-based land use analysis.
@@ -30,42 +30,42 @@ DataManager Class
 
    **Methods**
 
-   .. method:: get_default_calibration_year()
+   ``get_default_calibration_year()``
 
       Returns the default calibration year.
 
       :return: The default calibration year.
       :rtype: int
 
-   .. method:: get_land_use_columns()
+   ``get_land_use_columns()``
 
       Returns the list of land use columns.
 
       :return: A list of land use columns.
       :rtype: list
 
-   .. method:: get_cbm_default_data()
+   ``get_cbm_default_data()``
 
       Returns the default CBM data.
 
       :return: A dictionary containing the default CBM data.
       :rtype: dict
 
-   .. method:: get_areas_dataframe_cols()
+   ``get_areas_dataframe_cols()``
 
       Returns the column names for the areas DataFrame.
 
       :return: A list of column names for the areas DataFrame.
       :rtype: list
 
-   .. method:: get_landuse_dict()
+   ``get_landuse_dict()``
 
       Returns the dictionary mapping land use types to their corresponding data access methods.
 
       :return: A dictionary mapping land use types to data access methods.
       :rtype: dict
 
-   .. method:: get_spared_area_dict()
+   ``get_spared_area_dict()``
 
       Returns the dictionary defining how spared areas are categorized by land use type.
 
@@ -75,7 +75,7 @@ DataManager Class
 DistributionManager Class
 -------------------------
 
-.. class:: DistributionManager()
+``DistributionManager()``
 
    Manages the distribution calculations for land use areas, focusing on the composition and characteristics of land based on various environmental factors. 
    It initializes with a default land distribution setup and provides utilities for adjusting and analyzing these distributions.
@@ -90,35 +90,35 @@ DistributionManager Class
 
    **Methods**
 
-   .. method:: get_land_distribution_keys()
+   ``get_land_distribution_keys()``
 
       Returns the list of keys for area and shares of different soil types and environmental factors.
 
       :return: A list of keys for land distribution.
       :rtype: list
 
-   .. method:: get_geoland_distribution_keys()
+   ``get_geoland_distribution_keys()``
 
       Returns the list of keys for Geo Model land distribution.
 
       :return: A list of keys for Geo Model land distribution.
       :rtype: list
 
-   .. method:: get_land_share_keys()
+   ``get_land_share_keys()``
 
       Returns the list of keys for land shares.
 
       :return: A list of keys for land shares.
       :rtype: list
 
-   .. method:: get_grassland_share_keys()
+   ``get_grassland_share_keys()``
 
       Returns the list of keys for grassland shares.
 
       :return: A list of keys for grassland shares.
       :rtype: list
 
-   .. method:: get_geoland_share_keys()
+   ``get_geoland_share_keys()``
 
       Returns the list of keys for Geo Model land shares.
 

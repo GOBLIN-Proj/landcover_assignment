@@ -21,18 +21,17 @@ Dependencies:
 
 Classes:
 --------
-.. class:: LandDistribution(scenario_data)
-   :noindex:
+``LandDistribution(scenario_data)``
 
    Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
    areas and soil composition.
 
-   .. method:: land_distribution(year, land_use, new_area)
+   ``land_distribution(year, land_use, new_area)``
       Calculates and updates the distribution of land based on land use type and the area change. It supports special 
       handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other 
       soil types accordingly.
 
-   .. method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)
+   ``grassland_distribution(year, mineral_area, organic_area, grassland_area)``
       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
       components, and recalculates the total remaining grassland area along with its composition.
 

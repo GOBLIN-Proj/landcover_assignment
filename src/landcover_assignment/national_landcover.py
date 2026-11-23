@@ -21,6 +21,7 @@ Dependencies:
 """
 from landcover_assignment.resource_manager.data_loader import Loader
 import pandas as pd 
+from landcover_assignment._deprecation import renamed_method
 
 class NationalLandCover:
     """
@@ -113,7 +114,7 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('forest', year),
             'share_organic': self.get_national_organic('forest', year),
             'share_organic_mineral': self.get_national_organic_mineral('forest', year),
-            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('forest', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_organic_grassland('forest', year),
             'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('forest', year),
             'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('forest', year),
             'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('forest', year),
@@ -153,7 +154,7 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('wetland', year),
             'share_organic': self.get_national_organic('wetland', year),
             'share_organic_mineral': self.get_national_organic_mineral('wetland', year),
-            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('wetland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_organic_grassland('wetland', year),
             'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('wetland', year),
             'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('wetland', year),
             'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('wetland', year),
@@ -192,7 +193,7 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('cropland', year),
             'share_organic': self.get_national_organic('cropland', year),
             'share_organic_mineral': self.get_national_organic_mineral('cropland', year),
-            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('cropland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_organic_grassland('cropland', year),
             'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('cropland', year),
             'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('cropland', year),
             'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('cropland', year),
@@ -240,7 +241,7 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('grassland', year),
             'share_organic': self.get_national_organic('grassland', year),
             'share_organic_mineral': self.get_national_organic_mineral('grassland', year),
-            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('grassland', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_organic_grassland('grassland', year),
             'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('grassland', year),
             'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('grassland', year),
             'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('grassland', year),
@@ -279,7 +280,7 @@ class NationalLandCover:
             'share_mineral': self.get_national_mineral('settlement', year),
             'share_organic': self.get_national_organic('settlement', year),
             'share_organic_mineral': self.get_national_organic_mineral('settlement', year),
-            'share_drained_rich_organic': self.get_national_rich_drained_orgainc_grassland('settlement', year),
+            'share_drained_rich_organic': self.get_national_rich_drained_organic_grassland('settlement', year),
             'share_drained_poor_organic': self.get_national_poor_drained_organic_grassland('settlement', year),
             'share_rewetted_rich_organic':self.get_national_rich_rewetted_organic_grassland('settlement', year),
             'share_rewetted_poor_organic': self.get_national_poor_rewetted_organic_grassland('settlement', year),
@@ -1126,7 +1127,10 @@ class NationalLandCover:
         return organic_mineral
     
 
-    def get_national_rich_drained_orgainc_grassland(self, landuse, year):
+    get_national_rich_drained_orgainc_grassland = renamed_method(  # DEPRECATED_NAME
+        "get_national_rich_drained_organic_grassland", "get_national_rich_drained_orgainc_grassland")  # DEPRECATED_NAME
+
+    def get_national_rich_drained_organic_grassland(self, landuse, year):
         """
         Calculates the share of rich drained organic soil for grassland in a given year, based on national datasets.
 

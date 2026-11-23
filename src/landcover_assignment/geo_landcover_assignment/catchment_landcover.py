@@ -14,7 +14,7 @@ Dependencies
 
 Classes
 -------
-.. class:: CatchmentLandCover()
+``CatchmentLandCover()``
 
    This class is designed to access and analyze land cover data across different land use types within catchment areas.
    It provides methods to calculate areas and shares of different land cover types, including forests, wetlands,
@@ -22,67 +22,67 @@ Classes
 
     Methods:
 
-   .. method:: get_catchment_forest_area(catchment)
+   ``get_catchment_forest_area(catchment)``
       
       Calculates the total forest area within a specified catchment, categorized by cover and soil types.
 
-   .. method:: get_catchment_peat_area(catchment)
+   ``get_catchment_peat_area(catchment)``
       
       Calculates the total peat area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_catchment_crop_area(catchment)
+   ``get_catchment_crop_area(catchment)``
       
       Calculates the total crop area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_catchment_grassland_area(catchment, total_grassland_area)
+   ``get_catchment_grassland_area(catchment, total_grassland_area)``
       
       Calculates the total grassland area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_landuse_area(landuse, catchment, grassland_area=None)
+   ``get_landuse_area(landuse, catchment, grassland_area=None)``
       
       Retrieves the total area for a specified land use within a catchment.
 
-   .. method:: get_share_mineral(landuse, catchment, grassland_area=None)
+   ``get_share_mineral(landuse, catchment, grassland_area=None)``
       
       Calculates the share of mineral soil within a specified land use area in a catchment.
 
-   .. method:: get_share_organic(landuse, catchment, grassland_area=None)
+   ``get_share_organic(landuse, catchment, grassland_area=None)``
       
       Calculates the share of organic soil within a specified land use area in a catchment.
 
-   .. method:: get_share_organic_mineral(landuse, catchment, grassland_area=None)
+   ``get_share_organic_mineral(landuse, catchment, grassland_area=None)``
       
       Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.
 
-   .. method:: get_share_burnt(landuse, catchment, grassland_area=None)
+   ``get_share_burnt(landuse, catchment, grassland_area=None)``
       
       Calculates the share of burnt land within a specified land use area in a catchment.
 
-   .. method:: get_national_burnt_average(landuse)
+   ``get_national_burnt_average(landuse)``
       
       Retrieves the national average share of burnt land for a specified land use type.
 
-   .. method:: get_catchment_crop_type(catchment)
+   ``get_catchment_crop_type(catchment)``
       
       Retrieves the types of crops grown within a specified catchment.
 
-   .. method:: get_total_spared_area(spared_area, sc)
+   ``get_total_spared_area(spared_area, sc)``
       
       Retrieves the total spared area for a given scenario.
 
-   .. method:: get_derived_catchment_grassland_area(grassland_area, sc=0)
+   ``get_derived_catchment_grassland_area(grassland_area, sc=0)``
       
       Retrieves the derived grassland area for a catchment based on a scenario grassland input.
 
-   .. method:: get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)
+   ``get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)``
       
       Calculates the area with organic farming potential based on spared land breakdown and scenario.
 
-   .. method:: get_land_shares(key, landuse, catchment_name)
+   ``get_land_shares(key, landuse, catchment_name)``
       
       Retrieves the share of a specific soil type within a specified land use area in a catchment.
 
-   .. method:: get_grassland_shares(key, catchment_name, grassland_area)
+   ``get_grassland_shares(key, catchment_name, grassland_area)``
       
       Retrieves the share of a specific soil type within the grassland area of a catchment.
 

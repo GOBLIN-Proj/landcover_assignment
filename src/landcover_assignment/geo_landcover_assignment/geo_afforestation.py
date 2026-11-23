@@ -50,7 +50,7 @@ class Afforestation:
         transition_matrix (pd.DataFrame): A DataFrame representing the transition matrix for land cover changes.
 
     Attributes:
-        data_manager_class (DataManager): An instance of DataManager for managing land cover data.
+        data_manager_class (landcover_assignment.resource_manager.landcover_data_manager.DataManager): An instance of DataManager for managing land cover data.
         scenario_data_fetcher (ScenarioDataFetcher): An instance for fetching scenario-specific data.
         transition_data_fetcher (TransitionDataFetcher): An instance for fetching transition data.
         data_loader (Loader): An instance for loading necessary data resources.

@@ -4,7 +4,7 @@ Scenario Data Fetcher Documentation
 
 The ``ScenarioDataFetcher`` class is designed to extract specific pieces of information from a scenario dataset. It enables the retrieval of land use proportions, harvest proportions, afforestation end years, and other scenario-specific data.
 
-.. class:: ScenarioDataFetcher(scenario_data, validate_on_init=False)
+``ScenarioDataFetcher(scenario_data, validate_on_init=False)``
 
    Initializes the ScenarioDataFetcher class with a pandas DataFrame containing scenario data.
 
@@ -13,7 +13,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
 
    **Methods**
 
-   .. method:: get_wetland_proportion(scenario)
+   ``get_wetland_proportion(scenario)``
 
       Retrieves the proportion of wetland area for a specified scenario.
 
@@ -21,7 +21,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The wetland proportion as a float.
       :rtype: float
 
-   .. method:: get_forest_proportion(scenario)
+   ``get_forest_proportion(scenario)``
 
       Retrieves the proportion of forest area for a specified scenario.
 
@@ -29,7 +29,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The forest proportion as a float.
       :rtype: float
 
-   .. method:: get_cropland_proportion(scenario)
+   ``get_cropland_proportion(scenario)``
 
       Retrieves the proportion of cropland area for a specified scenario.
 
@@ -37,7 +37,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The cropland proportion as a float.
       :rtype: float
 
-   .. method:: get_conifer_proportion(scenario)
+   ``get_conifer_proportion(scenario)``
 
       Retrieves the proportion of conifer trees for a specified scenario.
 
@@ -45,7 +45,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The conifer proportion as a float.
       :rtype: float
 
-   .. method:: get_broadleaf_proportion(scenario)
+   ``get_broadleaf_proportion(scenario)``
 
       Retrieves the proportion of broadleaf trees for a specified scenario.
 
@@ -53,7 +53,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The broadleaf proportion as a float.
       :rtype: float
 
-   .. method:: get_broadleaf_harvest_proportion(scenario)
+   ``get_broadleaf_harvest_proportion(scenario)``
 
       Retrieves the harvest proportion of broadleaf trees for a specified scenario.
 
@@ -61,7 +61,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The broadleaf harvest proportion as a float.
       :rtype: float
 
-   .. method:: get_conifer_harvest_proportion(scenario)
+   ``get_conifer_harvest_proportion(scenario)``
 
       Retrieves the harvest proportion of conifer trees for a specified scenario.
 
@@ -69,7 +69,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The conifer harvest proportion as a float.
       :rtype: float
 
-   .. method:: get_conifer_thinned_proportion(scenario)
+   ``get_conifer_thinned_proportion(scenario)``
 
       Retrieves the thinned proportion of conifer trees for a specified scenario.
 
@@ -77,7 +77,7 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The conifer thinned proportion as a float.
       :rtype: float
 
-   .. method:: get_afforest_end_year(scenario)
+   ``get_afforest_end_year(scenario)``
 
       Retrieves the end year for afforestation activities for a specified scenario.
 
@@ -85,28 +85,28 @@ The ``ScenarioDataFetcher`` class is designed to extract specific pieces of info
       :return: The afforestation end year as an integer.
       :rtype: int
 
-   .. method:: get_catchment_name()
+   ``get_catchment_name()``
 
       Retrieves the name of the catchment area defined in the scenario data.
 
       :return: The catchment name as a string.
       :rtype: str
 
-   .. method:: get_scenario_list()
+   ``get_scenario_list()``
 
       Retrieves a list of all scenarios present in the scenario data.
 
       :return: A list of scenario identifiers.
       :rtype: list
 
-   .. method:: validate_proportions(scenario)
+   ``validate_proportions(scenario)``
 
       Validates that the sum of cropland, forestland, and rewetted area proportions equals 1 for a specified scenario.
 
       :param scenario: The scenario identifier as a string.
       :raises ValueError: If the proportions do not sum to 1.
 
-   .. method:: validate_all_proportions()
+   ``validate_all_proportions()``
 
       Validates that the proportions for all scenarios in the dataset sum to 1.
 

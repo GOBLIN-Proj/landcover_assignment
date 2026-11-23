@@ -1,3 +1,7 @@
-pandas
-numpy <1.24
-sqlalchemy <2.0
+# Runtime requirements, kept in sync with [tool.poetry.dependencies] in pyproject.toml.
+pyomo>=6.9.4,<7
+highspy>=1.7.2
+pandas>=2.1.4,<4
+numpy>=1.25,<3
+sqlalchemy>=1.4,<3
+catchment_data_api>=0.1.0,<0.2

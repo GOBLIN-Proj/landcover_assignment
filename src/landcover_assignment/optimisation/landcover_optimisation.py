@@ -25,6 +25,7 @@ Constraints
     ``cap_at_target[i]``: allocation[i] <= target[i].
 
 What this gives:
+
 - If the targets fit within the available area, every target is met and the rest goes to ``farmable_condition``.
 - If they don't fit, ``farmable_condition`` is 0 and every target is cut by the same area: the squared objective
   spreads the shortfall evenly in absolute terms, and any target that reaches 0 stops there.

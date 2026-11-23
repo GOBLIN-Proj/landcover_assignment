@@ -13,6 +13,22 @@
 ### Changed
 - **Open-source solver**: the optimiser uses HiGHS (Pyomo `"highs"`, through `highspy`) by default, not CPLEX (`"cplex_direct"`). The objective is strictly convex, so results are unchanged (checked against the golden outputs). Dependencies: `cplex` is removed, `highspy >=1.7.2` is added, and the Pyomo floor rises to 6.9.4, the first version whose `"highs"` interface accepts the quadratic objective. Pyomo's `"appsi_highs"` interface does not.
 - **Optimiser structure**: the model is documented (sets, parameters, variables, objective, constraints). Its rules are named functions. It checks that the solver is available and that the solution is optimal, and it logs instead of printing.
+- **Dependencies widened** (phase 1 of the GOBLIN upgrade plan):
+  - pins: `pandas >=2.1.4,<4`, `numpy >=1.25,<3`, `sqlalchemy >=1.4,<3`, `pyomo >=6.9.4,<7`, `python >=3.9,<4`;
+  - `requirements.txt` now matches `pyproject.toml`.
+  - Results are identical on the oldest set (pandas 2.1.4, numpy 1.26, SQLAlchemy 1.4) and the latest (pandas 3.1, numpy 2.5, SQLAlchemy 2.1).
+  - `catchment_data_api` 0.1.3 still pins the oldest set itself, so a plain install resolves to it. The latest set needs that package installed with `--no-deps`.
+- **CI** runs the full test suite on the oldest and latest sets, with warnings as errors, and builds the docs with warnings as errors. The required `ci` check passes only if every job passes.
+- **Docs**:
+  - Read the Docs configuration (`.readthedocs.yaml`, `docs/requirements.txt`);
+  - docs dependency group in `pyproject.toml`;
+  - the build is now free of warnings. Docstrings no longer repeat what AutoAPI generates; the duplicate descriptions and the ambiguous `DataManager` / `LandDistribution` references are fixed.
+- **Spelling**: misspelt public names are renamed. The old names keep working for one release, with a `DeprecationWarning`:
+  - `data_engine_creater` → `data_engine_creator`;
+  - `get_national_rich_drained_orgainc_grassland` → `get_national_rich_drained_organic_grassland`;
+  - geo `LandCover.catchemnt_class` → `catchment_class`;
+  - the `spared_area_breakdown` keyword `intial_spared_area` → `initial_spared_area`.
+  - README typos are fixed. `tests/test_spelling.py` stops them coming back.
 - CI runs the new test suite.
 - **National validation of grassland**: grassland is checked as shares of the national 4.C area, and its `area_ha` against the herd-derived input, not as hectares against 4.C. The total-land check adds back the grassland outside the herd area.
 
@@ -21,32 +37,6 @@
 
 ### Removed
 - The old print-script tests, and test files that no longer ran. Their land-balance and area checks are now in `tests/test_land_balance.py`.
-
----
-
-## [0.3.2] - 2025.01.15
-
-### Changed
-- **Structural Changes**: Moved `DataManager` into the `resource_manager` module for better organization.
-- **Code Simplification**: Reduced complexity and redundancy in land distribution logic within `distribution.py` and `geo_distribution.py`.
-
----
-
-## [0.4.0] - 2025.01.15
-
-### Added
-- **New Features**: Introduced `landcover_optimisation` class, used to categorize the spared area with an optimizer, Pyomo. This is used alongside the parameters and constraints to calculate the optimum land use change for each category.
-  - Note that this is not always the same as the requested spared area due to the constraints.
-  - Added additional functionality to output the actual areas achieved from spared area alone.
-  - Optimization has been built into both the default and geo goblin models.
-- **Caching**: Introduced caching, which significantly speeds up performance.
-
-### Fixed
-- **Bug Fixes**: Fixed various bugs in the land distribution and optimization logic.
-- **Performance**: Improved the performance of the land distribution algorithm.
-
-### Testing
-- **Additional Testing**: Added comprehensive tests for the new `landcover_optimisation` class and related functionalities.
 
 ---
 
@@ -65,4 +55,11 @@
 
 ### Testing
 - **Additional Testing**: Added comprehensive tests for the new `landcover_optimisation` class and related functionalities.
+
 ---
+
+## [0.3.2] - 2025.01.15
+
+### Changed
+- **Structural Changes**: Moved `DataManager` into the `resource_manager` module for better organization.
+- **Code Simplification**: Reduced complexity and redundancy in land distribution logic within `distribution.py` and `geo_distribution.py`.

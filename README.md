@@ -5,7 +5,7 @@
 
  Based on the [GOBLIN](https://gmd.copernicus.org/articles/15/2239/2022/) (**G**eneral **O**verview for a **B**ackcasting approach of **L**ivestock **IN**tensification) land use tool module
 
- The package takes scenario input data, spared,utilised grassland area, the soil class breakdown for the spared grassland area, as well as the calibration year and target year. It produces a land use dataframe for grassland, cropland, forest, wetland, settlements and farmable conditon. It also produces a transition matrix, in the form of a dataframe, which captures the areas transitioning from one land use category to another. 
+ The package takes scenario input data, spared,utilised grassland area, the soil class breakdown for the spared grassland area, as well as the calibration year and target year. It produces a land use dataframe for grassland, cropland, forest, wetland, settlements and farmable condition. It also produces a transition matrix, in the form of a dataframe, which captures the areas transitioning from one land use category to another. 
 
  Finally, this package produces an afforestation dataframe that can be used by the [cbm_runner](https://goblin-proj.github.io/cbm_runner/html/index.html), which is broken down by forest yield classes. The soil groups relate to those found in the [Teagasc national farm survey](https://www.teagasc.ie/rural-economy/rural-economy/national-farm-survey/). The soil groups are mapped to yield classes based on research conducted by [Farrelly, N. and Gallagher, G (2015)](https://journal.societyofirishforesters.ie/index.php/forestry/article/view/10299).
 
@@ -28,7 +28,7 @@
 
  ```
 
- For national level analysis, the historic land uses and areas of organic and mineral soil are taken from the National Invetory [CRF Tables](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2022.php).
+ For national level analysis, the historic land uses and areas of organic and mineral soil are taken from the National Inventory [CRF Tables](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2022.php).
 
  The package is currently parameterised for use in the Irish context. 
 
@@ -129,7 +129,7 @@ See [docs/rewetting.md](docs/rewetting.md) for the method and a worked example.
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-See [tests/README.md](tests/README.md) for what each test guards.
+See [tests/README.md](https://github.com/GOBLIN-Proj/landcover_assignment/blob/main/tests/README.md) for what each test guards.
 
 ## License
 This project is licensed under the terms of the MIT license.

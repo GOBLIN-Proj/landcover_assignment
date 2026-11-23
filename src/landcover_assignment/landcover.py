@@ -8,9 +8,9 @@ to provide tools for detailed land cover change analysis.
 Features:
 ---------
 - **Land Cover Analysis**: Provides functionalities to analyze and compute land cover distributions and transitions based on calibration and target years, 
-scenario inputs, and specific land area considerations.
+  scenario inputs, and specific land area considerations.
 - **Scenario-driven Land Distribution**: Manages the distribution and transition of land areas across different land use types, adjusting for 
-scenario-specific changes.
+  scenario-specific changes.
 
 Dependencies:
 -------------
@@ -24,8 +24,7 @@ Dependencies:
 
 Classes:
 --------
-.. class:: LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-   :noindex:
+``LandCover(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)``
 
    Manages the computation and analysis of land cover changes, focusing on the adjustments of land areas under different scenarios 
    and their implications on land use distribution.
@@ -35,6 +34,7 @@ Classes:
    and analyze spared area breakdowns and grassland distributions based on scenario inputs.
 
    Methods include:
+
    - `_log_spared_area`: Logs the spared area details for a specific scenario and land use.
    - `get_spared_area_log`: Returns the log of spared area details.
    - `_fill_current_area_row`: Fills data for the current area based on land use type.
@@ -47,6 +47,7 @@ Classes:
 
 """
 import pandas as pd
+from landcover_assignment._deprecation import renamed_keyword
 import numpy as np
 
 from landcover_assignment.distribution import LandDistribution
@@ -85,7 +86,7 @@ class LandCover:
 
     Attributes
     ----------
-    data_manager_class : DataManager
+    data_manager_class : landcover_assignment.resource_manager.landcover_data_manager.DataManager
         Manages land cover data and provides access to calibration and target year data.
     data_loader_class : Loader
         Loads required data resources, including environmental and land use data.
@@ -93,7 +94,7 @@ class LandCover:
         Provides functionalities for accessing and analyzing national land cover data.
     sc_fetch_class : ScenarioDataFetcher
         Fetches scenario-specific information from the input data.
-    land_dist_class : LandDistribution
+    land_dist_class : landcover_assignment.distribution.LandDistribution
         Manages the distribution and transition of land areas across different land use types.
     scenario_list : list
         A list of scenarios derived from the scenario inputs, driving the land cover analysis.
@@ -435,7 +436,7 @@ class LandCover:
         # Step 6: Generate spared area breakdown
         spared_area_breakdown = self.spared_area_breakdown(
             scenario,
-            intial_spared_area=initial_spared_area,
+            initial_spared_area=initial_spared_area,
             actual_rewetted_area=actual_rewetted_area,
             actual_mineral_area=actual_mineral_area,
         )
@@ -450,7 +451,8 @@ class LandCover:
         return spared_area_breakdown, grassland_breakdown
 
 
-    def spared_area_breakdown(self, scenario, intial_spared_area, actual_rewetted_area, actual_mineral_area):
+    @renamed_keyword("intial_spared_area", "initial_spared_area")  # DEPRECATED_NAME
+    def spared_area_breakdown(self, scenario, initial_spared_area, actual_rewetted_area, actual_mineral_area):
         """
         Analyzes the breakdown of spared areas under a specific scenario.
 
@@ -480,7 +482,7 @@ class LandCover:
 
         # Step 2: Define target shares
         target_areas = {
-            land_use: (intial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
+            land_use: (initial_spared_area * getattr(self.sc_fetch_class, f"get_{land_use}_proportion")(scenario))
             for land_use in spared_land_use_dict.keys()
             if land_use not in ["farmable_condition", "rewetted"]# Exclude "farmable condition" (fallback) & rewetted
         }
