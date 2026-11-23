@@ -138,14 +138,18 @@ class LandDistribution:
         """
         Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.
 
+        The mineral area leaves grassland. The rewetted organic area stays in grassland: it is taken from the drained
+        rich/poor shares (in proportion to them) and added to the rewetted rich/poor (rewet-status) shares. The total
+        organic area of the grassland row is unchanged. See docs/rewetting.md.
+
         Parameters
         ----------
         year : int
             The reference year for national land use data.
         mineral_area : float
-            The area of mineral soil to be adjusted.
-        organic_area : float
-            The area of organic soil to be adjusted.
+            The area of mineral soil that leaves grassland (ha).
+        organic_area_to_wet : float
+            The drained organic area that is rewetted and stays in grassland with rewet status (ha).
         grassland_area : float
             The total grassland area to be considered.
 

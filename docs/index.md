@@ -6,6 +6,7 @@
 :hidden:
 
 INSTALLATION.md
+rewetting.md
 CONTRIBUTING.md
 autoapi/index
 example.ipynb

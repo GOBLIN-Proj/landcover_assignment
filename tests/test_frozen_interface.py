@@ -122,10 +122,11 @@ class RewettedGrasslandStaysGrassland(unittest.TestCase):
 
     @unittest.expectedFailure
     def test_logged_rewetting_is_in_grassland_with_spillover(self):
-        """Finding 8: spillover past the drained organic stock is logged, not applied.
+        """Finding 8: the log counts land that already had rewet status as newly rewetted.
 
-        In scenario 3 (all grassland spared), 314,200 ha is logged as rewetted but only 126,357 ha is added to the
-        grassland rewetted shares (187,843 ha spillover).
+        Scenario 3 spares all grassland. The log records 314,200 ha rewetted, but only the 126,357 ha still drained
+        can change status. The other 187,843 ha already had rewet status in 2020. No area is lost (the land balance
+        holds), but the log overstates new rewetting.
         """
         _, logged, added = self.rewetting()
         self.assertAlmostEqual(added[3], logged[3], delta=1e-3)

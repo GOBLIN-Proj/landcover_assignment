@@ -410,6 +410,10 @@ class LandCover:
         Wrapper function to handle spared area allocation across mineral and organic soils
         before passing clean parameters to breakdown methods.
 
+        The rewetted organic and organo-mineral area stays in the grassland row
+        (``share_rewetted_in_organic`` / ``share_rewetted_in_organic_mineral``) and never enters the wetland row.
+        The mineral remainder is allocated by the optimiser. See docs/rewetting.md.
+
         Parameters
         ----------
         scenario : int
@@ -492,7 +496,8 @@ class LandCover:
 
 
         # Generate wetland data and add to results
-        wetland_data = self.land_dist_class.land_distribution("wetland", None)  # Wetlands don't increase
+        # The wetland row keeps its calibration-year area: rewetted spared grassland stays grassland.
+        wetland_data = self.land_dist_class.land_distribution("wetland", None)
         result_dict["wetland"] = wetland_data
 
         # Step 2: Define target shares
@@ -527,12 +532,12 @@ class LandCover:
         """
         Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.
 
-        This method computes how changes in land use, particularly the conversion of grassland to other types or
-        its retention, affect the overall grassland area. It considers organic and mineral soil proportions and
-        adjusts them based on scenario inputs.
+        Spared mineral grassland leaves the grassland row. Rewetted spared organic and organo-mineral grassland
+        stays in it, as ``share_rewetted_in_organic`` / ``share_rewetted_in_organic_mineral``. See docs/rewetting.md.
 
-        :param scenario: The scenario identifier for which the grassland distribution is calculated.
-        :type scenario: int
+        :param actual_rewetted_area_organic: Rewetted organic area that stays in grassland (ha).
+        :param actual_rewetted_area_mineral_organic: Rewetted organo-mineral area that stays in grassland (ha).
+        :param actual_mineral_area: Spared mineral area that leaves grassland (ha).
         :return: A dictionary containing updated grassland distribution details, including areas and proportions
                 of soil types.
         :rtype: dict

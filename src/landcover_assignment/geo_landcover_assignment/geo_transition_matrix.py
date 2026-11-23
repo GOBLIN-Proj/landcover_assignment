@@ -90,6 +90,9 @@ class TransitionMatrix:
         """
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
+        As in the national tree, ``Grassland_to_Wetland`` is 0 by design: rewetted spared grassland stays grassland
+        (``share_rewetted_in_organic`` / ``share_rewetted_in_organic_mineral``). See docs/rewetting.md.
+
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
         """

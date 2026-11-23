@@ -101,5 +101,27 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+## Spared area and rewetting
+
+A scenario's spared grassland is divided into:
+- **rewetted organic soil**, which **stays in the grassland row**;
+- **mineral soil**, which the optimiser allocates to forest, cropland and farmable condition.
+
+Rewetted grassland is not wetland:
+- The inventory reports it inside grassland remaining grassland (CRT 4.C.1) as rewet status (NID 2026 s.6.5.2), and landcover_lca applies grassland rewetting factors to it.
+- In the land-use table, rewetting moves area from the drained to the rewet-status shares of the grassland row (`share_rewetted_rich_organic`, `share_rewetted_poor_organic`).
+- `Grassland_to_Wetland` in the transition matrix is always 0.
+- The spared-area log records the rewetted area as `rewet_grassland`.
+
+See [docs/rewetting.md](docs/rewetting.md) for the method and a worked example.
+
+## Tests
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+See [tests/README.md](tests/README.md) for what each test guards.
+
 ## License
 This project is licensed under the terms of the MIT license.

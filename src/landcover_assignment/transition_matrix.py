@@ -91,6 +91,11 @@ class TransitionMatrix:
         """
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
+        Only the ``Grassland_to_<land use>`` cells are filled. ``Grassland_to_Grassland`` is the (negative) change in
+        the grassland row, which is the spared mineral area. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
+        grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
+        rewetted area is reported in the spared-area log as ``rewet_grassland``.
+
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
         """

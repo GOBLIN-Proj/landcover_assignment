@@ -390,6 +390,15 @@ class LandCover:
         Wrapper function to handle spared area allocation across mineral and organic soils
         before passing clean parameters to breakdown methods.
 
+        The spared area is split in two:
+
+        - **Rewetted organic soil**: rewetted proportion x spared area, capped by the drained organic grassland
+          available. It stays in the grassland row, moving from the drained to the rewet-status shares, and never
+          enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + "Other organic soils").
+          See docs/rewetting.md.
+        - **Mineral soil**: the rest, capped by the mineral grassland available. The optimiser divides it between
+          forest and cropland targets, and any remainder goes to farmable_condition.
+
         Parameters
         ----------
         scenario : int
@@ -460,12 +469,13 @@ class LandCover:
         year = self.data_manager_class.calibration_year
         spared_land_use_dict = self.data_manager_class.get_spared_area_dict()
 
-        # Step 1: Handle wetlands (special case)
+        # Step 1: Rewetted area. Rewetted spared grassland stays in the grassland row (its drained share moves to
+        # rewet status in grassland_breakdown). It is recorded here in the log only; it does not become wetland.
         self._log_spared_area(scenario, "rewet_grassland", 0, actual_rewetted_area)
 
 
-        # Generate wetland data and add to results
-        wetland_data = self.land_dist_class.land_distribution(year, "wetland", None)  # Wetlands don't increase
+        # The wetland row keeps its calibration-year area: no spared grassland is converted to wetland.
+        wetland_data = self.land_dist_class.land_distribution(year, "wetland", None)
         result_dict["wetland"] = wetland_data
 
         # Step 2: Define target shares
@@ -498,14 +508,16 @@ class LandCover:
         """
         Specifically analyzes the distribution and adjustment of grassland areas under a given scenario.
 
-        This method computes how changes in land use, particularly the conversion of grassland to other types or
-        its retention, affect the overall grassland area. It considers organic and mineral soil proportions and
-        adjusts them based on scenario inputs.
+        Spared mineral grassland leaves the grassland row. Rewetted spared organic grassland stays in it: its area
+        moves from the drained to the rewet-status shares. The scenario's grassland row is therefore productive
+        grassland plus the rewetted spared area. See docs/rewetting.md.
 
         Parameters
         ----------
-        scenario : int
-            The scenario identifier for which the grassland distribution is calculated.
+        area_previously_drained : float
+            Spared organic area that is rewetted (ha). It moves from drained to rewet status within grassland.
+        actual_mineral_area : float
+            Spared mineral area that leaves grassland (ha).
         
         Returns
         -------
