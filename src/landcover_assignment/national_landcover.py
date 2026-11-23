@@ -87,7 +87,7 @@ class NationalLandCover:
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
         if landuse not in self.national_areas_cache:
-            self.national_areas_cache[landuse] = self.national_areas[landuse]()()
+            self.national_areas_cache[landuse] = self.national_areas[landuse]()
         return self.national_areas_cache[landuse].copy()
 
     # ----------------------------------------------------------------------------------------------- national shares
@@ -134,7 +134,7 @@ class NationalLandCover:
         """Burnt area as a share of the land use's area, over all years in the database."""
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
-        data = self.national_areas[landuse]()()
+        data = self.national_areas[landuse]()
         return data["burnt_kha"].sum() / data["total_kha"].sum()
 
     def get_national_mineral(self, landuse, year):

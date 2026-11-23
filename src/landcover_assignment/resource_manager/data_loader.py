@@ -53,7 +53,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national forest areas data.
         """
-        return self.dataframes.get_national_forest_areas
+        return self.dataframes.get_national_forest_areas()
 
     def national_cropland_areas(self):
         """
@@ -62,7 +62,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national cropland areas data.
         """
-        return self.dataframes.get_national_cropland_areas
+        return self.dataframes.get_national_cropland_areas()
 
     def national_grassland_areas(self):
         """
@@ -71,7 +71,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national grassland areas data.
         """
-        return self.dataframes.get_national_grassland_areas
+        return self.dataframes.get_national_grassland_areas()
 
     def national_wetland_areas(self):
         """
@@ -80,7 +80,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national wetland areas data.
         """
-        return self.dataframes.get_national_wetland_areas
+        return self.dataframes.get_national_wetland_areas()
 
     def national_settlement_areas(self):
         """
@@ -89,7 +89,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national settlement areas data.
         """
-        return self.dataframes.get_national_settlement_areas
+        return self.dataframes.get_national_settlement_areas()
 
     def forest_soil_yield_mapping(self):
         """

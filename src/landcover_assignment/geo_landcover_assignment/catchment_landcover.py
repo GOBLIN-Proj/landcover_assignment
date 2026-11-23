@@ -212,7 +212,7 @@ class CatchmentLandCover:
         # Check if the data is already cached
         if landuse not in self.cached_national_areas:
             # Cache the data if not already present
-            self.cached_national_areas[landuse] = self.national_areas[landuse]()()
+            self.cached_national_areas[landuse] = self.national_areas[landuse]()
 
         return self.cached_national_areas[landuse].copy()
 
