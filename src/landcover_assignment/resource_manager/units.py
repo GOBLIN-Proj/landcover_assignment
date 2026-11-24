@@ -23,6 +23,8 @@ CH4_C_TO_CH4 = 16.0 / 12.0
 UNITS = {
     "kha": (KHA_TO_HA, "ha"),
     "ha": (1.0, "ha"),
+    "ha/yr": (1.0, "ha/yr"),     # cbm_runner mean annual fire (D6a)
+    "1/yr": (1.0, "1/yr"),       # cbm_runner scenario fire rate (D6a)
 }
 
 # column_metadata units that are keys or labels, not quantities: read as they are.

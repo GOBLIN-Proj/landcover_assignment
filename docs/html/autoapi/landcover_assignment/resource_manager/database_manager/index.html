@@ -208,6 +208,36 @@ Keys and labels (units <code class="docutils literal notranslate"><span class="p
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_managed_forest_areas">
+<span class="sig-name descname"><span class="pre">get_managed_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_managed_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner 0.6.1’s managed forest (FM + AF) area and forest fire by year, 1990-2070 (decision D6a;
+derived from cbm_runner’s disturbance events, aligned with the NID and forest expert judgement).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>managed_forest_data in ha, indexed by year.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_forest_fire_rate">
+<span class="sig-name descname"><span class="pre">get_forest_fire_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_forest_fire_rate" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner 0.6.1’s scenario forest fire rate (per year) and the values it is calculated from
+(decision D6a).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the one row of forest_fire_rate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_settlement_areas">
 <span class="sig-name descname"><span class="pre">get_national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_settlement_areas" title="Link to this definition"></a></dt>
 <dd><p>Retrieves national settlement area data from the database and converts its areas from kha to ha.</p>

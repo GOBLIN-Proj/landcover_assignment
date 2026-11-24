@@ -9,6 +9,12 @@ balance (the grassland the herd doesn't need, dossier LA2) equals the national g
 in hectares like the other land uses, and its shares are checked too. See docs/grassland_area.md and the shared
 context .goblin-context/pipeline/goblin_lite-land-flow.md.
 
+Forest (D6a): the forest area mirrors cbm_runner's managed forest (FM + AF; NID and forest expert judgement), not CRT
+4.A. CBM doesn't model the NID's open area on organic soil and roads (not emitting), so the package's forest is 68.6 kha
+below CRT 4.A in 2020; the drained N-poor and N-rich hectares are the NID's, and the rest is mineral. Forest burnt area
+is CBM's FM + AF fire (305 ha in 2020; CRF 2024 4.A: 300 ha). These are checked in `ForestAgainstInventory` below
+and in tests/test_forest_cbm.py.
+
 Known gaps are expected failures, and each names its cause, a data decision (D1-D10). A gap that is fixed turns its
 test into an unexpected success, and its marker must then be removed.
 
@@ -26,11 +32,8 @@ reference = reference[reference.year == CAL].set_index(["land_use", "quantity"])
 
 # (land_use, quantity): (shares multiplied by area_ha (none = area itself), known gap or None).
 CHECKS = {
-    ("forest", "area"): ([], None),
-    ("forest", "mineral"): (["share_mineral"], None),
     ("forest", "drained_organic_n_poor"): (["share_organic"], None),
     ("forest", "drained_organic_n_rich"): (["share_organic_mineral"], None),
-    ("forest", "burnt"): (["share_burnt"], "D6: 4.A.1 only (177.7 of 300 ha)"),
     ("cropland", "area"): ([], None),
     ("cropland", "mineral"): (["share_mineral"], None),
     ("cropland", "burnt"): (["share_burnt"], None),
@@ -93,6 +96,27 @@ class NationalValidation(unittest.TestCase):
             have = lu[lu.farm_id == -CAL].area_ha.sum()
             self.assertLessEqual(abs(have - (national_total - other_land)), TOLERANCE * national_total,
                                  f"{case}: {have:,.0f} ha vs {national_total - other_land:,.0f} ha")
+
+
+class ForestAgainstInventory(unittest.TestCase):
+    """D6a: the forest row is cbm_runner's managed forest; how it compares with the inventory."""
+
+    def test_area_is_below_crt_by_the_open_area_and_roads(self):
+        """CRT 4.A (798,747 ha) - CBM FM + AF (730,098.8 ha) = 68,648 ha, which includes the NID open area on organic
+        soil (46,800 ha); the rest (21,848 ha) is roads and other areas CBM doesn't model. None of it emits."""
+        open_area = (reference[("forest", "area")] - reference[("forest", "mineral")]
+                     - reference[("forest", "drained_organic_n_poor")] - reference[("forest", "drained_organic_n_rich")])
+        for case in CASES:
+            gap = reference[("forest", "area")] - baseline_row(case, "forest").area_ha
+            self.assertAlmostEqual(gap, 68648.28, delta=0.01)
+            self.assertGreater(gap, open_area)
+
+    def test_burnt_area_is_close_to_the_inventory(self):
+        """CBM FM + AF fire, 177 + 128 = 305 ha in 2020; CRF 2024 4.A: 300 ha (within 2%)."""
+        for case in CASES:
+            have = package_area(case, "forest", ["share_burnt"])
+            self.assertAlmostEqual(have, 305.0, delta=1e-6)
+            self.assertLessEqual(abs(have - reference[("forest", "burnt")]), 0.02 * reference[("forest", "burnt")])
 
 
 def make_test(land_use, quantity, shares, gap):

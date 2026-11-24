@@ -25,13 +25,19 @@ Decided (owner, 2026-11-23/24):
   data_sources/nid2026_grassland_organic_factors.csv (rewet-status factors converted from kg CH4-C to kg CH4). 2020:
   drained 0.4525, rewet status 0.4471 (0.45 before). The split reproduces CRT Table4.C 4.C.1 organic soil carbon in
   every year (tests/test_database_build.py).
+- D6a: the national forest row mirrors cbm_runner 0.6.1 (historic forest disturbances aligned with the NID and forest
+  expert judgement): `managed_forest_data` holds cbm_runner's managed forest area (FM + AF) and forest fire by year,
+  1990-2070, and `forest_fire_rate` its scenario fire rate, all derived from cbm_runner's disturbance events and
+  inventories (data_sources/cbm_runner_forest*.csv, tools/export_cbm_runner_forest.py). `forest_data` keeps the
+  inventory forest (CRT, NID) for the audit and for the drained hectares.
 - D5: our grassland rewet-status columns keep their names and meaning (NID s.6.5.2) and are filled from CRT 4(II).C.1
   "Other organic soils" (CRT 2026 reports "Rewetted organic soils" as NO).
 - D7: cropland and settlement from CRT 4.B and 4.E. A notation key (NO) is stored as 0 in the data tables and kept in
   `inventory_values`.
 
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
-- D6: burnt area (`burnt_kha`), 1990-2022; 2023-2024 empty (NULL);
+- D6b: burnt area (`burnt_kha`) of the other land uses, and `forest_data.burnt_kha` (still read by the catchment
+  tree), 1990-2022; 2023-2024 empty (NULL);
 - D8: the `NIR` table (unused by the code);
 - D9: `forest_soil_yield_mapping`.
 
@@ -54,7 +60,9 @@ YEARS = list(range(1990, 2025))
 INPUTS = ("data_sources/inventory_areas.csv", "data_sources/nid2026_forest_organic_soils.csv",
           "data_sources/legacy_burnt_area.csv", "data_sources/legacy_nir_table.csv",
           "data_sources/forest_soil_yield_mapping.csv", "data_sources/nid2026_grassland_organic_factors.csv",
+          "data_sources/cbm_runner_forest.csv", "data_sources/cbm_runner_forest_parameters.csv",
           "tools/build_database.py")
+CBM_YEARS = list(range(1990, 2071))
 
 SOURCES = [
     ("CRT2026", "EPA Ireland, Common Reporting Tables 2026 (IRL-CRT-2026-V1.0, one workbook per year, 1990-2024), "
@@ -66,6 +74,11 @@ SOURCES = [
     ("LEGACY040", "landcover_assignment 0.4.0 database land_use_database.db (CRF 2024 vintage, git 25a83b4), "
                   "exported by tools/export_legacy_columns.py into data_sources/legacy_*.csv and "
                   "forest_soil_yield_mapping.csv"),
+    ("CBM061", "goblin_cbm_runner 0.6.1 (GitHub GOBLIN-Proj/goblin_cbm_runner main, cfc0199), database "
+               "cbm_runner_database_0.6.2.db: FM and AF inventories and disturbance events. Historic forest "
+               "disturbances aligned with the NID and forest expert judgement (prepared by the forest consultant who "
+               "prepared them for the NID). Exported by tools/export_cbm_runner_forest.py into "
+               "data_sources/cbm_runner_forest.csv and cbm_runner_forest_parameters.csv"),
     ("PACKAGE", "landcover_assignment parameter or key, set in tools/build_database.py"),
 ]
 
@@ -162,7 +175,64 @@ OTHER_COLUMNS = [   # (table, column, unit, description, source, transformation,
 
 
 NUMERIC = {"year", "Year", "value", "Area_kha", "soil_group", "total_area_kha", "mineral_kha", "organic_kha",
-           "open_area_kha", "drained_n_poor_organic_kha", "drained_n_rich_organo_mineral_kha"}
+           "open_area_kha", "drained_n_poor_organic_kha", "drained_n_rich_organo_mineral_kha",
+           "fm_area_ha", "af_area_ha", "fm_fire_ha", "af_fire_ha"}
+
+D6A = "D6a: mirror cbm_runner 0.6.1"
+CBM_AREA_RULE = ("cumulative from cbm_runner's disturbance events, FM step 1 = 2017, AF step 1 = 1990 (DISTID4 "
+                 "afforestation, DISTID7 deforestation, area-based)")
+# managed_forest_data: column -> (unit, description, transformation)
+MANAGED_FOREST = {
+    "fm_area_ha": ("ha", "cbm_runner FM forest (present before 1990), from 2016",
+                   "FM inventory area (FM_inventory_2100, 420,417.2 ha at 2016) - cumulative FM deforestation; "
+                   + CBM_AREA_RULE),
+    "af_area_ha": ("ha", "cbm_runner AF forest (planted since 1990; baseline planting continues to 2070)",
+                   "cumulative AF afforestation - cumulative AF deforestation; " + CBM_AREA_RULE),
+    "total_ha": ("ha", "managed forest = FM + AF: the national forest row's area (scenario rows add the scenario's "
+                       "afforestation)", "fm_area_ha + af_area_ha; NULL before 2016"),
+    "fm_fire_ha": ("ha", "cbm_runner FM forest fire (DISTID3) in the year",
+                   "sum of FM_disturbances_2100 DISTID3 Amount for the step (FM step 1 = 2017); NULL = no event"),
+    "af_fire_ha": ("ha", "cbm_runner AF forest fire (DISTID3) in the year",
+                   "sum of AF_disturbance_2100 DISTID3 Amount for the step (AF step 1 = 1990); NULL = no event"),
+    "burnt_ha": ("ha", "managed forest burnt area: the national forest row's burnt area (scenario rows add rate x "
+                       "the scenario's afforestation, forest_fire_rate)",
+                 "fm_fire_ha + af_fire_ha; NULL where either is NULL"),
+}
+# forest_fire_rate (one row): column -> (unit, description, transformation)
+FIRE_RATE = {
+    "fm_mean_fire_ha": ("ha/yr", "mean annual FM fire over the years with an FM fire event (2017-2070)",
+                        "mean of fm_fire_ha (non-NULL)"),
+    "af_mean_fire_ha": ("ha/yr", "mean annual AF fire over the years with an AF fire event (2008-2070)",
+                        "mean of af_fire_ha (non-NULL)"),
+    "fm_inventory_area_ha": ("ha", "FM inventory area (FM_inventory_2100 total Area)", "copied"),
+    "af_inventory_area_ha": ("ha", "AF inventory area (AF_inventory_2100 total Area: all AF planting 1990-2070)",
+                             "copied"),
+    "rate_per_year": ("1/yr", "scenario forest fire rate: burnt ha per ha of scenario afforestation per year "
+                              "(cbm_runner SCDisturbances._calculate_national_fire_rate)",
+                      "(fm_mean_fire_ha + af_mean_fire_ha) / (fm_inventory_area_ha + af_inventory_area_ha)"),
+}
+
+
+def managed_forest_tables():
+    """D6a: the cbm_runner managed forest table (by year) and its scenario fire rate (one row)."""
+    cbm = read_csv("data_sources/cbm_runner_forest.csv").set_index("year")
+    if [int(y) for y in cbm.index] != CBM_YEARS:
+        raise ValueError("cbm_runner_forest.csv: years are not 1990-2070")
+    params = read_csv("data_sources/cbm_runner_forest_parameters.csv").set_index("name").value
+    cbm["total_ha"] = cbm.fm_area_ha + cbm.af_area_ha
+    cbm["burnt_ha"] = cbm.fm_fire_ha + cbm.af_fire_ha
+    forest = cbm[list(MANAGED_FOREST)]
+    fm_mean, af_mean = cbm.fm_fire_ha.dropna().mean(), cbm.af_fire_ha.dropna().mean()
+    inventory = params["fm_inventory_area_ha"] + params["af_inventory_area_ha"]
+    rate = {"fm_mean_fire_ha": fm_mean, "af_mean_fire_ha": af_mean,
+            "fm_inventory_area_ha": params["fm_inventory_area_ha"],
+            "af_inventory_area_ha": params["af_inventory_area_ha"], "rate_per_year": (fm_mean + af_mean) / inventory}
+    metadata = [("managed_forest_data", "year", "year", "year", "PACKAGE", "", "", "1990-2070", "key")]
+    metadata += [("managed_forest_data", c, u, d, "CBM061", "cbm_runner_database_0.6.2.db", t, D6A, "derived")
+                 for c, (u, d, t) in MANAGED_FOREST.items()]
+    metadata += [("forest_fire_rate", c, u, d, "CBM061", "cbm_runner_database_0.6.2.db", t, D6A, "derived")
+                 for c, (u, d, t) in FIRE_RATE.items()]
+    return forest, rate, metadata
 
 
 def read_csv(path):
@@ -280,6 +350,8 @@ def build(path=OUTPUT):
     """Write the database to ``path`` (overwritten). Returns the path."""
     path = Path(path)
     inventory, nid, tables, metadata = build_tables()
+    managed_forest, fire_rate, cbm_metadata = managed_forest_tables()
+    metadata = metadata + cbm_metadata
     nir = read_csv("data_sources/legacy_nir_table.csv")
     mapping = read_csv("data_sources/forest_soil_yield_mapping.csv")
     if path.exists():
@@ -293,6 +365,14 @@ def build(path=OUTPUT):
             cur.executemany(f'INSERT INTO "{table}" VALUES ({", ".join("?" * len(df.columns))})',
                             [tuple(int(v) if i == 0 else v for i, v in enumerate(row))
                              for row in df.itertuples(index=False, name=None)])
+        cols = ", ".join(['"year" INTEGER'] + [f'"{c}" REAL' for c in MANAGED_FOREST])
+        cur.execute(f'CREATE TABLE "managed_forest_data" ({cols})')
+        cur.executemany(f'INSERT INTO "managed_forest_data" VALUES ({", ".join("?" * (len(MANAGED_FOREST) + 1))})',
+                        [(int(y), *(None if pd.isna(v) else float(v) for v in row))
+                         for y, row in zip(managed_forest.index, managed_forest.itertuples(index=False, name=None))])
+        cur.execute(f'CREATE TABLE "forest_fire_rate" ({", ".join(f"{chr(34)}{c}{chr(34)} REAL" for c in FIRE_RATE)})')
+        cur.execute(f'INSERT INTO "forest_fire_rate" VALUES ({", ".join("?" * len(FIRE_RATE))})',
+                    tuple(float(fire_rate[c]) for c in FIRE_RATE))
         cur.execute('CREATE TABLE "NIR" ("Year" INTEGER, "Land_cover" TEXT, "Area_kha" REAL)')
         cur.executemany('INSERT INTO "NIR" VALUES (?, ?, ?)',
                         [(int(y), str(l), float(a)) for y, l, a in nir.itertuples(index=False, name=None)])

@@ -98,7 +98,8 @@ Module Contents
       Only the ``Grassland_to_<land use>`` cells are filled. ``Grassland_to_Grassland`` is the (negative) change in
       the grassland row, which is the spared mineral area. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
       grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
-      rewetted area is reported in the spared-area log as ``rewet_grassland``.
+      rewetted area is reported in the spared-area log as ``rewet_grassland``. ``Grassland_to_Forest`` is the
+      scenario's afforestation: the forest row's change less the change in cbm_runner managed forest (decision D6a).
 
       :return: A DataFrame representing the transition matrix with changes in land use areas.
       :rtype: pandas.DataFrame
@@ -108,6 +109,7 @@ Module Contents
    .. py:method:: _transition_difference(landuse, index, calibration_year, target_year, land_cover_df)
 
       Calculates the difference in area for a specific land use between the calibration and target years.
+      For forest, the change in cbm_runner managed forest between the two years is taken out (decision D6a).
 
       :param landuse: Specific land use type.
       :type landuse: str

@@ -102,11 +102,20 @@
 <span id="landcover-assignment-national-landcover"></span><h1>landcover_assignment.national_landcover<a class="headerlink" href="#module-landcover_assignment.national_landcover" title="Link to this heading"></a></h1>
 <p>National areas and soil, peat and burnt shares for each land use, read from the package database (via <code class="docutils literal notranslate"><span class="pre">Loader</span></code>).</p>
 <p>Each land use’s calibration-year row is its area plus 17 share columns. Every share is one database column divided by
-the land use’s total area (<code class="docutils literal notranslate"><span class="pre">total_kha</span></code>), applied to the land uses in <code class="docutils literal notranslate"><span class="pre">SHARE_SOURCES</span></code> and 0 for the rest. Forest has
-one special case: its organic share is the drained N-poor organic area (<code class="docutils literal notranslate"><span class="pre">organic_emitting_kha</span></code>), and its
-organo-mineral share the drained N-rich area (NID 2026 Tables 6.7 + 6.15). Its mineral share is the CRT mineral area
-(0.46 in 2020). The undrained open area on organic soil (0.06) is in no share, so forest shares sum to about 0.94
-(decision D3).</p>
+the land use’s total area (<code class="docutils literal notranslate"><span class="pre">total_kha</span></code>), applied to the land uses in <code class="docutils literal notranslate"><span class="pre">SHARE_SOURCES</span></code> and 0 for the rest.</p>
+<p>Forest is different (decision D6a): it mirrors cbm_runner 0.6.1, whose historic forest is aligned with the NID and
+forest expert judgement (package database <code class="docutils literal notranslate"><span class="pre">managed_forest_data</span></code> and <code class="docutils literal notranslate"><span class="pre">forest_fire_rate</span></code>, derived from cbm_runner’s
+disturbance events):</p>
+<ul class="simple">
+<li><p>area = cbm_runner managed forest, FM (present before 1990) + AF (planted since 1990), in that year;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">share_organic</span></code> / <code class="docutils literal notranslate"><span class="pre">share_organic_mineral</span></code> = the NID 2026 drained N-poor / N-rich hectares of the calibration year
+(Tables 6.7 + 6.15, decision D3) / area. The open area and roads that CBM doesn’t model are not emitting (as in the
+NID), and AF planting after the calibration year is on mineral soil, so the drained hectares stay fixed and
+<code class="docutils literal notranslate"><span class="pre">share_mineral</span></code> is the rest;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">share_burnt</span></code> = cbm_runner FM + AF fire in that year / area.</p></li>
+</ul>
+<p>Target-year forest rows (<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row" title="landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_forest_target_row()</span></code></a>) add the scenario’s afforestation to the
+area, and cbm_runner’s scenario fire on it (rate x afforestation) to the burnt area.</p>
 <p>The grassland area is not a database area: it is grassland_production’s herd-derived area plus the national balance
 (see <a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area" title="landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_grassland_balance_area()</span></code></a> and docs/grassland_area.md).</p>
 <section id="attributes">
@@ -201,6 +210,16 @@ methods are thin wrappers over <a class="reference internal" href="#landcover_as
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._managed_forest">
+<span class="sig-name descname"><span class="pre">_managed_forest</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._managed_forest" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._forest_fire_rate">
+<span class="sig-name descname"><span class="pre">_forest_fire_rate</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._forest_fire_rate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.methods">
 <span class="sig-name descname"><span class="pre">methods</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.methods" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -244,6 +263,68 @@ methods are thin wrappers over <a class="reference internal" href="#landcover_as
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> – for an unknown land use, or a year that isn’t in the database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._managed">
+<span class="sig-name descname"><span class="pre">_managed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._managed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_area">
+<span class="sig-name descname"><span class="pre">get_managed_forest_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_area" title="Link to this definition"></a></dt>
+<dd><p>cbm_runner managed forest area (ha), FM + AF, in a year (2016-2070). Decision D6a.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_burnt_area">
+<span class="sig-name descname"><span class="pre">get_managed_forest_burnt_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_burnt_area" title="Link to this definition"></a></dt>
+<dd><p>cbm_runner FM + AF forest fire (ha) in a year (2017-2070). Decision D6a.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_change">
+<span class="sig-name descname"><span class="pre">get_managed_forest_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_managed_forest_change" title="Link to this definition"></a></dt>
+<dd><p>Change in cbm_runner managed forest (ha) between two years: AF baseline planting less FM deforestation. It is
+in every scenario’s forest row, and it is not a transition from grassland.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_forest_fire_rate">
+<span class="sig-name descname"><span class="pre">get_forest_fire_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_fire_rate" title="Link to this definition"></a></dt>
+<dd><p>cbm_runner’s scenario forest fire rate (burnt ha per ha of scenario afforestation per year):
+(mean annual FM fire + mean annual AF fire) / (FM + AF inventory area). Decision D6a.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._forest_drained_ha">
+<span class="sig-name descname"><span class="pre">_forest_drained_ha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._forest_drained_ha" title="Link to this definition"></a></dt>
+<dd><p>NID 2026 drained N-poor and N-rich forest hectares in the calibration year (decision D3).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover._forest_share">
+<span class="sig-name descname"><span class="pre">_forest_share</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">share</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario_afforestation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover._forest_share" title="Link to this definition"></a></dt>
+<dd><p>A forest share for <code class="docutils literal notranslate"><span class="pre">year</span></code> (the calibration year, or a target year with the scenario’s afforestation).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row">
+<span class="sig-name descname"><span class="pre">get_forest_target_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario_afforestation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row" title="Link to this definition"></a></dt>
+<dd><p>The national forest row in <code class="docutils literal notranslate"><span class="pre">target_year</span></code> for a scenario that afforests <code class="docutils literal notranslate"><span class="pre">scenario_afforestation</span></code> ha
+(decision D6a, mirroring cbm_runner 0.6.1). With <code class="docutils literal notranslate"><span class="pre">target_year</span> <span class="pre">==</span> <span class="pre">calibration_year</span></code> and no afforestation it
+is the calibration-year row.</p>
+<ul class="simple">
+<li><p>area_ha = managed forest (FM + AF) in the target year + scenario afforestation;</p></li>
+<li><p>drained N-poor / N-rich hectares = the NID calibration-year hectares (fixed; all new forest is mineral);</p></li>
+<li><p>burnt ha = FM + AF fire in the target year + scenario fire rate x scenario afforestation (cbm_runner plants
+the scenario’s afforestation by its afforestation end year and burns rate x the area planted so far).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict with <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> and every share in <code class="docutils literal notranslate"><span class="pre">ROW_COLUMNS</span></code> (0 for shares that don’t apply to forest).</p>
 </dd>
 </dl>
 </dd></dl>

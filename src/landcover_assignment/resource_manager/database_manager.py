@@ -102,6 +102,30 @@ class DataManager:
 
         return dataframe
 
+    def get_managed_forest_areas(self):
+        """
+        Retrieves cbm_runner 0.6.1's managed forest (FM + AF) area and forest fire by year, 1990-2070 (decision D6a;
+        derived from cbm_runner's disturbance events, aligned with the NID and forest expert judgement).
+
+        Returns:
+            pandas.DataFrame: managed_forest_data in ha, indexed by year.
+        """
+        table = "managed_forest_data"
+        dataframe = pd.read_sql("SELECT * FROM '%s'" % (table), self.engine, index_col=["year"])
+        return self._to_model_units(table, dataframe)
+
+    def get_forest_fire_rate(self):
+        """
+        Retrieves cbm_runner 0.6.1's scenario forest fire rate (per year) and the values it is calculated from
+        (decision D6a).
+
+        Returns:
+            pandas.Series: the one row of forest_fire_rate.
+        """
+        table = "forest_fire_rate"
+        dataframe = pd.read_sql("SELECT * FROM '%s'" % (table), self.engine)
+        return self._to_model_units(table, dataframe).iloc[0]
+
     def get_national_settlement_areas(self):
         """
         Retrieves national settlement area data from the database and converts its areas from kha to ha.

@@ -21,7 +21,7 @@ import build_database  # noqa: E402
 from landcover_assignment.database import DATABASE_FILE, get_database_path  # noqa: E402
 
 DATA_TABLES = ("forest_data", "grassland_data", "cropland_data", "wetland_data", "settlement_data")
-CODE_TABLES = DATA_TABLES + ("NIR", "forest_soil_yield_mapping")
+CODE_TABLES = DATA_TABLES + ("NIR", "forest_soil_yield_mapping", "managed_forest_data", "forest_fire_rate")
 META_TABLES = ("build_info", "sources", "column_metadata", "inventory_values")
 
 

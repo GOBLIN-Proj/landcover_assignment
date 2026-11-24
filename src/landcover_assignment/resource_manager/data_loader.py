@@ -91,6 +91,24 @@ class Loader:
         """
         return self.dataframes.get_national_settlement_areas()
 
+    def managed_forest_areas(self):
+        """
+        Retrieves cbm_runner's managed forest (FM + AF) areas and fire by year, 1990-2070, in ha (decision D6a).
+
+        Returns:
+            pandas.DataFrame: managed_forest_data, indexed by year.
+        """
+        return self.dataframes.get_managed_forest_areas()
+
+    def forest_fire_rate(self):
+        """
+        Retrieves cbm_runner's scenario forest fire rate and its inputs (decision D6a).
+
+        Returns:
+            pandas.Series: forest_fire_rate (one row).
+        """
+        return self.dataframes.get_forest_fire_rate()
+
     def forest_soil_yield_mapping(self):
         """
         Retrieves forest soil yield mapping to soil groups dataset.

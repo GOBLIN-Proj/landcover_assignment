@@ -12,6 +12,7 @@ built it.
 | `inventory_areas.csv` | `tools/extract_inventory.py` | EPA CRT 2026 areas, 1990-2024, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE) |
 | `nid2026_forest_organic_soils.csv` | `tools/transcribe_nid_forest.py` | NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas |
 | `nid2026_grassland_organic_factors.csv` | transcribed | NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor |
+| `cbm_runner_forest.csv`, `cbm_runner_forest_parameters.csv` | `tools/export_cbm_runner_forest.py` | cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below) |
 | `legacy_burnt_area.csv`, `legacy_nir_table.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken |
 
 The database records its own provenance:
@@ -22,7 +23,8 @@ The database records its own provenance:
 - `build_info`: the package version and the SHA-256 of every input file.
 
 The tables the code reads (`forest_data`, `grassland_data`, `cropland_data`, `wetland_data`, `settlement_data`,
-`NIR`, `forest_soil_yield_mapping`) keep their 0.4.0 names and columns.
+`NIR`, `forest_soil_yield_mapping`) keep their 0.4.0 names and columns. Two tables are new in 0.5.0:
+`managed_forest_data` and `forest_fire_rate` (cbm_runner's managed forest and forest fire, decision D6a).
 
 **Units.** Values are stored as published (areas in kha), and `column_metadata` names each column's unit. The readers
 convert on read, column by column, with `landcover_assignment.resource_manager.units` (kha to ha), the one place
@@ -32,16 +34,72 @@ where unit conversions live, as in landcover_lca.
 
 | land use | area | details |
 |---|---|---|
-| forest | CRT 4.A, 798.7 kha | mineral share 0.460 (CRT 4.A mineral); organic share 0.360 = drained N-poor and organo-mineral share 0.122 = drained N-rich (NID 2026 Tables 6.7 + 6.15) |
+| forest | cbm_runner managed forest (FM + AF), 730.1 kha (CRT 4.A: 798.7 kha) | drained N-poor 287.4 kha (share 0.394) and N-rich 97.4 kha (0.133), NID 2026 Tables 6.7 + 6.15; the rest mineral (0.473); burnt 305 ha (cbm_runner FM + AF fire). See below |
 | grassland | CRT 4.C, 4,218.5 kha | the national area for the balance (see [grassland area](grassland_area.md)); drained organic = CRT 4(II).C.1 drained, 136.6 kha (rich 0.4525); rewet status = CRT 4(II).C.1 "Other organic soils", 203.3 kha (rich 0.4471) |
 | cropland | CRT 4.B, 747.7 kha | all mineral (CRT organic: NO) |
 | wetland | CRT 4.D total, 1,212.5 kha | domestic peat 88.3, industrial peat 55.5 (4(II)), rewetted industrial 22.9, rewetted domestic 14.4, near-natural 871.3, unmanaged 108.4 kha |
 | settlement | CRT 4.E, 126.1 kha | organic 2.0 kha |
 
+### Forest area and fire: mirroring cbm_runner (D6a)
+The forest row mirrors cbm_runner 0.6.1, so that landcover_lca and cbm_runner work on the same forest area and the
+same burnt area. cbm_runner's historic forest disturbances are aligned with the NID and forest expert judgement: they
+were prepared by the forest consultant who prepared them for the NID. Every value is **derived** from cbm_runner's
+database (`cbm_runner_database_0.6.2.db`, the file inside the 0.6.1 release) by `tools/export_cbm_runner_forest.py`,
+and the database records it with source `CBM061` and status `derived`.
+
+cbm_runner models managed forest in two streams, the same in every scenario, plus the scenario's own afforestation:
+
+- **FM**, forest present before 1990: 420,417.2 ha at its 2016 baseline, less about 1,000 ha/yr of deforestation;
+- **AF**, forest planted since 1990: the planting record, with baseline planting continuing to 2070;
+- **SC**, the scenario's afforestation, which is what this package's afforestation table gives cbm_runner.
+
+The package's forest row is built the same way:
+
+| | rule |
+|---|---|
+| area | FM + AF in that year (`managed_forest_data.total_ha`); target-year rows add the scenario's afforestation |
+| drained organic | the NID calibration-year hectares (287.4 kha N-poor, 97.4 kha N-rich in 2020), held fixed |
+| mineral | the rest. The open area on organic soil and roads that CBM doesn't model are not emitting (as in the NID), and AF planting after the calibration year is on mineral soil |
+| burnt | FM fire + AF fire in that year (`managed_forest_data.burnt_ha`); target-year rows add rate x the scenario's afforestation |
+
+**The scenario fire rate** is cbm_runner's (`SCDisturbances._calculate_national_fire_rate`): mean annual FM fire
+(9,826 ha over 2017-2070 = 182.0 ha/yr) plus mean annual AF fire (6,872 ha over 2008-2070 = 109.1 ha/yr), divided by
+the FM and AF inventory areas (420,417.2 + 612,488.4 ha): 2.8177e-4 per year (`forest_fire_rate.rate_per_year`).
+cbm_runner plants the scenario's afforestation evenly up to its afforestation end year and each year burns rate x the
+area planted so far, so in the target year it burns rate x all of it.
+
+**Worked example** (national test data, 2050; scenario 0 afforests 1,700,279 ha, scenario 2 nothing):
+
+| | 2020 | 2050, scenario 2 | 2050, scenario 0 |
+|---|---|---|---|
+| FM area | 417,617 | 387,827 | 387,827 |
+| AF area | 312,482 | 483,664 | 483,664 |
+| scenario afforestation | 0 | 0 | 1,700,279 |
+| **forest area** | **730,099** | **871,492** | **2,571,770** |
+| drained N-poor + N-rich | 384,800 | 384,800 | 384,800 |
+| FM + AF fire | 177 + 128 | 169 + 81 | 169 + 81 |
+| scenario fire (2.8177e-4 x afforestation) | 0 | 0 | 479 |
+| **burnt area** | **305** | **250** | **729** |
+
+Before 0.5.0 the forest area was the inventory area held constant (plus the scenario's afforestation), and the burnt
+area was 178 ha in every scenario and year (CRF 4.A.1 only; new forest never burned).
+
+**The transition matrix and the afforestation table do not change.** Between 2020 and 2050 managed forest grows by
+141,393 ha in every scenario (AF baseline planting less FM deforestation). cbm_runner plants and burns that itself, so
+it is not a transition from grassland: `Grassland_to_Forest` is the forest row's change less the managed-forest
+change, which is the scenario's afforestation. Otherwise cbm_runner would plant it a second time. For the same
+reason the target-year land-use table's total is the baseline total plus the managed-forest change.
+
+**Against the inventory (2020).** CRT 4.A is 798,747 ha, 68,648 ha more than CBM's managed forest: the NID open area
+on organic soil (46,810 ha) and roads and other areas that CBM doesn't model. None of it emits, so landcover_lca's
+forest drainage is charged on the same NID hectares as before. CBM's 305 ha burnt compares with CRF 2024 4.A 300 ha.
+The calibration year must be 2017 or later (cbm_runner's FM fire starts in 2017).
+
 ### Forest soils
 The forest area splits into four parts (2020): mineral soil 367.1 kha (0.460), drained N-poor organic 287.4 kha
 (0.360), drained N-rich organo-mineral 97.4 kha (0.122), and open area on organic soil 46.8 kha (0.059). The open
-area is never drained, so nothing emits from it and it is in no share; the forest shares add up to about 0.94.
+area is never drained, so nothing emits from it. These are the inventory's (CRT 4.A) parts; the package's forest row
+uses the NID drained hectares on cbm_runner's managed forest area (above), so its shares are 0.394 / 0.133 / 0.473.
 
 **Interpolated years.** The NID does not print the drained areas for every year:
 
@@ -105,6 +163,6 @@ the industrial rates it would be about 345 kt CO2e a year (2020).
 
 | column | now | decision |
 |---|---|---|
-| `burnt_kha` (every land use) | 0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty | D6: burnt area, averaging window, forest aligned with cbm_runner |
+| `burnt_kha` (grassland, cropland, wetland, settlement; `forest_data.burnt_kha` for the catchment tree) | 0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty | D6b: inventory burnt area, averaging window, national and catchment |
 | `NIR` table | 0.4.0 table (unused by the code) | D8: rebuild from Table4.1 or drop |
 | `forest_soil_yield_mapping` | 0.4.0 table | D9: document its source |

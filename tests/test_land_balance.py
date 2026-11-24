@@ -4,14 +4,28 @@ table agree with each other.
 These checks were moved from the old land_balance_test.py, geo_integrations/geo_test_land_balance.py and
 areas_validation.py, and now run on every input set. The old files skipped scenario 0 (`if sc > 0`); here every
 scenario is checked.
+
+National tree (D6a): the forest row mirrors cbm_runner's managed forest (FM + AF), which changes between the
+calibration and target years in every scenario (AF baseline planting less FM deforestation, +141,392.8 ha by 2050).
+That change is not a transition from grassland, so the target-year total is the baseline total plus the managed-forest
+change, and the forest row is baseline + Grassland_to_Forest + that change. The catchment tree has no such change.
 """
 import unittest
 
 import pandas as pd
 
-from _helpers import CAL, CASES, TARGET, run_case
+from _helpers import CAL, CASES, ROOT, TARGET, run_case
 
 TREE = {name: tree for name, (tree, _) in CASES.items()}
+CBM = pd.read_csv(ROOT / "data_sources/cbm_runner_forest.csv").set_index("year")
+
+
+def managed_forest_change(case):
+    """D6a: cbm_runner managed forest (FM + AF), target year minus calibration year; 0 in the catchment tree."""
+    if TREE[case] != "national":
+        return 0.0
+    managed = CBM.fm_area_ha + CBM.af_area_ha
+    return float(managed[TARGET] - managed[CAL])
 
 
 def grassland_input(case, year, sc):
@@ -39,7 +53,8 @@ class LandBalance(unittest.TestCase):
             base = lu[lu.farm_id == -CAL].area_ha.sum()
             for sc in self.scenarios(case):
                 with self.subTest(case=case, scenario=sc):
-                    self.assertAlmostEqual(lu[lu.farm_id == sc].area_ha.sum(), base, delta=1e-3)
+                    self.assertAlmostEqual(lu[lu.farm_id == sc].area_ha.sum(), base + managed_forest_change(case),
+                                           delta=1e-3)
 
     def test_each_land_use_balances_with_the_matrix(self):
         """Future area = baseline area + Grassland_to_<use>; grassland loses |Grassland_to_Grassland|."""
@@ -53,8 +68,9 @@ class LandBalance(unittest.TestCase):
                                            area(lu, -CAL, "grassland"), delta=1e-3)
                     for use in uses:
                         col = f"Grassland_to_{use.title()}"
-                        self.assertAlmostEqual(area(lu, -CAL, use) + tm.loc[sc, col], area(lu, sc, use), delta=1e-3,
-                                               msg=f"{use}")
+                        managed = managed_forest_change(case) if use == "forest" else 0.0
+                        self.assertAlmostEqual(area(lu, -CAL, use) + tm.loc[sc, col] + managed, area(lu, sc, use),
+                                               delta=1e-3, msg=f"{use}")
 
     def test_spared_area_log_accounts_for_all_spared_land(self):
         """Logged spared area + remaining grassland input = baseline grassland input."""

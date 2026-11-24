@@ -199,7 +199,8 @@ Initializes the structure of the transition matrix based on land use columns and
 <p>Only the <code class="docutils literal notranslate"><span class="pre">Grassland_to_&lt;land</span> <span class="pre">use&gt;</span></code> cells are filled. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Grassland</span></code> is the (negative) change in
 the grassland row, which is the spared mineral area. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is 0 by design: rewetted spared
 grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
-rewetted area is reported in the spared-area log as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>.</p>
+rewetted area is reported in the spared-area log as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Forest</span></code> is the
+scenario’s afforestation: the forest row’s change less the change in cbm_runner managed forest (decision D6a).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame representing the transition matrix with changes in land use areas.</p>
@@ -213,7 +214,8 @@ rewetted area is reported in the spared-area log as <code class="docutils litera
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.transition_matrix.TransitionMatrix._transition_difference">
 <span class="sig-name descname"><span class="pre">_transition_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_cover_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.transition_matrix.TransitionMatrix._transition_difference" title="Link to this definition"></a></dt>
-<dd><p>Calculates the difference in area for a specific land use between the calibration and target years.</p>
+<dd><p>Calculates the difference in area for a specific land use between the calibration and target years.
+For forest, the change in cbm_runner managed forest between the two years is taken out (decision D6a).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

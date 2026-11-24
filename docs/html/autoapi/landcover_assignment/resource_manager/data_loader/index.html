@@ -225,6 +225,34 @@ forest_soil_yield_mapping(): Retrieves forest soil yield mapping to soil groups 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.managed_forest_areas">
+<span class="sig-name descname"><span class="pre">managed_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.managed_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner’s managed forest (FM + AF) areas and fire by year, 1990-2070, in ha (decision D6a).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>managed_forest_data, indexed by year.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.forest_fire_rate">
+<span class="sig-name descname"><span class="pre">forest_fire_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.forest_fire_rate" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner’s scenario forest fire rate and its inputs (decision D6a).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>forest_fire_rate (one row).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping">
 <span class="sig-name descname"><span class="pre">forest_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.forest_soil_yield_mapping" title="Link to this definition"></a></dt>
 <dd><p>Retrieves forest soil yield mapping to soil groups dataset.</p>

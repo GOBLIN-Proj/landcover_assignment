@@ -105,6 +105,24 @@ Module Contents
 
 
 
+   .. py:method:: managed_forest_areas()
+
+      Retrieves cbm_runner's managed forest (FM + AF) areas and fire by year, 1990-2070, in ha (decision D6a).
+
+      :returns: managed_forest_data, indexed by year.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: forest_fire_rate()
+
+      Retrieves cbm_runner's scenario forest fire rate and its inputs (decision D6a).
+
+      :returns: forest_fire_rate (one row).
+      :rtype: pandas.Series
+
+
+
    .. py:method:: forest_soil_yield_mapping()
 
       Retrieves forest soil yield mapping to soil groups dataset.

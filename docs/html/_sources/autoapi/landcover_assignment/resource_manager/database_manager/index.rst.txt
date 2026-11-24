@@ -90,6 +90,26 @@ Module Contents
 
 
 
+   .. py:method:: get_managed_forest_areas()
+
+      Retrieves cbm_runner 0.6.1's managed forest (FM + AF) area and forest fire by year, 1990-2070 (decision D6a;
+      derived from cbm_runner's disturbance events, aligned with the NID and forest expert judgement).
+
+      :returns: managed_forest_data in ha, indexed by year.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_forest_fire_rate()
+
+      Retrieves cbm_runner 0.6.1's scenario forest fire rate (per year) and the values it is calculated from
+      (decision D6a).
+
+      :returns: the one row of forest_fire_rate.
+      :rtype: pandas.Series
+
+
+
    .. py:method:: get_national_settlement_areas()
 
       Retrieves national settlement area data from the database and converts its areas from kha to ha.

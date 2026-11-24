@@ -545,7 +545,7 @@ class LandCover:
         # Step 4: Distribute spared area based on optimised allocations
         for land_use, allocated_area in optimised_allocations.items():
             generated_land_use_data = self.land_dist_class.land_distribution(
-                year, land_use, allocated_area
+                year, land_use, allocated_area, target_year=self.data_manager_class.target_year
             )
 
             self._log_spared_area(scenario, land_use, allocated_area, 0)

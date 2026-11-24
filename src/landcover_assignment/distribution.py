@@ -83,7 +83,7 @@ class LandDistribution:
         self.sc_fetcher_class = ScenarioDataFetcher(scenario_data, validate_on_init=True)
 
 
-    def land_distribution(self, year, land_use, new_area):
+    def land_distribution(self, year, land_use, new_area, target_year=None):
         """
         Calculates and updates the land distribution based on land use type and area change.
 
@@ -95,6 +95,10 @@ class LandDistribution:
             The type of land use to calculate distribution for.
         new_area : float
             The area change to be applied to the land use type.
+        target_year : int, optional
+            The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
+            target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
+            fire. Without it, forest is the calibration-year row plus ``new_area`` as before.
 
         Returns
         -------
@@ -103,6 +107,12 @@ class LandDistribution:
         """
         if land_use == "grassland":
             return None
+
+        if land_use == "forest" and target_year is not None:
+            # Decision D6a: managed forest (cbm_runner FM + AF) in the target year + the scenario's afforestation;
+            # NID drained hectares fixed; cbm_runner's fire. See NationalLandCover.get_forest_target_row.
+            row = self.national_class.get_forest_target_row(year, target_year, new_area or 0)
+            return {key: row.get(key, 0) for key in self.data_manager_class.get_land_distribution_keys()}
 
         land = {key: 0 for key in self.data_manager_class.get_land_distribution_keys()}
 

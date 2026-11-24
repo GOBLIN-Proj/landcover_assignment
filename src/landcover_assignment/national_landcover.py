@@ -4,11 +4,21 @@ National Land Cover
 National areas and soil, peat and burnt shares for each land use, read from the package database (via ``Loader``).
 
 Each land use's calibration-year row is its area plus 17 share columns. Every share is one database column divided by
-the land use's total area (``total_kha``), applied to the land uses in ``SHARE_SOURCES`` and 0 for the rest. Forest has
-one special case: its organic share is the drained N-poor organic area (``organic_emitting_kha``), and its
-organo-mineral share the drained N-rich area (NID 2026 Tables 6.7 + 6.15). Its mineral share is the CRT mineral area
-(0.46 in 2020). The undrained open area on organic soil (0.06) is in no share, so forest shares sum to about 0.94
-(decision D3).
+the land use's total area (``total_kha``), applied to the land uses in ``SHARE_SOURCES`` and 0 for the rest.
+
+Forest is different (decision D6a): it mirrors cbm_runner 0.6.1, whose historic forest is aligned with the NID and
+forest expert judgement (package database ``managed_forest_data`` and ``forest_fire_rate``, derived from cbm_runner's
+disturbance events):
+
+- area = cbm_runner managed forest, FM (present before 1990) + AF (planted since 1990), in that year;
+- ``share_organic`` / ``share_organic_mineral`` = the NID 2026 drained N-poor / N-rich hectares of the calibration year
+  (Tables 6.7 + 6.15, decision D3) / area. The open area and roads that CBM doesn't model are not emitting (as in the
+  NID), and AF planting after the calibration year is on mineral soil, so the drained hectares stay fixed and
+  ``share_mineral`` is the rest;
+- ``share_burnt`` = cbm_runner FM + AF fire in that year / area.
+
+Target-year forest rows (:meth:`NationalLandCover.get_forest_target_row`) add the scenario's afforestation to the
+area, and cbm_runner's scenario fire on it (rate x afforestation) to the burnt area.
 
 The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
 (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
@@ -69,6 +79,8 @@ class NationalLandCover:
     def __init__(self):
         self.loader = Loader()
         self.national_areas_cache = {}
+        self._managed_forest = None
+        self._forest_fire_rate = None
         self.methods = {
             "forest": self.get_forest_data,
             "wetland": self.get_peat_data,
@@ -110,8 +122,8 @@ class NationalLandCover:
             raise ValueError(f"Unknown land use type: {landuse}")
         if landuse not in uses:
             return 0.0
-        if landuse == "forest" and share == "share_organic":
-            column = "organic_emitting_kha"
+        if landuse == "forest":
+            return self._forest_share(share, year, year)
         data = self._get_cached_data(landuse)
         return data.loc[year, column].item() / data.loc[year, "total_kha"].item()
 
@@ -123,12 +135,73 @@ class NationalLandCover:
         """
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
+        if landuse == "forest":
+            return self.get_managed_forest_area(year)
         data = self._get_cached_data(landuse)
         if year not in data.index:
             raise ValueError(f"Year {year} not found for land use type {landuse}")
         if "total_kha" not in data.columns:
             raise ValueError(f"'total_kha' column missing for land use type {landuse}")
         return data.loc[year, "total_kha"].item()
+
+    # --------------------------------------------------------------------------- forest: cbm_runner mirror (D6a)
+    def _managed(self, year, column):
+        if self._managed_forest is None:
+            self._managed_forest = self.loader.managed_forest_areas()
+        if year not in self._managed_forest.index or pd.isna(self._managed_forest.loc[year, column]):
+            raise ValueError(f"No cbm_runner managed forest {column} for {year} (FM area from 2016, FM fire from 2017)")
+        return self._managed_forest.loc[year, column].item()
+
+    def get_managed_forest_area(self, year):
+        """cbm_runner managed forest area (ha), FM + AF, in a year (2016-2070). Decision D6a."""
+        return self._managed(year, "total_ha")
+
+    def get_managed_forest_burnt_area(self, year):
+        """cbm_runner FM + AF forest fire (ha) in a year (2017-2070). Decision D6a."""
+        return self._managed(year, "burnt_ha")
+
+    def get_managed_forest_change(self, calibration_year, target_year):
+        """Change in cbm_runner managed forest (ha) between two years: AF baseline planting less FM deforestation. It is
+        in every scenario's forest row, and it is not a transition from grassland."""
+        return self.get_managed_forest_area(target_year) - self.get_managed_forest_area(calibration_year)
+
+    def get_forest_fire_rate(self):
+        """cbm_runner's scenario forest fire rate (burnt ha per ha of scenario afforestation per year):
+        (mean annual FM fire + mean annual AF fire) / (FM + AF inventory area). Decision D6a."""
+        if self._forest_fire_rate is None:
+            self._forest_fire_rate = self.loader.forest_fire_rate()["rate_per_year"].item()
+        return self._forest_fire_rate
+
+    def _forest_drained_ha(self, calibration_year):
+        """NID 2026 drained N-poor and N-rich forest hectares in the calibration year (decision D3)."""
+        data = self._get_cached_data("forest")
+        return (data.loc[calibration_year, "organic_emitting_kha"].item(),
+                data.loc[calibration_year, "organo_mineral_emitting_kha"].item())
+
+    def _forest_share(self, share, calibration_year, year, scenario_afforestation=0.0):
+        """A forest share for ``year`` (the calibration year, or a target year with the scenario's afforestation)."""
+        return self.get_forest_target_row(calibration_year, year, scenario_afforestation)[share]
+
+    def get_forest_target_row(self, calibration_year, target_year, scenario_afforestation):
+        """
+        The national forest row in ``target_year`` for a scenario that afforests ``scenario_afforestation`` ha
+        (decision D6a, mirroring cbm_runner 0.6.1). With ``target_year == calibration_year`` and no afforestation it
+        is the calibration-year row.
+
+        - area_ha = managed forest (FM + AF) in the target year + scenario afforestation;
+        - drained N-poor / N-rich hectares = the NID calibration-year hectares (fixed; all new forest is mineral);
+        - burnt ha = FM + AF fire in the target year + scenario fire rate x scenario afforestation (cbm_runner plants
+          the scenario's afforestation by its afforestation end year and burns rate x the area planted so far).
+
+        :return: dict with ``area_ha`` and every share in ``ROW_COLUMNS`` (0 for shares that don't apply to forest).
+        """
+        area = self.get_managed_forest_area(target_year) + scenario_afforestation
+        poor, rich = self._forest_drained_ha(calibration_year)
+        burnt = self.get_managed_forest_burnt_area(target_year) + self.get_forest_fire_rate() * scenario_afforestation
+        row = {column: 0.0 for column in ROW_COLUMNS}
+        row.update(area_ha=area, share_organic=poor / area, share_organic_mineral=rich / area,
+                   share_mineral=1.0 - (poor + rich) / area, share_burnt=burnt / area)
+        return row
 
     def get_national_burnt_average(self, landuse):
         """Burnt area as a share of the land use's area, over all years in the database that have a burnt area."""

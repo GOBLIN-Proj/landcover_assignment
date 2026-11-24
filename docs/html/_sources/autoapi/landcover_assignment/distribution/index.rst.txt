@@ -97,7 +97,7 @@ Module Contents
    .. py:attribute:: sc_fetcher_class
 
 
-   .. py:method:: land_distribution(year, land_use, new_area)
+   .. py:method:: land_distribution(year, land_use, new_area, target_year=None)
 
       Calculates and updates the land distribution based on land use type and area change.
 
@@ -107,6 +107,10 @@ Module Contents
       :type land_use: str
       :param new_area: The area change to be applied to the land use type.
       :type new_area: float
+      :param target_year: The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
+                          target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
+                          fire. Without it, forest is the calibration-year row plus ``new_area`` as before.
+      :type target_year: int, optional
 
       :returns: A dictionary containing updated land distribution details.
       :rtype: dict

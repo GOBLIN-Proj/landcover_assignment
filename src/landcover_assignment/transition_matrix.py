@@ -95,7 +95,8 @@ class TransitionMatrix:
         Only the ``Grassland_to_<land use>`` cells are filled. ``Grassland_to_Grassland`` is the (negative) change in
         the grassland row, which is the spared mineral area. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
         grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
-        rewetted area is reported in the spared-area log as ``rewet_grassland``.
+        rewetted area is reported in the spared-area log as ``rewet_grassland``. ``Grassland_to_Forest`` is the
+        scenario's afforestation: the forest row's change less the change in cbm_runner managed forest (decision D6a).
 
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
@@ -125,6 +126,7 @@ class TransitionMatrix:
     def _transition_difference(self, landuse, index, calibration_year, target_year, land_cover_df):
         """
         Calculates the difference in area for a specific land use between the calibration and target years.
+        For forest, the change in cbm_runner managed forest between the two years is taken out (decision D6a).
 
         :param landuse: Specific land use type.
         :type landuse: str
@@ -152,6 +154,13 @@ class TransitionMatrix:
                 "area_ha",
             ].item()
         )
+        if landuse == "forest":
+            # Decision D6a: the forest row includes cbm_runner's managed forest (FM + AF), which changes between the two
+            # years in every scenario (AF baseline planting less FM deforestation). cbm_runner plants and burns that
+            # itself, so it is not a transition from grassland: Grassland_to_Forest (and the afforestation table built
+            # from it) stays the scenario's afforestation.
+            transition_diff += self.land_cover_class.national_class.get_managed_forest_change(calibration_year,
+                                                                                           target_year)
         return transition_diff
 
     def _create_transition_frame(self, land_cover_df):

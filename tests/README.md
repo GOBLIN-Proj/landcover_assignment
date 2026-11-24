@@ -23,6 +23,7 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_optimisation.py` | The spared mineral-area allocation (Pyomo with HiGHS). |
 | `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Grassland (herd + balance) is checked in hectares and shares. Each known gap names its cause (D1-D10). |
 | `test_inventory_coverage.py` | The package database against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
+| `test_forest_cbm.py` | D6a: the national forest row mirrors cbm_runner 0.6.1 (managed forest area FM + AF, NID drained hectares, FM + AF fire plus the scenario fire rate), the rate matches cbm_runner's formula (and its database, when checked out next to this repo), and `Grassland_to_Forest` stays the scenario's afforestation. |
 | `test_database_build.py` | The package database is what `tools/build_database.py` builds from `data_sources/` (same rows; two builds byte-identical); every column has unit, source and decision in `column_metadata`; the D-decisions taken are in the data, and the D4 grassland rich/poor split reproduces the CRT organic soil carbon in every year. |
 | `test_grassland_balance.py` | Dossier LA2: grassland row = herd grassland + national balance (calibration year). The balance is constant in every scenario and never spared. `get_grassland_area_breakdown()` adds up. Edge cases: other calibration years, a negative balance, a year missing from the database. |
 | `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
@@ -42,4 +43,5 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 Changes since then, each made by an approved dossier in the same commit:
 - **LA2, grassland balance:** the grassland rows of `national_landuse.csv` and `goblin_lite_landuse.csv` (each grassland sub-area + the balance). The geo files and all other tables are unchanged.
 - **Step 6a, database rebuilt from CRT 2026:** `national_` and `goblin_lite_` `landuse`, `transition_matrix` and `spared_area_log`, and `geo_landuse` (`share_burnt`).
+- **D6a, forest mirrors cbm_runner:** the forest rows of `national_landuse.csv` and `goblin_lite_landuse.csv` (area, shares). Transition matrix, afforestation, spared-area log and geo files unchanged.
 - **D4, grassland rich/poor split:** the grassland rows of `national_landuse.csv` and `goblin_lite_landuse.csv` (the four organic shares). The spared-area log moved by float noise only (1.5e-11 ha) and was kept.
