@@ -21,7 +21,11 @@ The database records its own provenance:
 - `build_info`: the package version and the SHA-256 of every input file.
 
 The tables the code reads (`forest_data`, `grassland_data`, `cropland_data`, `wetland_data`, `settlement_data`,
-`NIR`, `forest_soil_yield_mapping`) keep their 0.4.0 names and columns. Areas are in kha.
+`NIR`, `forest_soil_yield_mapping`) keep their 0.4.0 names and columns.
+
+**Units.** Values are stored as published (areas in kha), and `column_metadata` names each column's unit. The readers
+convert on read, column by column, with `landcover_assignment.resource_manager.units` (kha to ha), the one place
+where unit conversions live, as in landcover_lca.
 
 ## What each land use takes from the inventory (2020 values)
 

@@ -34,11 +34,13 @@ from pathlib import Path
 
 import pandas as pd
 
+from landcover_assignment.resource_manager.units import KHA_TO_HA
+
 ROOT = Path(__file__).resolve().parents[1]
 inv = pd.read_csv(ROOT / "data_sources/inventory_areas.csv")
 nid = pd.read_csv(ROOT / "data_sources/nid2026_forest_organic_soils.csv")
 
-KHA = 1000.0   # kha -> ha
+KHA = KHA_TO_HA   # kha -> ha (landcover_assignment.resource_manager.units)
 HA = 1.0
 
 # (land_use, quantity): (inventory quantity, factor to ha)

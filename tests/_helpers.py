@@ -62,7 +62,8 @@ def national_grassland_area(year):
     from landcover_assignment.database import get_database_path
     con = sqlite3.connect(get_database_path())
     (kha,) = con.execute("select total_kha from grassland_data where year = ?", (year,)).fetchone()
-    return kha * 1000
+    from landcover_assignment.resource_manager.units import to_model_units
+    return to_model_units(kha, "kha")
 
 
 CASES = {"national": ("national", load_national), "geo": ("geo", load_geo),

@@ -12,18 +12,19 @@ Attributes:
 
 Methods:
     data_engine_creator(): Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
-    get_national_inventory_areas(): Retrieves national inventory area data from the database and scales the values by 1000.
-    get_national_forest_areas(): Retrieves national forest area data from the database and scales the values by 1000.
-    get_national_settlement_areas(): Retrieves national settlement area data from the database and scales the values by 1000.
-    get_national_grassland_areas(): Retrieves national grassland area data from the database and scales the values by 1000.
-    get_national_cropland_areas(): Retrieves national cropland area data from the database and scales the values by 1000.
-    get_national_wetland_areas(): Retrieves national wetland area data from the database and scales the values by 1000.
+    get_national_inventory_areas(): Retrieves national inventory area data from the database and converts its areas from kha to ha.
+    get_national_forest_areas(): Retrieves national forest area data from the database and converts its areas from kha to ha.
+    get_national_settlement_areas(): Retrieves national settlement area data from the database and converts its areas from kha to ha.
+    get_national_grassland_areas(): Retrieves national grassland area data from the database and converts its areas from kha to ha.
+    get_national_cropland_areas(): Retrieves national cropland area data from the database and converts its areas from kha to ha.
+    get_national_wetland_areas(): Retrieves national wetland area data from the database and converts its areas from kha to ha.
     get_soil_yield_mapping(): Retrieves forest soil yield mapping data from the database without scaling.
 """
 
 import sqlalchemy as sqa
 import pandas as pd
 from landcover_assignment.database import get_database_path, get_local_dir
+from landcover_assignment.resource_manager import units
 import os
 from landcover_assignment._deprecation import renamed_method
 
@@ -50,9 +51,24 @@ class DataManager:
 
     data_engine_creater = renamed_method("data_engine_creator", "data_engine_creater")  # DEPRECATED_NAME
 
+    def _to_model_units(self, table, dataframe):
+        """
+        Converts each column of ``dataframe`` from the unit recorded for it in the database's ``column_metadata``
+        table to the model unit (areas: kha to ha), using :mod:`landcover_assignment.resource_manager.units`.
+        Keys and labels (units ``year``, ``label``, ``group``) are left as they are.
+        """
+        if not hasattr(self, "_column_units"):
+            meta = pd.read_sql("SELECT table_name, column_name, unit FROM column_metadata", self.engine)
+            self._column_units = {(t, c): u for t, c, u in meta.itertuples(index=False, name=None)}
+        for column in dataframe.columns:
+            unit = self._column_units[(table, column)]
+            if unit not in units.NOT_CONVERTED:
+                dataframe[column] = units.to_model_units(dataframe[column], unit, f"{table}.{column}")
+        return dataframe
+
     def get_national_inventory_areas(self):
         """
-        Retrieves national inventory area data from the database and scales the values by 1000.
+        Retrieves national inventory area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national inventory area data with the area values scaled.
@@ -64,14 +80,13 @@ class DataManager:
             index_col=["Year"],
         )
 
-        # Scale the values by 1000
-        dataframe["Area_kha"] *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 
     def get_national_forest_areas(self):
         """
-        Retrieves national forest area data from the database and scales the values by 1000.
+        Retrieves national forest area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national forest area data with the area values scaled.
@@ -83,14 +98,13 @@ class DataManager:
             index_col=["year"],
         )
 
-        # Scale the values by 1000
-        dataframe *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 
     def get_national_settlement_areas(self):
         """
-        Retrieves national settlement area data from the database and scales the values by 1000.
+        Retrieves national settlement area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national settlement area data with the area values scaled.
@@ -102,14 +116,13 @@ class DataManager:
             index_col=["year"],
         )
 
-        # Scale the values by 1000
-        dataframe *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 
     def get_national_grassland_areas(self):
         """
-        Retrieves national grassland area data from the database and scales the values by 1000.
+        Retrieves national grassland area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national grassland area data with the area values scaled.
@@ -121,14 +134,13 @@ class DataManager:
             index_col=["year"],
         )
 
-        # Scale the values by 1000
-        dataframe *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 
     def get_national_cropland_areas(self):
         """
-        Retrieves national cropland area data from the database and scales the values by 1000.
+        Retrieves national cropland area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national cropland area data with the area values scaled.
@@ -140,14 +152,13 @@ class DataManager:
             index_col=["year"],
         )
 
-        # Scale the values by 1000
-        dataframe *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 
     def get_national_wetland_areas(self):
         """
-        Retrieves national wetland area data from the database and scales the values by 1000.
+        Retrieves national wetland area data from the database and converts its areas from kha to ha.
 
         Returns:
             pandas.DataFrame: A DataFrame containing national wetland area data with the area values scaled.
@@ -159,8 +170,7 @@ class DataManager:
             index_col=["year"],
         )
 
-        # Scale the values by 1000
-        dataframe *= 1000
+        dataframe = self._to_model_units(table, dataframe)
 
         return dataframe
 

@@ -21,6 +21,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from landcover_assignment.resource_manager.units import KHA_TO_HA
+
 ROOT = Path(__file__).resolve().parents[1]
 LEGACY_COMMIT = "25a83b4"
 LEGACY_DB = "src/landcover_assignment/database/land_use_database.db"
@@ -48,7 +50,7 @@ def total(*fns):
     return f
 
 
-KHA_FROM_HA = 1 / 1000
+KHA_FROM_HA = 1 / KHA_TO_HA
 # table.column: (inventory candidate, candidate description, how the DB value was made, status, decision)
 MAP = {
     "forest_data.total_kha": (crt("4.A.area"), "CRT Table4.A row 10 col D (4.A total)", "script, CRF Table4.A", "refresh", ""),

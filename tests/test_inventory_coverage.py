@@ -33,7 +33,9 @@ def nid_sum(column):
     return lambda y: d[y]
 
 
-HA_TO_KHA = 1 / 1000
+from landcover_assignment.resource_manager.units import KHA_TO_HA  # noqa: E402
+
+HA_TO_KHA = 1 / KHA_TO_HA
 # (database expression, inventory value, gap: the decision that resolves it, or None if the column should already agree)
 CHECKS = {
     "forest_total": ("forest_data.total_kha", crt("4.A.area"), None),
