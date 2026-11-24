@@ -26,6 +26,7 @@ Attributes
 .. autoapisummary::
 
    landcover_assignment.resource_manager.units.KHA_TO_HA
+   landcover_assignment.resource_manager.units.CH4_C_TO_CH4
    landcover_assignment.resource_manager.units.UNITS
    landcover_assignment.resource_manager.units.NOT_CONVERTED
 
@@ -44,6 +45,10 @@ Module Contents
 
 .. py:data:: KHA_TO_HA
    :value: 1000.0
+
+
+.. py:data:: CH4_C_TO_CH4
+   :value: 1.3333333333333333
 
 
 .. py:data:: UNITS

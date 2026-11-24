@@ -20,13 +20,17 @@ Decided (owner, 2026-11-23/24):
 - D3: forest total and mineral area = CRT 4.A; drained N-poor (`organic_emitting_kha`) and N-rich
   (`organo_mineral_emitting_kha`) = NID 2026 Tables 6.7 + 6.15, 4.A.1 + 4.A.2. Years the NID does not print are
   interpolated linearly per category. The forest mineral share is mineral / total (0.46 in 2020).
+- D4: the grassland nutrient-rich / nutrient-poor split, by year, for the drained and the rewet-status rows: rich
+  fraction = (CRT 4(II).C.1 CH4 implied factor - EF poor) / (EF rich - EF poor), with the NID 2026 s.6.5.2 factors in
+  data_sources/nid2026_grassland_organic_factors.csv (rewet-status factors converted from kg CH4-C to kg CH4). 2020:
+  drained 0.4525, rewet status 0.4471 (0.45 before). The split reproduces CRT Table4.C 4.C.1 organic soil carbon in
+  every year (tests/test_database_build.py).
 - D5: our grassland rewet-status columns keep their names and meaning (NID s.6.5.2) and are filled from CRT 4(II).C.1
   "Other organic soils" (CRT 2026 reports "Rewetted organic soils" as NO).
 - D7: cropland and settlement from CRT 4.B and 4.E. A notation key (NO) is stored as 0 in the data tables and kept in
   `inventory_values`.
 
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
-- D4: the grassland rich/poor split, 0.45/0.55 of the CRT drained and rewet-status areas;
 - D6: burnt area (`burnt_kha`), 1990-2022; 2023-2024 empty (NULL);
 - D8: the `NIR` table (unused by the code);
 - D9: `forest_soil_yield_mapping`.
@@ -41,20 +45,24 @@ from pathlib import Path
 
 import pandas as pd
 
+from landcover_assignment.resource_manager.units import CH4_C_TO_CH4
+
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = "0.5.0"
 OUTPUT = ROOT / f"src/landcover_assignment/database/land_use_database_{VERSION}.db"
 YEARS = list(range(1990, 2025))
 INPUTS = ("data_sources/inventory_areas.csv", "data_sources/nid2026_forest_organic_soils.csv",
           "data_sources/legacy_burnt_area.csv", "data_sources/legacy_nir_table.csv",
-          "data_sources/forest_soil_yield_mapping.csv", "tools/build_database.py")
-GRASSLAND_RICH = 0.45      # D4 pending: share of drained and rewet-status grassland organic soil that is nutrient rich
+          "data_sources/forest_soil_yield_mapping.csv", "data_sources/nid2026_grassland_organic_factors.csv",
+          "tools/build_database.py")
 
 SOURCES = [
     ("CRT2026", "EPA Ireland, Common Reporting Tables 2026 (IRL-CRT-2026-V1.0, one workbook per year, 1990-2024), "
                 "extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv"),
     ("NID2026", "EPA Ireland, National Inventory Document 2026, Table 6.7 p.217 (4.A.1) and Table 6.15 p.231 (4.A.2), "
-                "transcribed by tools/transcribe_nid_forest.py into data_sources/nid2026_forest_organic_soils.csv"),
+                "transcribed by tools/transcribe_nid_forest.py into data_sources/nid2026_forest_organic_soils.csv; "
+                "s.6.5.2 p.271-272 grassland organic soil emission factors, transcribed into "
+                "data_sources/nid2026_grassland_organic_factors.csv"),
     ("LEGACY040", "landcover_assignment 0.4.0 database land_use_database.db (CRF 2024 vintage, git 25a83b4), "
                   "exported by tools/export_legacy_columns.py into data_sources/legacy_*.csv and "
                   "forest_soil_yield_mapping.csv"),
@@ -63,7 +71,7 @@ SOURCES = [
 
 # Column recipes. Each entry: column -> (kind, argument, unit, description, decision)
 #   crt: CRT quantity in data_sources/inventory_areas.csv (notation key -> 0)
-#   crt_share: (CRT quantity, factor)
+#   crt_rich: (CRT 4(II).C.1 row, "rich" or "poor"): the row's area x its rich (or poor) fraction (D4)
 #   nid: NID column, 4.A.1 + 4.A.2, interpolated between printed years
 #   legacy_burnt: data_sources/legacy_burnt_area.csv
 REFRESH = "refresh: CRF 2024 -> CRT 2026"
@@ -86,18 +94,16 @@ TABLES = {
                       "plus the balance to this, docs/grassland_area.md)", REFRESH),
         "mineral_kha": ("crt", "4.C.mineral_area", "kha", "grassland on mineral soil", REFRESH),
         "organic_kha": ("crt", "4.C.organic_area", "kha", "grassland on organic soil", REFRESH),
-        "drained_rich_organic_kha": ("crt_share", ("4(II).C.1.drained.area", GRASSLAND_RICH), "kha",
-                                     "drained nutrient-rich organic grassland soil",
-                                     "pending D4: rich share 0.45 of CRT 4(II).C.1 drained"),
-        "drained_poor_organic_kha": ("crt_share", ("4(II).C.1.drained.area", 1 - GRASSLAND_RICH), "kha",
-                                     "drained nutrient-poor organic grassland soil",
-                                     "pending D4: poor share 0.55 of CRT 4(II).C.1 drained"),
-        "rewetted_rich_organic_kha": ("crt_share", ("4(II).C.1.other.area", GRASSLAND_RICH), "kha",
+        "drained_rich_organic_kha": ("crt_rich", ("drained", "rich"), "kha",
+                                     "drained nutrient-rich organic grassland soil", "D4"),
+        "drained_poor_organic_kha": ("crt_rich", ("drained", "poor"), "kha",
+                                     "drained nutrient-poor organic grassland soil", "D4"),
+        "rewetted_rich_organic_kha": ("crt_rich", ("other", "rich"), "kha",
                                       "nutrient-rich organic grassland soil with rewet status (NID s.6.5.2; CRT 2026 "
-                                      "'Other organic soils')", "D5; pending D4: rich share 0.45"),
-        "rewetted_poor_organic_kha": ("crt_share", ("4(II).C.1.other.area", 1 - GRASSLAND_RICH), "kha",
+                                      "'Other organic soils')", "D5, D4"),
+        "rewetted_poor_organic_kha": ("crt_rich", ("other", "poor"), "kha",
                                       "nutrient-poor organic grassland soil with rewet status (NID s.6.5.2; CRT 2026 "
-                                      "'Other organic soils')", "D5; pending D4: poor share 0.55"),
+                                      "'Other organic soils')", "D5, D4"),
         "burnt_kha": ("legacy_burnt", "grassland_data", "kha", "burnt grassland area", D6),
     },
     "cropland_data": {
@@ -200,10 +206,32 @@ def nid_series(nid, column):
     return total
 
 
+def grassland_rich_fraction(inventory, factors, row):
+    """D4: nutrient-rich fraction of CRT 4(II).C.1 `row` ("drained" or "other", i.e. rewet status), by year.
+
+    The CRT CH4 implied factor of the row is the area-weighted mix of the NID rich and poor factors, so
+        rich fraction = (implied factor - EF poor) / (EF rich - EF poor).
+    Drained: EF = (1 - Frac_ditch) x EF_land + Frac_ditch x EF_ditch (NID s.6.5.2 p.271). Rewet status: the NID factors
+    are in kg CH4-C, converted to kg CH4 like the CRT (p.272)."""
+    if row == "drained":
+        ditch = factors["frac_ditch"] * factors["ef_ch4_drained_ditch"]
+        poor = (1 - factors["frac_ditch"]) * factors["ef_ch4_drained_land_poor"] + ditch
+        rich = (1 - factors["frac_ditch"]) * factors["ef_ch4_drained_land_rich"] + ditch
+    else:
+        poor = factors["ef_ch4_rewet_status_poor"] * CH4_C_TO_CH4
+        rich = factors["ef_ch4_rewet_status_rich"] * CH4_C_TO_CH4
+    fraction = (crt_series(inventory, f"4(II).C.1.{row}.ief_ch4") - poor) / (rich - poor)
+    if ((fraction < 0) | (fraction > 1)).any():
+        raise ValueError(f"4(II).C.1.{row}: rich fraction outside 0-1")
+    return fraction, poor, rich
+
+
 def build_tables():
     inventory = read_csv("data_sources/inventory_areas.csv")
     nid = read_csv("data_sources/nid2026_forest_organic_soils.csv")
     burnt = read_csv("data_sources/legacy_burnt_area.csv")
+    f = read_csv("data_sources/nid2026_grassland_organic_factors.csv")
+    factors = dict(zip(f.name, f.value))
     tables, metadata = {}, []
     for table, columns in TABLES.items():
         data = {"year": YEARS}
@@ -213,11 +241,18 @@ def build_tables():
                 values = crt_series(inventory, arg)
                 source, reference, transformation, status = "CRT2026", crt_reference(inventory, arg), \
                     "kha as reported; notation key -> 0", "inventory"
-            elif kind == "crt_share":
-                quantity, factor = arg
-                values = crt_series(inventory, quantity) * factor
-                source, reference, transformation, status = "CRT2026", crt_reference(inventory, quantity), \
-                    f"x {factor:.2f}", "derived"
+            elif kind == "crt_rich":
+                row, part = arg
+                fraction, poor, rich = grassland_rich_fraction(inventory, factors, row)
+                area = f"4(II).C.1.{row}.area"
+                values = crt_series(inventory, area) * (fraction if part == "rich" else 1 - fraction)
+                source, status = "CRT2026", "derived"
+                reference = (f"{crt_reference(inventory, area)}; rich fraction from "
+                             f"{crt_reference(inventory, f'4(II).C.1.{row}.ief_ch4')} and NID 2026 s.6.5.2")
+                transformation = (f"area x {part} fraction; rich fraction = (CH4 implied factor - {poor:.2f}) / "
+                                  f"({rich:.2f} - {poor:.2f}) kg CH4/ha (NID nutrient-poor and nutrient-rich factors, "
+                                  f"data_sources/nid2026_grassland_organic_factors.csv); 2020: "
+                                  f"{fraction[2020]:.4f}")
             elif kind == "nid":
                 values = nid_series(nid, arg)
                 printed = sorted({int(y) for y in nid.year})

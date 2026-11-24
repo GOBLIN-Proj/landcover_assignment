@@ -39,6 +39,8 @@ COL = {c: i for i, c in enumerate("ABCDEFGHIJKLMNOPQRSTU")}
 
 AREA = {"area": ("D", "kha"), "mineral_area": ("E", "kha"), "organic_area": ("F", "kha")}
 AREA_ONLY = {"area": ("D", "kha")}
+# 4.C.1 also gives the organic soil carbon stock change (CRT sign: + gain), used to check the D4 rich/poor split
+AREA_C1 = {**AREA, "organic_soil_C": ("R", "kt C")}
 II = {"area": ("D", "kha"), "ief_co2": ("E", "kg CO2/ha"), "ief_n2o_n": ("F", "kg N2O-N/ha"),
       "ief_ch4": ("G", "kg CH4/ha")}
 IV = {"co2": ("J", "kt CO2"), "ch4": ("K", "kt CH4"), "n2o": ("L", "kt N2O")}
@@ -51,7 +53,7 @@ CRT_SPEC = {
     "4.A.2": ("Table4.A", 12, "4.A.2.", AREA),
     "4.B": ("Table4.B", 10, "4.B. Total cropland", AREA),
     "4.C": ("Table4.C", 10, "4.C. Total grassland", AREA),
-    "4.C.1": ("Table4.C", 11, "4.C.1.", AREA),
+    "4.C.1": ("Table4.C", 11, "4.C.1.", AREA_C1),
     "4.C.2": ("Table4.C", 12, "4.C.2.", AREA),
     "4.D": ("Table4.D", 10, "4.D. Total wetlands", AREA),
     "4.D.1": ("Table4.D", 11, "4.D.1.", AREA),

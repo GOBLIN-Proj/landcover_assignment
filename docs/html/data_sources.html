@@ -9,7 +9,7 @@
   <title>The package database and its sources &mdash; LandCover Assignment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
   
@@ -52,6 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-it-is-built">How it is built</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-each-land-use-takes-from-the-inventory-2020-values">What each land use takes from the inventory (2020 values)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#forest-soils">Forest soils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor">Grassland organic soils: nutrient rich and nutrient poor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
 </ul>
 </li>
@@ -111,7 +112,11 @@ built it.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/transcribe_nid_forest.py</span></code></p></td>
 <td><p>NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">legacy_nir_table.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nid2026_grassland_organic_factors.csv</span></code></p></td>
+<td><p>transcribed</p></td>
+<td><p>NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">legacy_nir_table.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
 <td><p>values kept from the 0.4.0 database until their decision is taken</p></td>
 </tr>
@@ -146,7 +151,7 @@ where unit conversions live, as in landcover_lca.</p>
 </tr>
 <tr class="row-odd"><td><p>grassland</p></td>
 <td><p>CRT 4.C, 4,218.5 kha</p></td>
-<td><p>the national area for the balance (see <a class="reference internal" href="grassland_area.html"><span class="std std-doc">grassland area</span></a>); drained organic = CRT 4(II).C.1 drained, 136.6 kha; rewet status = CRT 4(II).C.1 “Other organic soils”, 203.3 kha</p></td>
+<td><p>the national area for the balance (see <a class="reference internal" href="grassland_area.html"><span class="std std-doc">grassland area</span></a>); drained organic = CRT 4(II).C.1 drained, 136.6 kha (rich 0.4525); rewet status = CRT 4(II).C.1 “Other organic soils”, 203.3 kha (rich 0.4471)</p></td>
 </tr>
 <tr class="row-even"><td><p>cropland</p></td>
 <td><p>CRT 4.B, 747.7 kha</p></td>
@@ -194,6 +199,53 @@ The rule is in <code class="docutils literal notranslate"><span class="pre">tool
 <p>Before 0.5.0 the drained areas were hand-typed values with no source (174.5 and 72.5 kha in 2020), and the mineral
 share was 1 minus the drained shares (0.68), which counted undrained organic soil as mineral.</p>
 </section>
+<section id="grassland-organic-soils-nutrient-rich-and-nutrient-poor">
+<h3>Grassland organic soils: nutrient rich and nutrient poor<a class="headerlink" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor" title="Link to this heading"></a></h3>
+<p>The NID charges nutrient-rich and nutrient-poor organic grassland soil at different rates but publishes no area for
+each. The package works out the split for each year from the inventory itself. The CRT gives, for each grassland
+organic row (drained, and rewet status), the CH4 emitted per hectare. That figure is a mix of the NID rich and poor
+factors, weighted by area, so</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rich fraction = (CRT CH4 per hectare - poor factor) / (rich factor - poor factor)
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>row</p></th>
+<th class="head"><p>poor factor</p></th>
+<th class="head"><p>rich factor</p></th>
+<th class="head"><p>rich fraction 2020</p></th>
+<th class="head"><p>2022-2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>drained</p></td>
+<td><p>0.95 x 11.76 + 0.05 x 1165 = 69.42 kg CH4/ha</p></td>
+<td><p>0.95 x 16.0 + 0.05 x 1165 = 73.45 kg CH4/ha</p></td>
+<td><p>0.4525</p></td>
+<td><p>0.449</p></td>
+</tr>
+<tr class="row-odd"><td><p>rewet status</p></td>
+<td><p>68.1 kg CH4-C/ha = 90.8 kg CH4/ha</p></td>
+<td><p>216 kg CH4-C/ha = 288.0 kg CH4/ha</p></td>
+<td><p>0.4471</p></td>
+<td><p>0.449</p></td>
+</tr>
+</tbody>
+</table>
+<p>The drained factors combine the field and ditch factors, with 5% of the area in ditches (NID p.271). The rewet-status
+factors are printed in kg CH4-C and converted to kg CH4 (x 16/12, <code class="docutils literal notranslate"><span class="pre">units.CH4_C_TO_CH4</span></code>). The factors are in
+<code class="docutils literal notranslate"><span class="pre">data_sources/nid2026_grassland_organic_factors.csv</span></code>, the rule in <code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code>
+(<code class="docutils literal notranslate"><span class="pre">grassland_rich_fraction</span></code>), and each column’s <code class="docutils literal notranslate"><span class="pre">transformation</span></code> entry repeats it. In earlier years the drained land
+was richer (0.551 in 1990).</p>
+<p><strong>Checks.</strong> The rich and poor soils also lose carbon at different rates (drained 6.1 and 1.3 t C/ha, rewet status
+0.5 and 0.85). With the split above, the package areas reproduce the CRT grassland organic soil carbon (Table4.C,
+4.C.1) in every year, 1990-2024 (<code class="docutils literal notranslate"><span class="pre">tests/test_database_build.py</span></code>). The CRT N2O per hectare for drained grassland
+(Table3.D) gives the same drained fraction (0.4525 in 2020).</p>
+<p><strong>Scenarios.</strong> The future split is not projected on its own. Drained land that stays drained keeps the
+calibration year’s rich fraction; rewetted land carries that fraction into the rewet-status pool.</p>
+<p>Before 0.5.0 both rows were split 0.45 / 0.55 every year, with no recorded source. landcover_lca’s inventory tests
+use the same rule as above.</p>
+</section>
 <section id="industrial-peat-extraction">
 <h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
 <p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
@@ -221,15 +273,11 @@ the industrial rates it would be about 345 kt CO2e a year (2020).</p>
 <td><p>0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty</p></td>
 <td><p>D6: burnt area, averaging window, forest aligned with cbm_runner</p></td>
 </tr>
-<tr class="row-odd"><td><p>grassland rich/poor split</p></td>
-<td><p>0.45 / 0.55 of the CRT drained and rewet-status areas</p></td>
-<td><p>D4: split by year from the CRT implied factors</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> table</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> table</p></td>
 <td><p>0.4.0 table (unused by the code)</p></td>
 <td><p>D8: rebuild from Table4.1 or drop</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
 <td><p>0.4.0 table</p></td>
 <td><p>D9: document its source</p></td>
 </tr>

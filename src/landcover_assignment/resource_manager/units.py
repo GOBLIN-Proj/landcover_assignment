@@ -15,6 +15,10 @@ To add a column with a new unit, record the unit in ``column_metadata`` (tools/b
 # area
 KHA_TO_HA = 1e3
 
+# mass of methane: kg CH4-C to kg CH4 (16/12). Used by tools/build_database.py for the D4 rich/poor split; the NID
+# prints the grassland rewet-status CH4 factors in kg CH4-C and the CRT implied factors in kg CH4.
+CH4_C_TO_CH4 = 16.0 / 12.0
+
 # published unit -> (multiplier to the model unit, model unit)
 UNITS = {
     "kha": (KHA_TO_HA, "ha"),

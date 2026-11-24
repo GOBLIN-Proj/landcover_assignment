@@ -2799,6 +2799,41 @@ year,quantity,value,unit,notation,source,sheet,row,label,column
 2022,4.C.1.organic_area,338.9183892895184,kha,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,F
 2023,4.C.1.organic_area,338.9183892895184,kha,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,F
 2024,4.C.1.organic_area,338.9183892895184,kha,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,F
+1990,4.C.1.organic_soil_C,-491.49043695979117,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1991,4.C.1.organic_soil_C,-495.86904852278343,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1992,4.C.1.organic_soil_C,-500.3255527794666,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1993,4.C.1.organic_soil_C,-503.1469992643137,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1994,4.C.1.organic_soil_C,-508.1370277011446,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1995,4.C.1.organic_soil_C,-513.1270561379754,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1996,4.C.1.organic_soil_C,-518.1170845748063,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1997,4.C.1.organic_soil_C,-523.1071130116371,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1998,4.C.1.organic_soil_C,-528.0971414484679,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+1999,4.C.1.organic_soil_C,-532.1754938214566,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2000,4.C.1.organic_soil_C,-536.4407371416942,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2001,4.C.1.organic_soil_C,-541.430765578525,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2002,4.C.1.organic_soil_C,-546.4207940153558,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2003,4.C.1.organic_soil_C,-551.4108224521867,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2004,4.C.1.organic_soil_C,-556.4008508890175,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2005,4.C.1.organic_soil_C,-561.3908793258483,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2006,4.C.1.organic_soil_C,-566.3809077626793,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2007,4.C.1.organic_soil_C,-570.3463457756657,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2008,4.C.1.organic_soil_C,-573.3697952063326,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2009,4.C.1.organic_soil_C,-577.3584494852864,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2010,4.C.1.organic_soil_C,-580.2790877180171,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2011,4.C.1.organic_soil_C,-583.8330371959822,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2012,4.C.1.organic_soil_C,-587.2948565544415,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2013,4.C.1.organic_soil_C,-590.6584368957801,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2014,4.C.1.organic_soil_C,-593.8840367305734,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2015,4.C.1.organic_soil_C,-597.0002763558678,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2016,4.C.1.organic_soil_C,-600.0390525243348,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2017,4.C.1.organic_soil_C,-603.1090175934954,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2018,4.C.1.organic_soil_C,-607.0866252978701,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2019,4.C.1.organic_soil_C,-610.7626174721768,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2020,4.C.1.organic_soil_C,-615.160560557066,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2021,4.C.1.organic_soil_C,-619.8681397235924,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2022,4.C.1.organic_soil_C,-624.4926918329119,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2023,4.C.1.organic_soil_C,-624.4926918329119,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
+2024,4.C.1.organic_soil_C,-624.4926918329119,kt C,,EPA CRT 2026,Table4.C,11,4.C.1. Grassland remaining grassland,R
 1990,4.C.2.area,0.0082,kha,,EPA CRT 2026,Table4.C,12,4.C.2. Land converted to grassland (11),D
 1991,4.C.2.area,0.0164,kha,,EPA CRT 2026,Table4.C,12,4.C.2. Land converted to grassland (11),D
 1992,4.C.2.area,0.024600000000000004,kha,,EPA CRT 2026,Table4.C,12,4.C.2. Land converted to grassland (11),D

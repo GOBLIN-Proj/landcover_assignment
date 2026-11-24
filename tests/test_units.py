@@ -41,6 +41,10 @@ class Units(unittest.TestCase):
         with self.assertRaises(KeyError):
             units.to_model_units(1.0, "acre")
 
+    def test_ch4_c_to_ch4(self):
+        """The NID prints the grassland rewet-status CH4 factors in kg CH4-C (D4 converts them to kg CH4)."""
+        self.assertEqual(units.CH4_C_TO_CH4, 16.0 / 12.0)
+
     def test_readers_convert_by_the_recorded_unit(self):
         """Each area column comes back in ha: the database value (kha) x 1000, the same bits as before."""
         dm = DataManager()
