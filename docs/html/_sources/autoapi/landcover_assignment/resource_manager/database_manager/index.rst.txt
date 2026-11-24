@@ -1,0 +1,137 @@
+landcover_assignment.resource_manager.database_manager
+======================================================
+
+.. py:module:: landcover_assignment.resource_manager.database_manager
+
+.. autoapi-nested-parse::
+
+   DataManager for Land Use Databases
+   ==================================
+
+   The ``DataManager`` class serves as an interface to interact with a land use database, facilitating the retrieval of various datasets
+   related to national land cover areas such as forests, wetlands, croplands, grasslands, and settlements, as well as soil yield mappings for forests.
+   This class is designed to support environmental data analysis and modeling tasks by providing structured access to key land use datasets.
+
+   :ivar database_dir: Directory where the database file is located.
+   :vartype database_dir: str
+   :ivar engine: SQLAlchemy engine object for database connection.
+
+   :vartype engine: sqlalchemy.engine.Engine
+
+   .. rubric:: Notes
+
+   data_engine_creator(): Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+   get_national_inventory_areas(): Retrieves national inventory area data from the database and converts its areas from kha to ha.
+   get_national_forest_areas(): Retrieves national forest area data from the database and converts its areas from kha to ha.
+   get_national_settlement_areas(): Retrieves national settlement area data from the database and converts its areas from kha to ha.
+   get_national_grassland_areas(): Retrieves national grassland area data from the database and converts its areas from kha to ha.
+   get_national_cropland_areas(): Retrieves national cropland area data from the database and converts its areas from kha to ha.
+   get_national_wetland_areas(): Retrieves national wetland area data from the database and converts its areas from kha to ha.
+   get_soil_yield_mapping(): Retrieves forest soil yield mapping data from the database without scaling.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   landcover_assignment.resource_manager.database_manager.DataManager
+
+
+Module Contents
+---------------
+
+.. py:class:: DataManager
+
+   .. py:attribute:: database_dir
+
+
+   .. py:attribute:: engine
+      :value: None
+
+
+
+   .. py:method:: data_engine_creator()
+
+      Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+
+      :returns: A SQLAlchemy engine instance connected to the land use database.
+      :rtype: sqlalchemy.engine.Engine
+
+
+
+   .. py:attribute:: data_engine_creater
+
+
+   .. py:method:: _to_model_units(table, dataframe)
+
+      Converts each column of ``dataframe`` from the unit recorded for it in the database's ``column_metadata``
+      table to the model unit (areas: kha to ha), using :mod:`landcover_assignment.resource_manager.units`.
+      Keys and labels (units ``year``, ``label``, ``group``) are left as they are.
+
+
+
+   .. py:method:: get_national_inventory_areas()
+
+      Retrieves national inventory area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national inventory area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_national_forest_areas()
+
+      Retrieves national forest area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national forest area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_national_settlement_areas()
+
+      Retrieves national settlement area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national settlement area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_national_grassland_areas()
+
+      Retrieves national grassland area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national grassland area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_national_cropland_areas()
+
+      Retrieves national cropland area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national cropland area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_national_wetland_areas()
+
+      Retrieves national wetland area data from the database and converts its areas from kha to ha.
+
+      :returns: A DataFrame containing national wetland area data with the area values scaled.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: get_soil_yield_mapping()
+
+      Retrieves forest soil yield mapping data from the database without scaling.
+
+      :returns: A DataFrame containing forest soil yield mapping data.
+      :rtype: pandas.DataFrame
+
+
+

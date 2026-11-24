@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.optimisation.landcover_optimisation &mdash; LandCover Assignment 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="landcover_assignment.resource_manager" href="../../resource_manager/index.html" />
+    <link rel="prev" title="landcover_assignment.optimisation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../data_sources.html">The package database and its sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">landcover_assignment</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../_deprecation/index.html">landcover_assignment._deprecation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../afforestation/index.html">landcover_assignment.afforestation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../database/index.html">landcover_assignment.database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../distribution/index.html">landcover_assignment.distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../geo_landcover_assignment/index.html">landcover_assignment.geo_landcover_assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../landcover/index.html">landcover_assignment.landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../national_landcover/index.html">landcover_assignment.national_landcover</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">landcover_assignment.optimisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../resource_manager/index.html">landcover_assignment.resource_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../transition_matrix/index.html">landcover_assignment.transition_matrix</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">landcover_assignment</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">landcover_assignment.optimisation</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.optimisation.landcover_optimisation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/landcover_assignment/optimisation/landcover_optimisation/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-landcover_assignment.optimisation.landcover_optimisation">
+<span id="landcover-assignment-optimisation-landcover-optimisation"></span><h1>landcover_assignment.optimisation.landcover_optimisation<a class="headerlink" href="#module-landcover_assignment.optimisation.landcover_optimisation" title="Link to this heading"></a></h1>
+<p>Allocates a scenario’s spared <strong>mineral</strong> grassland between land-use targets with a small Pyomo model, solved by the
+open-source HiGHS solver.</p>
+<section id="the-model">
+<h2>The model<a class="headerlink" href="#the-model" title="Link to this heading"></a></h2>
+<p>All areas are divided by the available mineral area A, so the model works in shares of A. This keeps the problem
+well scaled; the results are multiplied back to hectares.</p>
+<dl class="simple">
+<dt>Sets</dt><dd><p><code class="docutils literal notranslate"><span class="pre">LAND_USES</span></code>: the land uses with a target (currently forest and cropland). It is built from <code class="docutils literal notranslate"><span class="pre">target_areas</span></code>, so
+adding a land use needs no code change.</p>
+</dd>
+<dt>Parameters</dt><dd><p><code class="docutils literal notranslate"><span class="pre">target[i]</span></code>: the target area of land use <em>i</em> (share of A).
+<code class="docutils literal notranslate"><span class="pre">area_available</span></code>: 1 (all of A).</p>
+</dd>
+<dt>Variables</dt><dd><p><code class="docutils literal notranslate"><span class="pre">allocation[i]</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>: area allocated to land use <em>i</em>.
+<code class="docutils literal notranslate"><span class="pre">fallback</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>: area allocated to no target, returned as <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code>.</p>
+</dd>
+<dt>Objective (minimise)</dt><dd><p>sum over i of (allocation[i] - target[i])^2, plus fallback^2.</p>
+</dd>
+<dt>Constraints</dt><dd><p><code class="docutils literal notranslate"><span class="pre">use_all_area</span></code>: sum of allocation[i] + fallback = area_available.
+<code class="docutils literal notranslate"><span class="pre">cap_at_target[i]</span></code>: allocation[i] &lt;= target[i].</p>
+</dd>
+</dl>
+<p>What this gives:</p>
+<ul class="simple">
+<li><p>If the targets fit within the available area, every target is met and the rest goes to <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code>.</p></li>
+<li><p>If they don’t fit, <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code> is 0 and every target is cut by the same area: the squared objective
+spreads the shortfall evenly in absolute terms, and any target that reaches 0 stops there.</p></li>
+<li><p>The objective is strictly convex, so the solution is unique. Any correct solver gives the same answer.</p></li>
+</ul>
+</section>
+<section id="extending-the-model">
+<h2>Extending the model<a class="headerlink" href="#extending-the-model" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">optimise_mineral_spared_area_distribution</span></code> accepts <code class="docutils literal notranslate"><span class="pre">extra_constraints</span></code>: functions that take the Pyomo model
+and add components to it. They are added after the standard ones, so they can use <code class="docutils literal notranslate"><span class="pre">model.LAND_USES</span></code>,
+<code class="docutils literal notranslate"><span class="pre">model.target</span></code>, <code class="docutils literal notranslate"><span class="pre">model.allocation</span></code> and <code class="docutils literal notranslate"><span class="pre">model.fallback</span></code>. For example, a cap on cropland:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cap_cropland</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cap_cropland</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="s2">"cropland"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.1</span><span class="p">)</span>   <span class="c1"># share of A</span>
+
+<span class="n">LandCoverOptimisation</span><span class="p">()</span><span class="o">.</span><span class="n">optimise_mineral_spared_area_distribution</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">extra_constraints</span><span class="o">=</span><span class="p">[</span><span class="n">cap_cropland</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>A new land use (for example willow) needs only a new entry in <code class="docutils literal notranslate"><span class="pre">target_areas</span></code>.</p>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation.logger" title="landcover_assignment.optimisation.landcover_optimisation.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation.DEFAULT_SOLVER" title="landcover_assignment.optimisation.landcover_optimisation.DEFAULT_SOLVER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_SOLVER</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation.FALLBACK_LAND_USE" title="landcover_assignment.optimisation.landcover_optimisation.FALLBACK_LAND_USE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FALLBACK_LAND_USE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation" title="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LandCoverOptimisation</span></code></a></p></td>
+<td><p>Allocates spared mineral grassland between land-use targets (see the module docstring for the model).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation._objective" title="landcover_assignment.optimisation.landcover_optimisation._objective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_objective</span></code></a>(model)</p></td>
+<td><p>Squared deviation from each target, plus the squared unallocated area.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation._use_all_area" title="landcover_assignment.optimisation.landcover_optimisation._use_all_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_use_all_area</span></code></a>(model)</p></td>
+<td><p>All of the available mineral area is allocated, to a target or to the fallback.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation._cap_at_target" title="landcover_assignment.optimisation.landcover_optimisation._cap_at_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cap_at_target</span></code></a>(model, i)</p></td>
+<td><p>No land use receives more than its target.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.logger">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.DEFAULT_SOLVER">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SOLVER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'highs'</span></em><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.DEFAULT_SOLVER" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.FALLBACK_LAND_USE">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">FALLBACK_LAND_USE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'farmable_condition'</span></em><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.FALLBACK_LAND_USE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation._objective">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">_objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation._objective" title="Link to this definition"></a></dt>
+<dd><p>Squared deviation from each target, plus the squared unallocated area.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation._use_all_area">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">_use_all_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation._use_all_area" title="Link to this definition"></a></dt>
+<dd><p>All of the available mineral area is allocated, to a target or to the fallback.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation._cap_at_target">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">_cap_at_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation._cap_at_target" title="Link to this definition"></a></dt>
+<dd><p>No land use receives more than its target.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">LandCoverOptimisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DEFAULT_SOLVER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation" title="Link to this definition"></a></dt>
+<dd><p>Allocates spared mineral grassland between land-use targets (see the module docstring for the model).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver</strong> – Pyomo solver name. The default is <code class="docutils literal notranslate"><span class="pre">&quot;highs&quot;</span></code> (open-source HiGHS, through <code class="docutils literal notranslate"><span class="pre">highspy</span></code>). Pyomo’s
+<code class="docutils literal notranslate"><span class="pre">&quot;appsi_highs&quot;</span></code> interface does not accept the quadratic objective.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.solver">
+<span class="sig-name descname"><span class="pre">solver</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'highs'</span></em><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.solver" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.build_model">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_shares</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.build_model" title="Link to this definition"></a></dt>
+<dd><p>Build the allocation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_shares</strong> – Target area of each land use, as a share of the available area (dict).</p></li>
+<li><p><strong>extra_constraints</strong> – Functions <code class="docutils literal notranslate"><span class="pre">f(model)</span></code> that add further constraints (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Pyomo model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyomo.environ.ConcreteModel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.solve" title="Link to this definition"></a></dt>
+<dd><p>Solve the model and check that the solver found the optimum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – if the solver is unavailable or does not report an optimal solution.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.optimise_mineral_spared_area_distribution">
+<span class="sig-name descname"><span class="pre">optimise_mineral_spared_area_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mineral_area_available</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_areas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation.LandCoverOptimisation.optimise_mineral_spared_area_distribution" title="Link to this definition"></a></dt>
+<dd><p>Allocate the available spared mineral area to the target land uses. The rest goes to farmable condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mineral_area_available</strong> – Spared mineral area available (ha).</p></li>
+<li><p><strong>target_areas</strong> – Target area of each land use (ha), e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;forest&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;cropland&quot;:</span> <span class="pre">...}</span></code>.</p></li>
+<li><p><strong>extra_constraints</strong> – Functions <code class="docutils literal notranslate"><span class="pre">f(model)</span></code> that add further constraints (optional; see module docstring).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Allocated area per land use (ha), plus <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code>. The values sum to
+<code class="docutils literal notranslate"><span class="pre">mineral_area_available</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="landcover_assignment.optimisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../resource_manager/index.html" class="btn btn-neutral float-right" title="landcover_assignment.resource_manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

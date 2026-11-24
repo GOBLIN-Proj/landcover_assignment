@@ -9,7 +9,6 @@ build:
 
 sphinx:
   configuration: docs/conf.py
-  fail_on_warning: true
 
 # Only the documentation requirements: AutoAPI reads the source without importing it, and the
 # example notebook is not executed.

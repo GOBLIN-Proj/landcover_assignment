@@ -1,0 +1,348 @@
+landcover_assignment.national_landcover
+=======================================
+
+.. py:module:: landcover_assignment.national_landcover
+
+.. autoapi-nested-parse::
+
+   National Land Cover
+   ===================
+   National areas and soil, peat and burnt shares for each land use, read from the package database (via ``Loader``).
+
+   Each land use's calibration-year row is its area plus 17 share columns. Every share is one database column divided by
+   the land use's total area (``total_kha``), applied to the land uses in ``SHARE_SOURCES`` and 0 for the rest. Forest has
+   one special case: its organic share is the drained N-poor organic area (``organic_emitting_kha``), and its
+   organo-mineral share the drained N-rich area (NID 2026 Tables 6.7 + 6.15). Its mineral share is the CRT mineral area
+   (0.46 in 2020). The undrained open area on organic soil (0.06) is in no share, so forest shares sum to about 0.94
+   (decision D3).
+
+   The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
+   (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   landcover_assignment.national_landcover.logger
+   landcover_assignment.national_landcover.LAND_USES
+   landcover_assignment.national_landcover.ALL
+   landcover_assignment.national_landcover.SHARE_SOURCES
+   landcover_assignment.national_landcover.ROW_COLUMNS
+   landcover_assignment.national_landcover.FARMABLE_SHARES
+   landcover_assignment.national_landcover.SPECIFIC_SHARES
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   landcover_assignment.national_landcover.NationalLandCover
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: LAND_USES
+   :value: ('forest', 'wetland', 'cropland', 'grassland', 'settlement')
+
+
+.. py:data:: ALL
+   :value: ('forest', 'wetland', 'cropland', 'grassland', 'settlement')
+
+
+.. py:data:: SHARE_SOURCES
+
+.. py:data:: ROW_COLUMNS
+   :value: ['area_ha', 'share_mineral', 'share_organic', 'share_organic_mineral',...
+
+
+.. py:data:: FARMABLE_SHARES
+
+.. py:data:: SPECIFIC_SHARES
+
+.. py:class:: NationalLandCover
+
+   National land use areas and shares for a year, from the package database.
+
+   The rows are built from ``SHARE_SOURCES`` (see the module docstring). The ``get_share_*`` and ``get_national_*``
+   methods are thin wrappers over :meth:`get_share` and :meth:`get_national_share`.
+
+
+   .. py:attribute:: loader
+
+
+   .. py:attribute:: national_areas_cache
+
+
+   .. py:attribute:: methods
+
+
+   .. py:attribute:: national_areas
+
+
+   .. py:method:: _get_cached_data(landuse)
+
+      The database table for a land use (cached), indexed by year. Raises ValueError for an unknown land use.
+
+
+
+   .. py:method:: get_national_share(share, landuse, year)
+
+      A share of a land use's national area in a year, from ``SHARE_SOURCES``.
+
+      :param share: A share column, e.g. ``"share_drained_rich_organic"``.
+      :param landuse: forest, wetland, cropland, grassland or settlement.
+      :param year: The year.
+      :return: The share (0.0 if the share doesn't apply to this land use).
+      :raises ValueError: for an unknown land use (unless the share applies to one land use only).
+
+
+
+   .. py:method:: get_national_area(landuse, year)
+
+      A land use's national area (ha) in a year, from the package database.
+
+      :raises ValueError: for an unknown land use, or a year that isn't in the database.
+
+
+
+   .. py:method:: get_national_burnt_average(landuse)
+
+      Burnt area as a share of the land use's area, over all years in the database that have a burnt area.
+
+
+
+   .. py:method:: get_national_mineral(landuse, year)
+
+
+   .. py:method:: get_national_organic(landuse, year)
+
+
+   .. py:method:: get_national_organic_mineral(landuse, year)
+
+
+   .. py:method:: get_national_rich_drained_organic_grassland(landuse, year)
+
+
+   .. py:attribute:: get_national_rich_drained_orgainc_grassland
+
+
+   .. py:method:: get_national_poor_drained_organic_grassland(landuse, year)
+
+
+   .. py:method:: get_national_rich_rewetted_organic_grassland(landuse, year)
+
+
+   .. py:method:: get_national_poor_rewetted_organic_grassland(landuse, year)
+
+
+   .. py:method:: get_national_domestic_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_national_industrial_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_national_rewetted_domestic_peat(landuse, year)
+
+
+   .. py:method:: get_national_rewetted_industrial_peat(landuse, year)
+
+
+   .. py:method:: get_national_rewetted_in_organic(landuse, year)
+
+
+   .. py:method:: get_national_rewetted_in_mineral(landuse, year)
+
+
+   .. py:method:: get_national_unmanaged_wetland(landuse, year)
+
+
+   .. py:method:: get_national_near_natural_wetland(landuse, year)
+
+
+   .. py:method:: get_national_burn(landuse, year)
+
+
+   .. py:method:: get_landuse_data(landuse, year, total_grassland_area=None)
+
+      A land use's row: its area (ha) and the 17 shares, as a one-row DataFrame (columns ``ROW_COLUMNS``).
+
+      :param landuse: forest, wetland, cropland, grassland or settlement.
+      :param year: The year (the calibration year).
+      :param total_grassland_area: grassland_production's total_grassland input (grassland only).
+
+
+
+   .. py:method:: get_forest_data(year)
+
+
+   .. py:method:: get_peat_data(year)
+
+
+   .. py:method:: get_crop_data(year)
+
+
+   .. py:method:: get_grassland_data(year, total_grassland_area)
+
+
+   .. py:method:: get_settlement_data(year)
+
+
+   .. py:method:: get_landuse_area(landuse, year, grassland_area=None)
+
+      A land use's area (ha) in the land-use table; 0 for farmable_condition.
+
+
+
+   .. py:method:: get_share(share, landuse, year, grassland_area=None)
+
+      A share for the land-use table: as :meth:`get_national_share`, plus the fallback land use
+      ``farmable_condition`` (all mineral, nothing else).
+
+      :param grassland_area: grassland_production's total_grassland input. Required for grassland, as before.
+      :raises ValueError: for an unknown land use, or grassland without ``grassland_area``.
+
+
+
+   .. py:method:: get_share_mineral(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_organic(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_organic_mineral(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_drained_rich_organic_grassland(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_drained_poor_organic_grassland(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_rewetted_rich_in_organic_grassland(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_rewetted_poor_in_organic_grassland(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_rewetted_in_organic(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_rewetted_in_mineral(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_share_domestic_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_share_industrial_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_share_rewetted_domestic_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_share_rewetted_industrial_peat_extraction(landuse, year)
+
+
+   .. py:method:: get_share_near_natural_wetland(landuse, year)
+
+
+   .. py:method:: get_share_unmanaged_wetland(landuse, year)
+
+
+   .. py:method:: get_share_burnt(landuse, year, grassland_area=None)
+
+
+   .. py:method:: get_land_shares(key, land_use, year)
+
+      A share (``key``, a ``ROW_COLUMNS`` share) of a non-grassland land use; see :meth:`get_share`.
+
+
+
+   .. py:method:: get_grassland_shares(key, year, grassland_area)
+
+      A grassland share. ``key`` is a share column; the rewet-status shares are also accepted as
+      ``share_rewetted_rich_in_organic`` / ``share_rewetted_poor_in_organic``.
+
+
+
+   .. py:method:: get_total_spared_area(spared_area, sc)
+
+      Retrieves the total spared area for a specific scenario from a spared area dataset.
+
+      :param spared_area: A DataFrame containing spared area data.
+      :type spared_area: pandas.DataFrame
+      :param sc: The scenario.
+      :type sc: str or int
+
+      :returns: The total spared area.
+      :rtype: float
+
+      :raises ValueError: If the scenario is not found in the spared area dataset.
+
+
+
+   .. py:method:: get_grassland_balance_area(year, total_grassland_area)
+
+      National grassland that the herd doesn't need: the national grassland area minus the herd-derived grassland
+      area, in ``year`` (the calibration year). It is added to the grassland row so that its emissions are counted,
+      it stays the same in every scenario, and it is never available to be spared. National tree only.
+
+      Sources:
+
+      - national grassland area: package database, ``grassland_data.total_kha`` (EPA CRT 2026 Table4.C, total
+        grassland, 1990-2024), via :meth:`get_national_area`;
+      - herd-derived grassland area: grassland_production's ``total_grassland`` input, calibration-year row, via
+        :meth:`get_derived_national_grassland_area`.
+
+      :param year: The calibration year.
+      :type year: int
+      :param total_grassland_area: The total_grassland input (grassland_production).
+      :type total_grassland_area: pandas.DataFrame
+
+      :returns: The balance (ha). If the herd area exceeds the national area, 0, with a warning.
+      :rtype: float
+
+      :raises ValueError: If ``year`` is not in the database.
+
+
+
+   .. py:method:: get_derived_national_grassland_area(grassland_area, sc=0)
+
+      Derives the national grassland area for a given scenario.
+
+      :param grassland_area: A DataFrame or Series containing grassland area data.
+      :type grassland_area: pandas.DataFrame or pandas.Series
+      :param sc: The scenario, default is 0.
+      :type sc: str or int, optional
+
+      :returns: The derived national grassland area.
+      :rtype: float
+
+      :raises ValueError: If the scenario is not found in the grassland area data.
+
+
+
+   .. py:method:: get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)
+
+      Calculates the area with organic potential based on a spared area breakdown for a specific scenario.
+
+      :param spared_breakdown: A DataFrame containing spared area breakdown data.
+      :type spared_breakdown: pandas.DataFrame
+      :param total_spared_area: A DataFrame or Series containing total spared area data.
+      :type total_spared_area: pandas.DataFrame or pandas.Series
+      :param sc: The scenario.
+      :type sc: str or int
+
+      :returns: The area with organic potential.
+      :rtype: float
+
+      :raises ValueError: If the scenario is not found in the spared breakdown dataset or if all values in the 'area_ha' column are zero.
+
+
+

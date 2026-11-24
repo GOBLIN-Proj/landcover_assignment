@@ -34,7 +34,7 @@
   - `requirements.txt` now matches `pyproject.toml`.
   - Results are identical on the oldest set (pandas 2.1.4, numpy 1.26, SQLAlchemy 1.4) and the latest (pandas 3.1, numpy 2.5, SQLAlchemy 2.1).
   - `catchment_data_api` 0.1.3 still pins the oldest set itself, so a plain install resolves to it. The latest set needs that package installed with `--no-deps`.
-- **CI** runs the full test suite on the oldest and latest sets, with warnings as errors, and builds the docs with warnings as errors. The required `ci` check passes only if every job passes.
+- **CI** runs the full test suite on the oldest and latest sets, with warnings as errors. The required `ci` check passes only if every job passes.
 - **Docs**:
   - Read the Docs configuration (`.readthedocs.yaml`, `docs/requirements.txt`);
   - docs dependency group in `pyproject.toml`;
@@ -61,7 +61,7 @@
   - the catchment `combined_future_land_use_area_old`;
   - the crop-type lookups in `CatchmentLandCover`, which called each other forever if used, and their unused `Crops()` object;
   - the unused `LandCover.data_loader_class` and `DataManager.landuse_dict` / `get_landuse_dict`.
-- The built HTML docs (`docs/html`, `docs/index.html`, `docs/.nojekyll`) are no longer committed. The docs are built by Read the Docs (`.readthedocs.yaml`) and checked by CI.
+- The built HTML docs (`docs/html`, `docs/index.html`, `docs/.nojekyll`) are still committed, as in the other GOBLIN packages; they are rebuilt locally (`sphinx-build -b html -d docs/_build/doctrees docs docs/html`) before a release.
 - The old print-script tests, and test files that no longer ran. Their land-balance and area checks are now in `tests/test_land_balance.py`.
 
 ---

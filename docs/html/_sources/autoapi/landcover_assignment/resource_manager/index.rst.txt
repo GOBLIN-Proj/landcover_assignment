@@ -1,0 +1,20 @@
+landcover_assignment.resource_manager
+=====================================
+
+.. py:module:: landcover_assignment.resource_manager
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/landcover_assignment/resource_manager/data_loader/index
+   /autoapi/landcover_assignment/resource_manager/database_manager/index
+   /autoapi/landcover_assignment/resource_manager/landcover_data_manager/index
+   /autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index
+   /autoapi/landcover_assignment/resource_manager/transition_data_fetcher/index
+   /autoapi/landcover_assignment/resource_manager/units/index
+
+

@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The package database and its sources &mdash; LandCover Assignment 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=6c02275b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="CONTRIBUTING.html" />
+    <link rel="prev" title="Spared area, rewetting and the grassland row" href="rewetting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The package database and its sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-it-is-built">How it is built</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-each-land-use-takes-from-the-inventory-2020-values">What each land use takes from the inventory (2020 values)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forest-soils">Forest soils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#still-waiting-for-a-decision">Still waiting for a decision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The package database and its sources</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data_sources.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-package-database-and-its-sources">
+<h1>The package database and its sources<a class="headerlink" href="#the-package-database-and-its-sources" title="Link to this heading"></a></h1>
+<p>The national areas and soil shares come from a SQLite database shipped with the package,
+<code class="docutils literal notranslate"><span class="pre">src/landcover_assignment/database/land_use_database_0.5.0.db</span></code>. The version in the name is the package version that
+built it.</p>
+<section id="how-it-is-built">
+<h2>How it is built<a class="headerlink" href="#how-it-is-built" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code> builds the database from the files in <code class="docutils literal notranslate"><span class="pre">data_sources/</span></code>. Two builds give the same file.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>file</p></th>
+<th class="head"><p>made by</p></th>
+<th class="head"><p>holds</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">inventory_areas.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/extract_inventory.py</span></code></p></td>
+<td><p>EPA CRT 2026 areas, 1990-2024, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nid2026_forest_organic_soils.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/transcribe_nid_forest.py</span></code></p></td>
+<td><p>NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">legacy_nir_table.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
+<td><p>values kept from the 0.4.0 database until their decision is taken</p></td>
+</tr>
+</tbody>
+</table>
+<p>The database records its own provenance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">column_metadata</span></code>: for every column, its unit, meaning, source, cell reference, transformation, decision and status;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sources</span></code>: the documents behind each source id;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inventory_values</span></code>: every extracted inventory value, with notation keys;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_info</span></code>: the package version and the SHA-256 of every input file.</p></li>
+</ul>
+<p>The tables the code reads (<code class="docutils literal notranslate"><span class="pre">forest_data</span></code>, <code class="docutils literal notranslate"><span class="pre">grassland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">cropland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">wetland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">settlement_data</span></code>,
+<code class="docutils literal notranslate"><span class="pre">NIR</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code>) keep their 0.4.0 names and columns.</p>
+<p><strong>Units.</strong> Values are stored as published (areas in kha), and <code class="docutils literal notranslate"><span class="pre">column_metadata</span></code> names each column’s unit. The readers
+convert on read, column by column, with <code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.units</span></code> (kha to ha), the one place
+where unit conversions live, as in landcover_lca.</p>
+</section>
+<section id="what-each-land-use-takes-from-the-inventory-2020-values">
+<h2>What each land use takes from the inventory (2020 values)<a class="headerlink" href="#what-each-land-use-takes-from-the-inventory-2020-values" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>land use</p></th>
+<th class="head"><p>area</p></th>
+<th class="head"><p>details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>forest</p></td>
+<td><p>CRT 4.A, 798.7 kha</p></td>
+<td><p>mineral share 0.460 (CRT 4.A mineral); organic share 0.360 = drained N-poor and organo-mineral share 0.122 = drained N-rich (NID 2026 Tables 6.7 + 6.15)</p></td>
+</tr>
+<tr class="row-odd"><td><p>grassland</p></td>
+<td><p>CRT 4.C, 4,218.5 kha</p></td>
+<td><p>the national area for the balance (see <a class="reference internal" href="grassland_area.html"><span class="std std-doc">grassland area</span></a>); drained organic = CRT 4(II).C.1 drained, 136.6 kha; rewet status = CRT 4(II).C.1 “Other organic soils”, 203.3 kha</p></td>
+</tr>
+<tr class="row-even"><td><p>cropland</p></td>
+<td><p>CRT 4.B, 747.7 kha</p></td>
+<td><p>all mineral (CRT organic: NO)</p></td>
+</tr>
+<tr class="row-odd"><td><p>wetland</p></td>
+<td><p>CRT 4.D total, 1,212.5 kha</p></td>
+<td><p>domestic peat 88.3, industrial peat 55.5 (4(II)), rewetted industrial 22.9, rewetted domestic 14.4, near-natural 871.3, unmanaged 108.4 kha</p></td>
+</tr>
+<tr class="row-even"><td><p>settlement</p></td>
+<td><p>CRT 4.E, 126.1 kha</p></td>
+<td><p>organic 2.0 kha</p></td>
+</tr>
+</tbody>
+</table>
+<section id="forest-soils">
+<h3>Forest soils<a class="headerlink" href="#forest-soils" title="Link to this heading"></a></h3>
+<p>The forest area splits into four parts (2020): mineral soil 367.1 kha (0.460), drained N-poor organic 287.4 kha
+(0.360), drained N-rich organo-mineral 97.4 kha (0.122), and open area on organic soil 46.8 kha (0.059). The open
+area is never drained, so nothing emits from it and it is in no share; the forest shares add up to about 0.94.</p>
+<p><strong>Interpolated years.</strong> The NID does not print the drained areas for every year:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>table</p></th>
+<th class="head"><p>years printed</p></th>
+<th class="head"><p>years not printed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Table 6.7 (4.A.1, forest remaining forest)</p></td>
+<td><p>1990, 1995, 2000, 2005, 2006-2024</p></td>
+<td><p>1991-1994, 1996-1999, 2001-2004</p></td>
+</tr>
+<tr class="row-odd"><td><p>Table 6.15 (4.A.2, land converted to forest)</p></td>
+<td><p>1990, 1995, 2000, 2005, 2010-2024</p></td>
+<td><p>1991-1994, 1996-1999, 2001-2004, 2006-2009</p></td>
+</tr>
+</tbody>
+</table>
+<p>For a year that is not printed, each table’s drained N-poor and drained N-rich areas are interpolated in a straight
+line between the printed years either side (for example 1993 = 1990 + 3/5 of the change to 1995), and the two
+tables are then added. Printed years, including the calibration year 2020 and 2022-2024, are the NID values exactly.
+The rule is in <code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code> (<code class="docutils literal notranslate"><span class="pre">nid_series</span></code>), and each column’s <code class="docutils literal notranslate"><span class="pre">transformation</span></code> entry in
+<code class="docutils literal notranslate"><span class="pre">column_metadata</span></code> repeats it.</p>
+<p>Before 0.5.0 the drained areas were hand-typed values with no source (174.5 and 72.5 kha in 2020), and the mineral
+share was 1 minus the drained shares (0.68), which counted undrained organic soil as mineral.</p>
+</section>
+<section id="industrial-peat-extraction">
+<h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
+<p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
+emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha. The other 42.7 kha carries only the
+carbon in horticultural peat, which the inventory works out from tonnage, and which landcover_lca adds from export
+statistics. The package uses the 4(II) area, so that carbon is not counted twice.</p>
+<p>The 42.7 kha is taken to be the estimated area of private (non-Bord na Mona) horticultural peat production: the NID
+(s.6.6.3) builds the industrial area from Bord na Mona’s area plus an area worked back from horticultural peat sales,
+and after Bord na Mona stopped harvesting in 2021 the extra area persists (28 kha in 2024). It is in the wetland
+total but in no sub-share. Why the inventory charges no per-hectare emissions on it is not explained in the NID; at
+the industrial rates it would be about 345 kt CO2e a year (2020).</p>
+</section>
+</section>
+<section id="still-waiting-for-a-decision">
+<h2>Still waiting for a decision<a class="headerlink" href="#still-waiting-for-a-decision" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>column</p></th>
+<th class="head"><p>now</p></th>
+<th class="head"><p>decision</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">burnt_kha</span></code> (every land use)</p></td>
+<td><p>0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty</p></td>
+<td><p>D6: burnt area, averaging window, forest aligned with cbm_runner</p></td>
+</tr>
+<tr class="row-odd"><td><p>grassland rich/poor split</p></td>
+<td><p>0.45 / 0.55 of the CRT drained and rewet-status areas</p></td>
+<td><p>D4: split by year from the CRT implied factors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> table</p></td>
+<td><p>0.4.0 table (unused by the code)</p></td>
+<td><p>D8: rebuild from Table4.1 or drop</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
+<td><p>0.4.0 table</p></td>
+<td><p>D9: document its source</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rewetting.html" class="btn btn-neutral float-left" title="Spared area, rewetting and the grassland row" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CONTRIBUTING.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

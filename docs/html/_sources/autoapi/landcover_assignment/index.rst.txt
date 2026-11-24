@@ -1,0 +1,24 @@
+landcover_assignment
+====================
+
+.. py:module:: landcover_assignment
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/landcover_assignment/_deprecation/index
+   /autoapi/landcover_assignment/afforestation/index
+   /autoapi/landcover_assignment/database/index
+   /autoapi/landcover_assignment/distribution/index
+   /autoapi/landcover_assignment/geo_landcover_assignment/index
+   /autoapi/landcover_assignment/landcover/index
+   /autoapi/landcover_assignment/national_landcover/index
+   /autoapi/landcover_assignment/optimisation/index
+   /autoapi/landcover_assignment/resource_manager/index
+   /autoapi/landcover_assignment/transition_matrix/index
+
+

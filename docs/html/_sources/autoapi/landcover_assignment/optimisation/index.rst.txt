@@ -1,0 +1,15 @@
+landcover_assignment.optimisation
+=================================
+
+.. py:module:: landcover_assignment.optimisation
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/landcover_assignment/optimisation/landcover_optimisation/index
+
+

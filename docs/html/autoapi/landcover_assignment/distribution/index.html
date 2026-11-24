@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>landcover_assignment.distribution &mdash; LandCover Assignment 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="landcover_assignment.geo_landcover_assignment" href="../geo_landcover_assignment/index.html" />
+    <link rel="prev" title="landcover_assignment.database" href="../database/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_sources.html">The package database and its sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">landcover_assignment</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../_deprecation/index.html">landcover_assignment._deprecation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../afforestation/index.html">landcover_assignment.afforestation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../database/index.html">landcover_assignment.database</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">landcover_assignment.distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../geo_landcover_assignment/index.html">landcover_assignment.geo_landcover_assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landcover/index.html">landcover_assignment.landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../national_landcover/index.html">landcover_assignment.national_landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../optimisation/index.html">landcover_assignment.optimisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_manager/index.html">landcover_assignment.resource_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transition_matrix/index.html">landcover_assignment.transition_matrix</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">landcover_assignment</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.distribution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/landcover_assignment/distribution/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-landcover_assignment.distribution">
+<span id="landcover-assignment-distribution"></span><h1>landcover_assignment.distribution<a class="headerlink" href="#module-landcover_assignment.distribution" title="Link to this heading"></a></h1>
+<p>This module is designed to manage and process land distribution scenarios for the Irish national context, particularly focusing on adjustments
+in land use areas based on various scenario inputs. It integrates with land cover data management,
+scenario-specific data fetching, and national area analysis to provide a comprehensive tool for land distribution analysis.</p>
+<section id="features">
+<h2>Features:<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Land Distribution Analysis</strong>: Manages the calculation and distribution of land areas across different land use types
+based on scenario-driven changes.</p></li>
+<li><p><strong>Grassland Distribution Management</strong>: Specifically handles the redistribution of grassland areas, taking into account
+changes in mineral and organic components.</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h2>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.landcover_data_manager.DistributionManager</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.national_landcover.NationalLandCover</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> for data manipulation and analysis.</p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes:<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">LandDistribution(scenario_data)</span></code></p>
+<blockquote>
+<div><p>Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
+areas and soil composition.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">land_distribution(year,</span> <span class="pre">land_use,</span> <span class="pre">new_area)</span></code></dt><dd><p>Calculates and updates the distribution of land based on land use type and the area change. It supports special
+handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other
+soil types accordingly.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">grassland_distribution(year,</span> <span class="pre">mineral_area,</span> <span class="pre">organic_area,</span> <span class="pre">grassland_area)</span></code></dt><dd><p>Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
+components, and recalculates the total remaining grassland area along with its composition.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id1">
+<h2>Classes<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.distribution.LandDistribution" title="landcover_assignment.distribution.LandDistribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LandDistribution</span></code></a></p></td>
+<td><p>Handles the distribution of land areas for various land use types under different scenarios,</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.distribution.</span></span><span class="sig-name descname"><span class="pre">LandDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution" title="Link to this definition"></a></dt>
+<dd><p>Handles the distribution of land areas for various land use types under different scenarios,
+adjusting for changes in areas and soil composition.</p>
+<p>This class provides methods to calculate and update land distribution based on changes in land use
+types, including special considerations for grassland, wetland, and forest. It utilizes data from
+land cover data managers, national land cover analysis, and scenario-specific data fetchers to accurately
+model land distribution adjustments under various scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scenario_data</strong> (<em>pd.DataFrame</em>) – A DataFrame containing scenario-specific data inputs. This data is used to fetch catchment
+names and drive the scenario-based calculations for land distribution adjustments.</p>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data_manager_class</strong> (<a class="reference internal" href="../resource_manager/landcover_data_manager/index.html#landcover_assignment.resource_manager.landcover_data_manager.DistributionManager" title="landcover_assignment.resource_manager.landcover_data_manager.DistributionManager"><em>DistributionManager</em></a>) – An instance of DistributionManager for managing land distribution data.</p></li>
+<li><p><strong>national_class</strong> (<a class="reference internal" href="../national_landcover/index.html#landcover_assignment.national_landcover.NationalLandCover" title="landcover_assignment.national_landcover.NationalLandCover"><em>NationalLandCover</em></a>) – An instance of NationalLandCover for accessing and analyzing Irish national context land cover data.</p></li>
+<li><p><strong>sc_fetcher_class</strong> (<a class="reference internal" href="../resource_manager/scenario_data_fetcher/index.html#landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher" title="landcover_assignment.resource_manager.scenario_data_fetcher.ScenarioDataFetcher"><em>ScenarioDataFetcher</em></a>) – An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>land_distribution(year, land_use, new_area)</dt><dd><p>Calculates and updates the distribution of land based on land use type and the area change.
+It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
+of mineral, organic, and other soil types accordingly.</p>
+</dd>
+<dt>grassland_distribution(year, mineral_area, organic_area, grassland_area)</dt><dd><p>Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
+and organic components, and recalculates the total remaining grassland area along with its composition.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.data_manager_class">
+<span class="sig-name descname"><span class="pre">data_manager_class</span></span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.data_manager_class" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.national_class">
+<span class="sig-name descname"><span class="pre">national_class</span></span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.national_class" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.sc_fetcher_class">
+<span class="sig-name descname"><span class="pre">sc_fetcher_class</span></span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.sc_fetcher_class" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.land_distribution">
+<span class="sig-name descname"><span class="pre">land_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.land_distribution" title="Link to this definition"></a></dt>
+<dd><p>Calculates and updates the land distribution based on land use type and area change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data.</p></li>
+<li><p><strong>land_use</strong> (<em>str</em>) – The type of land use to calculate distribution for.</p></li>
+<li><p><strong>new_area</strong> (<em>float</em>) – The area change to be applied to the land use type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing updated land distribution details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.distribution.LandDistribution.grassland_distribution">
+<span class="sig-name descname"><span class="pre">grassland_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organic_area_to_wet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grassland_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.distribution.LandDistribution.grassland_distribution" title="Link to this definition"></a></dt>
+<dd><p>Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.</p>
+<p>The mineral area leaves grassland. The rewetted organic area stays in grassland: it is taken from the drained
+rich/poor shares (in proportion to them) and added to the rewetted rich/poor (rewet-status) shares. The total
+organic area of the grassland row is unchanged. See docs/rewetting.md.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – The reference year for national land use data.</p></li>
+<li><p><strong>mineral_area</strong> (<em>float</em>) – The area of mineral soil that leaves grassland (ha).</p></li>
+<li><p><strong>organic_area_to_wet</strong> (<em>float</em>) – The drained organic area that is rewetted and stays in grassland with rewet status (ha).</p></li>
+<li><p><strong>grassland_area</strong> (<em>float</em>) – The total grassland area to be considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing updated grassland distribution details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../database/index.html" class="btn btn-neutral float-left" title="landcover_assignment.database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../geo_landcover_assignment/index.html" class="btn btn-neutral float-right" title="landcover_assignment.geo_landcover_assignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
