@@ -22,7 +22,8 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_land_balance.py` | Land is conserved in every scenario. The land-use table, transition matrix, spared-area log, soil-group split and afforestation table must agree. |
 | `test_optimisation.py` | The spared mineral-area allocation (Pyomo with HiGHS). |
 | `test_national_validation.py` | The package's 2020 land-use table against the **national reference areas** (`data_sources/national_reference_areas.csv`: CRT 2026 / NID 2026 / CRF 2024 burnt area, 1990-2024, in hectares, in the land-use table's terms), within 1%. Grassland (herd + balance) is checked in hectares and shares. Each known gap names its cause (D1-D10). |
-| `test_inventory_coverage.py` | `land_use_database.db` against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
+| `test_inventory_coverage.py` | The package database against CRT 2026 / NID 2026 (`data_sources/`), within 0.5%. |
+| `test_database_build.py` | The package database is what `tools/build_database.py` builds from `data_sources/` (same rows; two builds byte-identical); every column has unit, source and decision in `column_metadata`; the D-decisions taken are in the data. |
 | `test_grassland_balance.py` | Dossier LA2: grassland row = herd grassland + national balance (calibration year). The balance is constant in every scenario and never spared. `get_grassland_area_breakdown()` adds up. Edge cases: other calibration years, a negative balance, a year missing from the database. |
 | `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
 | `_helpers.py` | Paths, input loaders, and a cached pipeline run. |

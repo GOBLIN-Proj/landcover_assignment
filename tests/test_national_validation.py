@@ -26,10 +26,10 @@ reference = reference[reference.year == CAL].set_index(["land_use", "quantity"])
 
 # (land_use, quantity): (shares multiplied by area_ha (none = area itself), known gap or None).
 CHECKS = {
-    ("forest", "area"): ([], "refresh: CRF 2024 776.4 kha -> CRT 2026 798.7 kha"),
-    ("forest", "mineral"): (["share_mineral"], "D3: forest mineral share = 1 - emitting shares (0.68), CRT 0.46"),
-    ("forest", "drained_organic_n_poor"): (["share_organic"], "D3: 174.5 kha has no source; NID 287.4 kha"),
-    ("forest", "drained_organic_n_rich"): (["share_organic_mineral"], "D3: 72.5 kha has no source; NID 97.4 kha"),
+    ("forest", "area"): ([], None),
+    ("forest", "mineral"): (["share_mineral"], None),
+    ("forest", "drained_organic_n_poor"): (["share_organic"], None),
+    ("forest", "drained_organic_n_rich"): (["share_organic_mineral"], None),
     ("forest", "burnt"): (["share_burnt"], "D6: 4.A.1 only (177.7 of 300 ha)"),
     ("cropland", "area"): ([], None),
     ("cropland", "mineral"): (["share_mineral"], None),
@@ -39,17 +39,17 @@ CHECKS = {
     ("grassland", "drained_organic"): (["share_drained_rich_organic", "share_drained_poor_organic"], None),
     ("grassland", "rewet_status_organic"): (["share_rewetted_rich_organic", "share_rewetted_poor_organic"], None),
     ("grassland", "burnt"): (["share_burnt"], None),
-    ("wetland", "area"): ([], "D2: CRF 2024 1225.2 kha -> CRT 2026 1212.5 kha"),
+    ("wetland", "area"): ([], None),
     ("wetland", "domestic_peat_extraction"): (["share_domestic_peat_extraction"], None),
-    ("wetland", "industrial_peat_extraction"): (["share_industrial_peat_extraction"], "D1: CRF 2024 77.8 kha; CRT 4(II) 55.5, 4.D 98.3"),
-    ("wetland", "rewetted_industrial_peat_extraction"): (["share_rewetted_industrial_peat_extraction"], "D1/D2: CRF 2024 37.4 kha -> CRT 22.9 kha"),
-    ("wetland", "rewetted_domestic_peat_extraction"): (["share_rewetted_domestic_peat_extraction"], "refresh: CRF 2024 14.24 -> CRT 14.41 kha"),
+    ("wetland", "industrial_peat_extraction"): (["share_industrial_peat_extraction"], None),
+    ("wetland", "rewetted_industrial_peat_extraction"): (["share_rewetted_industrial_peat_extraction"], None),
+    ("wetland", "rewetted_domestic_peat_extraction"): (["share_rewetted_domestic_peat_extraction"], None),
     ("wetland", "near_natural"): (["share_near_natural_wetland"], None),
-    ("wetland", "unmanaged"): (["share_unmanaged_wetland"], "D2: CRF 2024 126.8 kha -> CRT 108.4 kha"),
+    ("wetland", "unmanaged"): (["share_unmanaged_wetland"], None),
     ("wetland", "burnt"): (["share_burnt"], None),
     ("settlement", "area"): ([], None),
     ("settlement", "mineral"): (["share_mineral"], None),
-    ("settlement", "organic"): (["share_organic"], "D7: CRF 2024 3.2 kha -> CRT 2.0 kha"),
+    ("settlement", "organic"): (["share_organic"], None),
 }
 
 # Grassland sub-areas as a share of all grassland: the package's shares vs national quantity / 4.C area.

@@ -31,7 +31,7 @@ balance = national grassland area (calibration year) - herd grassland area (cali
 ```
 
 - **The calibration year** is whatever year the run uses as its calibration year.
-- **National grassland area:** from the package database, `land_use_database.db`, table `grassland_data`, column `total_kha` (EPA CRF 2024, Table 4.C, total grassland, 1990-2022). It becomes the CRT 2026 values when the database is rebuilt. A calibration year that isn't in the database stops the run with an error naming the year.
+- **National grassland area:** from the package database (see [the package database](data_sources.md)), table `grassland_data`, column `total_kha` (EPA CRT 2026, Table4.C, total grassland, 1990-2024). A calibration year that isn't in the database stops the run with an error naming the year.
 - **Herd grassland area:** the calibration-year row of the `total_grassland` input.
 - **If the herd area is larger than the national area,** the balance is 0 and a warning is logged.
 
@@ -54,12 +54,11 @@ The mineral and drained organic areas available to be spared are taken from the 
 | | grassland area |
 |---|---|
 | herd grassland (grassland_production) | 3,904.9 kha |
-| balance (other grassland) | 324.3 kha |
-| **grassland row = national area (package database, CRF 2024 4.C)** | **4,229.1 kha** |
+| balance (other grassland) | 313.6 kha |
+| **grassland row = national area (package database, CRT 2026 4.C)** | **4,218.5 kha** |
 | for comparison: CSO grassland (pasture, hay, silage, rough grazing in use) | 4,152.0 kha |
-| for comparison: CRT 2026 4.C | 4,218.5 kha |
 
-Before 0.5.0 the grassland row held the herd grassland only. The other grassland (about 324 kha) was in no land use, and its emissions were counted nowhere.
+Before 0.5.0 the grassland row held the herd grassland only. The other grassland (about 314 kha) was in no land use, and its emissions were counted nowhere.
 
 `tests/test_grassland_balance.py` and `tests/test_national_validation.py` check:
 - the mass balance;

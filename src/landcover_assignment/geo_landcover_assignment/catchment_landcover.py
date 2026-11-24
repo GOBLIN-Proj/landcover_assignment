@@ -679,7 +679,8 @@ class CatchmentLandCover:
             raise ValueError(f"Unknown land use type: {landuse}")
         
         data = self._get_cached_national_areas(landuse)
-        burn_average = data["burnt_kha"].sum() / data["total_kha"].sum() 
+        data = data[data["burnt_kha"].notna()]          # years with a burnt area (2023-2024 pending D6)
+        burn_average = data["burnt_kha"].sum() / data["total_kha"].sum()
 
         return burn_average   
 

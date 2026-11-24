@@ -1,6 +1,7 @@
-"""Audit the land-use database against the current inventory (CRT 2026, NID 2026, CRF 2024 for burnt area).
+"""Audit the 0.4.0 land-use database against the current inventory (CRT 2026, NID 2026, CRF 2024 for burnt area).
 
-For every column of every table in `land_use_database.db`, this script writes:
+This is the step 1 audit that led to the step 6 rebuild (tools/build_database.py). It reads the 0.4.0 database,
+`land_use_database.db`, from git (commit 25a83b4). For every column of every table, it writes:
 - the database value (CRF 2024 vintage);
 - the inventory value from `data_sources/`;
 - the difference;
@@ -13,13 +14,16 @@ Usage, from the repo root:
     .venv/bin/python tools/build_provenance.py <out.md>
 """
 import sqlite3
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DB = ROOT / "src/landcover_assignment/database/land_use_database.db"
+LEGACY_COMMIT = "25a83b4"
+LEGACY_DB = "src/landcover_assignment/database/land_use_database.db"
 YEARS = (1990, 2020, 2022)
 
 inv = pd.read_csv(ROOT / "data_sources/inventory_areas.csv")
@@ -115,7 +119,12 @@ def diff(a, b):
 
 
 def main(out_path):
-    con = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
+    blob = subprocess.run(["git", "show", f"{LEGACY_COMMIT}:{LEGACY_DB}"], cwd=ROOT, check=True,
+                          capture_output=True).stdout
+    tmp = tempfile.TemporaryDirectory()
+    db = Path(tmp.name) / "land_use_database.db"
+    db.write_bytes(blob)
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
     lines = [
         "# Data provenance audit: land_use_database.db against CRT 2026 / NID 2026",
         "",

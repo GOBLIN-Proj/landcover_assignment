@@ -5,8 +5,8 @@ The grassland area in GOBLIN is herd-derived (grassland_production). The nationa
 
     balance = national grassland area (calibration year) - herd grassland area (calibration year),  floor 0
 
-- National area: package database, grassland_data.total_kha (EPA CRF 2024 Table 4.C total grassland; CRT 2026 after
-  the step 6 rebuild), for whatever calibration year the run uses.
+- National area: package database, grassland_data.total_kha (EPA CRT 2026 Table4.C total grassland), for whatever
+  calibration year the run uses.
 - Herd area: grassland_production's total_grassland input, calibration-year row.
 - The balance is the same in the baseline and every scenario, and it is never available to be spared.
 - LandCover.get_grassland_area_breakdown() reports herd / rewetted spared / other (balance) grassland per row.

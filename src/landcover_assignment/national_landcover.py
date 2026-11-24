@@ -5,8 +5,10 @@ National areas and soil, peat and burnt shares for each land use, read from the 
 
 Each land use's calibration-year row is its area plus 17 share columns. Every share is one database column divided by
 the land use's total area (``total_kha``), applied to the land uses in ``SHARE_SOURCES`` and 0 for the rest. Forest has
-two special cases: its organic share uses the emitting organic area (``organic_emitting_kha``), and its mineral share
-is 1 - organic - organo-mineral.
+one special case: its organic share is the drained N-poor organic area (``organic_emitting_kha``), and its
+organo-mineral share the drained N-rich area (NID 2026 Tables 6.7 + 6.15). Its mineral share is the CRT mineral area
+(0.46 in 2020). The undrained open area on organic soil (0.06) is in no share, so forest shares sum to about 0.94
+(decision D3).
 
 The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
 (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
@@ -25,8 +27,8 @@ ALL = LAND_USES
 
 # share column: (land uses it applies to (0 for the others), database column divided by total_kha)
 SHARE_SOURCES = {
-    "share_mineral": (ALL, "mineral_kha"),                       # forest: 1 - organic - organo-mineral
-    "share_organic": (ALL, "organic_kha"),                       # forest: organic_emitting_kha
+    "share_mineral": (ALL, "mineral_kha"),
+    "share_organic": (ALL, "organic_kha"),                       # forest: organic_emitting_kha (drained N-poor)
     "share_organic_mineral": (("forest",), "organo_mineral_emitting_kha"),
     "share_drained_rich_organic": (("grassland",), "drained_rich_organic_kha"),
     "share_drained_poor_organic": (("grassland",), "drained_poor_organic_kha"),
@@ -108,8 +110,6 @@ class NationalLandCover:
             raise ValueError(f"Unknown land use type: {landuse}")
         if landuse not in uses:
             return 0.0
-        if landuse == "forest" and share == "share_mineral":
-            return 1 - (self.get_national_organic_mineral("forest", year) + self.get_national_organic("forest", year))
         if landuse == "forest" and share == "share_organic":
             column = "organic_emitting_kha"
         data = self._get_cached_data(landuse)
@@ -131,10 +131,11 @@ class NationalLandCover:
         return data.loc[year, "total_kha"].item()
 
     def get_national_burnt_average(self, landuse):
-        """Burnt area as a share of the land use's area, over all years in the database."""
+        """Burnt area as a share of the land use's area, over all years in the database that have a burnt area."""
         if landuse not in self.national_areas:
             raise ValueError(f"Unknown land use type: {landuse}")
         data = self.national_areas[landuse]()
+        data = data[data["burnt_kha"].notna()]
         return data["burnt_kha"].sum() / data["total_kha"].sum()
 
     def get_national_mineral(self, landuse, year):
@@ -363,8 +364,8 @@ class NationalLandCover:
 
         Sources:
 
-        - national grassland area: package database, ``grassland_data.total_kha`` (EPA CRF 2024 Table 4.C, total
-          grassland, 1990-2022), via :meth:`get_national_area`;
+        - national grassland area: package database, ``grassland_data.total_kha`` (EPA CRT 2026 Table4.C, total
+          grassland, 1990-2024), via :meth:`get_national_area`;
         - herd-derived grassland area: grassland_production's ``total_grassland`` input, calibration-year row, via
           :meth:`get_derived_national_grassland_area`.
 

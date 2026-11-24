@@ -23,7 +23,7 @@ Methods:
 
 import sqlalchemy as sqa
 import pandas as pd
-from landcover_assignment.database import get_local_dir
+from landcover_assignment.database import get_database_path, get_local_dir
 import os
 from landcover_assignment._deprecation import renamed_method
 
@@ -43,9 +43,7 @@ class DataManager:
         Returns:
             sqlalchemy.engine.Engine: A SQLAlchemy engine instance connected to the land use database.
         """
-        database_path = os.path.abspath(
-            os.path.join(self.database_dir, "land_use_database.db")
-        )
+        database_path = os.path.abspath(get_database_path())
         engine_url = f"sqlite:///{database_path}"
 
         return sqa.create_engine(engine_url)

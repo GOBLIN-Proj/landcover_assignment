@@ -10,6 +10,7 @@
 INSTALLATION.md
 grassland_area.md
 rewetting.md
+data_sources.md
 CONTRIBUTING.md
 autoapi/index
 example.ipynb

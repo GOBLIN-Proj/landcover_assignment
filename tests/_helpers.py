@@ -57,10 +57,10 @@ def input_grassland_area(name, year, scenario=None):
 
 
 def national_grassland_area(year):
-    """National grassland area (ha) in the package database (grassland_data.total_kha; CRF 2024 Table 4.C total)."""
+    """National grassland area (ha) in the package database (grassland_data.total_kha; CRT 2026 Table4.C total)."""
     import sqlite3
-    from landcover_assignment.database import get_local_dir
-    con = sqlite3.connect(Path(get_local_dir()) / "land_use_database.db")
+    from landcover_assignment.database import get_database_path
+    con = sqlite3.connect(get_database_path())
     (kha,) = con.execute("select total_kha from grassland_data where year = ?", (year,)).fetchone()
     return kha * 1000
 
