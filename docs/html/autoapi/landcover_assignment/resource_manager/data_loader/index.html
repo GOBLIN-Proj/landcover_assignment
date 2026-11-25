@@ -143,10 +143,10 @@ forest_soil_yield_mapping(): Retrieves forest soil yield mapping to soil groups 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.data_loader.Loader.national_inventory_areas">
 <span class="sig-name descname"><span class="pre">national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.data_loader.Loader.national_inventory_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national inventory areas dataset.</p>
+<dd><p>Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024, in ha).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A DataFrame containing national inventory areas data.</p>
+<dd class="field-odd"><p>indexed by <code class="docutils literal notranslate"><span class="pre">Year</span></code>, with <code class="docutils literal notranslate"><span class="pre">Land_cover</span></code> and <code class="docutils literal notranslate"><span class="pre">Area_kha</span></code> (in ha after conversion).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pandas.DataFrame</p>

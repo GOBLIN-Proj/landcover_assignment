@@ -4,7 +4,8 @@ The 0.4.0 database (`land_use_database.db`, CRF 2024 vintage) is read from git a
 the same files on any checkout. It writes:
 
 - `data_sources/legacy_burnt_area.csv`: `burnt_kha` of every land-use table, 1990-2022 (pending D6, burnt area);
-- `data_sources/legacy_nir_table.csv`: the `NIR` table (pending D8; unused by the code);
+- (`data_sources/legacy_nir_table.csv`, the 0.4.0 `NIR` table, is no longer written: D8 rebuilt the table from CRT
+  2026 Table4.1.)
 - `data_sources/forest_soil_yield_mapping.csv`: the soil group -> yield class table (pending D9).
 
 Floats are written with Python's shortest round-trip repr, so the rebuilt database holds the same values bit for bit.
@@ -34,15 +35,13 @@ def main():
         try:
             burnt = pd.concat([pd.read_sql(f"SELECT year, burnt_kha AS value FROM {t} ORDER BY year", con).assign(table=t)
                                for t in TABLES])
-            nir = pd.read_sql("SELECT Year, Land_cover, Area_kha FROM NIR", con)
             mapping = pd.read_sql("SELECT soil_group, species, yield_class FROM forest_soil_yield_mapping", con)
         finally:
             con.close()
     out = ROOT / "data_sources"
     burnt[["table", "year", "value"]].to_csv(out / "legacy_burnt_area.csv", index=False, lineterminator="\n")
-    nir.to_csv(out / "legacy_nir_table.csv", index=False, lineterminator="\n")
     mapping.to_csv(out / "forest_soil_yield_mapping.csv", index=False, lineterminator="\n")
-    print(f"burnt {len(burnt)} rows, NIR {len(nir)} rows, mapping {len(mapping)} rows -> {out}")
+    print(f"burnt {len(burnt)} rows, mapping {len(mapping)} rows -> {out}")
 
 
 if __name__ == "__main__":

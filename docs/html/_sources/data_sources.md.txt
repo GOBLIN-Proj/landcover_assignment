@@ -13,7 +13,7 @@ built it.
 | `nid2026_forest_organic_soils.csv` | `tools/transcribe_nid_forest.py` | NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas |
 | `nid2026_grassland_organic_factors.csv` | transcribed | NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor |
 | `cbm_runner_forest.csv`, `cbm_runner_forest_parameters.csv` | `tools/export_cbm_runner_forest.py` | cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below) |
-| `legacy_burnt_area.csv`, `legacy_nir_table.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken (of the burnt area, only `forest_data.burnt_kha` is still read) |
+| `legacy_burnt_area.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken (of the burnt area, only `forest_data.burnt_kha` is still read) |
 
 The database records its own provenance:
 
@@ -174,6 +174,15 @@ grassland 146 -> 231 ha, wetland 336 -> 316 ha, cropland 14 -> 48 ha.
 The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
 `forest_data.burnt_kha`. Both are on the catchment to-do list for later.
 
+### National land area by category: the `NIR` table (D8)
+`NIR` holds the area of each inventory land category (forest, cropland, grassland, managed and unmanaged wetland,
+settlements, other land) in every year 1990-2024: CRT 2026 Table4.1, row 20 "Final area", in kha, taken from the
+same extracted rows as `inventory_values` (`4.1.final_area.*`). The categories add up to the national land area,
+7,111.8 kha, in every year. Read it with `Loader().national_inventory_areas()` (areas in ha). The model does not
+use it; it is there as a quick national check and for other uses of the package. Columns and labels are as in
+0.4.0. The 0.4.0 table held the CRF 2024 "Initial area" under the wrong years (its extraction numbered the
+workbooks in unsorted file order).
+
 ### Industrial peat extraction
 CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
 emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha. The other 42.7 kha carries only the
@@ -191,5 +200,4 @@ the industrial rates it would be about 345 kt CO2e a year (2020).
 | column | now | decision |
 |---|---|---|
 | `forest_data.burnt_kha` (read only by the catchment tree) | 0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty | catchment forest burnt area (the national forest row uses cbm_runner's fire, D6a) |
-| `NIR` table | 0.4.0 table (unused by the code) | D8: rebuild from Table4.1 or drop |
 | `forest_soil_yield_mapping` | 0.4.0 table | D9: document its source |

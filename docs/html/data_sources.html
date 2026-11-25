@@ -55,6 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#forest-soils">Forest soils</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor">Grassland organic soils: nutrient rich and nutrient poor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#burnt-area-of-grassland-wetland-and-cropland-d6b">Burnt area of grassland, wetland and cropland (D6b)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#national-land-area-by-category-the-nir-table-d8">National land area by category: the <code class="docutils literal notranslate"><span class="pre">NIR</span></code> table (D8)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
 </ul>
 </li>
@@ -122,7 +123,7 @@ built it.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_cbm_runner_forest.py</span></code></p></td>
 <td><p>cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">legacy_nir_table.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
 <td><p>values kept from the 0.4.0 database until their decision is taken (of the burnt area, only <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> is still read)</p></td>
 </tr>
@@ -424,6 +425,16 @@ grassland 146 -&gt; 231 ha, wetland 336 -&gt; 316 ha, cropland 14 -&gt; 48 ha.</
 <p>The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
 <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code>. Both are on the catchment to-do list for later.</p>
 </section>
+<section id="national-land-area-by-category-the-nir-table-d8">
+<h3>National land area by category: the <code class="docutils literal notranslate"><span class="pre">NIR</span></code> table (D8)<a class="headerlink" href="#national-land-area-by-category-the-nir-table-d8" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> holds the area of each inventory land category (forest, cropland, grassland, managed and unmanaged wetland,
+settlements, other land) in every year 1990-2024: CRT 2026 Table4.1, row 20 “Final area”, in kha, taken from the
+same extracted rows as <code class="docutils literal notranslate"><span class="pre">inventory_values</span></code> (<code class="docutils literal notranslate"><span class="pre">4.1.final_area.*</span></code>). The categories add up to the national land area,
+7,111.8 kha, in every year. Read it with <code class="docutils literal notranslate"><span class="pre">Loader().national_inventory_areas()</span></code> (areas in ha). The model does not
+use it; it is there as a quick national check and for other uses of the package. Columns and labels are as in
+0.4.0. The 0.4.0 table held the CRF 2024 “Initial area” under the wrong years (its extraction numbered the
+workbooks in unsorted file order).</p>
+</section>
 <section id="industrial-peat-extraction">
 <h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
 <p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
@@ -451,11 +462,7 @@ the industrial rates it would be about 345 kt CO2e a year (2020).</p>
 <td><p>0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty</p></td>
 <td><p>catchment forest burnt area (the national forest row uses cbm_runner’s fire, D6a)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> table</p></td>
-<td><p>0.4.0 table (unused by the code)</p></td>
-<td><p>D8: rebuild from Table4.1 or drop</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
 <td><p>0.4.0 table</p></td>
 <td><p>D9: document its source</p></td>
 </tr>

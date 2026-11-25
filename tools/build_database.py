@@ -40,11 +40,14 @@ Decided (owner, 2026-11-23/24):
   so 2023-2024 are derived: grassland and wetland = CRT 2026 Table4(IV) wildfire CH4 / the mean implied CH4 per ha
   burnt in 2020-2022; cropland = the mean CRF burnt area 2020-2022 (its implied CH4 per ha is too inconsistent to
   back-calculate). Settlement: 0 (no inventory burnt area).
+- D8 (owner, 2026-11-25): the `NIR` table is rebuilt, not dropped (a national land-area table for quick validation
+  and other users of the package): Table4.1 final area by land category, CRT 2026, 1990-2024, taken from the same
+  extracted rows as `inventory_values` (`4.1.final_area.*`). Columns and 0.4.0 labels are kept. 0.4.0 held the
+  CRF 2024 "Initial area" under scrambled years.
 
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
 - `forest_data.burnt_kha` (CRF 2024 4.A.1, 1990-2022; 2023-2024 empty), read only by the catchment tree (geo to-do;
   the national forest row uses cbm_runner's fire, D6a);
-- D8: the `NIR` table (unused by the code);
 - D9: `forest_soil_yield_mapping`.
 
 Two builds give byte-identical files (same SQLite library). Usage, from the repo root:
@@ -64,7 +67,7 @@ VERSION = "0.5.0"
 OUTPUT = ROOT / f"src/landcover_assignment/database/land_use_database_{VERSION}.db"
 YEARS = list(range(1990, 2025))
 INPUTS = ("data_sources/inventory_areas.csv", "data_sources/nid2026_forest_organic_soils.csv",
-          "data_sources/legacy_burnt_area.csv", "data_sources/legacy_nir_table.csv",
+          "data_sources/legacy_burnt_area.csv",
           "data_sources/forest_soil_yield_mapping.csv", "data_sources/nid2026_grassland_organic_factors.csv",
           "data_sources/cbm_runner_forest.csv", "data_sources/cbm_runner_forest_parameters.csv",
           "tools/build_database.py")
@@ -171,13 +174,18 @@ TABLES = {
         "burnt_kha": ("zero", None, "kha", "burnt settlement area: 0 (no inventory burnt area)", D6B),
     },
 }
+D8 = "D8: Table4.1 final area by land category (rebuilt; was CRF 2024 initial area under scrambled years)"
+NIR_LABELS = {   # 0.4.0 label -> 4.1.final_area quantity in inventory_values; order as in 0.4.0
+    "Forest land (managed)(2)": "forest_managed", "Cropland(2)": "cropland",
+    "Grassland (managed)(2)": "grassland_managed", "Wetlands (managed)(2)": "wetlands_managed",
+    "Wetlands (unmanaged)(2)": "wetlands_unmanaged", "Settlements(2)": "settlements", "Other land(2)": "other_land",
+}
 OTHER_COLUMNS = [   # (table, column, unit, description, source, transformation, decision, status)
-    ("NIR", "Year", "year", "inventory year", "LEGACY040", "copied", "pending D8: rebuild from Table4.1 or drop",
-     "pending"),
-    ("NIR", "Land_cover", "label", "Table4.1 land category label", "LEGACY040", "copied",
-     "pending D8: rebuild from Table4.1 or drop", "pending"),
-    ("NIR", "Area_kha", "kha", "Table4.1 area (scrambled years in 0.4.0; unused by the code)", "LEGACY040", "copied",
-     "pending D8: rebuild from Table4.1 or drop", "pending"),
+    ("NIR", "Year", "year", "inventory year", "CRT2026", "Table4.1, one workbook per year", D8, "inventory"),
+    ("NIR", "Land_cover", "label", "Table4.1 land category (0.4.0 label)", "CRT2026",
+     "Table4.1 column header, with the 0.4.0 label", D8, "inventory"),
+    ("NIR", "Area_kha", "kha", "Table4.1 final area of the land category", "CRT2026",
+     "Table4.1 row 20 'Final area' (NO -> 0)", D8, "inventory"),
     ("forest_soil_yield_mapping", "soil_group", "group", "spared-area soil group (1-3)", "LEGACY040", "copied",
      "pending D9: document source (Farrelly & Gallagher 2015)", "pending"),
     ("forest_soil_yield_mapping", "species", "label", "tree species (Sitka spruce, SGB)", "LEGACY040", "copied",
@@ -395,13 +403,19 @@ def build_tables():
     return inventory, nid, tables, metadata
 
 
+def nir_table(inventory):
+    """The `NIR` table (D8): Table4.1 final area (kha) by year and land category, from the extracted CRT rows."""
+    series = {label: crt_series(inventory, f"4.1.final_area.{name}") for label, name in NIR_LABELS.items()}
+    return [(year, label, float(series[label][year])) for year in YEARS for label in NIR_LABELS]
+
+
 def build(path=OUTPUT):
     """Write the database to ``path`` (overwritten). Returns the path."""
     path = Path(path)
     inventory, nid, tables, metadata = build_tables()
     managed_forest, fire_rate, cbm_metadata = managed_forest_tables()
     metadata = metadata + cbm_metadata
-    nir = read_csv("data_sources/legacy_nir_table.csv")
+    nir = nir_table(inventory)
     mapping = read_csv("data_sources/forest_soil_yield_mapping.csv")
     if path.exists():
         path.unlink()
@@ -424,7 +438,7 @@ def build(path=OUTPUT):
                     tuple(float(fire_rate[c]) for c in FIRE_RATE))
         cur.execute('CREATE TABLE "NIR" ("Year" INTEGER, "Land_cover" TEXT, "Area_kha" REAL)')
         cur.executemany('INSERT INTO "NIR" VALUES (?, ?, ?)',
-                        [(int(y), str(l), float(a)) for y, l, a in nir.itertuples(index=False, name=None)])
+                        nir)
         cur.execute('CREATE TABLE "forest_soil_yield_mapping" ("soil_group" INTEGER, "species" TEXT, '
                     '"yield_class" TEXT)')
         cur.executemany('INSERT INTO "forest_soil_yield_mapping" VALUES (?, ?, ?)',

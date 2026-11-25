@@ -167,7 +167,7 @@ def main(out_path):
 
     lines += ["", "## Other tables", "",
               "- **`forest_soil_yield_mapping`:** no script; added by hand in February 2024. The only source cited is Farrelly & Gallagher (2015), in the README. It is duplicated in `landcover_data_manager.py` (`cbm_default_data`). Decision D9.",
-              "- **`NIR`:** the year assigned to each row is wrong (a counter over unsorted `os.listdir`), and it holds Table4.1 'Initial area'. Nothing in the package uses it. Decision D8.",
+              "- **`NIR`:** rebuilt in 0.5.0 (D8) as CRT 2026 Table4.1 final area by land category, 1990-2024. The 0.4.0 table held CRF 2024 'Initial area' under wrong years (a counter over unsorted `os.listdir`).",
               "", "## Not inventory data", "",
               "- **Grassland area** (`area_ha` of the grassland row) comes from grassland_production's input (`total_grassland`). The database supplies only the shares.",
               "- **Rewetted spared grassland stays grassland** (protected design rule): it moves into `share_rewetted_rich/poor_organic`, never into the wetland row."]

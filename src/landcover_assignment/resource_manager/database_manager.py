@@ -68,10 +68,15 @@ class DataManager:
 
     def get_national_inventory_areas(self):
         """
-        Retrieves national inventory area data from the database and converts its areas from kha to ha.
+        Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024) and
+        converts its areas from kha to ha.
+
+        Useful as a quick national check: the categories add up to the national land area (7,111,785 ha) in
+        every year. Labels are the inventory's (e.g. "Grassland (managed)(2)"); the ``Area_kha`` column name is
+        kept from 0.4.0 but holds ha after conversion.
 
         Returns:
-            pandas.DataFrame: A DataFrame containing national inventory area data with the area values scaled.
+            pandas.DataFrame: indexed by ``Year``, with ``Land_cover`` and ``Area_kha`` (in ha).
         """
         table = "NIR"
         dataframe = pd.read_sql(

@@ -39,10 +39,10 @@ class Loader:
 
     def national_inventory_areas(self):
         """
-        Retrieves national inventory areas dataset.
+        Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024, in ha).
 
         Returns:
-            pandas.DataFrame: A DataFrame containing national inventory areas data.
+            pandas.DataFrame: indexed by ``Year``, with ``Land_cover`` and ``Area_kha`` (in ha after conversion).
         """
         return self.dataframes.get_national_inventory_areas()
 

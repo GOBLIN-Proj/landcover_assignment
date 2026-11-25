@@ -232,5 +232,49 @@ class BurntAreaD6b(unittest.TestCase):
                      "AND source_id != 'CRF2024'")[0]
         self.assertEqual(n, 0)
 
+class NIRTableD8(unittest.TestCase):
+    """D8: the `NIR` table is Table4.1 final area by land category, CRT 2026, 1990-2024, in kha (0.4.0 held the
+    CRF 2024 'Initial area' under scrambled years). Columns and labels are unchanged."""
+    LABELS = {"Forest land (managed)(2)": "forest_managed", "Cropland(2)": "cropland",
+              "Grassland (managed)(2)": "grassland_managed", "Wetlands (managed)(2)": "wetlands_managed",
+              "Wetlands (unmanaged)(2)": "wetlands_unmanaged", "Settlements(2)": "settlements",
+              "Other land(2)": "other_land"}
+
+    def test_shape(self):
+        rows = query('SELECT "Year", "Land_cover" FROM "NIR" ORDER BY rowid')
+        self.assertEqual(len(rows), 35 * 7)
+        self.assertEqual(sorted({y for y, _ in rows}), list(range(1990, 2025)))
+        self.assertEqual([l for y, l in rows if y == 1990], list(self.LABELS))
+
+    def test_values_are_crt_2026_final_area(self):
+        for label, name in self.LABELS.items():
+            crt = crt_values(f"4.1.final_area.{name}")
+            have = dict(query('SELECT "Year", "Area_kha" FROM "NIR" WHERE "Land_cover" = ?', label))
+            for year in range(1990, 2025):
+                with self.subTest(label=label, year=year):
+                    self.assertEqual(have[year], crt[year])
+
+    def test_known_values(self):
+        def area(label, year):
+            return query('SELECT "Area_kha" FROM "NIR" WHERE "Land_cover" = ? AND "Year" = ?', label, year)[0][0]
+        self.assertAlmostEqual(area("Forest land (managed)(2)", 2020), 798.747, places=3)    # = forest_data 2020
+        self.assertAlmostEqual(area("Grassland (managed)(2)", 2020), 4218.508, places=3)
+        self.assertAlmostEqual(area("Wetlands (unmanaged)(2)", 2020), 108.364, places=3)
+        # Table4.1 and Table4.A agree to rounding (1e-7 kha)
+        self.assertAlmostEqual(area("Forest land (managed)(2)", 2020), value("forest_data", "total_kha"), places=6)
+
+    def test_total_land_is_constant(self):
+        totals = query('SELECT "Year", SUM("Area_kha") FROM "NIR" GROUP BY "Year"')
+        for year, total in totals:
+            self.assertAlmostEqual(total, 7111.78536, places=4, msg=year)
+
+    def test_metadata(self):
+        meta = query("SELECT column_name, source_id, status, decision FROM column_metadata WHERE table_name = 'NIR'")
+        self.assertEqual({c for c, *_ in meta}, {"Year", "Land_cover", "Area_kha"})
+        for column, source, status, decision in meta:
+            self.assertEqual((source, status), ("CRT2026", "inventory"), column)
+            self.assertTrue(decision.startswith("D8"), column)
+
+
 if __name__ == "__main__":
     unittest.main()
