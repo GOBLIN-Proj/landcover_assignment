@@ -35,9 +35,15 @@ Decided (owner, 2026-11-23/24):
 - D7: cropland and settlement from CRT 4.B and 4.E. A notation key (NO) is stored as 0 in the data tables and kept in
   `inventory_values`.
 
+- D6b (owner, 2026-11-25): burnt area (`burnt_kha`) of grassland, wetland and cropland. 1990-2022 = CRF 2024
+  Table4(V) (4.C.1, 4.D.1, 4.B.1; notation key NO -> 0). The CRF has no 2023-2024 and the CRT reports no burnt area,
+  so 2023-2024 are derived: grassland and wetland = CRT 2026 Table4(IV) wildfire CH4 / the mean implied CH4 per ha
+  burnt in 2020-2022; cropland = the mean CRF burnt area 2020-2022 (its implied CH4 per ha is too inconsistent to
+  back-calculate). Settlement: 0 (no inventory burnt area).
+
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
-- D6b: burnt area (`burnt_kha`) of the other land uses, and `forest_data.burnt_kha` (still read by the catchment
-  tree), 1990-2022; 2023-2024 empty (NULL);
+- `forest_data.burnt_kha` (CRF 2024 4.A.1, 1990-2022; 2023-2024 empty), read only by the catchment tree (geo to-do;
+  the national forest row uses cbm_runner's fire, D6a);
 - D8: the `NIR` table (unused by the code);
 - D9: `forest_soil_yield_mapping`.
 
@@ -51,7 +57,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from landcover_assignment.resource_manager.units import CH4_C_TO_CH4
+from landcover_assignment.resource_manager.units import CH4_C_TO_CH4, HA_TO_KHA
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = "0.5.0"
@@ -71,6 +77,8 @@ SOURCES = [
                 "transcribed by tools/transcribe_nid_forest.py into data_sources/nid2026_forest_organic_soils.csv; "
                 "s.6.5.2 p.271-272 grassland organic soil emission factors, transcribed into "
                 "data_sources/nid2026_grassland_organic_factors.csv"),
+    ("CRF2024", "EPA Ireland, Common Reporting Format 2024 submission, Table4(V) biomass burning: area burnt "
+                "(1990-2022), extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv"),
     ("LEGACY040", "landcover_assignment 0.4.0 database land_use_database.db (CRF 2024 vintage, git 25a83b4), "
                   "exported by tools/export_legacy_columns.py into data_sources/legacy_*.csv and "
                   "forest_soil_yield_mapping.csv"),
@@ -87,8 +95,13 @@ SOURCES = [
 #   crt_rich: (CRT 4(II).C.1 row, "rich" or "poor"): the row's area x its rich (or poor) fraction (D4)
 #   nid: NID column, 4.A.1 + 4.A.2, interpolated between printed years
 #   legacy_burnt: data_sources/legacy_burnt_area.csv
+#   burnt: (CRF burnt area code, CRT wildfire CH4 quantity or None): D6b, see burnt_series
+#   zero: 0 in every year (PACKAGE parameter)
 REFRESH = "refresh: CRF 2024 -> CRT 2026"
-D6 = "pending D6: burnt area (CRF 2024 vintage, 1990-2022; 2023-2024 NULL)"
+D6 = ("pending D6, geo to-do G1: catchment forest burnt area (CRF 2024 4.A.1, 1990-2022; 2023-2024 NULL); the "
+      "national forest row uses cbm_runner fire (D6a)")
+D6B = "D6b: inventory burnt area"
+BURNT_FACTOR_YEARS = (2020, 2021, 2022)
 TABLES = {
     "forest_data": {
         "total_kha": ("crt", "4.A.area", "kha", "forest land, total area", "D3"),
@@ -117,13 +130,13 @@ TABLES = {
         "rewetted_poor_organic_kha": ("crt_rich", ("other", "poor"), "kha",
                                       "nutrient-poor organic grassland soil with rewet status (NID s.6.5.2; CRT 2026 "
                                       "'Other organic soils')", "D5, D4"),
-        "burnt_kha": ("legacy_burnt", "grassland_data", "kha", "burnt grassland area", D6),
+        "burnt_kha": ("burnt", ("C.1", "4(IV).C.1.wildfires.ch4"), "kha", "burnt grassland area (wildfires)", D6B),
     },
     "cropland_data": {
         "total_kha": ("crt", "4.B.area", "kha", "cropland, total area", "D7"),
         "mineral_kha": ("crt", "4.B.mineral_area", "kha", "cropland on mineral soil", "D7"),
         "organic_kha": ("crt", "4.B.organic_area", "kha", "cropland on organic soil (CRT: NO -> 0)", "D7"),
-        "burnt_kha": ("legacy_burnt", "cropland_data", "kha", "burnt cropland area", D6),
+        "burnt_kha": ("burnt", ("B.1", None), "kha", "burnt cropland area", D6B),
     },
     "wetland_data": {
         "total_kha": ("crt", "4.D.area", "kha", "wetland, total area (managed + unmanaged; = CRT Table4.1)", "D2"),
@@ -149,13 +162,13 @@ TABLES = {
                                  REFRESH),
         "near_natural_wetland_kha": ("crt", "4.D.near_natural_wetlands.area", "kha", "near-natural wetland", "D2"),
         "unmanaged_wetland_kha": ("crt", "4.D.unmanaged_wetlands.area", "kha", "unmanaged wetland", "D2"),
-        "burnt_kha": ("legacy_burnt", "wetland_data", "kha", "burnt wetland area", D6),
+        "burnt_kha": ("burnt", ("D.1", "4(IV).D.1.wildfires.ch4"), "kha", "burnt wetland area (wildfires)", D6B),
     },
     "settlement_data": {
         "total_kha": ("crt", "4.E.area", "kha", "settlement, total area", "D7"),
         "mineral_kha": ("crt", "4.E.mineral_area", "kha", "settlement on mineral soil", "D7"),
         "organic_kha": ("crt", "4.E.organic_area", "kha", "settlement on organic soil (NO in some years -> 0)", "D7"),
-        "burnt_kha": ("legacy_burnt", "settlement_data", "kha", "burnt settlement area (0 in 0.4.0)", D6),
+        "burnt_kha": ("zero", None, "kha", "burnt settlement area: 0 (no inventory burnt area)", D6B),
     },
 }
 OTHER_COLUMNS = [   # (table, column, unit, description, source, transformation, decision, status)
@@ -264,6 +277,28 @@ def crt_reference(inventory, quantity):
     return f"{r.sheet} row {r.row} col {r.column} ('{r.label.strip()}')"
 
 
+def burnt_series(inventory, code, ch4_quantity):
+    """D6b: burnt area (kha), 1990-2024. 1990-2022 = CRF 2024 Table4(V) `burnt_area.4.<code>` (ha; notation key
+    -> 0). 2023-2024: with a CRT CH4 quantity, CRT 2026 wildfire CH4 / mean implied CH4 per ha burnt over
+    BURNT_FACTOR_YEARS; without one (cropland), the mean CRF burnt area over BURNT_FACTOR_YEARS."""
+    rows = inventory[inventory.quantity == f"burnt_area.4.{code}"].set_index("year")
+    if list(rows.index) != YEARS[:-2]:
+        raise ValueError(f"burnt_area.4.{code}: years are not 1990-2022")
+    missing = rows.value.isna() & (rows.notation == "")
+    if missing.any():
+        raise ValueError(f"burnt_area.4.{code}: no value and no notation key in {list(rows.index[missing])}")
+    ha = rows.value.fillna(0.0).astype(float)
+    if ch4_quantity is None:
+        later = {y: ha[list(BURNT_FACTOR_YEARS)].mean() for y in (2023, 2024)}
+    else:
+        ch4 = crt_series(inventory, ch4_quantity)
+        factor = (ch4[list(BURNT_FACTOR_YEARS)] / ha[list(BURNT_FACTOR_YEARS)]).mean()
+        later = {y: ch4[y] / factor for y in (2023, 2024)}
+    ha = pd.concat([ha, pd.Series(later)])
+    ha.index = ha.index.astype(int)
+    return ha.reindex(YEARS) * HA_TO_KHA
+
+
 def nid_series(nid, column):
     """4.A.1 + 4.A.2, each interpolated linearly between the years the NID prints."""
     total = 0.0
@@ -330,6 +365,20 @@ def build_tables():
                 transformation = ("4.A.1 + 4.A.2; years not printed interpolated linearly per category "
                                   f"(printed: {printed[0]}-{printed[-1]}, gaps 1991-94, 1996-99, 2001-04, "
                                   "and 2006-09 for 4.A.2)")
+            elif kind == "burnt":
+                code, ch4_quantity = arg
+                values = burnt_series(inventory, code, ch4_quantity)
+                years = "-".join(str(y) for y in (BURNT_FACTOR_YEARS[0], BURNT_FACTOR_YEARS[-1]))
+                source, status = "CRF2024", "derived"
+                reference = f"Table4(V) burnt_area.4.{code} (ha)" + (
+                    f"; 2023-2024 from CRT 2026 {ch4_quantity}" if ch4_quantity else "")
+                transformation = "ha / 1000; 1990-2022 as reported (notation key NO -> 0); 2023-2024 " + (
+                    f"= CRT 2026 wildfire CH4 / mean implied CH4 per ha burnt {years} (CRT CH4 / CRF area)"
+                    if ch4_quantity else
+                    f"= mean CRF burnt area {years} (implied CH4 per ha too inconsistent to back-calculate)")
+            elif kind == "zero":
+                values = pd.Series(0.0, index=YEARS)
+                source, reference, transformation, status = "PACKAGE", "", "0 in every year", "parameter"
             elif kind == "legacy_burnt":
                 s = burnt[burnt.table == arg].set_index("year").value.astype(float)
                 values = s.reindex(YEARS)
@@ -390,7 +439,7 @@ def build(path=OUTPUT):
         cur.execute('CREATE TABLE "inventory_values" ("year" INTEGER, "quantity" TEXT, "value" REAL, "unit" TEXT, '
                     '"notation" TEXT, "source_id" TEXT, "reference" TEXT)')
         rows = [(int(r.year), r.quantity, None if pd.isna(r.value) else float(r.value), r.unit, r.notation or "",
-                 "CRT2026", f"{r.sheet} row {r.row} col {r.column} ('{str(r.label).strip()}')")
+                 "CRF2024" if r.source == "EPA CRF 2024" else "CRT2026", f"{r.sheet} row {r.row} col {r.column} ('{str(r.label).strip()}')")
                 for r in inventory.fillna({"notation": ""}).itertuples()]
         for r in nid.itertuples():
             for column in ("total_area_kha", "mineral_kha", "organic_kha", "open_area_kha",

@@ -116,6 +116,10 @@ NID), and AF planting after the calibration year is on mineral soil, so the drai
 </ul>
 <p>Target-year forest rows (<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row" title="landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_forest_target_row()</span></code></a>) add the scenario’s afforestation to the
 area, and cbm_runner’s scenario fire on it (rate x afforestation) to the burnt area.</p>
+<p>Burnt area of the other land uses (decision D6b): calibration-year rows take that year’s inventory burnt area / area
+(CRF 2024; 2023-2024 derived, see docs/data_sources.md). Target-year rows take the 3-year rate over
+<code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code> (<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate" title="landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate()</span></code></a>: sum of burnt area / sum of area), on the whole row,
+so land a scenario adds to wetland or cropland burns at the same rate. Settlement and farmable_condition: 0.</p>
 <p>The grassland area is not a database area: it is grassland_production’s herd-derived area plus the national balance
 (see <a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area" title="landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_grassland_balance_area()</span></code></a> and docs/grassland_area.md).</p>
 <section id="attributes">
@@ -134,13 +138,16 @@ area, and cbm_runner’s scenario fire on it (rate x afforestation) to the burnt
 <tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.SHARE_SOURCES" title="landcover_assignment.national_landcover.SHARE_SOURCES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHARE_SOURCES</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.ROW_COLUMNS" title="landcover_assignment.national_landcover.ROW_COLUMNS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ROW_COLUMNS</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.BURNT_RATE_YEARS" title="landcover_assignment.national_landcover.BURNT_RATE_YEARS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.FARMABLE_SHARES" title="landcover_assignment.national_landcover.FARMABLE_SHARES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FARMABLE_SHARES</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.ROW_COLUMNS" title="landcover_assignment.national_landcover.ROW_COLUMNS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ROW_COLUMNS</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.SPECIFIC_SHARES" title="landcover_assignment.national_landcover.SPECIFIC_SHARES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPECIFIC_SHARES</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.FARMABLE_SHARES" title="landcover_assignment.national_landcover.FARMABLE_SHARES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FARMABLE_SHARES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.SPECIFIC_SHARES" title="landcover_assignment.national_landcover.SPECIFIC_SHARES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPECIFIC_SHARES</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -176,6 +183,11 @@ area, and cbm_runner’s scenario fire on it (rate x afforestation) to the burnt
 <dl class="py data">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.SHARE_SOURCES">
 <span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">SHARE_SOURCES</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.SHARE_SOURCES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.BURNT_RATE_YEARS">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">BURNT_RATE_YEARS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2022,</span> <span class="pre">2024)</span></em><a class="headerlink" href="#landcover_assignment.national_landcover.BURNT_RATE_YEARS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -333,6 +345,19 @@ the scenario’s afforestation by its afforestation end year and burns rate x th
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_national_burnt_average">
 <span class="sig-name descname"><span class="pre">get_national_burnt_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_national_burnt_average" title="Link to this definition"></a></dt>
 <dd><p>Burnt area as a share of the land use’s area, over all years in the database that have a burnt area.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate">
+<span class="sig-name descname"><span class="pre">get_burnt_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landuse</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate" title="Link to this definition"></a></dt>
+<dd><p>Burnt area per ha in a target year, for the non-forest land uses (decision D6b): the sum of the burnt area
+over <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code> / the sum of the land use’s area over the same years. 0 for farmable_condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – for forest (its target-year burnt area is cbm_runner’s, see
+<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row" title="landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_forest_target_row()</span></code></a>) and for an unknown land use.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

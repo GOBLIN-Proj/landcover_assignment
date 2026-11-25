@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import build_database  # noqa: E402
 
 from landcover_assignment.database import DATABASE_FILE, get_database_path  # noqa: E402
+from landcover_assignment.resource_manager.units import KHA_TO_HA  # noqa: E402
 
 DATA_TABLES = ("forest_data", "grassland_data", "cropland_data", "wetland_data", "settlement_data")
 CODE_TABLES = DATA_TABLES + ("NIR", "forest_soil_yield_mapping", "managed_forest_data", "forest_fire_rate")
@@ -169,11 +170,67 @@ class Decisions(unittest.TestCase):
         self.assertAlmostEqual(value("wetland_data", "total_kha"), 1212.500, places=3)
         self.assertAlmostEqual(value("wetland_data", "unmanaged_wetland_kha"), 108.364, places=3)
 
-    def test_pending_burnt_area(self):
-        """Burnt area waits for D6: 1990-2022 as in 0.4.0 (CRF 2024), 2023-2024 empty."""
+    def test_pending_forest_burnt_area(self):
+        """forest_data.burnt_kha (read only by the catchment tree, see .artifacts/geo_todo.md G1) stays as in 0.4.0:
+        CRF 2024 4.A.1, 1990-2022, 2023-2024 empty. The national forest row uses cbm_runner's fire (D6a)."""
         self.assertAlmostEqual(value("forest_data", "burnt_kha"), 0.177653407915582, places=15)
         self.assertIsNone(value("forest_data", "burnt_kha", 2024))
 
+
+def crf_burnt(code):
+    """CRF 2024 Table4(V) burnt area (ha) by year; a notation key (NO) is 0."""
+    df = build_database.read_csv("data_sources/inventory_areas.csv")
+    rows = df[df.quantity == f"burnt_area.4.{code}"].set_index("year")
+    return {int(y): (0.0 if r.notation else r.value) for y, r in rows.iterrows()}
+
+
+class BurntAreaD6b(unittest.TestCase):
+    """D6b: burnt area of grassland (4.C.1), wetland (4.D.1) and cropland (4.B.1), in kha."""
+    CODES = {"grassland_data": ("C.1", "4(IV).C.1.wildfires.ch4"), "wetland_data": ("D.1", "4(IV).D.1.wildfires.ch4"),
+             "cropland_data": ("B.1", None)}
+
+    def test_1990_2022_is_crf_2024_with_no_as_zero(self):
+        for table, (code, _) in self.CODES.items():
+            crf = crf_burnt(code)
+            for year in range(1990, 2023):
+                with self.subTest(table=table, year=year):
+                    self.assertAlmostEqual(value(table, "burnt_kha", year) * KHA_TO_HA, crf[year], places=9)
+        self.assertEqual(value("cropland_data", "burnt_kha", 2013), 0.0)        # CRF: NO
+
+    def test_2023_2024_grassland_wetland_from_crt_ch4(self):
+        """CRT 2026 wildfire CH4 / mean implied CH4 per ha burnt in 2020-2022."""
+        for table in ("grassland_data", "wetland_data"):
+            code, ch4_quantity = self.CODES[table]
+            crf, ch4 = crf_burnt(code), crt_values(ch4_quantity)
+            factor = sum(ch4[y] / crf[y] for y in (2020, 2021, 2022)) / 3
+            for year in (2023, 2024):
+                with self.subTest(table=table, year=year):
+                    self.assertAlmostEqual(value(table, "burnt_kha", year) * KHA_TO_HA, ch4[year] / factor, places=9)
+        self.assertAlmostEqual(value("grassland_data", "burnt_kha", 2023) * KHA_TO_HA, 1632.8, places=1)
+        self.assertAlmostEqual(value("wetland_data", "burnt_kha", 2023) * KHA_TO_HA, 780.1, places=1)
+
+    def test_2023_2024_cropland_is_the_2020_2022_mean(self):
+        """Cropland CH4 per ha burnt is too inconsistent to back-calculate; 2023-2024 = mean CRF area 2020-2022."""
+        crf = crf_burnt("B.1")
+        mean = sum(crf[y] for y in (2020, 2021, 2022)) / 3
+        self.assertAlmostEqual(mean, 42.857, places=3)
+        for year in (2023, 2024):
+            self.assertAlmostEqual(value("cropland_data", "burnt_kha", year) * KHA_TO_HA, mean, places=9)
+
+    def test_settlement_is_zero(self):
+        self.assertEqual({r[0] for r in query("SELECT burnt_kha FROM settlement_data")}, {0.0})
+
+    def test_metadata(self):
+        meta = {(t, c): (s, st, d) for t, c, s, st, d in query(
+            "SELECT table_name, column_name, source_id, status, decision FROM column_metadata "
+            "WHERE column_name = 'burnt_kha'")}
+        for table in self.CODES:
+            self.assertEqual(meta[(table, "burnt_kha")][:2], ("CRF2024", "derived"), table)
+            self.assertTrue(meta[(table, "burnt_kha")][2].startswith("D6b"), table)
+        self.assertEqual(meta[("settlement_data", "burnt_kha")][:2], ("PACKAGE", "parameter"))
+        (n,) = query("SELECT count(*) FROM inventory_values WHERE quantity LIKE 'burnt_area.%' "
+                     "AND source_id != 'CRF2024'")[0]
+        self.assertEqual(n, 0)
 
 if __name__ == "__main__":
     unittest.main()

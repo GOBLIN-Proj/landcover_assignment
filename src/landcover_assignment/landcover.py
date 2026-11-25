@@ -340,7 +340,8 @@ class LandCover:
             "share_rewetted_domestic_peat_extraction": self.national_class.get_share_rewetted_domestic_peat_extraction(land_use, refyear),
             "share_near_natural_wetland": self.national_class.get_share_near_natural_wetland(land_use, refyear),
             "share_unmanaged_wetland": self.national_class.get_share_unmanaged_wetland(land_use, refyear),
-            "share_burnt": self.national_class.get_share_burnt(land_use, refyear),
+            # Decision D6b: target-year rows burn at the 3-year rate (NationalLandCover.get_burnt_rate).
+            "share_burnt": self.national_class.get_burnt_rate(land_use),
         }  
         
 
@@ -525,7 +526,8 @@ class LandCover:
 
 
         # The wetland row keeps its calibration-year area: no spared grassland is converted to wetland.
-        wetland_data = self.land_dist_class.land_distribution(year, "wetland", None)
+        wetland_data = self.land_dist_class.land_distribution(
+            year, "wetland", None, target_year=self.data_manager_class.target_year)
         result_dict["wetland"] = wetland_data
 
         # Step 2: Define target shares

@@ -20,6 +20,11 @@ disturbance events):
 Target-year forest rows (:meth:`NationalLandCover.get_forest_target_row`) add the scenario's afforestation to the
 area, and cbm_runner's scenario fire on it (rate x afforestation) to the burnt area.
 
+Burnt area of the other land uses (decision D6b): calibration-year rows take that year's inventory burnt area / area
+(CRF 2024; 2023-2024 derived, see docs/data_sources.md). Target-year rows take the 3-year rate over
+``BURNT_RATE_YEARS`` (:meth:`NationalLandCover.get_burnt_rate`: sum of burnt area / sum of area), on the whole row,
+so land a scenario adds to wetland or cropland burns at the same rate. Settlement and farmable_condition: 0.
+
 The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
 (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
 """
@@ -54,6 +59,8 @@ SHARE_SOURCES = {
     "share_unmanaged_wetland": (("wetland",), "unmanaged_wetland_kha"),
     "share_burnt": (ALL, "burnt_kha"),
 }
+# Decision D6b: target-year rows of the non-forest land uses burn at the rate over these years (first, last).
+BURNT_RATE_YEARS = (2022, 2024)
 # Order of the columns in a land use's row.
 ROW_COLUMNS = ["area_ha", "share_mineral", "share_organic", "share_organic_mineral", "share_drained_rich_organic",
                "share_drained_poor_organic", "share_rewetted_rich_organic", "share_rewetted_poor_organic",
@@ -209,6 +216,23 @@ class NationalLandCover:
             raise ValueError(f"Unknown land use type: {landuse}")
         data = self.national_areas[landuse]()
         data = data[data["burnt_kha"].notna()]
+        return data["burnt_kha"].sum() / data["total_kha"].sum()
+
+    def get_burnt_rate(self, landuse):
+        """
+        Burnt area per ha in a target year, for the non-forest land uses (decision D6b): the sum of the burnt area
+        over ``BURNT_RATE_YEARS`` / the sum of the land use's area over the same years. 0 for farmable_condition.
+
+        :raises ValueError: for forest (its target-year burnt area is cbm_runner's, see
+            :meth:`get_forest_target_row`) and for an unknown land use.
+        """
+        if landuse == "farmable_condition":
+            return 0.0
+        if landuse == "forest":
+            raise ValueError("Forest burnt area in a target year is cbm_runner's fire: use get_forest_target_row")
+        data = self._get_cached_data(landuse).loc[BURNT_RATE_YEARS[0]:BURNT_RATE_YEARS[1]]
+        if len(data) != BURNT_RATE_YEARS[1] - BURNT_RATE_YEARS[0] + 1 or data["burnt_kha"].isna().any():
+            raise ValueError(f"No burnt area for {landuse} in every year {BURNT_RATE_YEARS[0]}-{BURNT_RATE_YEARS[1]}")
         return data["burnt_kha"].sum() / data["total_kha"].sum()
 
     def get_national_mineral(self, landuse, year):

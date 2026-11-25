@@ -109,7 +109,9 @@ Module Contents
       :type new_area: float
       :param target_year: The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
                           target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
-                          fire. Without it, forest is the calibration-year row plus ``new_area`` as before.
+                          fire. Without it, forest is the calibration-year row plus ``new_area`` as before. For the other land uses
+                          it makes the row a target-year row, whose ``share_burnt`` is the 3-year rate on the whole area (decision
+                          D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted.
       :type target_year: int, optional
 
       :returns: A dictionary containing updated land distribution details.

@@ -98,7 +98,9 @@ class LandDistribution:
         target_year : int, optional
             The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
             target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
-            fire. Without it, forest is the calibration-year row plus ``new_area`` as before.
+            fire. Without it, forest is the calibration-year row plus ``new_area`` as before. For the other land uses
+            it makes the row a target-year row, whose ``share_burnt`` is the 3-year rate on the whole area (decision
+            D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted.
 
         Returns
         -------
@@ -139,6 +141,9 @@ class LandDistribution:
             # Retain original shares if total area is zero
             for key, share_value in shares.items():
                 land[key] = share_value
+
+        if target_year is not None:
+            land["share_burnt"] = self.national_class.get_burnt_rate(land_use)
 
         return land
 
@@ -215,7 +220,8 @@ class LandDistribution:
             land["share_rewetted_poor_organic"] = grass_rewetted_total_poor_organic / grass_total_remaining
             land["share_organic_mineral"] = grass_organic_mineral_area / grass_total_remaining
             land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
-            land["share_burnt"] = shares["share_burnt"]
+            # The grassland row is a target-year row: decision D6b, the 3-year burnt rate.
+            land["share_burnt"] = self.national_class.get_burnt_rate("grassland")
         else:
             # Set everything to zero to reflect no remaining grassland
             land = {key: 0 for key in land.keys()}

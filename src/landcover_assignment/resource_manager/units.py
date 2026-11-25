@@ -14,6 +14,7 @@ To add a column with a new unit, record the unit in ``column_metadata`` (tools/b
 
 # area
 KHA_TO_HA = 1e3
+HA_TO_KHA = 1 / KHA_TO_HA     # used by tools/build_database.py: CRF burnt area is published in ha (D6b)
 
 # mass of methane: kg CH4-C to kg CH4 (16/12). Used by tools/build_database.py for the D4 rich/poor split; the NID
 # prints the grassland rewet-status CH4 factors in kg CH4-C and the CRT implied factors in kg CH4.

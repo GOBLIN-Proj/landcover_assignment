@@ -4,7 +4,8 @@ The inventory values come from `data_sources/`, which the scripts in `tools/` bu
 with its inventory source in the calibration year (2020) and in the latest database year (2022), within TOLERANCE.
 
 A known gap is marked as an expected failure and names the decision (D1-D10 in the plan) that resolves it. The step 6
-rebuild (tools/build_database.py) closed D1, D2, D3, D5 and D7; burnt area waits for D6.
+rebuild (tools/build_database.py) closed D1, D2, D3, D5 and D7, and D6b the burnt area of grassland, wetland and
+cropland (2023-2024 are derived, see tests/test_database_build.py). Forest burnt area: the catchment tree's column.
 """
 import sqlite3
 import unittest

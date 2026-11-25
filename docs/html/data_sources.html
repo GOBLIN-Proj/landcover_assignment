@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#forest-area-and-fire-mirroring-cbm-runner-d6a">Forest area and fire: mirroring cbm_runner (D6a)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#forest-soils">Forest soils</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor">Grassland organic soils: nutrient rich and nutrient poor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#burnt-area-of-grassland-wetland-and-cropland-d6b">Burnt area of grassland, wetland and cropland (D6b)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
 </ul>
 </li>
@@ -107,7 +108,7 @@ built it.</p>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">inventory_areas.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/extract_inventory.py</span></code></p></td>
-<td><p>EPA CRT 2026 areas, 1990-2024, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE)</p></td>
+<td><p>EPA CRT 2026 areas and wildfire emissions, 1990-2024, and CRF 2024 burnt area, 1990-2022, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nid2026_forest_organic_soils.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/transcribe_nid_forest.py</span></code></p></td>
@@ -123,7 +124,7 @@ built it.</p>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">legacy_nir_table.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
-<td><p>values kept from the 0.4.0 database until their decision is taken</p></td>
+<td><p>values kept from the 0.4.0 database until their decision is taken (of the burnt area, only <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> is still read)</p></td>
 </tr>
 </tbody>
 </table>
@@ -357,6 +358,72 @@ calibration year’s rich fraction; rewetted land carries that fraction into the
 <p>Before 0.5.0 both rows were split 0.45 / 0.55 every year, with no recorded source. landcover_lca’s inventory tests
 use the same rule as above.</p>
 </section>
+<section id="burnt-area-of-grassland-wetland-and-cropland-d6b">
+<h3>Burnt area of grassland, wetland and cropland (D6b)<a class="headerlink" href="#burnt-area-of-grassland-wetland-and-cropland-d6b" title="Link to this heading"></a></h3>
+<p>Calibration-year rows carry that year’s inventory burnt area (as a share of the land use’s area). The data:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>years</p></th>
+<th class="head"><p>grassland, wetland</p></th>
+<th class="head"><p>cropland</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1990-2022</p></td>
+<td><p>CRF 2024 Table4(V) area burnt (4.C.1, 4.D.1)</p></td>
+<td><p>CRF 2024 Table4(V) (4.B.1); years reported NO are 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2023-2024 (derived)</p></td>
+<td><p>CRT 2026 Table4(IV) wildfire CH4 / the mean implied CH4 per ha burnt in 2020-2022 (CRT CH4 / CRF area: grassland 0.226, wetland 2.48 t CH4/ha)</p></td>
+<td><p>the mean CRF burnt area 2020-2022, 42.9 ha</p></td>
+</tr>
+</tbody>
+</table>
+<p>The CRF stops at 2022 and the CRT reports no burnt area, hence the derived years. Cropland’s implied CH4 per ha
+varies too much (0.005-0.011 t/ha, and the CRT reports NO in 2020 where the CRF has 14.3 ha) to back-calculate, so
+its 2023-2024 take the 3-year average instead. Settlement: 0 (no inventory burnt area).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>ha</p></th>
+<th class="head"><p>2020</p></th>
+<th class="head"><p>2021</p></th>
+<th class="head"><p>2022</p></th>
+<th class="head"><p>2023</p></th>
+<th class="head"><p>2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>grassland</p></td>
+<td><p>435.7</p></td>
+<td><p>321.4</p></td>
+<td><p>321.4</p></td>
+<td><p>1,632.8</p></td>
+<td><p>114.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>wetland</p></td>
+<td><p>335.7</p></td>
+<td><p>135.7</p></td>
+<td><p>135.7</p></td>
+<td><p>780.1</p></td>
+<td><p>31.2</p></td>
+</tr>
+<tr class="row-even"><td><p>cropland</p></td>
+<td><p>14.3</p></td>
+<td><p>57.1</p></td>
+<td><p>57.1</p></td>
+<td><p>42.9</p></td>
+<td><p>42.9</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Target-year rows</strong> burn at the 3-year rate over 2022-2024 (sum of burnt area / sum of area;
+<code class="docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code>), applied to the whole row, so land a scenario adds to wetland
+or cropland burns too: grassland 1.64e-4, wetland 2.61e-4, cropland 6.4e-5 per year. Before 0.5.0 they carried the
+calibration-year share (2020, a low fire year), and added land burnt nothing. National test scenario 0, 2050:
+grassland 146 -&gt; 231 ha, wetland 336 -&gt; 316 ha, cropland 14 -&gt; 48 ha.</p>
+<p>The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
+<code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code>. Both are on the catchment to-do list for later.</p>
+</section>
 <section id="industrial-peat-extraction">
 <h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
 <p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
@@ -380,9 +447,9 @@ the industrial rates it would be about 345 kt CO2e a year (2020).</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">burnt_kha</span></code> (grassland, cropland, wetland, settlement; <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> for the catchment tree)</p></td>
-<td><p>0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty</p></td>
-<td><p>D6b: inventory burnt area, averaging window, national and catchment</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> (read only by the catchment tree)</p></td>
+<td><p>0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty</p></td>
+<td><p>catchment forest burnt area (the national forest row uses cbm_runner’s fire, D6a)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> table</p></td>
 <td><p>0.4.0 table (unused by the code)</p></td>

@@ -9,11 +9,11 @@ built it.
 
 | file | made by | holds |
 |---|---|---|
-| `inventory_areas.csv` | `tools/extract_inventory.py` | EPA CRT 2026 areas, 1990-2024, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE) |
+| `inventory_areas.csv` | `tools/extract_inventory.py` | EPA CRT 2026 areas and wildfire emissions, 1990-2024, and CRF 2024 burnt area, 1990-2022, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE) |
 | `nid2026_forest_organic_soils.csv` | `tools/transcribe_nid_forest.py` | NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas |
 | `nid2026_grassland_organic_factors.csv` | transcribed | NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor |
 | `cbm_runner_forest.csv`, `cbm_runner_forest_parameters.csv` | `tools/export_cbm_runner_forest.py` | cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below) |
-| `legacy_burnt_area.csv`, `legacy_nir_table.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken |
+| `legacy_burnt_area.csv`, `legacy_nir_table.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken (of the burnt area, only `forest_data.burnt_kha` is still read) |
 
 The database records its own provenance:
 
@@ -147,6 +147,33 @@ calibration year's rich fraction; rewetted land carries that fraction into the r
 Before 0.5.0 both rows were split 0.45 / 0.55 every year, with no recorded source. landcover_lca's inventory tests
 use the same rule as above.
 
+### Burnt area of grassland, wetland and cropland (D6b)
+Calibration-year rows carry that year's inventory burnt area (as a share of the land use's area). The data:
+
+| years | grassland, wetland | cropland |
+|---|---|---|
+| 1990-2022 | CRF 2024 Table4(V) area burnt (4.C.1, 4.D.1) | CRF 2024 Table4(V) (4.B.1); years reported NO are 0 |
+| 2023-2024 (derived) | CRT 2026 Table4(IV) wildfire CH4 / the mean implied CH4 per ha burnt in 2020-2022 (CRT CH4 / CRF area: grassland 0.226, wetland 2.48 t CH4/ha) | the mean CRF burnt area 2020-2022, 42.9 ha |
+
+The CRF stops at 2022 and the CRT reports no burnt area, hence the derived years. Cropland's implied CH4 per ha
+varies too much (0.005-0.011 t/ha, and the CRT reports NO in 2020 where the CRF has 14.3 ha) to back-calculate, so
+its 2023-2024 take the 3-year average instead. Settlement: 0 (no inventory burnt area).
+
+| ha | 2020 | 2021 | 2022 | 2023 | 2024 |
+|---|---|---|---|---|---|
+| grassland | 435.7 | 321.4 | 321.4 | 1,632.8 | 114.0 |
+| wetland | 335.7 | 135.7 | 135.7 | 780.1 | 31.2 |
+| cropland | 14.3 | 57.1 | 57.1 | 42.9 | 42.9 |
+
+**Target-year rows** burn at the 3-year rate over 2022-2024 (sum of burnt area / sum of area;
+`NationalLandCover.get_burnt_rate`, `BURNT_RATE_YEARS`), applied to the whole row, so land a scenario adds to wetland
+or cropland burns too: grassland 1.64e-4, wetland 2.61e-4, cropland 6.4e-5 per year. Before 0.5.0 they carried the
+calibration-year share (2020, a low fire year), and added land burnt nothing. National test scenario 0, 2050:
+grassland 146 -> 231 ha, wetland 336 -> 316 ha, cropland 14 -> 48 ha.
+
+The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
+`forest_data.burnt_kha`. Both are on the catchment to-do list for later.
+
 ### Industrial peat extraction
 CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
 emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha. The other 42.7 kha carries only the
@@ -163,6 +190,6 @@ the industrial rates it would be about 345 kt CO2e a year (2020).
 
 | column | now | decision |
 |---|---|---|
-| `burnt_kha` (grassland, cropland, wetland, settlement; `forest_data.burnt_kha` for the catchment tree) | 0.4.0 values (CRF 2024), 1990-2022; 2023-2024 empty | D6b: inventory burnt area, averaging window, national and catchment |
+| `forest_data.burnt_kha` (read only by the catchment tree) | 0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty | catchment forest burnt area (the national forest row uses cbm_runner's fire, D6a) |
 | `NIR` table | 0.4.0 table (unused by the code) | D8: rebuild from Table4.1 or drop |
 | `forest_soil_yield_mapping` | 0.4.0 table | D9: document its source |

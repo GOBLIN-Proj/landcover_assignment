@@ -26,6 +26,11 @@ landcover_assignment.national_landcover
    Target-year forest rows (:meth:`NationalLandCover.get_forest_target_row`) add the scenario's afforestation to the
    area, and cbm_runner's scenario fire on it (rate x afforestation) to the burnt area.
 
+   Burnt area of the other land uses (decision D6b): calibration-year rows take that year's inventory burnt area / area
+   (CRF 2024; 2023-2024 derived, see docs/data_sources.md). Target-year rows take the 3-year rate over
+   ``BURNT_RATE_YEARS`` (:meth:`NationalLandCover.get_burnt_rate`: sum of burnt area / sum of area), on the whole row,
+   so land a scenario adds to wetland or cropland burns at the same rate. Settlement and farmable_condition: 0.
+
    The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
    (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
 
@@ -40,6 +45,7 @@ Attributes
    landcover_assignment.national_landcover.LAND_USES
    landcover_assignment.national_landcover.ALL
    landcover_assignment.national_landcover.SHARE_SOURCES
+   landcover_assignment.national_landcover.BURNT_RATE_YEARS
    landcover_assignment.national_landcover.ROW_COLUMNS
    landcover_assignment.national_landcover.FARMABLE_SHARES
    landcover_assignment.national_landcover.SPECIFIC_SHARES
@@ -67,6 +73,10 @@ Module Contents
 
 
 .. py:data:: SHARE_SOURCES
+
+.. py:data:: BURNT_RATE_YEARS
+   :value: (2022, 2024)
+
 
 .. py:data:: ROW_COLUMNS
    :value: ['area_ha', 'share_mineral', 'share_organic', 'share_organic_mineral',...
@@ -191,6 +201,16 @@ Module Contents
    .. py:method:: get_national_burnt_average(landuse)
 
       Burnt area as a share of the land use's area, over all years in the database that have a burnt area.
+
+
+
+   .. py:method:: get_burnt_rate(landuse)
+
+      Burnt area per ha in a target year, for the non-forest land uses (decision D6b): the sum of the burnt area
+      over ``BURNT_RATE_YEARS`` / the sum of the land use's area over the same years. 0 for farmable_condition.
+
+      :raises ValueError: for forest (its target-year burnt area is cbm_runner's, see
+          :meth:`get_forest_target_row`) and for an unknown land use.
 
 
 
