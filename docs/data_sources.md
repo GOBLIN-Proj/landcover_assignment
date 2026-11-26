@@ -13,7 +13,8 @@ built it.
 | `nid2026_forest_organic_soils.csv` | `tools/transcribe_nid_forest.py` | NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas |
 | `nid2026_grassland_organic_factors.csv` | transcribed | NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor |
 | `cbm_runner_forest.csv`, `cbm_runner_forest_parameters.csv` | `tools/export_cbm_runner_forest.py` | cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below) |
-| `legacy_burnt_area.csv`, `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | values kept from the 0.4.0 database until their decision is taken (of the burnt area, only `forest_data.burnt_kha` is still read) |
+| `legacy_burnt_area.csv` | `tools/export_legacy_columns.py` | burnt area kept from the 0.4.0 database until its decision is taken (only `forest_data.burnt_kha` is still read) |
+| `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | soil group -> yield class table, 0.4.0 values; source Upton et al. (2013) Table 2 (D9, see below) |
 
 The database records its own provenance:
 
@@ -183,6 +184,34 @@ use it; it is there as a quick national check and for other uses of the package.
 0.4.0. The 0.4.0 table held the CRF 2024 "Initial area" under the wrong years (its extraction numbered the
 workbooks in unsorted file order).
 
+### Soil group to yield class for afforestation (D9)
+`forest_soil_yield_mapping` gives the yield class of scenario afforestation by soil group, and is the only source of
+the species and yield classes in the afforestation table (its zero-area template rows are built from it):
+
+| soil group | Sitka spruce | SGB |
+|---|---|---|
+| 1 | YC24_30 | YC6 |
+| 2 | YC20_24 | YC6 |
+| 3 | YC17_20 | YC6 |
+
+Source: Upton et al. (2013), Irish Forestry 70: 61-74, Table 2, which gives the expected Sitka spruce yield class of
+each National Farm Survey soil category (from the Farrelly et al. 2011 productivity model):
+
+| NFS soil category | limitation | expected yield class |
+|---|---|---|
+| 1 Wide | none | 24 |
+| 2 Moderately wide | minor | 24 |
+| 3 Somewhat limited | higher elevation, heavier, poorer structure | 20 |
+| 4 Limited | poor drainage | 20 |
+| 5 Very limited | agricultural potential greatly restricted | 18 |
+| 6 Extremely limited | mountainous, steep slopes, shallow soil | 14 |
+
+The soil groups (from grassland_production) are read as pairs of these categories: group 1 = 1-2, group 2 = 3-4,
+group 3 = 5-6. Upton does not state this pairing; it is to be confirmed against the NFS soil group definition. Each
+yield class lies in its cbm_runner band (24 in 24-30, 20 in 20-24, 18 in 17-20). Category 6 (YC 14, hill land below
+the grant threshold) is not used. The values are those of 0.4.0, which cited Farrelly & Gallagher (2015) in error;
+that paper gives no yield class by soil.
+
 ### Industrial peat extraction
 CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
 emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha. The other 42.7 kha carries only the
@@ -200,4 +229,3 @@ the industrial rates it would be about 345 kt CO2e a year (2020).
 | column | now | decision |
 |---|---|---|
 | `forest_data.burnt_kha` (read only by the catchment tree) | 0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty | catchment forest burnt area (the national forest row uses cbm_runner's fire, D6a) |
-| `forest_soil_yield_mapping` | 0.4.0 table | D9: document its source |

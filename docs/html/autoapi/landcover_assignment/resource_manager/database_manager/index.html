@@ -300,7 +300,8 @@ derived from cbm_runner’s disturbance events, aligned with the NID and forest 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_soil_yield_mapping">
 <span class="sig-name descname"><span class="pre">get_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_soil_yield_mapping" title="Link to this definition"></a></dt>
-<dd><p>Retrieves forest soil yield mapping data from the database without scaling.</p>
+<dd><p>Retrieves the soil group -&gt; species yield class table (Upton et al. 2013 Table 2; decision D9), in
+table order, without scaling. It is the only source of the afforestation yield classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing forest soil yield mapping data.</p>

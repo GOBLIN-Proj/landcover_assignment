@@ -28,7 +28,8 @@ landcover_assignment.resource_manager.landcover_data_manager
       - ``target_year`` (int): The year to which data projections are made.
       - ``default_calibration_year`` (int): The default year for calibration if none is specified.
       - ``land_use_columns`` (list): A list of strings representing different land use types.
-      - ``cbm_default_data`` (dict): Default data structure for initializing CBM data inputs.
+      - ``cbm_default_data`` (dict): Zero-area template rows for the CBM afforestation table, one per row of the
+        database table ``forest_soil_yield_mapping`` (read on first use; the table is the only source).
       - ``areas_dataframe_cols`` (list): Column names for the areas DataFrame.
       - ``spared_area_dict`` (dict): A dictionary defining how spared areas are categorized by land use type.
 
@@ -50,7 +51,8 @@ landcover_assignment.resource_manager.landcover_data_manager
 
       ``get_cbm_default_data()``
 
-         Returns the default CBM data.
+         Returns the zero-area template rows for the CBM afforestation table, built from the database table
+         ``forest_soil_yield_mapping`` (see :func:`cbm_template`).
 
          :return: A dictionary containing the default CBM data.
          :rtype: dict
@@ -137,8 +139,29 @@ Classes
    landcover_assignment.resource_manager.landcover_data_manager.DistributionManager
 
 
+Functions
+---------
+
+.. autoapisummary::
+
+   landcover_assignment.resource_manager.landcover_data_manager.cbm_template
+
+
 Module Contents
 ---------------
+
+.. py:function:: cbm_template(yield_mapping)
+
+   Zero-area template rows (scenario -1) for the CBM afforestation table: one row per row of the soil group ->
+   yield class table (``forest_soil_yield_mapping``), in table order. The table is the only source of the
+   species and yield classes (decision D9).
+
+   :param yield_mapping: the table, as returned by ``Loader().forest_soil_yield_mapping()``.
+   :type yield_mapping: pandas.DataFrame
+
+   :returns: ``scenario``, ``species``, ``yield_class`` and ``total_area`` lists.
+   :rtype: dict
+
 
 .. py:class:: DataManager(calibration_year, target_year)
 
@@ -156,9 +179,6 @@ Module Contents
    .. py:attribute:: land_use_columns
       :value: ['grassland', 'wetland', 'cropland', 'forest', 'settlement', 'farmable_condition']
 
-
-
-   .. py:attribute:: cbm_default_data
 
 
    .. py:attribute:: areas_dataframe_cols
@@ -187,9 +207,15 @@ Module Contents
 
 
 
+   .. py:property:: cbm_default_data
+
+      Zero-area CBM template rows, built from ``forest_soil_yield_mapping`` (see :func:`cbm_template`).
+
+
    .. py:method:: get_cbm_default_data()
 
-      Returns the default CBM data.
+      Returns the zero-area template rows for the CBM afforestation table, built from the database table
+      ``forest_soil_yield_mapping`` (the only source of the species and yield classes).
 
       :returns: A dictionary containing the default CBM data.
       :rtype: dict

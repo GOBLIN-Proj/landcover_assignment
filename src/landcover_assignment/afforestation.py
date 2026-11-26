@@ -29,7 +29,7 @@ for the Carbon Budget Model (CBM) in the context of afforestation scenario analy
 
 """
 
-from landcover_assignment.resource_manager.landcover_data_manager import DataManager
+from landcover_assignment.resource_manager.landcover_data_manager import DataManager, cbm_template
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 from landcover_assignment.resource_manager.data_loader import Loader
 from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
@@ -166,15 +166,13 @@ class Afforestation:
         """
         Initializes the structure of the CBM DataFrame based on default data.
 
-        This method creates a new DataFrame structured for CBM inputs using default data
-        from the data manager class. It serves as the initial template for accumulating
-        afforestation scenario data.
+        One zero-area row (scenario -1) per row of the soil group -> yield class table
+        (``forest_soil_yield_mapping``, the only source of species and yield classes). It serves as
+        the initial template for accumulating afforestation scenario data.
 
         :return: A DataFrame structured for CBM afforestation inputs.
         :rtype: pd.DataFrame
         """
-        cbm_default_data = self.data_manager_class.get_cbm_default_data()
-
-        cbm_df = pd.DataFrame(cbm_default_data)
+        cbm_df = pd.DataFrame(cbm_template(self.yield_mapping))
 
         return cbm_df

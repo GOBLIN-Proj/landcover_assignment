@@ -44,11 +44,13 @@ Decided (owner, 2026-11-23/24):
   and other users of the package): Table4.1 final area by land category, CRT 2026, 1990-2024, taken from the same
   extracted rows as `inventory_values` (`4.1.final_area.*`). Columns and 0.4.0 labels are kept. 0.4.0 held the
   CRF 2024 "Initial area" under scrambled years.
+- D9 (owner, 2026-11-26): `forest_soil_yield_mapping` keeps its 0.4.0 values; source Upton et al. (2013) Table 2
+  (NFS soil category -> Sitka yield class), the six categories read as three groups (inferred, to be confirmed).
+  It is the only source of the afforestation yield classes (the CBM template rows are built from it).
 
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
 - `forest_data.burnt_kha` (CRF 2024 4.A.1, 1990-2022; 2023-2024 empty), read only by the catchment tree (geo to-do;
   the national forest row uses cbm_runner's fire, D6a);
-- D9: `forest_soil_yield_mapping`.
 
 Two builds give byte-identical files (same SQLite library). Usage, from the repo root:
     .venv/bin/python tools/build_database.py
@@ -85,6 +87,11 @@ SOURCES = [
     ("LEGACY040", "landcover_assignment 0.4.0 database land_use_database.db (CRF 2024 vintage, git 25a83b4), "
                   "exported by tools/export_legacy_columns.py into data_sources/legacy_*.csv and "
                   "forest_soil_yield_mapping.csv"),
+    ("UPTON2013", "Upton, V., Ryan, M., Farrelly, N. and O'Donoghue, C. (2013) The potential economic returns of "
+                  "converting agricultural land to forestry: an analysis of system and soil effects from 1995 to 2009. "
+                  "Irish Forestry 70: 61-74. Table 2 (p.5): National Farm Survey soil category -> expected Sitka "
+                  "spruce yield class (Farrelly et al. 2011 productivity model): 1 Wide 24, 2 Moderately wide 24, "
+                  "3 Somewhat limited 20, 4 Limited 20, 5 Very limited 18, 6 Extremely limited 14"),
     ("CBM061", "goblin_cbm_runner 0.6.1 (GitHub GOBLIN-Proj/goblin_cbm_runner main, cfc0199), database "
                "cbm_runner_database_0.6.2.db: FM and AF inventories and disturbance events. Historic forest "
                "disturbances aligned with the NID and forest expert judgement (prepared by the forest consultant who "
@@ -174,6 +181,7 @@ TABLES = {
         "burnt_kha": ("zero", None, "kha", "burnt settlement area: 0 (no inventory burnt area)", D6B),
     },
 }
+D9 = "D9: soil group -> yield class from Upton et al. (2013) Table 2 (values unchanged from 0.4.0)"
 D8 = "D8: Table4.1 final area by land category (rebuilt; was CRF 2024 initial area under scrambled years)"
 NIR_LABELS = {   # 0.4.0 label -> 4.1.final_area quantity in inventory_values; order as in 0.4.0
     "Forest land (managed)(2)": "forest_managed", "Cropland(2)": "cropland",
@@ -186,12 +194,14 @@ OTHER_COLUMNS = [   # (table, column, unit, description, source, transformation,
      "Table4.1 column header, with the 0.4.0 label", D8, "inventory"),
     ("NIR", "Area_kha", "kha", "Table4.1 final area of the land category", "CRT2026",
      "Table4.1 row 20 'Final area' (NO -> 0)", D8, "inventory"),
-    ("forest_soil_yield_mapping", "soil_group", "group", "spared-area soil group (1-3)", "LEGACY040", "copied",
-     "pending D9: document source (Farrelly & Gallagher 2015)", "pending"),
-    ("forest_soil_yield_mapping", "species", "label", "tree species (Sitka spruce, SGB)", "LEGACY040", "copied",
-     "pending D9: document source (Farrelly & Gallagher 2015)", "pending"),
-    ("forest_soil_yield_mapping", "yield_class", "label", "CBM yield class", "LEGACY040", "copied",
-     "pending D9: document source (Farrelly & Gallagher 2015)", "pending"),
+    ("forest_soil_yield_mapping", "soil_group", "group", "spared-area soil group (1 best - 3 poorest farm soil)",
+     "UPTON2013", "Table 2 soil categories read as three groups: 1 = SC1-2, 2 = SC3-4, 3 = SC5-6 (inferred pairing, "
+     "to be confirmed)", D9, "parameter"),
+    ("forest_soil_yield_mapping", "species", "label", "tree species (Sitka spruce; SGB = slow-growing broadleaf)",
+     "UPTON2013", "Table 2 is for Sitka spruce; SGB is a single class (YC6) for every group", D9, "parameter"),
+    ("forest_soil_yield_mapping", "yield_class", "label", "cbm_runner yield class label", "UPTON2013",
+     "Sitka band holding the Table 2 yield class: group 1 YC 24 -> YC24_30, group 2 YC 20 -> YC20_24, group 3 "
+     "YC 18 -> YC17_20 (SC6 YC 14 not used: below the grant threshold, hill land)", D9, "parameter"),
 ]
 
 

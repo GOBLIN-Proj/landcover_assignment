@@ -56,6 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor">Grassland organic soils: nutrient rich and nutrient poor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#burnt-area-of-grassland-wetland-and-cropland-d6b">Burnt area of grassland, wetland and cropland (D6b)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#national-land-area-by-category-the-nir-table-d8">National land area by category: the <code class="docutils literal notranslate"><span class="pre">NIR</span></code> table (D8)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#soil-group-to-yield-class-for-afforestation-d9">Soil group to yield class for afforestation (D9)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
 </ul>
 </li>
@@ -123,9 +124,13 @@ built it.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_cbm_runner_forest.py</span></code></p></td>
 <td><p>cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy_burnt_area.csv</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
-<td><p>values kept from the 0.4.0 database until their decision is taken (of the burnt area, only <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> is still read)</p></td>
+<td><p>burnt area kept from the 0.4.0 database until its decision is taken (only <code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> is still read)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
+<td><p>soil group -&gt; yield class table, 0.4.0 values; source Upton et al. (2013) Table 2 (D9, see below)</p></td>
 </tr>
 </tbody>
 </table>
@@ -435,6 +440,74 @@ use it; it is there as a quick national check and for other uses of the package.
 0.4.0. The 0.4.0 table held the CRF 2024 “Initial area” under the wrong years (its extraction numbered the
 workbooks in unsorted file order).</p>
 </section>
+<section id="soil-group-to-yield-class-for-afforestation-d9">
+<h3>Soil group to yield class for afforestation (D9)<a class="headerlink" href="#soil-group-to-yield-class-for-afforestation-d9" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code> gives the yield class of scenario afforestation by soil group, and is the only source of
+the species and yield classes in the afforestation table (its zero-area template rows are built from it):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>soil group</p></th>
+<th class="head"><p>Sitka spruce</p></th>
+<th class="head"><p>SGB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>YC24_30</p></td>
+<td><p>YC6</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>YC20_24</p></td>
+<td><p>YC6</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>YC17_20</p></td>
+<td><p>YC6</p></td>
+</tr>
+</tbody>
+</table>
+<p>Source: Upton et al. (2013), Irish Forestry 70: 61-74, Table 2, which gives the expected Sitka spruce yield class of
+each National Farm Survey soil category (from the Farrelly et al. 2011 productivity model):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NFS soil category</p></th>
+<th class="head"><p>limitation</p></th>
+<th class="head"><p>expected yield class</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 Wide</p></td>
+<td><p>none</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 Moderately wide</p></td>
+<td><p>minor</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-even"><td><p>3 Somewhat limited</p></td>
+<td><p>higher elevation, heavier, poorer structure</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><p>4 Limited</p></td>
+<td><p>poor drainage</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>5 Very limited</p></td>
+<td><p>agricultural potential greatly restricted</p></td>
+<td><p>18</p></td>
+</tr>
+<tr class="row-odd"><td><p>6 Extremely limited</p></td>
+<td><p>mountainous, steep slopes, shallow soil</p></td>
+<td><p>14</p></td>
+</tr>
+</tbody>
+</table>
+<p>The soil groups (from grassland_production) are read as pairs of these categories: group 1 = 1-2, group 2 = 3-4,
+group 3 = 5-6. Upton does not state this pairing; it is to be confirmed against the NFS soil group definition. Each
+yield class lies in its cbm_runner band (24 in 24-30, 20 in 20-24, 18 in 17-20). Category 6 (YC 14, hill land below
+the grant threshold) is not used. The values are those of 0.4.0, which cited Farrelly &amp; Gallagher (2015) in error;
+that paper gives no yield class by soil.</p>
+</section>
 <section id="industrial-peat-extraction">
 <h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
 <p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
@@ -461,10 +534,6 @@ the industrial rates it would be about 345 kt CO2e a year (2020).</p>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> (read only by the catchment tree)</p></td>
 <td><p>0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty</p></td>
 <td><p>catchment forest burnt area (the national forest row uses cbm_runner’s fire, D6a)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code></p></td>
-<td><p>0.4.0 table</p></td>
-<td><p>D9: document its source</p></td>
 </tr>
 </tbody>
 </table>

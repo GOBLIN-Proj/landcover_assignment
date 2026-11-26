@@ -6,7 +6,8 @@ the same files on any checkout. It writes:
 - `data_sources/legacy_burnt_area.csv`: `burnt_kha` of every land-use table, 1990-2022 (pending D6, burnt area);
 - (`data_sources/legacy_nir_table.csv`, the 0.4.0 `NIR` table, is no longer written: D8 rebuilt the table from CRT
   2026 Table4.1.)
-- `data_sources/forest_soil_yield_mapping.csv`: the soil group -> yield class table (pending D9).
+- `data_sources/forest_soil_yield_mapping.csv`: the soil group -> yield class table (D9: values kept; source Upton
+  et al. 2013 Table 2).
 
 Floats are written with Python's shortest round-trip repr, so the rebuilt database holds the same values bit for bit.
 

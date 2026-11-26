@@ -166,7 +166,7 @@ def main(out_path):
         lines.append(f"| {y} | {fmt(a1(y))} | {fmt(a_tot(y))} |")
 
     lines += ["", "## Other tables", "",
-              "- **`forest_soil_yield_mapping`:** no script; added by hand in February 2024. The only source cited is Farrelly & Gallagher (2015), in the README. It is duplicated in `landcover_data_manager.py` (`cbm_default_data`). Decision D9.",
+              "- **`forest_soil_yield_mapping`:** added by hand in February 2024 (no script). D9: source is Upton et al. (2013) Table 2 (NFS soil category -> Sitka yield class); the README cited Farrelly & Gallagher (2015) in error. The copy in `landcover_data_manager.py` (`cbm_default_data`) is now built from the table.",
               "- **`NIR`:** rebuilt in 0.5.0 (D8) as CRT 2026 Table4.1 final area by land category, 1990-2024. The 0.4.0 table held CRF 2024 'Initial area' under wrong years (a counter over unsorted `os.listdir`).",
               "", "## Not inventory data", "",
               "- **Grassland area** (`area_ha` of the grassland row) comes from grassland_production's input (`total_grassland`). The database supplies only the shares.",

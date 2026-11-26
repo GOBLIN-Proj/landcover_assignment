@@ -137,9 +137,9 @@ Module Contents
 
       Initializes the structure of the CBM DataFrame based on default data.
 
-      This method creates a new DataFrame structured for CBM inputs using default data
-      from the data manager class. It serves as the initial template for accumulating
-      afforestation scenario data.
+      One zero-area row (scenario -1) per row of the soil group -> yield class table
+      (``forest_soil_yield_mapping``, the only source of species and yield classes). It serves as
+      the initial template for accumulating afforestation scenario data.
 
       :return: A DataFrame structured for CBM afforestation inputs.
       :rtype: pd.DataFrame

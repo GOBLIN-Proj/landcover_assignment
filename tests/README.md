@@ -27,6 +27,7 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_database_build.py` | The package database is what `tools/build_database.py` builds from `data_sources/` (same rows; two builds byte-identical); every column has unit, source and decision in `column_metadata`; the D-decisions taken are in the data, and the D4 grassland rich/poor split reproduces the CRT organic soil carbon in every year. |
 | `test_burnt_area.py` | D6b: grassland, wetland and cropland target-year rows burn at the 3-year rate over 2022-2024 (sum burnt / sum area) on the whole row; calibration rows keep the year's inventory share; settlement and farmable_condition 0. |
 | `test_grassland_balance.py` | Dossier LA2: grassland row = herd grassland + national balance (calibration year). The balance is constant in every scenario and never spared. `get_grassland_area_breakdown()` adds up. Edge cases: other calibration years, a negative balance, a year missing from the database. |
+| `test_soil_yield_mapping.py` | D9: the soil group -> yield class table follows Upton et al. (2013) Table 2 (each Sitka band holds the Table 2 yield class), is the only source of the afforestation template rows (`cbm_default_data` built from it, no hard-coded yield classes), and records its source in the database. |
 | `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
 | `_helpers.py` | Paths, input loaders, and a cached pipeline run. |
 

@@ -205,14 +205,15 @@ class DataManager:
 
     def get_soil_yield_mapping(self):
         """
-        Retrieves forest soil yield mapping data from the database without scaling.
+        Retrieves the soil group -> species yield class table (Upton et al. 2013 Table 2; decision D9), in
+        table order, without scaling. It is the only source of the afforestation yield classes.
 
         Returns:
             pandas.DataFrame: A DataFrame containing forest soil yield mapping data.
         """
         table = "forest_soil_yield_mapping"
         dataframe = pd.read_sql(
-            "SELECT * FROM '%s'" % (table),
+            "SELECT * FROM '%s' ORDER BY rowid" % (table),
             self.engine,
         )
 

@@ -153,7 +153,8 @@ Module Contents
 
    .. py:method:: get_soil_yield_mapping()
 
-      Retrieves forest soil yield mapping data from the database without scaling.
+      Retrieves the soil group -> species yield class table (Upton et al. 2013 Table 2; decision D9), in
+      table order, without scaling. It is the only source of the afforestation yield classes.
 
       :returns: A DataFrame containing forest soil yield mapping data.
       :rtype: pandas.DataFrame

@@ -245,9 +245,9 @@ the new data.</p>
 <dt class="sig sig-object py" id="landcover_assignment.afforestation.Afforestation.cbm_dataframe_structure">
 <span class="sig-name descname"><span class="pre">cbm_dataframe_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.afforestation.Afforestation.cbm_dataframe_structure" title="Link to this definition"></a></dt>
 <dd><p>Initializes the structure of the CBM DataFrame based on default data.</p>
-<p>This method creates a new DataFrame structured for CBM inputs using default data
-from the data manager class. It serves as the initial template for accumulating
-afforestation scenario data.</p>
+<p>One zero-area row (scenario -1) per row of the soil group -&gt; yield class table
+(<code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code>, the only source of species and yield classes). It serves as
+the initial template for accumulating afforestation scenario data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame structured for CBM afforestation inputs.</p>
