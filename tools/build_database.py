@@ -45,7 +45,7 @@ Decided (owner, 2026-11-23/24):
   extracted rows as `inventory_values` (`4.1.final_area.*`). Columns and 0.4.0 labels are kept. 0.4.0 held the
   CRF 2024 "Initial area" under scrambled years.
 - D9 (owner, 2026-11-26): `forest_soil_yield_mapping` keeps its 0.4.0 values; source Upton et al. (2013) Table 2
-  (NFS soil category -> Sitka yield class), the six categories read as three groups (inferred, to be confirmed).
+  (NFS soil category -> Sitka yield class), the six categories grouped as the Teagasc NFS soil groups (1-2, 3-4, 5-6; owner confirmed).
   It is the only source of the afforestation yield classes (the CBM template rows are built from it).
 
 Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
@@ -195,8 +195,8 @@ OTHER_COLUMNS = [   # (table, column, unit, description, source, transformation,
     ("NIR", "Area_kha", "kha", "Table4.1 final area of the land category", "CRT2026",
      "Table4.1 row 20 'Final area' (NO -> 0)", D8, "inventory"),
     ("forest_soil_yield_mapping", "soil_group", "group", "spared-area soil group (1 best - 3 poorest farm soil)",
-     "UPTON2013", "Table 2 soil categories read as three groups: 1 = SC1-2, 2 = SC3-4, 3 = SC5-6 (inferred pairing, "
-     "to be confirmed)", D9, "parameter"),
+     "UPTON2013", "Table 2 soil categories grouped as the Teagasc NFS soil groups: 1 = SC1-2, 2 = SC3-4, "
+     "3 = SC5-6", D9, "parameter"),
     ("forest_soil_yield_mapping", "species", "label", "tree species (Sitka spruce; SGB = slow-growing broadleaf)",
      "UPTON2013", "Table 2 is for Sitka spruce; SGB is a single class (YC6) for every group", D9, "parameter"),
     ("forest_soil_yield_mapping", "yield_class", "label", "cbm_runner yield class label", "UPTON2013",

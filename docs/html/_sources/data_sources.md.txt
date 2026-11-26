@@ -206,8 +206,8 @@ each National Farm Survey soil category (from the Farrelly et al. 2011 productiv
 | 5 Very limited | agricultural potential greatly restricted | 18 |
 | 6 Extremely limited | mountainous, steep slopes, shallow soil | 14 |
 
-The soil groups (from grassland_production) are read as pairs of these categories: group 1 = 1-2, group 2 = 3-4,
-group 3 = 5-6. Upton does not state this pairing; it is to be confirmed against the NFS soil group definition. Each
+The soil groups (from grassland_production) are the Teagasc NFS soil groups, which pair these categories: group 1 =
+1-2, group 2 = 3-4, group 3 = 5-6. Each
 yield class lies in its cbm_runner band (24 in 24-30, 20 in 20-24, 18 in 17-20). Category 6 (YC 14, hill land below
 the grant threshold) is not used. The values are those of 0.4.0, which cited Farrelly & Gallagher (2015) in error;
 that paper gives no yield class by soil.

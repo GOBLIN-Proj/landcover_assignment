@@ -2,8 +2,8 @@
 yield classes.
 
 - Its values follow Upton et al. (2013) Table 2 (NFS soil category -> expected Sitka spruce yield class, from the
-  Farrelly et al. 2011 productivity model), with the six NFS categories read as three soil groups (inferred pairing,
-  to be confirmed): group 1 = YC 24, group 2 = YC 20, group 3 = YC 18 (and 14).
+  Farrelly et al. 2011 productivity model), with the six NFS categories grouped as the Teagasc NFS soil groups
+  (confirmed by the owner, 2026-11-26): group 1 = YC 24, group 2 = YC 20, group 3 = YC 18 (and 14).
 - The zero-area template rows at the top of the afforestation table come from the same table (no second copy).
 - Its provenance is recorded in the database.
 """
