@@ -50,7 +50,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spared area, rewetting and the grassland row</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-rule">The rule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-a-scenario-s-spared-area-is-divided">How a scenario’s spared area is divided</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#farmable-condition-is-mineral-soil-only">Farmable condition is mineral soil only</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transitions-by-soil-group">Transitions by soil group</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rules-the-tests-enforce">Rules the tests enforce</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#known-issue-to-be-fixed-as-finding-8">Known issue (to be fixed as finding 8)</a></li>
 </ul>
@@ -125,6 +127,14 @@ wetland factors. Moving the area to the wetland row would apply the wrong factor
 organo-mineral pools (<code class="docutils literal notranslate"><span class="pre">share_rewetted_in_organic</span></code>, <code class="docutils literal notranslate"><span class="pre">share_rewetted_in_organic_mineral</span></code>) instead of the drained rich/poor
 split.</p>
 </section>
+<section id="farmable-condition-is-mineral-soil-only">
+<h2>Farmable condition is mineral soil only<a class="headerlink" href="#farmable-condition-is-mineral-soil-only" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code> is spared grassland that leaves production in unchanged condition (no animals, no new land use).
+It only ever receives mineral soil: its rows have <code class="docutils literal notranslate"><span class="pre">share_mineral</span></code> = 1. Spared organic grassland that is rewetted is not
+farmable condition: it stays grassland with rewet status (above). Rewetted land is reported in aggregate in the
+grassland row, so the rewet-status shares hold the rewet-status area of the calibration year (CRT “Other organic
+soils”) plus the rewetted spared area.</p>
+</section>
 <section id="worked-example">
 <h2>Worked example<a class="headerlink" href="#worked-example" title="Link to this heading"></a></h2>
 <p>National test data (<code class="docutils literal notranslate"><span class="pre">tests/data</span></code>), scenario 0, 2020 to 2050. Spared area: 2,833,798 ha. Rewetted: 28,338 ha.</p>
@@ -138,37 +148,39 @@ split.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>grassland row, total</p></td>
-<td class="text-right"><p>3,904,877</p></td>
-<td class="text-right"><p>1,099,417</p></td>
+<td class="text-right"><p>4,218,508</p></td>
+<td class="text-right"><p>1,413,048</p></td>
 <td><p>−2,805,460</p></td>
 </tr>
 <tr class="row-odd"><td><p>… mineral</p></td>
-<td class="text-right"><p>3,590,677</p></td>
-<td class="text-right"><p>785,217</p></td>
+<td class="text-right"><p>3,878,597</p></td>
+<td class="text-right"><p>1,073,137</p></td>
 <td><p>−2,805,460 (forest 1,700,279 + farmable 1,105,181)</p></td>
 </tr>
 <tr class="row-even"><td><p>… organic, drained (rich + poor)</p></td>
-<td class="text-right"><p>126,357</p></td>
-<td class="text-right"><p>98,018</p></td>
+<td class="text-right"><p>136,562</p></td>
+<td class="text-right"><p>108,225</p></td>
 <td><p>−28,338</p></td>
 </tr>
 <tr class="row-odd"><td><p>… organic, rewet status (rich + poor)</p></td>
-<td class="text-right"><p>187,844</p></td>
-<td class="text-right"><p>216,182</p></td>
+<td class="text-right"><p>203,291</p></td>
+<td class="text-right"><p>231,629</p></td>
 <td><p><strong>+28,338</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>wetland row</p></td>
-<td class="text-right"><p>1,225,154</p></td>
-<td class="text-right"><p>1,225,154</p></td>
+<td class="text-right"><p>1,212,500</p></td>
+<td class="text-right"><p>1,212,500</p></td>
 <td><p>0</p></td>
 </tr>
 </tbody>
 </table>
+<p>The grassland row includes the national balance (313,631 ha, <code class="docutils literal notranslate"><span class="pre">docs/grassland_area.md</span></code>), which is never spared.</p>
 <p>Three consequences to keep in mind when reading the outputs:</p>
 <ol class="arabic simple">
-<li><p><strong>The grassland row is more than productive grassland.</strong> In 2050 it holds 1,099,417 ha. grassland_production’s
-grassland is 1,071,079 ha; the row adds the 28,338 ha of rewetted spared land. The spared area (2,833,798 ha) is
-therefore larger than the fall in the grassland row (2,805,460 ha).</p></li>
+<li><p><strong>The grassland row is more than productive grassland.</strong> In 2050 it holds 1,413,048 ha: grassland_production’s
+grassland (1,071,079 ha), the balance (313,631 ha) and the 28,338 ha of rewetted spared land
+(<code class="docutils literal notranslate"><span class="pre">LandCover.get_grassland_area_breakdown()</span></code> reports the three parts). The spared area (2,833,798 ha) is therefore
+larger than the fall in the grassland row (2,805,460 ha).</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">Grassland_to_Grassland</span></code> counts mineral land leaving grassland</strong>, as a negative number (−2,805,460 here).
 <strong><code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is always 0.</strong> Neither of these includes rewetting.</p></li>
 <li><p><strong>The rewetted area is recorded in the spared-area log</strong>, as <code class="docutils literal notranslate"><span class="pre">land_use</span> <span class="pre">=</span> <span class="pre">&quot;rewet_grassland&quot;</span></code> with the area in
@@ -176,20 +188,59 @@ therefore larger than the fall in the grassland row (2,805,460 ha).</p></li>
 <code class="docutils literal notranslate"><span class="pre">share_rewetted_poor_organic</span></code>.</p></li>
 </ol>
 </section>
+<section id="transitions-by-soil-group">
+<h2>Transitions by soil group<a class="headerlink" href="#transitions-by-soil-group" title="Link to this heading"></a></h2>
+<p>Afforestation needs the soil group of each new forest hectare (it sets the yield class). <code class="docutils literal notranslate"><span class="pre">TransitionDataFetcher</span></code>
+splits each scenario’s transitions across soil groups 1, 2 and 3, using the spared area by soil group from
+grassland_production: soil group 1 first, then 2, then 3; in each group cropland, then forest, then farmable condition,
+each capped by what is left in the group. The spared area the transition matrix does not account for is the rewetted
+area; it stays grassland and is placed in soil group 3 (<code class="docutils literal notranslate"><span class="pre">Grassland_Rewetted</span></code>,
+<code class="docutils literal notranslate"><span class="pre">get_grassland_rewetted_soil_group_areas</span></code>). Scenario 0:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>soil group</p></th>
+<th class="head text-right"><p>forest</p></th>
+<th class="head text-right"><p>farmable condition</p></th>
+<th class="head text-right"><p>rewetted (stays grassland)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td class="text-right"><p>1,133,531</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td class="text-right"><p>566,748</p></td>
+<td class="text-right"><p>806,039</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>299,143</p></td>
+<td class="text-right"><p>28,338</p></td>
+</tr>
+</tbody>
+</table>
+<p>Before 0.5.0 farmable condition took everything left in each group, including the rewetted area, so farmable by soil
+group added up to more than <code class="docutils literal notranslate"><span class="pre">Grassland_to_Farmable_Condition</span></code> (scenario 0: 1,133,519 ha against 1,105,181; finding 3).</p>
+</section>
 <section id="rules-the-tests-enforce">
 <h2>Rules the tests enforce<a class="headerlink" href="#rules-the-tests-enforce" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">tests/test_frozen_interface.py</span></code> and <code class="docutils literal notranslate"><span class="pre">tests/test_land_balance.py</span></code> check, on every input set, that:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is 0 and the wetland row does not grow;</p></li>
 <li><p>the logged rewetted area equals the increase in rewet-status grassland, for scenarios where the rewetting fits within the drained organic stock;</p></li>
-<li><p>total land area is conserved in every scenario, and each land use balances with the transition matrix.</p></li>
+<li><p>total land area is conserved in every scenario, and each land use balances with the transition matrix;</p></li>
+<li><p>the transitions by soil group add up to the transition matrix, and each soil group’s transitions plus its rewetted
+area add up to its spared area.</p></li>
 </ul>
 </section>
 <section id="known-issue-to-be-fixed-as-finding-8">
 <h2>Known issue (to be fixed as finding 8)<a class="headerlink" href="#known-issue-to-be-fixed-as-finding-8" title="Link to this heading"></a></h2>
 <p>When a scenario spares more organic grassland than is still drained, the log counts land that already had rewet status
-as newly rewetted. In scenario 3, which spares all grassland, the log records 314,200 ha. But only the 126,357 ha
-still drained can change status; the other 187,843 ha already had rewet status in 2020. No area is lost (the land
+as newly rewetted. In scenario 3, which spares all grassland, the log records 314,640 ha. But only the 126,410 ha
+still drained can change status; the other 188,230 ha already had rewet status in 2020. No area is lost (the land
 balance holds), but the log overstates new rewetting. An expected failure in <code class="docutils literal notranslate"><span class="pre">test_frozen_interface.py</span></code> marks this
 until it is fixed.</p>
 </section>

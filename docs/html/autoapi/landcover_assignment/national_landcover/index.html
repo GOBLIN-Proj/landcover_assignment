@@ -617,9 +617,14 @@ over <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEA
 <dd class="field-odd"><p>float</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared area dataset.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared area dataset, or if its column holds more than one non-zero
+value.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The scenario column holds the target year’s spared area and zeros elsewhere. It is read as “the one non-zero
+value” rather than by year, because goblin_lite passes the table with the years in a column (<code class="docutils literal notranslate"><span class="pre">index</span></code>),
+not as the index. A column with no non-zero value is a scenario with no spared area: 0.0 (finding 4).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -690,13 +695,14 @@ grassland, 1990-2024), via <a class="reference internal" href="#landcover_assign
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The area with organic potential.</p>
+<dd class="field-even"><p>The area with organic potential: the scenario’s spared area on soil group 3 (0.0 if it has no soil group 3
+rows). If the scenario’s breakdown is all zero, the total spared area (no cap).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared breakdown dataset or if all values in the ‘area_ha’ column are zero.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If the scenario is not found in the spared breakdown dataset (finding 5a).</p>
 </dd>
 </dl>
 </dd></dl>

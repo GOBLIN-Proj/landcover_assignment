@@ -436,23 +436,27 @@ class NationalLandCover:
         Raises
         ------
         ValueError
-            If the scenario is not found in the spared area dataset.
+            If the scenario is not found in the spared area dataset, or if its column holds more than one non-zero
+            value.
+
+        Notes
+        -----
+        The scenario column holds the target year's spared area and zeros elsewhere. It is read as "the one non-zero
+        value" rather than by year, because goblin_lite passes the table with the years in a column (``index``),
+        not as the index. A column with no non-zero value is a scenario with no spared area: 0.0 (finding 4).
         """
-        try:
-            col = str(sc)
-            mask = (spared_area[col] !=0)
-            return spared_area.loc[mask,col].item()
-        except KeyError:
-            try:
-                col = int(sc)  # Fallback to integer representation
-                mask = (spared_area[col] != 0)
-                return spared_area.loc[mask, col].item()
-            except KeyError:
-                # Handle or log the error specifically for this scenario
-                # Perhaps log an error or raise a custom exception
-                raise ValueError(f"Scenario {sc} not found in spared_area.")
-            
-    
+        for col in (str(sc), int(sc)):
+            if col in spared_area.columns:
+                values = spared_area.loc[spared_area[col] != 0, col]
+                if len(values) == 0:
+                    return 0.0
+                if len(values) > 1:
+                    raise ValueError(f"Scenario {sc}: spared_area has more than one non-zero value "
+                                     f"({len(values)}); expected only the target year's spared area.")
+                return float(values.item())
+        raise ValueError(f"Scenario {sc} not found in spared_area.")
+
+
     def get_grassland_balance_area(self, year, total_grassland_area):
         """
         National grassland that the herd doesn't need: the national grassland area minus the herd-derived grassland
@@ -543,12 +547,13 @@ class NationalLandCover:
         Returns
         -------
         float
-            The area with organic potential.
-        
+            The area with organic potential: the scenario's spared area on soil group 3 (0.0 if it has no soil group 3
+            rows). If the scenario's breakdown is all zero, the total spared area (no cap).
+
         Raises
         ------
         ValueError
-            If the scenario is not found in the spared breakdown dataset or if all values in the 'area_ha' column are zero.
+            If the scenario is not found in the spared breakdown dataset (finding 5a).
         """
         # Select only numeric columns 
         numeric_df = spared_breakdown.select_dtypes(include=[float, int])
@@ -556,24 +561,15 @@ class NationalLandCover:
         grouped_df = numeric_df.groupby(['Scenario','soil_group']).sum()
 
 
-        try:
-            # Using .xs to select all entries for a specific 'Scenario' number
-            # and then filter for 'soil_group' == 3
-            # Note: .xs returns a DataFrame if there are multiple matches, or a Series if there's only one match
-            specific_scenario_df = grouped_df.xs(key=sc, level='Scenario')
-         
-            # Check if all values in the 'area_ha' column are zero
-            if (specific_scenario_df['area_ha'] == 0).all():
-                # Handle the case where all values in the 'area_ha' column are zero
-                return self.get_total_spared_area(total_spared_area, sc)
-            
-            if 3 in specific_scenario_df.index:
-                area_ha = specific_scenario_df.loc[3, 'area_ha']  # Directly use .loc to access 'soil_group' == 3
-            else:
-                area_ha = None  # Handle the case where 'soil_group' == 3 is not present
-        except ValueError as e:
-            # Handle the case where the specific scenario does not exist
-            area_ha = None
+        if sc not in grouped_df.index.get_level_values('Scenario'):
+            raise ValueError(f"Scenario {sc} not found in the spared area breakdown.")
+        specific_scenario_df = grouped_df.xs(key=sc, level='Scenario')
 
+        # An all-zero breakdown gives no soil information: no cap (the total spared area).
+        if (specific_scenario_df['area_ha'] == 0).all():
+            return self.get_total_spared_area(total_spared_area, sc)
 
-        return area_ha
+        # No soil group 3 rows: no spared land with organic potential (finding 5b).
+        if 3 not in specific_scenario_df.index:
+            return 0.0
+        return float(specific_scenario_df.loc[3, 'area_ha'])

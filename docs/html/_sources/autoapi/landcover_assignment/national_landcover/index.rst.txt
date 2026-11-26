@@ -379,7 +379,14 @@ Module Contents
       :returns: The total spared area.
       :rtype: float
 
-      :raises ValueError: If the scenario is not found in the spared area dataset.
+      :raises ValueError: If the scenario is not found in the spared area dataset, or if its column holds more than one non-zero
+          value.
+
+      .. rubric:: Notes
+
+      The scenario column holds the target year's spared area and zeros elsewhere. It is read as "the one non-zero
+      value" rather than by year, because goblin_lite passes the table with the years in a column (``index``),
+      not as the index. A column with no non-zero value is a scenario with no spared area: 0.0 (finding 4).
 
 
 
@@ -435,10 +442,11 @@ Module Contents
       :param sc: The scenario.
       :type sc: str or int
 
-      :returns: The area with organic potential.
+      :returns: The area with organic potential: the scenario's spared area on soil group 3 (0.0 if it has no soil group 3
+                rows). If the scenario's breakdown is all zero, the total spared area (no cap).
       :rtype: float
 
-      :raises ValueError: If the scenario is not found in the spared breakdown dataset or if all values in the 'area_ha' column are zero.
+      :raises ValueError: If the scenario is not found in the spared breakdown dataset (finding 5a).
 
 
 

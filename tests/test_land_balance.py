@@ -111,15 +111,46 @@ class SoilGroupSplit(unittest.TestCase):
                 with self.subTest(scenario=sc, column=col):
                     self.assertAlmostEqual(totals.loc[sc, col], tm.loc[sc, col], delta=1e-2)
 
-    @unittest.expectedFailure
     def test_farmable_condition(self):
-        """Finding 3: every soil group gives its whole remaining pool to farmable condition, including the rewetted
-        organic area, which stays grassland. Scenario 0 is over by 28,337.98 ha (its rewetted area)."""
+        """Finding 3 (fixed): farmable condition by soil group adds up to the matrix. It used to take the whole remaining
+        pool of each soil group, including the rewetted organic area, which stays grassland."""
         tm, totals = self.split()
         for sc in totals.index:
-            self.assertAlmostEqual(totals.loc[sc, "Grassland_to_Farmable_Condition"],
-                                   tm.loc[sc, "Grassland_to_Farmable_Condition"], delta=1e-2)
+            with self.subTest(scenario=sc):
+                self.assertAlmostEqual(totals.loc[sc, "Grassland_to_Farmable_Condition"],
+                                       tm.loc[sc, "Grassland_to_Farmable_Condition"], delta=1e-2)
 
+    def test_soil_groups_hold_all_spared_land(self):
+        """Forest + cropland + farmable + rewetted (stays grassland) in each soil group = that group's spared area."""
+        from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
+        cols = ["Grassland_to_Forest", "Grassland_to_Cropland", "Grassland_to_Wetland",
+                "Grassland_to_Farmable_Condition", "Grassland_Rewetted"]
+        for case in ("national", "goblin_lite"):
+            tm = run_case(case)["transition_matrix"]
+            breakdown = CASES[case][1]()[3]
+            by_group = TransitionDataFetcher(tm).get_grassland_to_landuse_soil_group_area(breakdown)
+            placed = by_group.set_index(["scenario", "soil_group"])[cols].sum(axis=1)
+            spared = breakdown.groupby(["Scenario", "soil_group"]).area_ha.sum()
+            for key, value in placed.items():
+                with self.subTest(case=case, scenario_soil_group=key):
+                    self.assertAlmostEqual(value, spared.loc[key], delta=1e-2)
+
+    def test_rewetted_area_is_in_soil_group_3(self):
+        """The rewetted area by soil group is all in soil group 3 and equals the log's rewet_grassland entry.
+        Scenario 3 (national) is left out: its log over-reports the rewetted area (finding 8, test_frozen_interface)."""
+        from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
+        for case in ("national", "goblin_lite"):
+            out = run_case(case)
+            log = out["spared_area_log"]
+            rewet = TransitionDataFetcher(out["transition_matrix"]).get_grassland_rewetted_soil_group_areas(
+                CASES[case][1]()[3]).set_index(["scenario", "soil_group"]).Grassland_Rewetted
+            for sc in sorted(set(rewet.index.get_level_values(0))):
+                if case == "national" and sc == 3:
+                    continue
+                logged = log[(log.scenario == sc) & (log.land_use == "rewet_grassland")].organic_area.sum()
+                with self.subTest(case=case, scenario=sc):
+                    self.assertAlmostEqual(rewet.loc[(sc, 3)], logged, delta=1e-2)
+                    self.assertAlmostEqual(rewet.loc[sc].drop(3).sum(), 0.0, delta=1e-6)
 
 
 class ComputedOnce(unittest.TestCase):

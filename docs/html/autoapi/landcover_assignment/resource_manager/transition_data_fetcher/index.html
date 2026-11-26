@@ -220,9 +220,28 @@ This class simplifies the process of extracting transition area data and support
 </dd>
 </dl>
 </div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">get_grassland_rewetted_soil_group_areas(spared_area_breakdown)</span></code></p>
+<blockquote>
+<div><p>Retrieves the rewetted spared area by soil group: spared organic grassland that is rewetted and stays grassland
+(rewet-status shares in the grassland row). It is placed in soil group 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param spared_area_breakdown<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_Rewetted</span></code>.</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">get_grassland_to_landuse_soil_group_area(spared_area_breakdown)</span></code></p>
 <blockquote>
-<div><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.</p>
+<div><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
+Each soil group is filled with cropland, then forest, then farmable condition (mineral soil), each capped by what
+is left; the spared area the transition matrix does not account for is the rewetted area, which stays grassland
+and is placed in soil group 3. See docs/rewetting.md.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param spared_area_breakdown<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
@@ -402,9 +421,43 @@ This class simplifies the process of extracting transition area data and support
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_rewetted_soil_group_areas">
+<span class="sig-name descname"><span class="pre">get_grassland_rewetted_soil_group_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_rewetted_soil_group_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the rewetted spared area by soil group: spared organic grassland that is rewetted and stays in the
+grassland row (drained -&gt; rewet-status shares; <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is 0 by design, docs/rewetting.md).
+It is not a transition between land uses, so the transition matrix has no column for it: it is the spared
+area that forest, cropland and farmable condition do not take. It is placed in soil group 3, the group
+rewetting draws on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with columns <code class="docutils literal notranslate"><span class="pre">scenario</span></code>, <code class="docutils literal notranslate"><span class="pre">soil_group</span></code>, and <code class="docutils literal notranslate"><span class="pre">Grassland_Rewetted</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.SOIL_GROUP_TRANSITIONS">
+<span class="sig-name descname"><span class="pre">SOIL_GROUP_TRANSITIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Grassland_to_Cropland',</span> <span class="pre">'Grassland_to_Forest',</span> <span class="pre">'Grassland_to_Farmable_Condition')</span></em><a class="headerlink" href="#landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.SOIL_GROUP_TRANSITIONS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_landuse_soil_group_area">
 <span class="sig-name descname"><span class="pre">get_grassland_to_landuse_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher.get_grassland_to_landuse_soil_group_area" title="Link to this definition"></a></dt>
-<dd><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.</p>
+<dd><p>Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups,
+based on spared area breakdown. This method is used as a helper function for other public methods.</p>
+<p>Each scenario’s spared area by soil group (the breakdown) is filled with the transition matrix’s areas, soil
+group 1 first, then 2, then 3: in each group cropland, then forest, then farmable condition, each capped by
+what is left in the group and by what is still to place. The spared area the matrix does not account for is
+the rewetted area (it stays grassland); it is placed in soil group 3 (<code class="docutils literal notranslate"><span class="pre">Grassland_Rewetted</span></code>). With the
+breakdown and the matrix consistent, each soil group’s columns add up to its spared area.
+<code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is kept as a column and is always 0 by design. A soil group with no rows counts as
+0 ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>spared_area_breakdown</strong> – A pandas DataFrame detailing the breakdown of spared areas by soil group.</p>
@@ -418,10 +471,18 @@ This class simplifies the process of extracting transition area data and support
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher._COLUMNS">
+<span class="sig-name descname"><span class="pre">_COLUMNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Grassland_to_Forest',</span> <span class="pre">'Grassland_to_Wetland',</span> <span class="pre">'Grassland_to_Cropland',...</span></em><a class="headerlink" href="#landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher._COLUMNS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher._derive_soil_group_area">
 <span class="sig-name descname"><span class="pre">_derive_soil_group_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">soil_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soil_group_pool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transition_area_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher._derive_soil_group_area" title="Link to this definition"></a></dt>
 <dd><p>Internal helper method to calculate the allocation of transition areas by soil group.</p>
+<p>Cropland, then forest, then farmable condition each take <code class="docutils literal notranslate"><span class="pre">min(left</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">group,</span> <span class="pre">still</span> <span class="pre">to</span> <span class="pre">place)</span></code>. In soil
+group 3 the rewetted area (stays grassland) then takes what is left, up to the scenario’s rewetted area.
+<code class="docutils literal notranslate"><span class="pre">soil_group_pool</span></code> and <code class="docutils literal notranslate"><span class="pre">transition_area_dict</span></code> are reduced by what is placed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
