@@ -45,9 +45,13 @@ The mineral and drained organic areas available to be spared are taken from the 
 | column | meaning |
 |---|---|
 | `herd_grassland_ha` | grassland the herd needs: the calibration-year area for the baseline; for a scenario, that area minus its spared area |
-| `rewetted_spared_ha` | spared organic grassland that is rewetted and stays in the grassland row (see [rewetting](rewetting.md)); 0 in the baseline |
+| `rewetted_spared_ha` | spared drained organic grassland that is rewetted (drained -> rewet status), up to the scenario's rewetting target; it stays in the grassland row (see [rewetting](rewetting.md)); 0 in the baseline |
+| `spared_drained_organic_ha` | drained organic grassland spared beyond the rewetting target: it stays drained grassland, only the animals go; 0 in the baseline |
+| `spared_rewetted_organic_ha` | spared organic grassland that already had rewet status (CRT "Other organic soils"): it stays so; 0 in the baseline |
 | `other_grassland_ha` | the balance, the same in every row |
 | `total_grassland_ha` | the sum, equal to the grassland row's `area_ha` |
+
+The three spared organic columns come from the spared-area log (`rewet_grassland`, `spared_drained_organic_grassland`, `spared_rewetted_organic_grassland`).
 
 ## The numbers (2020, test data)
 

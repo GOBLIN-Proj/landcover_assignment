@@ -9,7 +9,8 @@ The grassland area in GOBLIN is herd-derived (grassland_production). The nationa
   calibration year the run uses.
 - Herd area: grassland_production's total_grassland input, calibration-year row.
 - The balance is the same in the baseline and every scenario, and it is never available to be spared.
-- LandCover.get_grassland_area_breakdown() reports herd / rewetted spared / other (balance) grassland per row.
+- LandCover.get_grassland_area_breakdown() reports herd / spared organic (rewetted; drained, unchanged; rewet status,
+  unchanged) / other (balance) grassland per row.
 """
 import logging
 import unittest
@@ -19,6 +20,14 @@ import pandas as pd
 from _helpers import CAL, TARGET, classes, input_grassland_area, load_national, national_grassland_area, run_case
 
 NATIONAL_CASES = ("national", "goblin_lite")
+ORGANIC_ENTRIES = {"rewetted_spared_ha": "rewet_grassland",
+                   "spared_drained_organic_ha": "spared_drained_organic_grassland",
+                   "spared_rewetted_organic_ha": "spared_rewetted_organic_grassland"}
+
+
+def logged(case, sc, entry):
+    log = run_case(case)["spared_area_log"]
+    return log[(log.scenario == sc) & (log.land_use == entry)].organic_area.sum()
 
 
 def grassland_rows(case):
@@ -37,14 +46,14 @@ class Balance(unittest.TestCase):
             self.assertAlmostEqual(grassland_rows(case)[-CAL], national_grassland_area(CAL), delta=1e-3, msg=case)
 
     def test_balance_is_carried_forward_unchanged(self):
-        """Every scenario row = its herd area (target year) + rewetted spared grassland + the same balance."""
+        """Every scenario row = its herd area (target year) + spared organic grassland (rewetted, or in its current
+        condition) + the same balance."""
         for case in NATIONAL_CASES:
             rows = grassland_rows(case)
-            log = run_case(case)["spared_area_log"]
             for sc in rows.index[rows.index >= 0]:
-                rewetted = log[(log.scenario == sc) & (log.land_use == "rewet_grassland")].organic_area.sum()
+                organic = sum(logged(case, sc, entry) for entry in ORGANIC_ENTRIES.values())
                 herd = input_grassland_area(case, TARGET, sc)
-                self.assertAlmostEqual(rows[sc], herd + rewetted + balance(case), delta=1e-3, msg=f"{case} {sc}")
+                self.assertAlmostEqual(rows[sc], herd + organic + balance(case), delta=1e-3, msg=f"{case} {sc}")
 
     def test_balance_is_not_spared(self):
         """Scenario 3 spares all herd grassland (target herd area 0); the balance stays in the grassland row."""
@@ -64,7 +73,8 @@ class Balance(unittest.TestCase):
 
 
 class Breakdown(unittest.TestCase):
-    COLUMNS = ["farm_id", "year", "herd_grassland_ha", "rewetted_spared_ha", "other_grassland_ha", "total_grassland_ha"]
+    COLUMNS = ["farm_id", "year", "herd_grassland_ha", "rewetted_spared_ha", "spared_drained_organic_ha",
+               "spared_rewetted_organic_ha", "other_grassland_ha", "total_grassland_ha"]
 
     def breakdown(self, case):
         LandCover = classes("national")[0]
@@ -82,7 +92,8 @@ class Breakdown(unittest.TestCase):
         for case in NATIONAL_CASES:
             _, table = self.breakdown(case)
             rows = grassland_rows(case)
-            parts = table.herd_grassland_ha + table.rewetted_spared_ha + table.other_grassland_ha
+            parts = (table.herd_grassland_ha + table.rewetted_spared_ha + table.spared_drained_organic_ha
+                     + table.spared_rewetted_organic_ha + table.other_grassland_ha)
             pd.testing.assert_series_equal(parts, table.total_grassland_ha, check_names=False, atol=1e-6)
             self.assertTrue(((table.total_grassland_ha - rows.loc[table.farm_id].values).abs() < 1e-3).all(), case)
 
@@ -90,13 +101,13 @@ class Breakdown(unittest.TestCase):
         for case in NATIONAL_CASES:
             _, table = self.breakdown(case)
             t = table.set_index("farm_id")
-            log = run_case(case)["spared_area_log"]
             self.assertAlmostEqual(t.loc[-CAL, "herd_grassland_ha"], input_grassland_area(case, CAL), delta=1e-6)
-            self.assertEqual(t.loc[-CAL, "rewetted_spared_ha"], 0.0)
+            for column in ORGANIC_ENTRIES:
+                self.assertEqual(t.loc[-CAL, column], 0.0)
             for sc in t.index[t.index >= 0]:
                 self.assertAlmostEqual(t.loc[sc, "herd_grassland_ha"], input_grassland_area(case, TARGET, sc), delta=1e-3)
-                rewetted = log[(log.scenario == sc) & (log.land_use == "rewet_grassland")].organic_area.sum()
-                self.assertAlmostEqual(t.loc[sc, "rewetted_spared_ha"], rewetted, delta=1e-3)
+                for column, entry in ORGANIC_ENTRIES.items():
+                    self.assertAlmostEqual(t.loc[sc, column], logged(case, sc, entry), delta=1e-3, msg=column)
             self.assertTrue((t.other_grassland_ha - balance(case)).abs().max() < 1e-6, case)
 
     def test_reporting_only(self):

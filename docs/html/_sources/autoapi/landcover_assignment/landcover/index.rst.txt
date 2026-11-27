@@ -178,21 +178,29 @@ Module Contents
 
    .. py:method:: get_grassland_area_breakdown()
 
-      Reports how much of the grassland row is herd grassland, rewetted spared grassland, and other grassland (the
-      national balance), for the baseline and each scenario. Reporting only: it doesn't change any output.
+      Reports what the grassland row is made of, for the baseline and each scenario. Reporting only: it doesn't
+      change any output.
 
       - ``herd_grassland_ha``: grassland the herd needs (grassland_production's total_grassland input): the
         calibration-year area for the baseline; for a scenario, the calibration-year area minus its spared area.
-      - ``rewetted_spared_ha``: spared organic grassland that is rewetted and stays in the grassland row with rewet
-        status (docs/rewetting.md); 0 in the baseline.
+      - Spared organic grassland, which stays in the grassland row (docs/rewetting.md); 0 in the baseline. Taken from
+        the spared-area log:
+
+        - ``rewetted_spared_ha``: drained land that is rewetted (drained -> rewet-status shares); never more than
+          the scenario's rewetting target (log entry ``rewet_grassland``);
+        - ``spared_drained_organic_ha``: drained land spared beyond the rewetting target; it stays drained, only
+          the animals go (``spared_drained_organic_grassland``);
+        - ``spared_rewetted_organic_ha``: spared land that already had rewet status (CRT "Other organic soils");
+          it stays so (``spared_rewetted_organic_grassland``).
       - ``other_grassland_ha``: national grassland the herd doesn't need, in the calibration year (national area
         from the package database, grassland_data.total_kha, minus the herd area). The same in every row and never
         spared (docs/grassland_area.md).
-      - ``total_grassland_ha``: the sum, equal to the grassland row's ``area_ha`` in
-        :meth:`combined_future_land_use_area`.
+      - ``total_grassland_ha``: the grassland row's ``area_ha`` in :meth:`combined_future_land_use_area`; the
+        other columns add up to it.
 
-      :returns: Columns ``farm_id, year, herd_grassland_ha, rewetted_spared_ha, other_grassland_ha,
-                total_grassland_ha``; baseline row ``farm_id = -calibration_year``, then one row per scenario.
+      :returns: Columns ``farm_id, year, herd_grassland_ha, rewetted_spared_ha, spared_drained_organic_ha,
+                spared_rewetted_organic_ha, other_grassland_ha, total_grassland_ha``; baseline row
+                ``farm_id = -calibration_year``, then one row per scenario.
       :rtype: pandas.DataFrame
 
 
@@ -269,14 +277,21 @@ Module Contents
       Wrapper function to handle spared area allocation across mineral and organic soils
       before passing clean parameters to breakdown methods.
 
-      The spared area is split in two:
+      The spared area is split in three:
 
-      - **Rewetted organic soil**: rewetted proportion x spared area, capped by the drained organic grassland
-        available. It stays in the grassland row, moving from the drained to the rewet-status shares, and never
-        enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + "Other organic soils").
-        See docs/rewetting.md.
+      - **Rewetted organic soil**: rewetted proportion x spared area (the rewetting target), capped by the drained
+        organic grassland available. It stays in the grassland row, moving from the drained to the rewet-status
+        shares, and never enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + "Other organic
+        soils"). Rewetting never goes beyond the target (finding 8, owner 2026-11-27).
       - **Mineral soil**: the rest, capped by the mineral grassland available. The optimiser divides it between
-        forest and cropland targets, and any remainder goes to farmable_condition.
+        forest and cropland targets, and any remainder goes to farmable_condition (mineral soil only).
+      - **Spared organic soil in its current condition**: when the spared area is larger than the mineral land plus
+        the rewetted area (e.g. a scenario that spares all herd grassland), the rest is herd organic grassland that
+        only loses its animals. It stays in the grassland row unchanged: drained land stays drained, land with rewet
+        status stays so. It is logged as ``spared_drained_organic_grassland`` (up to the herd's drained land not
+        rewetted, in proportion to the two pools) and ``spared_rewetted_organic_grassland`` (the rest).
+
+      See docs/rewetting.md.
 
       :param scenario: Scenario identifier.
       :type scenario: int
@@ -286,12 +301,44 @@ Module Contents
 
 
 
-   .. py:method:: spared_area_breakdown(scenario, initial_spared_area, actual_rewetted_area, actual_mineral_area)
+   .. py:method:: _spared_organic_in_condition(area, actual_rewetted_area)
+
+      Splits spared organic land that is not rewetted (it only loses its animals) into its drained and rewet-status
+      parts. The herd's organic land not rewetted is drained (herd drained land - rewetted area) or already has
+      rewet status (herd area x the rewet-status shares). ``area`` is split in proportion to those two pools; the
+      drained part is capped by the drained pool and the rest is rewet status. The rest also takes the small
+      organic area that the inventory shares put in neither pool (national 2020: about 57 ha).
+
+      :param area: Spared area beyond the mineral land and the rewetted area (ha); 0 in most scenarios.
+      :type area: float
+      :param actual_rewetted_area: Rewetted spared area (ha).
+      :type actual_rewetted_area: float
+
+      :returns: (drained, rewet status) areas in ha.
+      :rtype: tuple of float
+
+
+
+   .. py:method:: spared_area_breakdown(scenario, initial_spared_area, actual_rewetted_area, actual_mineral_area, spared_drained_organic_area=0.0, spared_rewetted_organic_area=0.0)
 
       Analyzes the breakdown of spared areas under a specific scenario.
 
+      Every scenario gets the same log entries, in this order: ``rewet_grassland``,
+      ``spared_drained_organic_grassland``, ``spared_rewetted_organic_grassland`` (organic areas), then ``forest``,
+      ``cropland``, ``farmable_condition`` (mineral areas). They add up to the spared area.
+
       :param scenario: The scenario identifier for which the spared area breakdown is calculated.
       :type scenario: int
+      :param initial_spared_area: The scenario's spared area (ha).
+      :type initial_spared_area: float
+      :param actual_rewetted_area: Spared drained organic land that is rewetted (ha; never more than the rewetting target).
+      :type actual_rewetted_area: float
+      :param actual_mineral_area: Spared mineral land (ha), divided by the optimiser.
+      :type actual_mineral_area: float
+      :param spared_drained_organic_area: Spared drained organic land that is not rewetted: it stays drained grassland (ha).
+      :type spared_drained_organic_area: float, optional
+      :param spared_rewetted_organic_area: Spared organic land that already had rewet status: it stays so (ha).
+      :type spared_rewetted_organic_area: float, optional
 
       :returns: A dictionary containing the breakdown of spared areas for the given scenario.
       :rtype: dict
@@ -330,6 +377,13 @@ Module Contents
 
       :returns: A dictionary containing the available organic area and available mineral-organic area.
       :rtype: dict
+
+
+
+   .. py:method:: _herd_drained_organic_area()
+
+      Drained organic grassland of the herd (ha): herd area x the calibration-year drained rich and poor shares.
+      Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared.
 
 
 

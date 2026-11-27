@@ -121,10 +121,11 @@ class SoilGroupSplit(unittest.TestCase):
                                        tm.loc[sc, "Grassland_to_Farmable_Condition"], delta=1e-2)
 
     def test_soil_groups_hold_all_spared_land(self):
-        """Forest + cropland + farmable + rewetted (stays grassland) in each soil group = that group's spared area."""
+        """Forest + cropland + farmable + spared organic land (stays grassland) in each soil group = that group's spared
+        area."""
         from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
         cols = ["Grassland_to_Forest", "Grassland_to_Cropland", "Grassland_to_Wetland",
-                "Grassland_to_Farmable_Condition", "Grassland_Rewetted"]
+                "Grassland_to_Farmable_Condition", "Grassland_Spared_Organic"]
         for case in ("national", "goblin_lite"):
             tm = run_case(case)["transition_matrix"]
             breakdown = CASES[case][1]()[3]
@@ -135,22 +136,22 @@ class SoilGroupSplit(unittest.TestCase):
                 with self.subTest(case=case, scenario_soil_group=key):
                     self.assertAlmostEqual(value, spared.loc[key], delta=1e-2)
 
-    def test_rewetted_area_is_in_soil_group_3(self):
-        """The rewetted area by soil group is all in soil group 3 and equals the log's rewet_grassland entry.
-        Scenario 3 (national) is left out: its log over-reports the rewetted area (finding 8, test_frozen_interface)."""
+    def test_spared_organic_area_is_in_soil_group_3(self):
+        """The spared organic land that stays grassland is all in soil group 3 and equals the log's three organic
+        entries (rewet_grassland, spared_drained_organic_grassland, spared_rewetted_organic_grassland), in every
+        scenario."""
         from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
+        entries = ["rewet_grassland", "spared_drained_organic_grassland", "spared_rewetted_organic_grassland"]
         for case in ("national", "goblin_lite"):
             out = run_case(case)
             log = out["spared_area_log"]
-            rewet = TransitionDataFetcher(out["transition_matrix"]).get_grassland_rewetted_soil_group_areas(
-                CASES[case][1]()[3]).set_index(["scenario", "soil_group"]).Grassland_Rewetted
-            for sc in sorted(set(rewet.index.get_level_values(0))):
-                if case == "national" and sc == 3:
-                    continue
-                logged = log[(log.scenario == sc) & (log.land_use == "rewet_grassland")].organic_area.sum()
+            organic = TransitionDataFetcher(out["transition_matrix"]).get_grassland_spared_organic_soil_group_areas(
+                CASES[case][1]()[3]).set_index(["scenario", "soil_group"]).Grassland_Spared_Organic
+            for sc in sorted(set(organic.index.get_level_values(0))):
+                logged = log[(log.scenario == sc) & log.land_use.isin(entries)].organic_area.sum()
                 with self.subTest(case=case, scenario=sc):
-                    self.assertAlmostEqual(rewet.loc[(sc, 3)], logged, delta=1e-2)
-                    self.assertAlmostEqual(rewet.loc[sc].drop(3).sum(), 0.0, delta=1e-6)
+                    self.assertAlmostEqual(organic.loc[(sc, 3)], logged, delta=1e-2)
+                    self.assertAlmostEqual(organic.loc[sc].drop(3).sum(), 0.0, delta=1e-6)
 
 
 class ComputedOnce(unittest.TestCase):

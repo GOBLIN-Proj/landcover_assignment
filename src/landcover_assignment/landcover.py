@@ -182,42 +182,54 @@ class LandCover:
 
     def get_grassland_area_breakdown(self):
         """
-        Reports how much of the grassland row is herd grassland, rewetted spared grassland, and other grassland (the
-        national balance), for the baseline and each scenario. Reporting only: it doesn't change any output.
+        Reports what the grassland row is made of, for the baseline and each scenario. Reporting only: it doesn't
+        change any output.
 
         - ``herd_grassland_ha``: grassland the herd needs (grassland_production's total_grassland input): the
           calibration-year area for the baseline; for a scenario, the calibration-year area minus its spared area.
-        - ``rewetted_spared_ha``: spared organic grassland that is rewetted and stays in the grassland row with rewet
-          status (docs/rewetting.md); 0 in the baseline.
+        - Spared organic grassland, which stays in the grassland row (docs/rewetting.md); 0 in the baseline. Taken from
+          the spared-area log:
+
+          - ``rewetted_spared_ha``: drained land that is rewetted (drained -> rewet-status shares); never more than
+            the scenario's rewetting target (log entry ``rewet_grassland``);
+          - ``spared_drained_organic_ha``: drained land spared beyond the rewetting target; it stays drained, only
+            the animals go (``spared_drained_organic_grassland``);
+          - ``spared_rewetted_organic_ha``: spared land that already had rewet status (CRT "Other organic soils");
+            it stays so (``spared_rewetted_organic_grassland``).
         - ``other_grassland_ha``: national grassland the herd doesn't need, in the calibration year (national area
           from the package database, grassland_data.total_kha, minus the herd area). The same in every row and never
           spared (docs/grassland_area.md).
-        - ``total_grassland_ha``: the sum, equal to the grassland row's ``area_ha`` in
-          :meth:`combined_future_land_use_area`.
+        - ``total_grassland_ha``: the grassland row's ``area_ha`` in :meth:`combined_future_land_use_area`; the
+          other columns add up to it.
 
         Returns
         -------
         pandas.DataFrame
-            Columns ``farm_id, year, herd_grassland_ha, rewetted_spared_ha, other_grassland_ha,
-            total_grassland_ha``; baseline row ``farm_id = -calibration_year``, then one row per scenario.
+            Columns ``farm_id, year, herd_grassland_ha, rewetted_spared_ha, spared_drained_organic_ha,
+            spared_rewetted_organic_ha, other_grassland_ha, total_grassland_ha``; baseline row
+            ``farm_id = -calibration_year``, then one row per scenario.
         """
         calibration_year = self.data_manager_class.calibration_year
         target_year = self.data_manager_class.target_year
         land_use = self.combined_future_land_use_area()
         grassland = land_use[land_use["land_use"] == "grassland"].set_index("farm_id")["area_ha"]
+        log = self.get_spared_area_log()
+        organic_entries = {"rewetted_spared_ha": "rewet_grassland",
+                           "spared_drained_organic_ha": "spared_drained_organic_grassland",
+                           "spared_rewetted_organic_ha": "spared_rewetted_organic_grassland"}
 
         herd_baseline = self._herd_grassland_area()
         other = self.national_class.get_grassland_balance_area(calibration_year, self.total_grassland)
 
         rows = [{"farm_id": -calibration_year, "year": calibration_year, "herd_grassland_ha": herd_baseline,
-                 "rewetted_spared_ha": 0.0, "other_grassland_ha": other,
+                 **{column: 0.0 for column in organic_entries}, "other_grassland_ha": other,
                  "total_grassland_ha": grassland[-calibration_year]}]
         for scenario in self.scenario_list:
             herd = herd_baseline - self.national_class.get_total_spared_area(self.total_spared_area, scenario)
-            total = grassland[scenario]
+            scenario_log = log[log["scenario"] == scenario].set_index("land_use")["organic_area"]
             rows.append({"farm_id": scenario, "year": target_year, "herd_grassland_ha": herd,
-                         "rewetted_spared_ha": total - herd - other, "other_grassland_ha": other,
-                         "total_grassland_ha": total})
+                         **{column: float(scenario_log.get(entry, 0.0)) for column, entry in organic_entries.items()},
+                         "other_grassland_ha": other, "total_grassland_ha": grassland[scenario]})
         return pd.DataFrame(rows)
 
     def get_spared_area_log(self):
@@ -440,14 +452,21 @@ class LandCover:
         Wrapper function to handle spared area allocation across mineral and organic soils
         before passing clean parameters to breakdown methods.
 
-        The spared area is split in two:
+        The spared area is split in three:
 
-        - **Rewetted organic soil**: rewetted proportion x spared area, capped by the drained organic grassland
-          available. It stays in the grassland row, moving from the drained to the rewet-status shares, and never
-          enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + "Other organic soils").
-          See docs/rewetting.md.
+        - **Rewetted organic soil**: rewetted proportion x spared area (the rewetting target), capped by the drained
+          organic grassland available. It stays in the grassland row, moving from the drained to the rewet-status
+          shares, and never enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + "Other organic
+          soils"). Rewetting never goes beyond the target (finding 8, owner 2026-11-27).
         - **Mineral soil**: the rest, capped by the mineral grassland available. The optimiser divides it between
-          forest and cropland targets, and any remainder goes to farmable_condition.
+          forest and cropland targets, and any remainder goes to farmable_condition (mineral soil only).
+        - **Spared organic soil in its current condition**: when the spared area is larger than the mineral land plus
+          the rewetted area (e.g. a scenario that spares all herd grassland), the rest is herd organic grassland that
+          only loses its animals. It stays in the grassland row unchanged: drained land stays drained, land with rewet
+          status stays so. It is logged as ``spared_drained_organic_grassland`` (up to the herd's drained land not
+          rewetted, in proportion to the two pools) and ``spared_rewetted_organic_grassland`` (the rest).
+
+        See docs/rewetting.md.
 
         Parameters
         ----------
@@ -464,51 +483,96 @@ class LandCover:
         max_organic_available = self._available_organic_area(scenario)["available_organic"]
         max_mineral_available = self._available_mineral_area()["available_mineral"]
 
-        # Step 2: Calculate rewetting (organic allocation)
+        # Step 2: Rewetting: the target, capped by the drained organic land available; never more
         rewet_proportion = self.sc_fetch_class.get_rewetted_proportion(scenario)
         target_rewetted = initial_spared_area * rewet_proportion
         actual_rewetted_area = min(max_organic_available, target_rewetted)
 
-        # Step 3: Calculate remaining mineral area after rewetting
+        # Step 3: Mineral land: the rest, capped by the mineral land available
         required_mineral_area = initial_spared_area - actual_rewetted_area
         actual_mineral_area = min(max_mineral_available, required_mineral_area)
 
-        # Step 4: Handle spillover (excess spared area beyond mineral availability)
-        spillover_area = 0
-        if required_mineral_area > max_mineral_available:
-            spillover_area = required_mineral_area - max_mineral_available
-            actual_rewetted_area += spillover_area
+        # Step 4: Spared area beyond mineral land + rewetting: herd organic land that stays in its current condition
+        spared_drained_organic_area, spared_rewetted_organic_area = self._spared_organic_in_condition(
+            required_mineral_area - actual_mineral_area, actual_rewetted_area)
 
-        # Step 5: Calculate area previously drained
-        area_previously_drained = min(max_organic_available,actual_rewetted_area)
-
-        # Step 6: Generate spared area breakdown
+        # Step 5: Generate spared area breakdown (and the spared-area log)
         spared_area_breakdown = self.spared_area_breakdown(
             scenario,
             initial_spared_area=initial_spared_area,
             actual_rewetted_area=actual_rewetted_area,
             actual_mineral_area=actual_mineral_area,
+            spared_drained_organic_area=spared_drained_organic_area,
+            spared_rewetted_organic_area=spared_rewetted_organic_area,
         )
 
-        # Step 7: Generate grassland breakdown, including spillover adjustments
+        # Step 6: Generate grassland breakdown: only the rewetted area changes status (drained -> rewet status)
         grassland_breakdown = self.grassland_breakdown(
-            area_previously_drained=area_previously_drained,
+            area_previously_drained=actual_rewetted_area,
             actual_mineral_area=actual_mineral_area,
         )
 
-        # Step 8: Return results
+        # Step 7: Return results
         return spared_area_breakdown, grassland_breakdown
 
 
+    def _spared_organic_in_condition(self, area, actual_rewetted_area):
+        """
+        Splits spared organic land that is not rewetted (it only loses its animals) into its drained and rewet-status
+        parts. The herd's organic land not rewetted is drained (herd drained land - rewetted area) or already has
+        rewet status (herd area x the rewet-status shares). ``area`` is split in proportion to those two pools; the
+        drained part is capped by the drained pool and the rest is rewet status. The rest also takes the small
+        organic area that the inventory shares put in neither pool (national 2020: about 57 ha).
+
+        Parameters
+        ----------
+        area : float
+            Spared area beyond the mineral land and the rewetted area (ha); 0 in most scenarios.
+        actual_rewetted_area : float
+            Rewetted spared area (ha).
+
+        Returns
+        -------
+        tuple of float
+            (drained, rewet status) areas in ha.
+        """
+        if area <= 0:
+            return 0.0, 0.0
+        year = self.data_manager_class.calibration_year
+        herd_area = self._herd_grassland_area()
+        drained_pool = max(0.0, self._herd_drained_organic_area() - actual_rewetted_area)
+        rewet_pool = herd_area * (
+            self.national_class.get_grassland_shares("share_rewetted_rich_in_organic", year, self.total_grassland)
+            + self.national_class.get_grassland_shares("share_rewetted_poor_in_organic", year, self.total_grassland))
+        pools = drained_pool + rewet_pool
+        drained = min(drained_pool, area * drained_pool / pools) if pools > 0 else 0.0
+        return drained, area - drained
+
+
     @renamed_keyword("intial_spared_area", "initial_spared_area")  # DEPRECATED_NAME
-    def spared_area_breakdown(self, scenario, initial_spared_area, actual_rewetted_area, actual_mineral_area):
+    def spared_area_breakdown(self, scenario, initial_spared_area, actual_rewetted_area, actual_mineral_area,
+                              spared_drained_organic_area=0.0, spared_rewetted_organic_area=0.0):
         """
         Analyzes the breakdown of spared areas under a specific scenario.
+
+        Every scenario gets the same log entries, in this order: ``rewet_grassland``,
+        ``spared_drained_organic_grassland``, ``spared_rewetted_organic_grassland`` (organic areas), then ``forest``,
+        ``cropland``, ``farmable_condition`` (mineral areas). They add up to the spared area.
 
         Parameters
         ----------
         scenario : int
             The scenario identifier for which the spared area breakdown is calculated.
+        initial_spared_area : float
+            The scenario's spared area (ha).
+        actual_rewetted_area : float
+            Spared drained organic land that is rewetted (ha; never more than the rewetting target).
+        actual_mineral_area : float
+            Spared mineral land (ha), divided by the optimiser.
+        spared_drained_organic_area : float, optional
+            Spared drained organic land that is not rewetted: it stays drained grassland (ha).
+        spared_rewetted_organic_area : float, optional
+            Spared organic land that already had rewet status: it stays so (ha).
         
         Returns
         -------
@@ -523,6 +587,11 @@ class LandCover:
         # Step 1: Rewetted area. Rewetted spared grassland stays in the grassland row (its drained share moves to
         # rewet status in grassland_breakdown). It is recorded here in the log only; it does not become wetland.
         self._log_spared_area(scenario, "rewet_grassland", 0, actual_rewetted_area)
+
+        # Spared organic land beyond the rewetting target and the mineral land: it only loses its animals and stays in
+        # the grassland row in its current condition (drained, or rewet status). Logged only.
+        self._log_spared_area(scenario, "spared_drained_organic_grassland", 0, spared_drained_organic_area)
+        self._log_spared_area(scenario, "spared_rewetted_organic_grassland", 0, spared_rewetted_organic_area)
 
 
         # The wetland row keeps its calibration-year area: no spared grassland is converted to wetland.
@@ -614,17 +683,22 @@ class LandCover:
 
         organic_potential = self.national_class.get_area_with_organic_potential(self.total_spared_area_breakdown, self.total_spared_area, scenario)
         
-        # Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared.
-        herd_area = self._herd_grassland_area()
-        drained_rich_current_organic_area = herd_area * self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
-        drained_poor_current_organic_area = herd_area * self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland)
-        
-        total_drained = drained_rich_current_organic_area + drained_poor_current_organic_area
+        total_drained = self._herd_drained_organic_area()
 
         max_organic_spared = min(organic_potential, total_drained)
 
         return {"available_organic":max_organic_spared}
     
+
+    def _herd_drained_organic_area(self):
+        """Drained organic grassland of the herd (ha): herd area x the calibration-year drained rich and poor shares.
+        Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared."""
+        year = self.data_manager_class.calibration_year
+        herd_area = self._herd_grassland_area()
+        return herd_area * (
+            self.national_class.get_share_drained_rich_organic_grassland("grassland", year, self.total_grassland)
+            + self.national_class.get_share_drained_poor_organic_grassland("grassland", year, self.total_grassland))
+
 
     def _available_mineral_area(self):
         """

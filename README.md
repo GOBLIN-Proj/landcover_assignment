@@ -114,14 +114,15 @@ See [docs/grassland_area.md](docs/grassland_area.md).
 ## Spared area and rewetting
 
 A scenario's spared grassland is divided into:
-- **rewetted organic soil**, which **stays in the grassland row**;
-- **mineral soil**, which the optimiser allocates to forest, cropland and farmable condition.
+- **rewetted organic soil**, which **stays in the grassland row**: the scenario's rewetting target (rewetted proportion x spared area), capped by the drained organic grassland available, and never more;
+- **mineral soil**, which the optimiser allocates to forest, cropland and farmable condition (farmable condition is mineral soil only);
+- **organic soil spared beyond the rewetting target** (only when the mineral land runs out, e.g. a scenario that spares all herd grassland), which stays in the grassland row **in its current condition**: drained land stays drained, land with rewet status stays so. Only the animals go.
 
 Rewetted grassland is not wetland:
 - The inventory reports it inside grassland remaining grassland (CRT 4.C.1) as rewet status (NID 2026 s.6.5.2), and landcover_lca applies grassland rewetting factors to it.
 - In the land-use table, rewetting moves area from the drained to the rewet-status shares of the grassland row (`share_rewetted_rich_organic`, `share_rewetted_poor_organic`).
 - `Grassland_to_Wetland` in the transition matrix is always 0.
-- The spared-area log records the rewetted area as `rewet_grassland`.
+- The spared-area log records the rewetted area as `rewet_grassland`, and organic land spared beyond the target as `spared_drained_organic_grassland` and `spared_rewetted_organic_grassland`.
 
 See [docs/rewetting.md](docs/rewetting.md) for the method and a worked example.
 

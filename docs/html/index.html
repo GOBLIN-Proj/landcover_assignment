@@ -179,15 +179,16 @@ retrieve catchment specific data that has been derived from <a class="reference 
 <h2>Spared area and rewetting<a class="headerlink" href="#spared-area-and-rewetting" title="Link to this heading"></a></h2>
 <p>A scenario’s spared grassland is divided into:</p>
 <ul class="simple">
-<li><p><strong>rewetted organic soil</strong>, which <strong>stays in the grassland row</strong>;</p></li>
-<li><p><strong>mineral soil</strong>, which the optimiser allocates to forest, cropland and farmable condition.</p></li>
+<li><p><strong>rewetted organic soil</strong>, which <strong>stays in the grassland row</strong>: the scenario’s rewetting target (rewetted proportion x spared area), capped by the drained organic grassland available, and never more;</p></li>
+<li><p><strong>mineral soil</strong>, which the optimiser allocates to forest, cropland and farmable condition (farmable condition is mineral soil only);</p></li>
+<li><p><strong>organic soil spared beyond the rewetting target</strong> (only when the mineral land runs out, e.g. a scenario that spares all herd grassland), which stays in the grassland row <strong>in its current condition</strong>: drained land stays drained, land with rewet status stays so. Only the animals go.</p></li>
 </ul>
 <p>Rewetted grassland is not wetland:</p>
 <ul class="simple">
 <li><p>The inventory reports it inside grassland remaining grassland (CRT 4.C.1) as rewet status (NID 2026 s.6.5.2), and landcover_lca applies grassland rewetting factors to it.</p></li>
 <li><p>In the land-use table, rewetting moves area from the drained to the rewet-status shares of the grassland row (<code class="docutils literal notranslate"><span class="pre">share_rewetted_rich_organic</span></code>, <code class="docutils literal notranslate"><span class="pre">share_rewetted_poor_organic</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> in the transition matrix is always 0.</p></li>
-<li><p>The spared-area log records the rewetted area as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>.</p></li>
+<li><p>The spared-area log records the rewetted area as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>, and organic land spared beyond the target as <code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code> and <code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code>.</p></li>
 </ul>
 <p>See <a class="reference internal" href="rewetting.html"><span class="std std-doc">docs/rewetting.md</span></a> for the method and a worked example.</p>
 </section>

@@ -25,15 +25,28 @@ wetland factors. Moving the area to the wetland row would apply the wrong factor
 
 ```text
 spared grassland (from grassland_production)
-├── rewetted organic soil      rewetted proportion × spared area, capped by the drained organic grassland available
+├── rewetted organic soil      the rewetting target: rewetted proportion × spared area,
+│     capped by the drained organic grassland available, and NEVER MORE than the target
 │     stays in the GRASSLAND row: drained share → rewet-status share
-│     logged as "rewet_grassland" in the spared-area log
-└── mineral soil               the rest, capped by the mineral grassland available
-      allocated by the optimiser (Pyomo, HiGHS)
-      ├── forest               target: forest proportion × spared area
-      ├── cropland             target: crop proportion × spared area
-      └── farmable_condition   whatever is not allocated to a target
+│     logged as "rewet_grassland"
+├── mineral soil               the rest, capped by the mineral grassland available
+│     allocated by the optimiser (Pyomo, HiGHS)
+│     ├── forest               target: forest proportion × spared area
+│     ├── cropland             target: crop proportion × spared area
+│     └── farmable_condition   whatever is not allocated to a target (mineral soil only)
+└── organic soil beyond the target   only when the mineral land runs out (e.g. all herd grassland spared)
+      stays in the GRASSLAND row IN ITS CURRENT CONDITION; only the animals go
+      ├── drained land stays drained           logged as "spared_drained_organic_grassland"
+      └── rewet-status land stays rewet status logged as "spared_rewetted_organic_grassland"
 ```
+
+The last branch is split in proportion to the herd's drained land not rewetted and its rewet-status land (herd area x
+the calibration-year rewet-status shares); the drained part is capped by the drained land. The rewet-status part also
+takes the small organic area that the inventory shares put in neither pool (national 2020: about 57 ha).
+
+Every scenario has the same six log entries, in this order: `rewet_grassland`, `spared_drained_organic_grassland`,
+`spared_rewetted_organic_grassland` (in `organic_area`), then `forest`, `cropland`, `farmable_condition` (in
+`mineral_area`). Entries that don't apply are 0. Together they add up to the spared area.
 
 Code: `LandCover.calculate_spared_area_allocation` (`landcover.py`), `LandDistribution.grassland_distribution`
 (`distribution.py`). The catchment tree (`geo_landcover_assignment/`) follows the same rule, but it tracks organic and
@@ -66,13 +79,13 @@ Three consequences to keep in mind when reading the outputs:
 
 1. **The grassland row is more than productive grassland.** In 2050 it holds 1,413,048 ha: grassland_production's
    grassland (1,071,079 ha), the balance (313,631 ha) and the 28,338 ha of rewetted spared land
-   (`LandCover.get_grassland_area_breakdown()` reports the three parts). The spared area (2,833,798 ha) is therefore
+   (`LandCover.get_grassland_area_breakdown()` reports the parts). The spared area (2,833,798 ha) is therefore
    larger than the fall in the grassland row (2,805,460 ha).
 2. **`Grassland_to_Grassland` counts mineral land leaving grassland**, as a negative number (−2,805,460 here).
    **`Grassland_to_Wetland` is always 0.** Neither of these includes rewetting.
 3. **The rewetted area is recorded in the spared-area log**, as `land_use = "rewet_grassland"` with the area in
    `organic_area`. In the land-use table it appears only as the change in `share_rewetted_rich_organic` and
-   `share_rewetted_poor_organic`.
+   `share_rewetted_poor_organic`. `LandCover.get_grassland_area_breakdown()` reports it as `rewetted_spared_ha`.
 
 ## Transitions by soil group
 
@@ -80,10 +93,10 @@ Afforestation needs the soil group of each new forest hectare (it sets the yield
 splits each scenario's transitions across soil groups 1, 2 and 3, using the spared area by soil group from
 grassland_production: soil group 1 first, then 2, then 3; in each group cropland, then forest, then farmable condition,
 each capped by what is left in the group. The spared area the transition matrix does not account for is the rewetted
-area; it stays grassland and is placed in soil group 3 (`Grassland_Rewetted`,
-`get_grassland_rewetted_soil_group_areas`). Scenario 0:
+area plus any organic land spared beyond the target; it stays grassland and is placed in soil group 3
+(`Grassland_Spared_Organic`, `get_grassland_spared_organic_soil_group_areas`). Scenario 0:
 
-| soil group | forest | farmable condition | rewetted (stays grassland) |
+| soil group | forest | farmable condition | spared organic (stays grassland) |
 |---|---:|---:|---:|
 | 1 | 1,133,531 | 0 | 0 |
 | 2 | 566,748 | 806,039 | 0 |
@@ -97,15 +110,29 @@ group added up to more than `Grassland_to_Farmable_Condition` (scenario 0: 1,133
 `tests/test_frozen_interface.py` and `tests/test_land_balance.py` check, on every input set, that:
 
 - `Grassland_to_Wetland` is 0 and the wetland row does not grow;
-- the logged rewetted area equals the increase in rewet-status grassland, for scenarios where the rewetting fits within the drained organic stock;
 - total land area is conserved in every scenario, and each land use balances with the transition matrix;
-- the transitions by soil group add up to the transition matrix, and each soil group's transitions plus its rewetted
-  area add up to its spared area.
+- the transitions by soil group add up to the transition matrix, and each soil group's transitions plus its spared
+  organic area add up to its spared area;
+- rewetting never exceeds the scenario's target, and the log's `rewet_grassland` equals the increase in rewet-status
+  grassland in every scenario (`tests/test_rewetting_target.py`).
 
-## Known issue (to be fixed as finding 8)
+## Organic land spared beyond the rewetting target (finding 8, fixed in 0.5.0)
 
-When a scenario spares more organic grassland than is still drained, the log counts land that already had rewet status
-as newly rewetted. In scenario 3, which spares all grassland, the log records 314,640 ha. But only the 126,410 ha
-still drained can change status; the other 188,230 ha already had rewet status in 2020. No area is lost (the land
-balance holds), but the log overstates new rewetting. An expected failure in `test_frozen_interface.py` marks this
-until it is fixed.
+National test scenario 3 spares all herd grassland (3,904,877 ha) and asks for no rewetting (rewetted proportion 0).
+The herd's mineral land (3,590,237 ha) goes to farmable condition. Its organic land (314,640 ha) has nowhere else to go:
+it loses its animals and stays in the grassland row in its current condition.
+
+| 2050, scenario 3 (ha) | before 0.5.0 | 0.5.0 |
+|---|---:|---:|
+| grassland row, total | 628,271 | 628,271 |
+| … organic, drained | 10,153 | 136,562 |
+| … organic, rewet status | 329,701 | 203,291 |
+| log `rewet_grassland` | 314,640 | 0 |
+| log `spared_drained_organic_grassland` | (none) | 126,410 |
+| log `spared_rewetted_organic_grassland` | (none) | 188,230 |
+
+Before 0.5.0 the spare beyond the mineral land ("spillover") was added to the rewetted area: 126,410 ha of drained land
+was rewetted although the target was 0, and the log counted the 188,230 ha that already had rewet status as newly
+rewetted. Downstream, the 126,410 ha is now charged with grassland drainage emissions (landcover_lca; goblin_lite's
+drainage N2O) instead of rewetting factors, as the scenario asked. The catchment tree still adds the spillover to the
+rewetted area (catchment to-do).

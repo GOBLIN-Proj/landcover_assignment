@@ -112,24 +112,20 @@ class RewettedGrasslandStaysGrassland(unittest.TestCase):
         for sc in logged.index:
             with self.subTest(scenario=sc):
                 self.assertAlmostEqual(wetland[sc], wetland[-CAL], places=6)   # the wetland row does not grow
-                self.assertGreater(added[sc], 0)                               # the grassland rewetted shares do
+                self.assertGreaterEqual(added[sc], 0)                          # the grassland rewetted shares may grow
 
-    def test_logged_rewetting_is_in_grassland_without_spillover(self):
-        _, logged, added = self.rewetting()
-        for sc in (0, 1, 2):        # scenarios whose rewetting fits within the drained organic stock
-            with self.subTest(scenario=sc):
-                self.assertAlmostEqual(added[sc], logged[sc], delta=1e-3)
+    def test_logged_rewetting_is_in_grassland(self):
+        """The log's rewet_grassland entry equals the area added to the grassland rewetted shares, in every scenario.
 
-    @unittest.expectedFailure
-    def test_logged_rewetting_is_in_grassland_with_spillover(self):
-        """Finding 8: the log counts land that already had rewet status as newly rewetted.
-
-        Scenario 3 spares all grassland. The log records 314,200 ha rewetted, but only the 126,357 ha still drained
-        can change status. The other 187,843 ha already had rewet status in 2020. No area is lost (the land balance
-        holds), but the log overstates new rewetting.
+        Finding 8 (fixed): scenario 3 spares all herd grassland with a rewetting target of 0. The log used to record
+        314,640 ha rewetted, and 126,410 ha of drained land was rewetted beyond the target. Rewetting now stops at the
+        target; spared organic land beyond it stays grassland in its current condition (spared_drained_organic_grassland,
+        spared_rewetted_organic_grassland; docs/rewetting.md).
         """
         _, logged, added = self.rewetting()
-        self.assertAlmostEqual(added[3], logged[3], delta=1e-3)
+        for sc in logged.index:
+            with self.subTest(scenario=sc):
+                self.assertAlmostEqual(added[sc], logged[sc], delta=1e-3)
 
 
 if __name__ == "__main__":

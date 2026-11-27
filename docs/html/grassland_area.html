@@ -139,7 +139,13 @@
 <td><p>grassland the herd needs: the calibration-year area for the baseline; for a scenario, that area minus its spared area</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rewetted_spared_ha</span></code></p></td>
-<td><p>spared organic grassland that is rewetted and stays in the grassland row (see <a class="reference internal" href="rewetting.html"><span class="std std-doc">rewetting</span></a>); 0 in the baseline</p></td>
+<td><p>spared drained organic grassland that is rewetted (drained -&gt; rewet status), up to the scenario’s rewetting target; it stays in the grassland row (see <a class="reference internal" href="rewetting.html"><span class="std std-doc">rewetting</span></a>); 0 in the baseline</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spared_drained_organic_ha</span></code></p></td>
+<td><p>drained organic grassland spared beyond the rewetting target: it stays drained grassland, only the animals go; 0 in the baseline</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_ha</span></code></p></td>
+<td><p>spared organic grassland that already had rewet status (CRT “Other organic soils”): it stays so; 0 in the baseline</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">other_grassland_ha</span></code></p></td>
 <td><p>the balance, the same in every row</p></td>
@@ -149,6 +155,7 @@
 </tr>
 </tbody>
 </table>
+<p>The three spared organic columns come from the spared-area log (<code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>, <code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code>, <code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code>).</p>
 </section>
 <section id="the-numbers-2020-test-data">
 <h2>The numbers (2020, test data)<a class="headerlink" href="#the-numbers-2020-test-data" title="Link to this heading"></a></h2>

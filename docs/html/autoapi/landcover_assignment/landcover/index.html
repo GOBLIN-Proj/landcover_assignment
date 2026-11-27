@@ -286,23 +286,33 @@ not the grassland row (which also holds the national balance), is the area that 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.landcover.LandCover.get_grassland_area_breakdown">
 <span class="sig-name descname"><span class="pre">get_grassland_area_breakdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover.get_grassland_area_breakdown" title="Link to this definition"></a></dt>
-<dd><p>Reports how much of the grassland row is herd grassland, rewetted spared grassland, and other grassland (the
-national balance), for the baseline and each scenario. Reporting only: it doesn’t change any output.</p>
+<dd><p>Reports what the grassland row is made of, for the baseline and each scenario. Reporting only: it doesn’t
+change any output.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">herd_grassland_ha</span></code>: grassland the herd needs (grassland_production’s total_grassland input): the
 calibration-year area for the baseline; for a scenario, the calibration-year area minus its spared area.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rewetted_spared_ha</span></code>: spared organic grassland that is rewetted and stays in the grassland row with rewet
-status (docs/rewetting.md); 0 in the baseline.</p></li>
+<li><p>Spared organic grassland, which stays in the grassland row (docs/rewetting.md); 0 in the baseline. Taken from
+the spared-area log:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">rewetted_spared_ha</span></code>: drained land that is rewetted (drained -&gt; rewet-status shares); never more than
+the scenario’s rewetting target (log entry <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spared_drained_organic_ha</span></code>: drained land spared beyond the rewetting target; it stays drained, only
+the animals go (<code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_ha</span></code>: spared land that already had rewet status (CRT “Other organic soils”);
+it stays so (<code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code>).</p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">other_grassland_ha</span></code>: national grassland the herd doesn’t need, in the calibration year (national area
 from the package database, grassland_data.total_kha, minus the herd area). The same in every row and never
 spared (docs/grassland_area.md).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">total_grassland_ha</span></code>: the sum, equal to the grassland row’s <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> in
-<a class="reference internal" href="#landcover_assignment.landcover.LandCover.combined_future_land_use_area" title="landcover_assignment.landcover.LandCover.combined_future_land_use_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">combined_future_land_use_area()</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_grassland_ha</span></code>: the grassland row’s <code class="docutils literal notranslate"><span class="pre">area_ha</span></code> in <a class="reference internal" href="#landcover_assignment.landcover.LandCover.combined_future_land_use_area" title="landcover_assignment.landcover.LandCover.combined_future_land_use_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">combined_future_land_use_area()</span></code></a>; the
+other columns add up to it.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Columns <code class="docutils literal notranslate"><span class="pre">farm_id,</span> <span class="pre">year,</span> <span class="pre">herd_grassland_ha,</span> <span class="pre">rewetted_spared_ha,</span> <span class="pre">other_grassland_ha,</span>
-<span class="pre">total_grassland_ha</span></code>; baseline row <code class="docutils literal notranslate"><span class="pre">farm_id</span> <span class="pre">=</span> <span class="pre">-calibration_year</span></code>, then one row per scenario.</p>
+<dd class="field-odd"><p>Columns <code class="docutils literal notranslate"><span class="pre">farm_id,</span> <span class="pre">year,</span> <span class="pre">herd_grassland_ha,</span> <span class="pre">rewetted_spared_ha,</span> <span class="pre">spared_drained_organic_ha,</span>
+<span class="pre">spared_rewetted_organic_ha,</span> <span class="pre">other_grassland_ha,</span> <span class="pre">total_grassland_ha</span></code>; baseline row
+<code class="docutils literal notranslate"><span class="pre">farm_id</span> <span class="pre">=</span> <span class="pre">-calibration_year</span></code>, then one row per scenario.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pandas.DataFrame</p>
@@ -406,15 +416,21 @@ spared (docs/grassland_area.md).</p></li>
 <span class="sig-name descname"><span class="pre">calculate_spared_area_allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover.calculate_spared_area_allocation" title="Link to this definition"></a></dt>
 <dd><p>Wrapper function to handle spared area allocation across mineral and organic soils
 before passing clean parameters to breakdown methods.</p>
-<p>The spared area is split in two:</p>
+<p>The spared area is split in three:</p>
 <ul class="simple">
-<li><p><strong>Rewetted organic soil</strong>: rewetted proportion x spared area, capped by the drained organic grassland
-available. It stays in the grassland row, moving from the drained to the rewet-status shares, and never
-enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + “Other organic soils”).
-See docs/rewetting.md.</p></li>
+<li><p><strong>Rewetted organic soil</strong>: rewetted proportion x spared area (the rewetting target), capped by the drained
+organic grassland available. It stays in the grassland row, moving from the drained to the rewet-status
+shares, and never enters the wetland row (NID 2026 s.6.5.2; CRT 4.C.1 organic = drained + “Other organic
+soils”). Rewetting never goes beyond the target (finding 8, owner 2026-11-27).</p></li>
 <li><p><strong>Mineral soil</strong>: the rest, capped by the mineral grassland available. The optimiser divides it between
-forest and cropland targets, and any remainder goes to farmable_condition.</p></li>
+forest and cropland targets, and any remainder goes to farmable_condition (mineral soil only).</p></li>
+<li><p><strong>Spared organic soil in its current condition</strong>: when the spared area is larger than the mineral land plus
+the rewetted area (e.g. a scenario that spares all herd grassland), the rest is herd organic grassland that
+only loses its animals. It stays in the grassland row unchanged: drained land stays drained, land with rewet
+status stays so. It is logged as <code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code> (up to the herd’s drained land not
+rewetted, in proportion to the two pools) and <code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code> (the rest).</p></li>
 </ul>
+<p>See docs/rewetting.md.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>scenario</strong> (<em>int</em>) – Scenario identifier.</p>
@@ -429,12 +445,46 @@ forest and cropland targets, and any remainder goes to farmable_condition.</p></
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.landcover.LandCover.spared_area_breakdown">
-<span class="sig-name descname"><span class="pre">spared_area_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_rewetted_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_mineral_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover.spared_area_breakdown" title="Link to this definition"></a></dt>
-<dd><p>Analyzes the breakdown of spared areas under a specific scenario.</p>
+<dt class="sig sig-object py" id="landcover_assignment.landcover.LandCover._spared_organic_in_condition">
+<span class="sig-name descname"><span class="pre">_spared_organic_in_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_rewetted_area</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover._spared_organic_in_condition" title="Link to this definition"></a></dt>
+<dd><p>Splits spared organic land that is not rewetted (it only loses its animals) into its drained and rewet-status
+parts. The herd’s organic land not rewetted is drained (herd drained land - rewetted area) or already has
+rewet status (herd area x the rewet-status shares). <code class="docutils literal notranslate"><span class="pre">area</span></code> is split in proportion to those two pools; the
+drained part is capped by the drained pool and the rest is rewet status. The rest also takes the small
+organic area that the inventory shares put in neither pool (national 2020: about 57 ha).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scenario</strong> (<em>int</em>) – The scenario identifier for which the spared area breakdown is calculated.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>area</strong> (<em>float</em>) – Spared area beyond the mineral land and the rewetted area (ha); 0 in most scenarios.</p></li>
+<li><p><strong>actual_rewetted_area</strong> (<em>float</em>) – Rewetted spared area (ha).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(drained, rewet status) areas in ha.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.landcover.LandCover.spared_area_breakdown">
+<span class="sig-name descname"><span class="pre">spared_area_breakdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_rewetted_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_mineral_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spared_drained_organic_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spared_rewetted_organic_area</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover.spared_area_breakdown" title="Link to this definition"></a></dt>
+<dd><p>Analyzes the breakdown of spared areas under a specific scenario.</p>
+<p>Every scenario gets the same log entries, in this order: <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>,
+<code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code>, <code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code> (organic areas), then <code class="docutils literal notranslate"><span class="pre">forest</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cropland</span></code>, <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code> (mineral areas). They add up to the spared area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>int</em>) – The scenario identifier for which the spared area breakdown is calculated.</p></li>
+<li><p><strong>initial_spared_area</strong> (<em>float</em>) – The scenario’s spared area (ha).</p></li>
+<li><p><strong>actual_rewetted_area</strong> (<em>float</em>) – Spared drained organic land that is rewetted (ha; never more than the rewetting target).</p></li>
+<li><p><strong>actual_mineral_area</strong> (<em>float</em>) – Spared mineral land (ha), divided by the optimiser.</p></li>
+<li><p><strong>spared_drained_organic_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Spared drained organic land that is not rewetted: it stays drained grassland (ha).</p></li>
+<li><p><strong>spared_rewetted_organic_area</strong> (<em>float</em><em>, </em><em>optional</em>) – Spared organic land that already had rewet status: it stays so (ha).</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary containing the breakdown of spared areas for the given scenario.</p>
@@ -487,6 +537,13 @@ spared area allocations.</p>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.landcover.LandCover._herd_drained_organic_area">
+<span class="sig-name descname"><span class="pre">_herd_drained_organic_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.landcover.LandCover._herd_drained_organic_area" title="Link to this definition"></a></dt>
+<dd><p>Drained organic grassland of the herd (ha): herd area x the calibration-year drained rich and poor shares.
+Herd grassland only: the national balance (docs/grassland_area.md) is never available to be spared.</p>
 </dd></dl>
 
 <dl class="py method">
