@@ -8,13 +8,12 @@ various APIs and data sources to offer a comprehensive set of functionalities fo
 Dependencies
 ------------
 - ``catchment_data_api.catchment_data_api.CatchmentDataAPI``
-- ``catchment_data_api.crops.Crops``
 - ``resource_manager.data_loader.Loader``
 - ``pandas`` as ``pd``
 
 Classes
 -------
-.. class:: CatchmentLandCover()
+``CatchmentLandCover()``
 
    This class is designed to access and analyze land cover data across different land use types within catchment areas.
    It provides methods to calculate areas and shares of different land cover types, including forests, wetlands,
@@ -22,74 +21,70 @@ Classes
 
     Methods:
 
-   .. method:: get_catchment_forest_area(catchment)
+   ``get_catchment_forest_area(catchment)``
       
       Calculates the total forest area within a specified catchment, categorized by cover and soil types.
 
-   .. method:: get_catchment_peat_area(catchment)
+   ``get_catchment_peat_area(catchment)``
       
       Calculates the total peat area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_catchment_crop_area(catchment)
+   ``get_catchment_crop_area(catchment)``
       
       Calculates the total crop area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_catchment_grassland_area(catchment, total_grassland_area)
+   ``get_catchment_grassland_area(catchment, total_grassland_area)``
       
       Calculates the total grassland area within a specified catchment, grouped by cover and soil types.
 
-   .. method:: get_landuse_area(landuse, catchment, grassland_area=None)
+   ``get_landuse_area(landuse, catchment, grassland_area=None)``
       
       Retrieves the total area for a specified land use within a catchment.
 
-   .. method:: get_share_mineral(landuse, catchment, grassland_area=None)
+   ``get_share_mineral(landuse, catchment, grassland_area=None)``
       
       Calculates the share of mineral soil within a specified land use area in a catchment.
 
-   .. method:: get_share_organic(landuse, catchment, grassland_area=None)
+   ``get_share_organic(landuse, catchment, grassland_area=None)``
       
       Calculates the share of organic soil within a specified land use area in a catchment.
 
-   .. method:: get_share_organic_mineral(landuse, catchment, grassland_area=None)
+   ``get_share_organic_mineral(landuse, catchment, grassland_area=None)``
       
       Calculates the share of organic-mineral mixed soil within a specified land use area in a catchment.
 
-   .. method:: get_share_burnt(landuse, catchment, grassland_area=None)
+   ``get_share_burnt(landuse, catchment, grassland_area=None)``
       
       Calculates the share of burnt land within a specified land use area in a catchment.
 
-   .. method:: get_national_burnt_average(landuse)
+   ``get_national_burnt_average(landuse)``
       
       Retrieves the national average share of burnt land for a specified land use type.
 
-   .. method:: get_catchment_crop_type(catchment)
-      
-      Retrieves the types of crops grown within a specified catchment.
 
-   .. method:: get_total_spared_area(spared_area, sc)
+   ``get_total_spared_area(spared_area, sc)``
       
       Retrieves the total spared area for a given scenario.
 
-   .. method:: get_derived_catchment_grassland_area(grassland_area, sc=0)
+   ``get_derived_catchment_grassland_area(grassland_area, sc=0)``
       
       Retrieves the derived grassland area for a catchment based on a scenario grassland input.
 
-   .. method:: get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)
+   ``get_area_with_organic_potential(spared_breakdown, total_spared_area, sc)``
       
       Calculates the area with organic farming potential based on spared land breakdown and scenario.
 
-   .. method:: get_land_shares(key, landuse, catchment_name)
+   ``get_land_shares(key, landuse, catchment_name)``
       
       Retrieves the share of a specific soil type within a specified land use area in a catchment.
 
-   .. method:: get_grassland_shares(key, catchment_name, grassland_area)
+   ``get_grassland_shares(key, catchment_name, grassland_area)``
       
       Retrieves the share of a specific soil type within the grassland area of a catchment.
 
 """
 
 from catchment_data_api.catchment_data_api import CatchmentDataAPI
-from catchment_data_api.crops import Crops
 from landcover_assignment.resource_manager.data_loader import Loader
 from functools import lru_cache
 import pandas as pd 
@@ -104,17 +99,14 @@ class CatchmentLandCover:
 
     Attributes:
         api (CatchmentDataAPI): An instance of the CatchmentDataAPI for accessing catchment data.
-        crops_api (Crops): An instance of the Crops API for accessing crops data.
         loader (Loader): An instance of the Loader for accessing national area data.
         methods (dict): A dictionary mapping land use types to their respective methods.
         national_areas (dict): A dictionary mapping land use types to their national areas data.
         cached_national_areas (dict): A dictionary for caching national areas data.
         cached_burnt_averages (dict): A dictionary for caching burnt averages data.
-        cached_crops (dict): A dictionary for caching crop data.
     """
     def __init__(self):
         self.api = CatchmentDataAPI()
-        self.crops_api = Crops()
         self.loader = Loader()
 
         self.methods ={
@@ -135,29 +127,6 @@ class CatchmentLandCover:
         self.cached_national_areas = {}
 
         self.cached_burnt_averages = {}
-
-        self.cached_crops = {}
-
-    def _get_cached_crops(self, catchment):
-        """
-        Retrieve and cache the data for a specified catchment.
-
-        Parameters
-        ----------
-        catchment : str
-            The name of the catchment area.
-
-        Returns
-        -------
-        pandas.DataFrame
-            The cached DataFrame for the specified catchment.
-        """
-        # Check if the data is already cached
-        if catchment not in self.cached_crops:
-            # Cache the data if not already present
-            self.cached_crops[catchment] = self.get_catchment_crop_type(catchment)
-
-        return self.cached_crops[catchment].copy()
 
 
     def _get_cached_burnt_averages(self, landuse):
@@ -212,7 +181,7 @@ class CatchmentLandCover:
         # Check if the data is already cached
         if landuse not in self.cached_national_areas:
             # Cache the data if not already present
-            self.cached_national_areas[landuse] = self.national_areas[landuse]()()
+            self.cached_national_areas[landuse] = self.national_areas[landuse]()
 
         return self.cached_national_areas[landuse].copy()
 
@@ -710,30 +679,12 @@ class CatchmentLandCover:
             raise ValueError(f"Unknown land use type: {landuse}")
         
         data = self._get_cached_national_areas(landuse)
-        burn_average = data["burnt_kha"].sum() / data["total_kha"].sum() 
+        data = data[data["burnt_kha"].notna()]          # years with a burnt area (2023-2024 pending D6)
+        burn_average = data["burnt_kha"].sum() / data["total_kha"].sum()
 
         return burn_average   
 
 
-    def get_catchment_crop_type(self, catchment):
-        """
-        Retrieves the types of crops grown within a specified catchment.
-
-        Parameters
-        ----------
-        catchment : str
-            The name of the catchment area.
-
-        Returns
-        -------
-        pandas.DataFrame
-            A DataFrame containing crop types within the specified catchment.
-        """
-
-        crop_df = self._get_cached_crops(catchment)
-
-        return crop_df
-    
     def get_total_spared_area(self, spared_area, sc):
         """
         Retrieves the total spared area for a given scenario.

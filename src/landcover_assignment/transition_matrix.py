@@ -8,9 +8,9 @@ particularly focusing on the dynamics between grassland and other land uses unde
 Features:
 ---------
 - **Transition Matrix Generation**: Creates matrices that detail the transitions of land use areas from one type to another, 
-facilitating scenario analysis and environmental planning.
+  facilitating scenario analysis and environmental planning.
 - **Land Cover Integration**: Utilizes the `LandCover` class for comprehensive future land use area calculations, 
-forming the basis of transition matrix computations.
+  forming the basis of transition matrix computations.
 
 Dependencies:
 -------------
@@ -21,12 +21,12 @@ Dependencies:
 
 Class Documentation:
 --------------------
-.. class:: TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-   :noindex:
+``TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)``
 
    Manages the creation of transition matrices for land use changes, supporting environmental and land management scenario analysis.
 
    Parameters:
+
    - calibration_year (int): The base year from which land use changes are measured.
    - target_year (int): The future year to which land use changes are projected.
    - scenario_inputs_df (pandas.DataFrame): Inputs defining various scenarios for projection.
@@ -35,6 +35,7 @@ Class Documentation:
    - spared_area_breakdown (pandas.DataFrame): Detailed breakdown of how spared areas are allocated across land uses.
 
    Methods:
+
    - create_transition_matrix() -> pandas.DataFrame:
      Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
    - _transition_difference(landuse, index, calibration_year, target_year, land_cover_df) -> float:
@@ -46,6 +47,8 @@ import pandas as pd
 import numpy as np
 from landcover_assignment.landcover import LandCover
 from landcover_assignment.resource_manager.landcover_data_manager import DataManager
+
+AREA_TOLERANCE_HA = 1e-6   # a change smaller than this (floating-point noise) is not a loss
 
 
 class TransitionMatrix:
@@ -91,8 +94,17 @@ class TransitionMatrix:
         """
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
+        Only the ``Grassland_to_<land use>`` cells are filled, each with the signed change in that land use's row
+        (target - calibration year). ``Grassland_to_Grassland`` is the (negative) change in the grassland row, which is
+        the spared mineral area. No other land use can shrink with the current allocation; if one does, the matrix
+        can't record the loss as a conversion from grassland and a ``ValueError`` is raised. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
+        grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
+        rewetted area is reported in the spared-area log as ``rewet_grassland``. ``Grassland_to_Forest`` is the
+        scenario's afforestation: the forest row's change less the change in cbm_runner managed forest (decision D6a).
+
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
+        :raises ValueError: if a land use other than grassland shrinks.
         """
         calibration_year = self.calibration_year
         target_year = self.target_year
@@ -103,22 +115,24 @@ class TransitionMatrix:
         for index in transition_matrix.index:
             if index >= 0:
                 for land_use in self.data_manager_class.get_land_use_columns():
-                    if land_use != "grassland":
-                        transition_diff = self._transition_difference(land_use, index, calibration_year, target_year, land_cover_df)
-                        transition_matrix.at[
-                            index, "Grassland_to_" + land_use.title()
-                        ] = abs(transition_diff)
-                    else:
-                        transition_diff = self._transition_difference(land_use, index, calibration_year, target_year, land_cover_df)
-                        transition_matrix.at[
-                            index, "Grassland_to_" + land_use.title()
-                        ] = -transition_diff
+                    # Signed change, target - calibration (step 7 item 14: was abs(), which hid the sign of a loss).
+                    # 0.0 - x, not -x, so that no change is 0.0 rather than -0.0.
+                    change = 0.0 - self._transition_difference(land_use, index, calibration_year, target_year,
+                                                               land_cover_df)
+                    if land_use != "grassland" and change < -AREA_TOLERANCE_HA:
+                        raise ValueError(
+                            f"Scenario {index}: {land_use} shrinks by {-change:,.1f} ha between {calibration_year} and "
+                            f"{target_year}. The transition matrix only records conversions from grassland "
+                            f"(Grassland_to_<land use>), so a loss can't be written there."
+                        )
+                    transition_matrix.at[index, "Grassland_to_" + land_use.title()] = change
 
         return transition_matrix
 
     def _transition_difference(self, landuse, index, calibration_year, target_year, land_cover_df):
         """
         Calculates the difference in area for a specific land use between the calibration and target years.
+        For forest, the change in cbm_runner managed forest between the two years is taken out (decision D6a).
 
         :param landuse: Specific land use type.
         :type landuse: str
@@ -146,6 +160,13 @@ class TransitionMatrix:
                 "area_ha",
             ].item()
         )
+        if landuse == "forest":
+            # Decision D6a: the forest row includes cbm_runner's managed forest (FM + AF), which changes between the two
+            # years in every scenario (AF baseline planting less FM deforestation). cbm_runner plants and burns that
+            # itself, so it is not a transition from grassland: Grassland_to_Forest (and the afforestation table built
+            # from it) stays the scenario's afforestation.
+            transition_diff += self.land_cover_class.national_class.get_managed_forest_change(calibration_year,
+                                                                                           target_year)
         return transition_diff
 
     def _create_transition_frame(self, land_cover_df):

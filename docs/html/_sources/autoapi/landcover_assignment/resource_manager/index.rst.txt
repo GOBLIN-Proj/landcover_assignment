@@ -1,19 +1,20 @@
-:py:mod:`landcover_assignment.resource_manager`
-===============================================
+landcover_assignment.resource_manager
+=====================================
 
 .. py:module:: landcover_assignment.resource_manager
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   data_loader/index.rst
-   database_manager/index.rst
-   landcover_data_manager/index.rst
-   scenario_data_fetcher/index.rst
-   transition_data_fetcher/index.rst
+   /autoapi/landcover_assignment/resource_manager/data_loader/index
+   /autoapi/landcover_assignment/resource_manager/database_manager/index
+   /autoapi/landcover_assignment/resource_manager/landcover_data_manager/index
+   /autoapi/landcover_assignment/resource_manager/scenario_data_fetcher/index
+   /autoapi/landcover_assignment/resource_manager/transition_data_fetcher/index
+   /autoapi/landcover_assignment/resource_manager/units/index
 
 

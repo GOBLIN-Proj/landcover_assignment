@@ -1,19 +1,19 @@
-:py:mod:`landcover_assignment.geo_landcover_assignment`
-=======================================================
+landcover_assignment.geo_landcover_assignment
+=============================================
 
 .. py:module:: landcover_assignment.geo_landcover_assignment
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   catchment_landcover/index.rst
-   geo_afforestation/index.rst
-   geo_distribution/index.rst
-   geo_landcover/index.rst
-   geo_transition_matrix/index.rst
+   /autoapi/landcover_assignment/geo_landcover_assignment/catchment_landcover/index
+   /autoapi/landcover_assignment/geo_landcover_assignment/geo_afforestation/index
+   /autoapi/landcover_assignment/geo_landcover_assignment/geo_distribution/index
+   /autoapi/landcover_assignment/geo_landcover_assignment/geo_landcover/index
+   /autoapi/landcover_assignment/geo_landcover_assignment/geo_transition_matrix/index
 
 

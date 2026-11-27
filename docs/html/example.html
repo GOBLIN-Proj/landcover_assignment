@@ -1,25 +1,23 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Landcover Assignment Example &mdash; LandCover Assignment 0.4.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+  <title>Landcover Assignment Example &mdash; LandCover Assignment 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=6c02275b"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -47,6 +45,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peat_extraction.html">Peat extraction in scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Landcover Assignment Example</a><ul>
@@ -87,11 +89,11 @@
              
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">landcover_assignment.transition_matrix</span> <span class="kn">import</span> <span class="n">TransitionMatrix</span>
-<span class="kn">from</span> <span class="nn">landcover_assignment.landcover</span> <span class="kn">import</span> <span class="n">LandCover</span>
-<span class="kn">from</span> <span class="nn">landcover_assignment.afforestation</span> <span class="kn">import</span> <span class="n">Afforestation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.transition_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransitionMatrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.landcover</span><span class="w"> </span><span class="kn">import</span> <span class="n">LandCover</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.afforestation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Afforestation</span>
 </pre></div>
 </div>
 </div>
@@ -104,16 +106,18 @@
 <h2>Set UP<a class="headerlink" href="#set-up" title="Link to this heading"></a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;../tests/data/&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_path</span> <span class="o">=</span> <span class="s2">"../tests/data/"</span>
 
 <span class="n">baseline</span> <span class="o">=</span> <span class="mi">2020</span> <span class="c1">#the calibration year</span>
 <span class="n">target_year</span> <span class="o">=</span> <span class="mi">2050</span> <span class="c1">#the target year</span>
 
-<span class="n">scenario_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">&quot;scenario_dataframe.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#scenario inputs </span>
+<span class="n">scenario_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">"scenario_dataframe.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#scenario inputs </span>
 
-<span class="n">spared_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">&quot;spared_area.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#total spared area </span>
-<span class="n">spared_area_breakdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">&quot;spared_area_breakdown.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#spared area by soil group</span>
-<span class="n">grassland_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">&quot;total_grassland_area.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#total grassland area remaining</span>
+<span class="n">spared_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">"spared_area.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#total spared area </span>
+<span class="n">spared_area</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="c1">#year columns as int</span>
+<span class="n">spared_area_breakdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">"spared_area_breakdown.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#spared area by soil group</span>
+<span class="n">grassland_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s2">"total_grassland_area.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#total grassland area remaining</span>
+<span class="n">grassland_area</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">grassland_area</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -137,17 +141,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-</div>
 </div>
 <section id="combined-land-use-dataframe">
 <h3>Combined land use dataframe<a class="headerlink" href="#combined-land-use-dataframe" title="Link to this heading"></a></h3>
@@ -158,248 +151,293 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    farm_id  year            land_use       area_ha  share_mineral  \
-0     -2020  2020           grassland  3.904877e+06       0.919536   
-1     -2020  2020             wetland  1.225154e+06       0.000231   
-2     -2020  2020            cropland  7.477145e+05       1.000000   
-3     -2020  2020              forest  7.764278e+05       0.681876   
-4     -2020  2020          settlement  1.269879e+05       0.974801   
+0     -2020  2020           grassland  4.218508e+06       0.919424   
+1     -2020  2020             wetland  1.212500e+06       0.000047   
+2     -2020  2020            cropland  7.476981e+05       1.000000   
+3     -2020  2020              forest  7.300988e+05       0.472948   
+4     -2020  2020          settlement  1.261121e+05       0.984141   
 5     -2020  2020  farmable_condition  0.000000e+00       1.000000   
-6         0  2050           grassland  1.099417e+06       0.714212   
-7         0  2050             wetland  1.225154e+06       0.000231   
-8         0  2050            cropland  7.477145e+05       1.000000   
-9         0  2050              forest  2.476706e+06       0.900271   
-10        0  2050          settlement  1.269879e+05       0.974801   
-11        0  2050  farmable_condition  1.105181e+06       1.000000   
-12        1  2050           grassland  1.184394e+06       0.734716   
-13        1  2050             wetland  1.225154e+06       0.000231   
-14        1  2050            cropland  7.477145e+05       1.000000   
-15        1  2050              forest  3.480925e+06       0.929042   
-16        1  2050          settlement  1.269879e+05       0.974801   
-17        1  2050  farmable_condition  1.598606e+04       1.000000   
-18        2  2050           grassland  1.184394e+06       0.734716   
-19        2  2050             wetland  1.225154e+06       0.000231   
-20        2  2050            cropland  7.477145e+05       1.000000   
-21        2  2050              forest  7.764278e+05       0.681876   
-22        2  2050          settlement  1.269879e+05       0.974801   
-23        2  2050  farmable_condition  2.720483e+06       1.000000   
+6         0  2050             wetland  1.212500e+06       0.000047   
+7         0  2050              forest  2.571770e+06       0.850375   
+8         0  2050            cropland  7.476981e+05       1.000000   
+9         0  2050  farmable_condition  1.105181e+06       1.000000   
+10        0  2050           grassland  1.413048e+06       0.759448   
+11        0  2050          settlement  1.261121e+05       0.984141   
+12        1  2050             wetland  1.212500e+06       0.000047   
+13        1  2050              forest  3.575990e+06       0.892393   
+14        1  2050            cropland  7.476981e+05       1.000000   
+15        1  2050  farmable_condition  1.593243e+04       1.000000   
+16        1  2050           grassland  1.498077e+06       0.773102   
+17        1  2050          settlement  1.261121e+05       0.984141   
+18        2  2050             wetland  1.212500e+06       0.000047   
+19        2  2050              forest  8.714916e+05       0.558458   
+20        2  2050            cropland  7.476981e+05       1.000000   
+21        2  2050  farmable_condition  2.720430e+06       1.000000   
+22        2  2050           grassland  1.498077e+06       0.773102   
+23        2  2050          settlement  1.261121e+05       0.984141   
+24        3  2050             wetland  1.212500e+06       0.000047   
+25        3  2050              forest  8.714916e+05       0.558458   
+26        3  2050            cropland  7.476981e+05       1.000000   
+27        3  2050  farmable_condition  3.590237e+06       1.000000   
+28        3  2050           grassland  6.282709e+05       0.458974   
+29        3  2050          settlement  1.261121e+05       0.984141   
 
     share_organic  share_drained_rich_organic  share_drained_poor_organic  \
-0        0.080464                    0.014561                    0.017797   
-1        0.999769                    0.000000                    0.000000   
+0        0.080576                    0.014650                    0.017722   
+1        0.999953                    0.000000                    0.000000   
 2        0.000000                    0.000000                    0.000000   
-3        0.224747                    0.000000                    0.000000   
-4        0.025199                    0.000000                    0.000000   
+3        0.393645                    0.000000                    0.000000   
+4        0.015859                    0.000000                    0.000000   
 5        0.000000                    0.000000                    0.000000   
-6        0.285788                    0.040120                    0.049035   
-7        0.999769                    0.000000                    0.000000   
+6        0.999953                    0.000000                    0.000000   
+7        0.111752                    0.000000                    0.000000   
 8        0.000000                    0.000000                    0.000000   
-9        0.070456                    0.000000                    0.000000   
-10       0.025199                    0.000000                    0.000000   
-11       0.000000                    0.000000                    0.000000   
-12       0.265284                    0.000000                    0.000000   
-13       0.999769                    0.000000                    0.000000   
+9        0.000000                    0.000000                    0.000000   
+10       0.240552                    0.034660                    0.041929   
+11       0.015859                    0.000000                    0.000000   
+12       0.999953                    0.000000                    0.000000   
+13       0.080369                    0.000000                    0.000000   
 14       0.000000                    0.000000                    0.000000   
-15       0.050130                    0.000000                    0.000000   
-16       0.025199                    0.000000                    0.000000   
-17       0.000000                    0.000000                    0.000000   
-18       0.265284                    0.000000                    0.000000   
-19       0.999769                    0.000000                    0.000000   
+15       0.000000                    0.000000                    0.000000   
+16       0.226898                    0.003067                    0.003710   
+17       0.015859                    0.000000                    0.000000   
+18       0.999953                    0.000000                    0.000000   
+19       0.329779                    0.000000                    0.000000   
 20       0.000000                    0.000000                    0.000000   
-21       0.224747                    0.000000                    0.000000   
-22       0.025199                    0.000000                    0.000000   
-23       0.000000                    0.000000                    0.000000   
+21       0.000000                    0.000000                    0.000000   
+22       0.226898                    0.003067                    0.003710   
+23       0.015859                    0.000000                    0.000000   
+24       0.999953                    0.000000                    0.000000   
+25       0.329779                    0.000000                    0.000000   
+26       0.000000                    0.000000                    0.000000   
+27       0.000000                    0.000000                    0.000000   
+28       0.541026                    0.098367                    0.118996   
+29       0.015859                    0.000000                    0.000000   
 
     share_rewetted_rich_organic  share_rewetted_poor_organic  \
-0                      0.021647                     0.026458   
+0                      0.021547                     0.026644   
 1                      0.000000                     0.000000   
 2                      0.000000                     0.000000   
 3                      0.000000                     0.000000   
 4                      0.000000                     0.000000   
 5                      0.000000                     0.000000   
-6                      0.088485                     0.108148   
+6                      0.000000                     0.000000   
 7                      0.000000                     0.000000   
 8                      0.000000                     0.000000   
 9                      0.000000                     0.000000   
-10                     0.000000                     0.000000   
+10                     0.073401                     0.090521   
 11                     0.000000                     0.000000   
-12                     0.119378                     0.145906   
+12                     0.000000                     0.000000   
 13                     0.000000                     0.000000   
 14                     0.000000                     0.000000   
 15                     0.000000                     0.000000   
-16                     0.000000                     0.000000   
+16                     0.098861                     0.121222   
 17                     0.000000                     0.000000   
-18                     0.119378                     0.145906   
+18                     0.000000                     0.000000   
 19                     0.000000                     0.000000   
 20                     0.000000                     0.000000   
 21                     0.000000                     0.000000   
-22                     0.000000                     0.000000   
+22                     0.098861                     0.121222   
 23                     0.000000                     0.000000   
+24                     0.000000                     0.000000   
+25                     0.000000                     0.000000   
+26                     0.000000                     0.000000   
+27                     0.000000                     0.000000   
+28                     0.144675                     0.178898   
+29                     0.000000                     0.000000   
 
     share_organic_mineral  share_rewetted_in_organic  \
 0                0.000000                   0.000000   
-1                0.000000                   0.003077   
+1                0.000000                   0.007352   
 2                0.000000                   0.000000   
-3                0.093376                   0.000000   
+3                0.133407                   0.000000   
 4                0.000000                   0.000000   
 5                0.000000                   0.000000   
-6                0.000000                   0.000000   
-7                0.000000                   0.003077   
+6                0.000000                   0.007352   
+7                0.037873                   0.000000   
 8                0.000000                   0.000000   
-9                0.029273                   0.000000   
+9                0.000000                   0.000000   
 10               0.000000                   0.000000   
 11               0.000000                   0.000000   
-12               0.000000                   0.000000   
-13               0.000000                   0.003077   
+12               0.000000                   0.007352   
+13               0.027237                   0.000000   
 14               0.000000                   0.000000   
-15               0.020828                   0.000000   
+15               0.000000                   0.000000   
 16               0.000000                   0.000000   
 17               0.000000                   0.000000   
-18               0.000000                   0.000000   
-19               0.000000                   0.003077   
+18               0.000000                   0.007352   
+19               0.111762                   0.000000   
 20               0.000000                   0.000000   
-21               0.093376                   0.000000   
+21               0.000000                   0.000000   
 22               0.000000                   0.000000   
 23               0.000000                   0.000000   
+24               0.000000                   0.007352   
+25               0.111762                   0.000000   
+26               0.000000                   0.000000   
+27               0.000000                   0.000000   
+28               0.000000                   0.000000   
+29               0.000000                   0.000000   
 
     share_rewetted_in_mineral  share_domestic_peat_extraction  \
 0                    0.000000                        0.000000   
-1                    0.000231                        0.072073   
+1                    0.000047                        0.072825   
 2                    0.000000                        0.000000   
 3                    0.000000                        0.000000   
 4                    0.000000                        0.000000   
 5                    0.000000                        0.000000   
-6                    0.000000                        0.000000   
-7                    0.000231                        0.072073   
+6                    0.000047                        0.000000   
+7                    0.000000                        0.000000   
 8                    0.000000                        0.000000   
 9                    0.000000                        0.000000   
 10                   0.000000                        0.000000   
 11                   0.000000                        0.000000   
-12                   0.000000                        0.000000   
-13                   0.000231                        0.072073   
+12                   0.000047                        0.000000   
+13                   0.000000                        0.000000   
 14                   0.000000                        0.000000   
 15                   0.000000                        0.000000   
 16                   0.000000                        0.000000   
 17                   0.000000                        0.000000   
-18                   0.000000                        0.000000   
-19                   0.000231                        0.072073   
+18                   0.000047                        0.000000   
+19                   0.000000                        0.000000   
 20                   0.000000                        0.000000   
 21                   0.000000                        0.000000   
 22                   0.000000                        0.000000   
 23                   0.000000                        0.000000   
+24                   0.000047                        0.000000   
+25                   0.000000                        0.000000   
+26                   0.000000                        0.000000   
+27                   0.000000                        0.000000   
+28                   0.000000                        0.000000   
+29                   0.000000                        0.000000   
 
     share_industrial_peat_extraction  \
-0                             0.0000   
-1                             0.0635   
-2                             0.0000   
-3                             0.0000   
-4                             0.0000   
-5                             0.0000   
-6                             0.0000   
-7                             0.0635   
-8                             0.0000   
-9                             0.0000   
-10                            0.0000   
-11                            0.0000   
-12                            0.0000   
-13                            0.0635   
-14                            0.0000   
-15                            0.0000   
-16                            0.0000   
-17                            0.0000   
-18                            0.0000   
-19                            0.0635   
-20                            0.0000   
-21                            0.0000   
-22                            0.0000   
-23                            0.0000   
+0                           0.000000   
+1                           0.045785   
+2                           0.000000   
+3                           0.000000   
+4                           0.000000   
+5                           0.000000   
+6                           0.000000   
+7                           0.000000   
+8                           0.000000   
+9                           0.000000   
+10                          0.000000   
+11                          0.000000   
+12                          0.000000   
+13                          0.000000   
+14                          0.000000   
+15                          0.000000   
+16                          0.000000   
+17                          0.000000   
+18                          0.000000   
+19                          0.000000   
+20                          0.000000   
+21                          0.000000   
+22                          0.000000   
+23                          0.000000   
+24                          0.000000   
+25                          0.000000   
+26                          0.000000   
+27                          0.000000   
+28                          0.000000   
+29                          0.000000   
 
     share_rewetted_industrial_peat_extraction  \
 0                                    0.000000   
-1                                    0.030558   
+1                                    0.018910   
 2                                    0.000000   
 3                                    0.000000   
 4                                    0.000000   
 5                                    0.000000   
-6                                    0.000000   
-7                                    0.030558   
+6                                    0.064695   
+7                                    0.000000   
 8                                    0.000000   
 9                                    0.000000   
 10                                   0.000000   
 11                                   0.000000   
-12                                   0.000000   
-13                                   0.030558   
+12                                   0.064695   
+13                                   0.000000   
 14                                   0.000000   
 15                                   0.000000   
 16                                   0.000000   
 17                                   0.000000   
-18                                   0.000000   
-19                                   0.030558   
+18                                   0.064695   
+19                                   0.000000   
 20                                   0.000000   
 21                                   0.000000   
 22                                   0.000000   
 23                                   0.000000   
+24                                   0.064695   
+25                                   0.000000   
+26                                   0.000000   
+27                                   0.000000   
+28                                   0.000000   
+29                                   0.000000   
 
     share_rewetted_domestic_peat_extraction  share_near_natural_wetland  \
 0                                  0.000000                    0.000000   
-1                                  0.011619                    0.715462   
+1                                  0.011881                    0.718574   
 2                                  0.000000                    0.000000   
 3                                  0.000000                    0.000000   
 4                                  0.000000                    0.000000   
 5                                  0.000000                    0.000000   
-6                                  0.000000                    0.000000   
-7                                  0.011619                    0.715462   
+6                                  0.084706                    0.718574   
+7                                  0.000000                    0.000000   
 8                                  0.000000                    0.000000   
 9                                  0.000000                    0.000000   
 10                                 0.000000                    0.000000   
 11                                 0.000000                    0.000000   
-12                                 0.000000                    0.000000   
-13                                 0.011619                    0.715462   
+12                                 0.084706                    0.718574   
+13                                 0.000000                    0.000000   
 14                                 0.000000                    0.000000   
 15                                 0.000000                    0.000000   
 16                                 0.000000                    0.000000   
 17                                 0.000000                    0.000000   
-18                                 0.000000                    0.000000   
-19                                 0.011619                    0.715462   
+18                                 0.084706                    0.718574   
+19                                 0.000000                    0.000000   
 20                                 0.000000                    0.000000   
 21                                 0.000000                    0.000000   
 22                                 0.000000                    0.000000   
 23                                 0.000000                    0.000000   
+24                                 0.084706                    0.718574   
+25                                 0.000000                    0.000000   
+26                                 0.000000                    0.000000   
+27                                 0.000000                    0.000000   
+28                                 0.000000                    0.000000   
+29                                 0.000000                    0.000000   
 
     share_unmanaged_wetland  share_burnt  
 0                  0.000000     0.000103  
-1                  0.103481     0.000274  
+1                  0.089373     0.000277  
 2                  0.000000     0.000019  
-3                  0.000000     0.000229  
+3                  0.000000     0.000418  
 4                  0.000000     0.000000  
 5                  0.000000     0.000000  
-6                  0.000000     0.000103  
-7                  0.103481     0.000274  
-8                  0.000000     0.000019  
-9                  0.000000     0.000072  
-10                 0.000000     0.000000  
+6                  0.089373     0.000261  
+7                  0.000000     0.000283  
+8                  0.000000     0.000064  
+9                  0.000000     0.000000  
+10                 0.000000     0.000164  
 11                 0.000000     0.000000  
-12                 0.000000     0.000103  
-13                 0.103481     0.000274  
-14                 0.000000     0.000019  
-15                 0.000000     0.000051  
-16                 0.000000     0.000000  
+12                 0.089373     0.000261  
+13                 0.000000     0.000283  
+14                 0.000000     0.000064  
+15                 0.000000     0.000000  
+16                 0.000000     0.000164  
 17                 0.000000     0.000000  
-18                 0.000000     0.000103  
-19                 0.103481     0.000274  
-20                 0.000000     0.000019  
-21                 0.000000     0.000229  
-22                 0.000000     0.000000  
+18                 0.089373     0.000261  
+19                 0.000000     0.000287  
+20                 0.000000     0.000064  
+21                 0.000000     0.000000  
+22                 0.000000     0.000164  
 23                 0.000000     0.000000  
+24                 0.089373     0.000261  
+25                 0.000000     0.000287  
+26                 0.000000     0.000064  
+27                 0.000000     0.000000  
+28                 0.000000     0.000164  
+29                 0.000000     0.000000  
 </pre></div>
 </div>
 </div>
@@ -414,70 +452,70 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Land use Assignment Solution is optimal!
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       Grassland_to_Grassland  Grassland_to_Wetland  Grassland_to_Cropland  \
 -2020            0.000000e+00                   0.0                    0.0   
  0              -2.805460e+06                   0.0                    0.0   
- 1              -2.720483e+06                   0.0                    0.0   
- 2              -2.720483e+06                   0.0                    0.0   
+ 1              -2.720430e+06                   0.0                    0.0   
+ 2              -2.720430e+06                   0.0                    0.0   
+ 3              -3.590237e+06                   0.0                    0.0   
 
        Grassland_to_Forest  Grassland_to_Settlement  \
 -2020         0.000000e+00                      0.0   
  0            1.700279e+06                      0.0   
- 1            2.704497e+06                      0.0   
+ 1            2.704498e+06                      0.0   
  2            0.000000e+00                      0.0   
+ 3            0.000000e+00                      0.0   
 
        Grassland_to_Farmable_Condition  Wetland_to_Grassland  \
 -2020                     0.000000e+00                   0.0   
  0                        1.105181e+06                   0.0   
- 1                        1.598606e+04                   0.0   
- 2                        2.720483e+06                   0.0   
+ 1                        1.593243e+04                   0.0   
+ 2                        2.720430e+06                   0.0   
+ 3                        3.590237e+06                   0.0   
 
        Wetland_to_Wetland  Wetland_to_Cropland  Wetland_to_Forest  ...  \
 -2020                 0.0                  0.0                0.0  ...   
  0                    0.0                  0.0                0.0  ...   
  1                    0.0                  0.0                0.0  ...   
  2                    0.0                  0.0                0.0  ...   
+ 3                    0.0                  0.0                0.0  ...   
 
        Settlement_to_Cropland  Settlement_to_Forest  Settlement_to_Settlement  \
 -2020                     0.0                   0.0                       0.0   
  0                        0.0                   0.0                       0.0   
  1                        0.0                   0.0                       0.0   
  2                        0.0                   0.0                       0.0   
+ 3                        0.0                   0.0                       0.0   
 
        Settlement_to_Farmable_Condition  Farmable_Condition_to_Grassland  \
 -2020                               0.0                              0.0   
  0                                  0.0                              0.0   
  1                                  0.0                              0.0   
  2                                  0.0                              0.0   
+ 3                                  0.0                              0.0   
 
        Farmable_Condition_to_Wetland  Farmable_Condition_to_Cropland  \
 -2020                            0.0                             0.0   
  0                               0.0                             0.0   
  1                               0.0                             0.0   
  2                               0.0                             0.0   
+ 3                               0.0                             0.0   
 
        Farmable_Condition_to_Forest  Farmable_Condition_to_Settlement  \
 -2020                           0.0                               0.0   
  0                              0.0                               0.0   
  1                              0.0                               0.0   
  2                              0.0                               0.0   
+ 3                              0.0                               0.0   
 
        Farmable_Condition_to_Farmable_Condition  
 -2020                                       0.0  
  0                                          0.0  
  1                                          0.0  
  2                                          0.0  
+ 3                                          0.0  
 
-[4 rows x 36 columns]
+[5 rows x 36 columns]
 </pre></div>
 </div>
 </div>
@@ -499,24 +537,30 @@
 3         -1     SGB         YC6       0.000000
 4         -1     SGB         YC6       0.000000
 5         -1     SGB         YC6       0.000000
-6          0   Sitka     YC24_30  417595.058325
-7          0     SGB         YC6  715935.503074
-8          0   Sitka     YC20_24  208791.199405
-9          0     SGB         YC6  357956.899641
+6          0   Sitka     YC24_30  793471.392979
+7          0     SGB         YC6  340059.168420
+8          0   Sitka     YC20_24  396723.679300
+9          0     SGB         YC6  170024.433986
 10         0   Sitka     YC17_20       0.000000
 11         0     SGB         YC6       0.000000
-12         1   Sitka     YC24_30  418877.449812
-13         1     SGB         YC6  718134.067390
-14         1   Sitka     YC20_24  508198.559238
-15         1     SGB         YC6  871268.430782
-16         1   Sitka     YC17_20   69266.435907
-17         1     SGB         YC6  118752.125172
+12         1   Sitka     YC24_30  795908.062041
+13         1     SGB         YC6  341103.455160
+14         1   Sitka     YC20_24  965626.893014
+15         1     SGB         YC6  413840.097006
+16         1   Sitka     YC17_20  131613.591886
+17         1     SGB         YC6   56405.825094
 18         2   Sitka     YC24_30       0.000000
 19         2     SGB         YC6       0.000000
 20         2   Sitka     YC20_24       0.000000
 21         2     SGB         YC6       0.000000
 22         2   Sitka     YC17_20       0.000000
 23         2     SGB         YC6       0.000000
+24         3   Sitka     YC24_30       0.000000
+25         3     SGB         YC6       0.000000
+26         3   Sitka     YC20_24       0.000000
+27         3     SGB         YC6       0.000000
+28         3   Sitka     YC17_20       0.000000
+29         3     SGB         YC6       0.000000
 </pre></div>
 </div>
 </div>

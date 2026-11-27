@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The package database and its sources &mdash; LandCover Assignment 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="CONTRIBUTING.html" />
+    <link rel="prev" title="Peat extraction in scenarios" href="peat_extraction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peat_extraction.html">Peat extraction in scenarios</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The package database and its sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-it-is-built">How it is built</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-each-land-use-takes-from-the-inventory-2020-values">What each land use takes from the inventory (2020 values)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forest-area-and-fire-mirroring-cbm-runner-d6a">Forest area and fire: mirroring cbm_runner (D6a)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#forest-soils">Forest soils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor">Grassland organic soils: nutrient rich and nutrient poor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#burnt-area-of-grassland-wetland-and-cropland-d6b">Burnt area of grassland, wetland and cropland (D6b)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#national-land-area-by-category-the-nir-table-d8">National land area by category: the <code class="docutils literal notranslate"><span class="pre">NIR</span></code> table (D8)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#soil-group-to-yield-class-for-afforestation-d9">Soil group to yield class for afforestation (D9)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#industrial-peat-extraction">Industrial peat extraction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#still-waiting-for-a-decision">Still waiting for a decision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The package database and its sources</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data_sources.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-package-database-and-its-sources">
+<h1>The package database and its sources<a class="headerlink" href="#the-package-database-and-its-sources" title="Link to this heading"></a></h1>
+<p>The national areas and soil shares come from a SQLite database shipped with the package,
+<code class="docutils literal notranslate"><span class="pre">src/landcover_assignment/database/land_use_database_0.5.0.db</span></code>. The version in the name is the package version that
+built it.</p>
+<section id="how-it-is-built">
+<h2>How it is built<a class="headerlink" href="#how-it-is-built" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code> builds the database from the files in <code class="docutils literal notranslate"><span class="pre">data_sources/</span></code>. Two builds give the same file.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>file</p></th>
+<th class="head"><p>made by</p></th>
+<th class="head"><p>holds</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">inventory_areas.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/extract_inventory.py</span></code></p></td>
+<td><p>EPA CRT 2026 areas and wildfire emissions, 1990-2024, and CRF 2024 burnt area, 1990-2022, with sheet, row, column and label for each cell, and notation keys (NO, NA, IE)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nid2026_forest_organic_soils.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/transcribe_nid_forest.py</span></code></p></td>
+<td><p>NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nid2026_grassland_organic_factors.csv</span></code></p></td>
+<td><p>transcribed</p></td>
+<td><p>NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cbm_runner_forest.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">cbm_runner_forest_parameters.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/export_cbm_runner_forest.py</span></code></p></td>
+<td><p>cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping.csv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tools/export_legacy_columns.py</span></code></p></td>
+<td><p>soil group -&gt; yield class table, 0.4.0 values; source Upton et al. (2013) Table 2 (D9, see below)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The database records its own provenance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">column_metadata</span></code>: for every column, its unit, meaning, source, cell reference, transformation, decision and status;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sources</span></code>: the documents behind each source id, with a link to each (see below);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inventory_values</span></code>: every extracted inventory value, with notation keys;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_info</span></code>: the package version and the SHA-256 of every input file.</p></li>
+</ul>
+<p>The tables the code reads (<code class="docutils literal notranslate"><span class="pre">forest_data</span></code>, <code class="docutils literal notranslate"><span class="pre">grassland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">cropland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">wetland_data</span></code>, <code class="docutils literal notranslate"><span class="pre">settlement_data</span></code>,
+<code class="docutils literal notranslate"><span class="pre">NIR</span></code>, <code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code>) keep their 0.4.0 names and columns. Two tables are new in 0.5.0:
+<code class="docutils literal notranslate"><span class="pre">managed_forest_data</span></code> and <code class="docutils literal notranslate"><span class="pre">forest_fire_rate</span></code> (cbm_runner’s managed forest and forest fire, decision D6a).</p>
+<p>Every value comes from a published source; nothing is copied from the 0.4.0 database any more. The sources:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>id</p></th>
+<th class="head"><p>document</p></th>
+<th class="head"><p>link</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CRT2026</p></td>
+<td><p>EPA Ireland, Common Reporting Tables 2026 (1990-2024)</p></td>
+<td><p><a class="reference external" href="https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2026.php">Ireland’s National Inventory Submissions 2026</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>NID2026</p></td>
+<td><p>EPA Ireland, National Inventory Document 2026</p></td>
+<td><p>as CRT2026</p></td>
+</tr>
+<tr class="row-even"><td><p>CRF2024</p></td>
+<td><p>EPA Ireland, Common Reporting Format 2024 (burnt area, 1990-2022)</p></td>
+<td><p><a class="reference external" href="https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2024.php">Ireland’s National Inventory Submissions 2024</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>UPTON2013</p></td>
+<td><p>Upton et al. (2013), Irish Forestry 70: 61-74, Table 2</p></td>
+<td><p>none recorded (the journal site could not be checked)</p></td>
+</tr>
+<tr class="row-even"><td><p>CBM061</p></td>
+<td><p>goblin_cbm_runner 0.6.1, <code class="docutils literal notranslate"><span class="pre">cbm_runner_database_0.6.2.db</span></code></p></td>
+<td><p><a class="reference external" href="https://github.com/GOBLIN-Proj/goblin_cbm_runner/tree/cfc0199af562c04c2b055a8200b73365e8b4b4c6">GitHub, commit cfc0199</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>PACKAGE</p></td>
+<td><p>parameters and keys set in <code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code></p></td>
+<td><p><a class="reference external" href="https://github.com/GOBLIN-Proj/landcover_assignment">this repository</a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Units.</strong> Values are stored as published (areas in kha), and <code class="docutils literal notranslate"><span class="pre">column_metadata</span></code> names each column’s unit. The readers
+convert on read, column by column, with <code class="docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.units</span></code> (kha to ha), the one place
+where unit conversions live, as in landcover_lca.</p>
+</section>
+<section id="what-each-land-use-takes-from-the-inventory-2020-values">
+<h2>What each land use takes from the inventory (2020 values)<a class="headerlink" href="#what-each-land-use-takes-from-the-inventory-2020-values" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>land use</p></th>
+<th class="head"><p>area</p></th>
+<th class="head"><p>details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>forest</p></td>
+<td><p>cbm_runner managed forest (FM + AF), 730.1 kha (CRT 4.A: 798.7 kha)</p></td>
+<td><p>drained N-poor 287.4 kha (share 0.394) and N-rich 97.4 kha (0.133), NID 2026 Tables 6.7 + 6.15; the rest mineral (0.473); burnt 305 ha (cbm_runner FM + AF fire). See below</p></td>
+</tr>
+<tr class="row-odd"><td><p>grassland</p></td>
+<td><p>CRT 4.C, 4,218.5 kha</p></td>
+<td><p>the national area for the balance (see <a class="reference internal" href="grassland_area.html"><span class="std std-doc">grassland area</span></a>); drained organic = CRT 4(II).C.1 drained, 136.6 kha (rich 0.4525); rewet status = CRT 4(II).C.1 “Other organic soils”, 203.3 kha (rich 0.4471)</p></td>
+</tr>
+<tr class="row-even"><td><p>cropland</p></td>
+<td><p>CRT 4.B, 747.7 kha</p></td>
+<td><p>all mineral (CRT organic: NO)</p></td>
+</tr>
+<tr class="row-odd"><td><p>wetland</p></td>
+<td><p>CRT 4.D total, 1,212.5 kha</p></td>
+<td><p>domestic peat 88.3, industrial peat 55.5 (4(II)), rewetted industrial 22.9, rewetted domestic 14.4, near-natural 871.3, unmanaged 108.4 kha</p></td>
+</tr>
+<tr class="row-even"><td><p>settlement</p></td>
+<td><p>CRT 4.E, 126.1 kha</p></td>
+<td><p>organic 2.0 kha</p></td>
+</tr>
+</tbody>
+</table>
+<section id="forest-area-and-fire-mirroring-cbm-runner-d6a">
+<h3>Forest area and fire: mirroring cbm_runner (D6a)<a class="headerlink" href="#forest-area-and-fire-mirroring-cbm-runner-d6a" title="Link to this heading"></a></h3>
+<p>The forest row mirrors cbm_runner 0.6.1, so that landcover_lca and cbm_runner work on the same forest area and the
+same burnt area. cbm_runner’s historic forest disturbances are aligned with the NID and forest expert judgement: they
+were prepared by the forest consultant who prepared them for the NID. Every value is <strong>derived</strong> from cbm_runner’s
+database (<code class="docutils literal notranslate"><span class="pre">cbm_runner_database_0.6.2.db</span></code>, the file inside the 0.6.1 release) by <code class="docutils literal notranslate"><span class="pre">tools/export_cbm_runner_forest.py</span></code>,
+and the database records it with source <code class="docutils literal notranslate"><span class="pre">CBM061</span></code> and status <code class="docutils literal notranslate"><span class="pre">derived</span></code>.</p>
+<p>cbm_runner models managed forest in two streams, the same in every scenario, plus the scenario’s own afforestation:</p>
+<ul class="simple">
+<li><p><strong>FM</strong>, forest present before 1990: 420,417.2 ha at its 2016 baseline, less about 1,000 ha/yr of deforestation;</p></li>
+<li><p><strong>AF</strong>, forest planted since 1990: the planting record, with baseline planting continuing to 2070;</p></li>
+<li><p><strong>SC</strong>, the scenario’s afforestation, which is what this package’s afforestation table gives cbm_runner.</p></li>
+</ul>
+<p>The package’s forest row is built the same way:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>rule</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>area</p></td>
+<td><p>FM + AF in that year (<code class="docutils literal notranslate"><span class="pre">managed_forest_data.total_ha</span></code>); target-year rows add the scenario’s afforestation</p></td>
+</tr>
+<tr class="row-odd"><td><p>drained organic</p></td>
+<td><p>the NID calibration-year hectares (287.4 kha N-poor, 97.4 kha N-rich in 2020), held fixed</p></td>
+</tr>
+<tr class="row-even"><td><p>mineral</p></td>
+<td><p>the rest. The open area on organic soil and roads that CBM doesn’t model are not emitting (as in the NID), and AF planting after the calibration year is on mineral soil</p></td>
+</tr>
+<tr class="row-odd"><td><p>burnt</p></td>
+<td><p>FM fire + AF fire in that year (<code class="docutils literal notranslate"><span class="pre">managed_forest_data.burnt_ha</span></code>); target-year rows add rate x the scenario’s afforestation</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The scenario fire rate</strong> is cbm_runner’s (<code class="docutils literal notranslate"><span class="pre">SCDisturbances._calculate_national_fire_rate</span></code>): mean annual FM fire
+(9,826 ha over 2017-2070 = 182.0 ha/yr) plus mean annual AF fire (6,872 ha over 2008-2070 = 109.1 ha/yr), divided by
+the FM and AF inventory areas (420,417.2 + 612,488.4 ha): 2.8177e-4 per year (<code class="docutils literal notranslate"><span class="pre">forest_fire_rate.rate_per_year</span></code>).
+cbm_runner plants the scenario’s afforestation evenly up to its afforestation end year and each year burns rate x the
+area planted so far, so in the target year it burns rate x all of it.</p>
+<p><strong>Worked example</strong> (national test data, 2050; scenario 0 afforests 1,700,279 ha, scenario 2 nothing):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>2020</p></th>
+<th class="head"><p>2050, scenario 2</p></th>
+<th class="head"><p>2050, scenario 0</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FM area</p></td>
+<td><p>417,617</p></td>
+<td><p>387,827</p></td>
+<td><p>387,827</p></td>
+</tr>
+<tr class="row-odd"><td><p>AF area</p></td>
+<td><p>312,482</p></td>
+<td><p>483,664</p></td>
+<td><p>483,664</p></td>
+</tr>
+<tr class="row-even"><td><p>scenario afforestation</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1,700,279</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>forest area</strong></p></td>
+<td><p><strong>730,099</strong></p></td>
+<td><p><strong>871,492</strong></p></td>
+<td><p><strong>2,571,770</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>drained N-poor + N-rich</p></td>
+<td><p>384,800</p></td>
+<td><p>384,800</p></td>
+<td><p>384,800</p></td>
+</tr>
+<tr class="row-odd"><td><p>FM + AF fire</p></td>
+<td><p>177 + 128</p></td>
+<td><p>169 + 81</p></td>
+<td><p>169 + 81</p></td>
+</tr>
+<tr class="row-even"><td><p>scenario fire (2.8177e-4 x afforestation)</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>479</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>burnt area</strong></p></td>
+<td><p><strong>305</strong></p></td>
+<td><p><strong>250</strong></p></td>
+<td><p><strong>729</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Before 0.5.0 the forest area was the inventory area held constant (plus the scenario’s afforestation), and the burnt
+area was 178 ha in every scenario and year (CRF 4.A.1 only; new forest never burned).</p>
+<p><strong>The transition matrix and the afforestation table do not change.</strong> Between 2020 and 2050 managed forest grows by
+141,393 ha in every scenario (AF baseline planting less FM deforestation). cbm_runner plants and burns that itself, so
+it is not a transition from grassland: <code class="docutils literal notranslate"><span class="pre">Grassland_to_Forest</span></code> is the forest row’s change less the managed-forest
+change, which is the scenario’s afforestation. Otherwise cbm_runner would plant it a second time. For the same
+reason the target-year land-use table’s total is the baseline total plus the managed-forest change.</p>
+<p><strong>Against the inventory (2020).</strong> CRT 4.A is 798,747 ha, 68,648 ha more than CBM’s managed forest: the NID open area
+on organic soil (46,810 ha) and roads and other areas that CBM doesn’t model. None of it emits, so landcover_lca’s
+forest drainage is charged on the same NID hectares as before. CBM’s 305 ha burnt compares with CRF 2024 4.A 300 ha.
+The calibration year must be 2017 or later (cbm_runner’s FM fire starts in 2017).</p>
+</section>
+<section id="forest-soils">
+<h3>Forest soils<a class="headerlink" href="#forest-soils" title="Link to this heading"></a></h3>
+<p>The forest area splits into four parts (2020): mineral soil 367.1 kha (0.460), drained N-poor organic 287.4 kha
+(0.360), drained N-rich organo-mineral 97.4 kha (0.122), and open area on organic soil 46.8 kha (0.059). The open
+area is never drained, so nothing emits from it. These are the inventory’s (CRT 4.A) parts; the package’s forest row
+uses the NID drained hectares on cbm_runner’s managed forest area (above), so its shares are 0.394 / 0.133 / 0.473.</p>
+<p><strong>Interpolated years.</strong> The NID does not print the drained areas for every year:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>table</p></th>
+<th class="head"><p>years printed</p></th>
+<th class="head"><p>years not printed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Table 6.7 (4.A.1, forest remaining forest)</p></td>
+<td><p>1990, 1995, 2000, 2005, 2006-2024</p></td>
+<td><p>1991-1994, 1996-1999, 2001-2004</p></td>
+</tr>
+<tr class="row-odd"><td><p>Table 6.15 (4.A.2, land converted to forest)</p></td>
+<td><p>1990, 1995, 2000, 2005, 2010-2024</p></td>
+<td><p>1991-1994, 1996-1999, 2001-2004, 2006-2009</p></td>
+</tr>
+</tbody>
+</table>
+<p>For a year that is not printed, each table’s drained N-poor and drained N-rich areas are interpolated in a straight
+line between the printed years either side (for example 1993 = 1990 + 3/5 of the change to 1995), and the two
+tables are then added. Printed years, including the calibration year 2020 and 2022-2024, are the NID values exactly.
+The rule is in <code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code> (<code class="docutils literal notranslate"><span class="pre">nid_series</span></code>), and each column’s <code class="docutils literal notranslate"><span class="pre">transformation</span></code> entry in
+<code class="docutils literal notranslate"><span class="pre">column_metadata</span></code> repeats it.</p>
+<p>Before 0.5.0 the drained areas were hand-typed values with no source (174.5 and 72.5 kha in 2020), and the mineral
+share was 1 minus the drained shares (0.68), which counted undrained organic soil as mineral.</p>
+</section>
+<section id="grassland-organic-soils-nutrient-rich-and-nutrient-poor">
+<h3>Grassland organic soils: nutrient rich and nutrient poor<a class="headerlink" href="#grassland-organic-soils-nutrient-rich-and-nutrient-poor" title="Link to this heading"></a></h3>
+<p>The NID charges nutrient-rich and nutrient-poor organic grassland soil at different rates but publishes no area for
+each. The package works out the split for each year from the inventory itself. The CRT gives, for each grassland
+organic row (drained, and rewet status), the CH4 emitted per hectare. That figure is a mix of the NID rich and poor
+factors, weighted by area, so</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rich fraction = (CRT CH4 per hectare - poor factor) / (rich factor - poor factor)
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>row</p></th>
+<th class="head"><p>poor factor</p></th>
+<th class="head"><p>rich factor</p></th>
+<th class="head"><p>rich fraction 2020</p></th>
+<th class="head"><p>2022-2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>drained</p></td>
+<td><p>0.95 x 11.76 + 0.05 x 1165 = 69.42 kg CH4/ha</p></td>
+<td><p>0.95 x 16.0 + 0.05 x 1165 = 73.45 kg CH4/ha</p></td>
+<td><p>0.4525</p></td>
+<td><p>0.449</p></td>
+</tr>
+<tr class="row-odd"><td><p>rewet status</p></td>
+<td><p>68.1 kg CH4-C/ha = 90.8 kg CH4/ha</p></td>
+<td><p>216 kg CH4-C/ha = 288.0 kg CH4/ha</p></td>
+<td><p>0.4471</p></td>
+<td><p>0.449</p></td>
+</tr>
+</tbody>
+</table>
+<p>The drained factors combine the field and ditch factors, with 5% of the area in ditches (NID p.271). The rewet-status
+factors are printed in kg CH4-C and converted to kg CH4 (x 16/12, <code class="docutils literal notranslate"><span class="pre">units.CH4_C_TO_CH4</span></code>). The factors are in
+<code class="docutils literal notranslate"><span class="pre">data_sources/nid2026_grassland_organic_factors.csv</span></code>, the rule in <code class="docutils literal notranslate"><span class="pre">tools/build_database.py</span></code>
+(<code class="docutils literal notranslate"><span class="pre">grassland_rich_fraction</span></code>), and each column’s <code class="docutils literal notranslate"><span class="pre">transformation</span></code> entry repeats it. In earlier years the drained land
+was richer (0.551 in 1990).</p>
+<p><strong>Checks.</strong> The rich and poor soils also lose carbon at different rates (drained 6.1 and 1.3 t C/ha, rewet status
+0.5 and 0.85). With the split above, the package areas reproduce the CRT grassland organic soil carbon (Table4.C,
+4.C.1) in every year, 1990-2024 (<code class="docutils literal notranslate"><span class="pre">tests/test_database_build.py</span></code>). The CRT N2O per hectare for drained grassland
+(Table3.D) gives the same drained fraction (0.4525 in 2020).</p>
+<p><strong>Scenarios.</strong> The future split is not projected on its own. Drained land that stays drained keeps the
+calibration year’s rich fraction; rewetted land carries that fraction into the rewet-status pool.</p>
+<p>Before 0.5.0 both rows were split 0.45 / 0.55 every year, with no recorded source. landcover_lca’s inventory tests
+use the same rule as above.</p>
+</section>
+<section id="burnt-area-of-grassland-wetland-and-cropland-d6b">
+<h3>Burnt area of grassland, wetland and cropland (D6b)<a class="headerlink" href="#burnt-area-of-grassland-wetland-and-cropland-d6b" title="Link to this heading"></a></h3>
+<p>Calibration-year rows carry that year’s inventory burnt area (as a share of the land use’s area). The data:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>years</p></th>
+<th class="head"><p>grassland, wetland</p></th>
+<th class="head"><p>cropland</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1990-2022</p></td>
+<td><p>CRF 2024 Table4(V) area burnt (4.C.1, 4.D.1)</p></td>
+<td><p>CRF 2024 Table4(V) (4.B.1); years reported NO are 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2023-2024 (derived)</p></td>
+<td><p>CRT 2026 Table4(IV) wildfire CH4 / the mean implied CH4 per ha burnt in 2020-2022 (CRT CH4 / CRF area: grassland 0.226, wetland 2.48 t CH4/ha)</p></td>
+<td><p>the mean CRF burnt area 2020-2022, 42.9 ha</p></td>
+</tr>
+</tbody>
+</table>
+<p>The CRF stops at 2022 and the CRT reports no burnt area, hence the derived years. Cropland’s implied CH4 per ha
+varies too much (0.005-0.011 t/ha, and the CRT reports NO in 2020 where the CRF has 14.3 ha) to back-calculate, so
+its 2023-2024 take the 3-year average instead. Settlement: 0 (no inventory burnt area).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>ha</p></th>
+<th class="head"><p>2020</p></th>
+<th class="head"><p>2021</p></th>
+<th class="head"><p>2022</p></th>
+<th class="head"><p>2023</p></th>
+<th class="head"><p>2024</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>grassland</p></td>
+<td><p>435.7</p></td>
+<td><p>321.4</p></td>
+<td><p>321.4</p></td>
+<td><p>1,632.8</p></td>
+<td><p>114.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>wetland</p></td>
+<td><p>335.7</p></td>
+<td><p>135.7</p></td>
+<td><p>135.7</p></td>
+<td><p>780.1</p></td>
+<td><p>31.2</p></td>
+</tr>
+<tr class="row-even"><td><p>cropland</p></td>
+<td><p>14.3</p></td>
+<td><p>57.1</p></td>
+<td><p>57.1</p></td>
+<td><p>42.9</p></td>
+<td><p>42.9</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Target-year rows</strong> burn at the 3-year rate over 2022-2024 (sum of burnt area / sum of area;
+<code class="docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code>), applied to the whole row, so land a scenario adds to wetland
+or cropland burns too: grassland 1.64e-4, wetland 2.61e-4, cropland 6.4e-5 per year. Before 0.5.0 they carried the
+calibration-year share (2020, a low fire year), and added land burnt nothing. National test scenario 0, 2050:
+grassland 146 -&gt; 231 ha, wetland 336 -&gt; 316 ha, cropland 14 -&gt; 48 ha.</p>
+<p>The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
+<code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> (CRF 2024 4.A.1 wildfires). Both are on the catchment to-do list for later.</p>
+</section>
+<section id="national-land-area-by-category-the-nir-table-d8">
+<h3>National land area by category: the <code class="docutils literal notranslate"><span class="pre">NIR</span></code> table (D8)<a class="headerlink" href="#national-land-area-by-category-the-nir-table-d8" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">NIR</span></code> holds the area of each inventory land category (forest, cropland, grassland, managed and unmanaged wetland,
+settlements, other land) in every year 1990-2024: CRT 2026 Table4.1, row 20 “Final area”, in kha, taken from the
+same extracted rows as <code class="docutils literal notranslate"><span class="pre">inventory_values</span></code> (<code class="docutils literal notranslate"><span class="pre">4.1.final_area.*</span></code>). The categories add up to the national land area,
+7,111.8 kha, in every year. Read it with <code class="docutils literal notranslate"><span class="pre">Loader().national_inventory_areas()</span></code> (areas in ha). The model does not
+use it; it is there as a quick national check and for other uses of the package. Columns and labels are as in
+0.4.0. The 0.4.0 table held the CRF 2024 “Initial area” under the wrong years (its extraction numbered the
+workbooks in unsorted file order).</p>
+</section>
+<section id="soil-group-to-yield-class-for-afforestation-d9">
+<h3>Soil group to yield class for afforestation (D9)<a class="headerlink" href="#soil-group-to-yield-class-for-afforestation-d9" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">forest_soil_yield_mapping</span></code> gives the yield class of scenario afforestation by soil group, and is the only source of
+the species and yield classes in the afforestation table (its zero-area template rows are built from it):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>soil group</p></th>
+<th class="head"><p>Sitka spruce</p></th>
+<th class="head"><p>SGB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>YC24_30</p></td>
+<td><p>YC6</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>YC20_24</p></td>
+<td><p>YC6</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>YC17_20</p></td>
+<td><p>YC6</p></td>
+</tr>
+</tbody>
+</table>
+<p>Source: Upton et al. (2013), Irish Forestry 70: 61-74, Table 2, which gives the expected Sitka spruce yield class of
+each National Farm Survey soil category (from the Farrelly et al. 2011 productivity model):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NFS soil category</p></th>
+<th class="head"><p>limitation</p></th>
+<th class="head"><p>expected yield class</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 Wide</p></td>
+<td><p>none</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 Moderately wide</p></td>
+<td><p>minor</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-even"><td><p>3 Somewhat limited</p></td>
+<td><p>higher elevation, heavier, poorer structure</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><p>4 Limited</p></td>
+<td><p>poor drainage</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>5 Very limited</p></td>
+<td><p>agricultural potential greatly restricted</p></td>
+<td><p>18</p></td>
+</tr>
+<tr class="row-odd"><td><p>6 Extremely limited</p></td>
+<td><p>mountainous, steep slopes, shallow soil</p></td>
+<td><p>14</p></td>
+</tr>
+</tbody>
+</table>
+<p>The soil groups (from grassland_production) are the Teagasc NFS soil groups, which pair these categories: group 1 =
+1-2, group 2 = 3-4, group 3 = 5-6. Each
+yield class lies in its cbm_runner band (24 in 24-30, 20 in 20-24, 18 in 17-20). Category 6 (YC 14, hill land below
+the grant threshold) is not used. The values are those of 0.4.0, which cited Farrelly &amp; Gallagher (2015) in error;
+that paper gives no yield class by soil.</p>
+</section>
+<section id="industrial-peat-extraction">
+<h3>Industrial peat extraction<a class="headerlink" href="#industrial-peat-extraction" title="Link to this heading"></a></h3>
+<p>CRT Table4.D gives 98.3 kha of industrial peat extraction (2020) and Table4(II) gives 55.5 kha. Every per-hectare
+emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha. The other 42.7 kha carries only the
+carbon in horticultural peat, which the inventory works out from tonnage, and which landcover_lca adds from export
+statistics. The package uses the 4(II) area, so that carbon is not counted twice.</p>
+<p>In scenario years, industrial and domestic peat extraction phase out to 0 in 2040 (decision D10, a modelling
+assumption): see <a class="reference internal" href="peat_extraction.html"><span class="std std-doc">peat extraction in scenarios</span></a>.</p>
+<p>The 42.7 kha is taken to be the estimated area of private (non-Bord na Mona) horticultural peat production: the NID
+(s.6.6.3) builds the industrial area from Bord na Mona’s area plus an area worked back from horticultural peat sales,
+and after Bord na Mona stopped harvesting in 2021 the extra area persists (28 kha in 2024). It is in the wetland
+total but in no sub-share. Why the inventory charges no per-hectare emissions on it is not explained in the NID; at
+the industrial rates it would be about 345 kt CO2e a year (2020).</p>
+</section>
+</section>
+<section id="still-waiting-for-a-decision">
+<h2>Still waiting for a decision<a class="headerlink" href="#still-waiting-for-a-decision" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>column</p></th>
+<th class="head"><p>now</p></th>
+<th class="head"><p>decision</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">forest_data.burnt_kha</span></code> (read only by the catchment tree)</p></td>
+<td><p>CRF 2024 Table4(V) 4.A.1 wildfires, 1990-2022 (the same values as 0.4.0); 2023-2024 empty</p></td>
+<td><p>catchment forest burnt area (the national forest row uses cbm_runner’s fire, D6a)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="peat_extraction.html" class="btn btn-neutral float-left" title="Peat extraction in scenarios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CONTRIBUTING.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

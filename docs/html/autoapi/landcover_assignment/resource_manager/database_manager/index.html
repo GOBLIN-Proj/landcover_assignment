@@ -1,25 +1,23 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.resource_manager.database_manager &mdash; LandCover Assignment 0.4.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+  <title>landcover_assignment.resource_manager.database_manager &mdash; LandCover Assignment 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=6c02275b"></script>
-        <script src="../../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -48,17 +46,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../peat_extraction.html">Peat extraction in scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../database/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../geo_landcover_assignment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">landcover_assignment</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../_deprecation/index.html">landcover_assignment._deprecation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../afforestation/index.html">landcover_assignment.afforestation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../database/index.html">landcover_assignment.database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../distribution/index.html">landcover_assignment.distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../geo_landcover_assignment/index.html">landcover_assignment.geo_landcover_assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../landcover/index.html">landcover_assignment.landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../national_landcover/index.html">landcover_assignment.national_landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../optimisation/index.html">landcover_assignment.optimisation</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">landcover_assignment.resource_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../transition_matrix/index.html">landcover_assignment.transition_matrix</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
 </ul>
 </li>
 </ul>
@@ -81,9 +88,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.database_manager</span></code></li>
+          <li class="breadcrumb-item"><a href="../../index.html">landcover_assignment</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">landcover_assignment.resource_manager</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.resource_manager.database_manager</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/autoapi/landcover_assignment/resource_manager/database_manager/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -94,86 +101,35 @@
            <div itemprop="articleBody">
              
   <section id="module-landcover_assignment.resource_manager.database_manager">
-<span id="landcover-assignment-resource-manager-database-manager"></span><h1><a class="reference internal" href="#module-landcover_assignment.resource_manager.database_manager" title="landcover_assignment.resource_manager.database_manager"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.database_manager</span></code></a><a class="headerlink" href="#module-landcover_assignment.resource_manager.database_manager" title="Link to this heading"></a></h1>
-<section id="datamanager-for-land-use-databases">
+<span id="landcover-assignment-resource-manager-database-manager"></span><h1>landcover_assignment.resource_manager.database_manager<a class="headerlink" href="#module-landcover_assignment.resource_manager.database_manager" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> class serves as an interface to interact with a land use database, facilitating the retrieval of various datasets
 related to national land cover areas such as forests, wetlands, croplands, grasslands, and settlements, as well as soil yield mappings for forests.
 This class is designed to support environmental data analysis and modeling tasks by providing structured access to key land use datasets.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.database_dir">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">database_dir</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.database_dir" title="Link to this definition"></a></dt>
-<dd><p>Directory where the database file is located.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-odd">ivar database_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Directory where the database file is located.</p>
+</dd>
+<dt class="field-even">vartype database_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">ivar engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLAlchemy engine object for database connection.</p>
+</dd>
+<dt class="field-even">vartype engine<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlalchemy.engine.Engine</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.engine">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">engine</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.engine" title="Link to this definition"></a></dt>
-<dd><p>SQLAlchemy engine object for database connection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>sqlalchemy.engine.Engine</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.data_engine_creater">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">data_engine_creater</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.data_engine_creater" title="Link to this definition"></a></dt>
-<dd><p>Creates a SQLAlchemy engine connected to the SQLite database containing land use data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_inventory_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_inventory_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national inventory area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_forest_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_forest_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national forest area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_settlement_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_settlement_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national settlement area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_grassland_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_grassland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national grassland area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_cropland_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_cropland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national cropland area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_national_wetland_areas">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_national_wetland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national wetland area data from the database and scales the values by 1000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.get_soil_yield_mapping">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">get_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.get_soil_yield_mapping" title="Link to this definition"></a></dt>
-<dd><p>Retrieves forest soil yield mapping data from the database without scaling.</p>
-</dd></dl>
-
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p class="rubric">Notes</p>
+<p>data_engine_creator(): Creates a SQLAlchemy engine connected to the SQLite database containing land use data.
+get_national_inventory_areas(): Retrieves national inventory area data from the database and converts its areas from kha to ha.
+get_national_forest_areas(): Retrieves national forest area data from the database and converts its areas from kha to ha.
+get_national_settlement_areas(): Retrieves national settlement area data from the database and converts its areas from kha to ha.
+get_national_grassland_areas(): Retrieves national grassland area data from the database and converts its areas from kha to ha.
+get_national_cropland_areas(): Retrieves national cropland area data from the database and converts its areas from kha to ha.
+get_national_wetland_areas(): Retrieves national wetland area data from the database and converts its areas from kha to ha.
+get_soil_yield_mapping(): Retrieves forest soil yield mapping data from the database without scaling.</p>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.resource_manager.database_manager.DataManager" title="landcover_assignment.resource_manager.database_manager.DataManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataManager</span></code></a></p></td>
@@ -181,12 +137,25 @@ This class is designed to support environmental data analysis and modeling tasks
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">DataManager</span></span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager" title="Link to this definition"></a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creater">
-<span class="sig-name descname"><span class="pre">data_engine_creater</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.data_engine_creater"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creater" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.resource_manager.database_manager.</span></span><span class="sig-name descname"><span class="pre">DataManager</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.database_dir">
+<span class="sig-name descname"><span class="pre">database_dir</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.database_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.engine">
+<span class="sig-name descname"><span class="pre">engine</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.engine" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creator">
+<span class="sig-name descname"><span class="pre">data_engine_creator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creator" title="Link to this definition"></a></dt>
 <dd><p>Creates a SQLAlchemy engine connected to the SQLite database containing land use data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -198,13 +167,30 @@ This class is designed to support environmental data analysis and modeling tasks
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creater">
+<span class="sig-name descname"><span class="pre">data_engine_creater</span></span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.data_engine_creater" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager._to_model_units">
+<span class="sig-name descname"><span class="pre">_to_model_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager._to_model_units" title="Link to this definition"></a></dt>
+<dd><p>Converts each column of <code class="docutils literal notranslate"><span class="pre">dataframe</span></code> from the unit recorded for it in the database’s <code class="docutils literal notranslate"><span class="pre">column_metadata</span></code>
+table to the model unit (areas: kha to ha), using <a class="reference internal" href="../units/index.html#module-landcover_assignment.resource_manager.units" title="landcover_assignment.resource_manager.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager.units</span></code></a>.
+Keys and labels (units <code class="docutils literal notranslate"><span class="pre">year</span></code>, <code class="docutils literal notranslate"><span class="pre">label</span></code>, <code class="docutils literal notranslate"><span class="pre">group</span></code>) are left as they are.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_inventory_areas">
-<span class="sig-name descname"><span class="pre">get_national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_inventory_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_inventory_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national inventory area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_inventory_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_inventory_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024) and
+converts its areas from kha to ha.</p>
+<p>Useful as a quick national check: the categories add up to the national land area (7,111,785 ha) in
+every year. Labels are the inventory’s (e.g. “Grassland (managed)(2)”); the <code class="docutils literal notranslate"><span class="pre">Area_kha</span></code> column name is
+kept from 0.4.0 but holds ha after conversion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A DataFrame containing national inventory area data with the area values scaled.</p>
+<dd class="field-odd"><p>indexed by <code class="docutils literal notranslate"><span class="pre">Year</span></code>, with <code class="docutils literal notranslate"><span class="pre">Land_cover</span></code> and <code class="docutils literal notranslate"><span class="pre">Area_kha</span></code> (in ha).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pandas.DataFrame</p>
@@ -214,8 +200,8 @@ This class is designed to support environmental data analysis and modeling tasks
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_forest_areas">
-<span class="sig-name descname"><span class="pre">get_national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_forest_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_forest_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national forest area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national forest area data from the database and converts its areas from kha to ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing national forest area data with the area values scaled.</p>
@@ -227,9 +213,39 @@ This class is designed to support environmental data analysis and modeling tasks
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_managed_forest_areas">
+<span class="sig-name descname"><span class="pre">get_managed_forest_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_managed_forest_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner 0.6.1’s managed forest (FM + AF) area and forest fire by year, 1990-2070 (decision D6a;
+derived from cbm_runner’s disturbance events, aligned with the NID and forest expert judgement).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>managed_forest_data in ha, indexed by year.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_forest_fire_rate">
+<span class="sig-name descname"><span class="pre">get_forest_fire_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_forest_fire_rate" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cbm_runner 0.6.1’s scenario forest fire rate (per year) and the values it is calculated from
+(decision D6a).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the one row of forest_fire_rate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_settlement_areas">
-<span class="sig-name descname"><span class="pre">get_national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_settlement_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_settlement_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national settlement area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_settlement_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_settlement_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national settlement area data from the database and converts its areas from kha to ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing national settlement area data with the area values scaled.</p>
@@ -242,8 +258,8 @@ This class is designed to support environmental data analysis and modeling tasks
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_grassland_areas">
-<span class="sig-name descname"><span class="pre">get_national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_grassland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_grassland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national grassland area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_grassland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_grassland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national grassland area data from the database and converts its areas from kha to ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing national grassland area data with the area values scaled.</p>
@@ -256,8 +272,8 @@ This class is designed to support environmental data analysis and modeling tasks
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_cropland_areas">
-<span class="sig-name descname"><span class="pre">get_national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_cropland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_cropland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national cropland area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_cropland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_cropland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national cropland area data from the database and converts its areas from kha to ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing national cropland area data with the area values scaled.</p>
@@ -270,8 +286,8 @@ This class is designed to support environmental data analysis and modeling tasks
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_national_wetland_areas">
-<span class="sig-name descname"><span class="pre">get_national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_national_wetland_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_wetland_areas" title="Link to this definition"></a></dt>
-<dd><p>Retrieves national wetland area data from the database and scales the values by 1000.</p>
+<span class="sig-name descname"><span class="pre">get_national_wetland_areas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_national_wetland_areas" title="Link to this definition"></a></dt>
+<dd><p>Retrieves national wetland area data from the database and converts its areas from kha to ha.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing national wetland area data with the area values scaled.</p>
@@ -284,8 +300,9 @@ This class is designed to support environmental data analysis and modeling tasks
 
 <dl class="py method">
 <dt class="sig sig-object py" id="landcover_assignment.resource_manager.database_manager.DataManager.get_soil_yield_mapping">
-<span class="sig-name descname"><span class="pre">get_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/landcover_assignment/resource_manager/database_manager.html#DataManager.get_soil_yield_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_soil_yield_mapping" title="Link to this definition"></a></dt>
-<dd><p>Retrieves forest soil yield mapping data from the database without scaling.</p>
+<span class="sig-name descname"><span class="pre">get_soil_yield_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.resource_manager.database_manager.DataManager.get_soil_yield_mapping" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the soil group -&gt; species yield class table (Upton et al. 2013 Table 2; decision D9), in
+table order, without scaling. It is the only source of the afforestation yield classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A DataFrame containing forest soil yield mapping data.</p>
@@ -298,7 +315,6 @@ This class is designed to support environmental data analysis and modeling tasks
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 

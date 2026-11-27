@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.geo_landcover_assignment.geo_distribution`
-========================================================================
+landcover_assignment.geo_landcover_assignment.geo_distribution
+==============================================================
 
 .. py:module:: landcover_assignment.geo_landcover_assignment.geo_distribution
 
@@ -27,38 +27,34 @@
 
    Classes:
    --------
-   .. class:: LandDistribution(scenario_data)
-      :noindex:
+   ``LandDistribution(scenario_data)``
 
       Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
       areas and soil composition.
 
-      .. method:: land_distribution(land_use, new_area)
+      ``land_distribution(land_use, new_area)``
          Calculates and updates the distribution of land based on land use type and the area change. It supports special
          handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other
          soil types accordingly.
 
-      .. method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
+      ``grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)``
          Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
          components, and recalculates the total remaining grassland area along with its composition.
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.geo_landcover_assignment.geo_distribution.LandDistribution
 
 
-
+Module Contents
+---------------
 
 .. py:class:: LandDistribution(scenario_data)
-
 
    Handles the distribution of land areas for various land use types under different scenarios,
    adjusting for changes in areas and soil composition.
@@ -72,42 +68,39 @@ Classes
                          names and drive the scenario-based calculations for land distribution adjustments.
    :type scenario_data: pd.DataFrame
 
-   .. attribute:: data_manager_class
+   :ivar data_manager_class: An instance of DistributionManager for managing land distribution data.
+   :vartype data_manager_class: DistributionManager
+   :ivar catchment_class: An instance of CatchmentLandCover for accessing and analyzing catchment land cover data.
+   :vartype catchment_class: CatchmentLandCover
+   :ivar sc_fetcher_class: An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.
+   :vartype sc_fetcher_class: ScenarioDataFetcher
+   :ivar catchment_name: The name of the catchment area fetched based on the scenario data, used to identify the area of interest
+                         for land distribution calculations.
 
-      An instance of DistributionManager for managing land distribution data.
+   :vartype catchment_name: str
 
-      :type: DistributionManager
+   .. rubric:: Notes
 
-   .. attribute:: catchment_class
+   land_distribution(land_use, new_area)
+       Calculates and updates the distribution of land based on land use type and the area change.
+       It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
+       of mineral, organic, and other soil types accordingly.
 
-      An instance of CatchmentLandCover for accessing and analyzing catchment land cover data.
-
-      :type: CatchmentLandCover
-
-   .. attribute:: sc_fetcher_class
-
-      An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.
-
-      :type: ScenarioDataFetcher
-
-   .. attribute:: catchment_name
-
-      The name of the catchment area fetched based on the scenario data, used to identify the area of interest
-      for land distribution calculations.
-
-      :type: str
-
-   .. method:: land_distribution(land_use, new_area)
-
-      Calculates and updates the distribution of land based on land use type and the area change.
-      It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
-      of mineral, organic, and other soil types accordingly.
+   grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
+       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
+       and organic components, and recalculates the total remaining grassland area along with its composition.
 
 
-   .. method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)
+   .. py:attribute:: data_manager_class
 
-      Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
-      and organic components, and recalculates the total remaining grassland area along with its composition.
+
+   .. py:attribute:: catchment_class
+
+
+   .. py:attribute:: sc_fetcher_class
+
+
+   .. py:attribute:: catchment_name
 
 
    .. py:method:: land_distribution(land_use, new_area)
@@ -120,6 +113,7 @@ Classes
       :type new_area: float
       :return: A dictionary containing updated land distribution details.
       :rtype: dict
+
 
 
    .. py:method:: grassland_distribution(mineral_area, organic_area, organic_mineral_area, grassland_area)

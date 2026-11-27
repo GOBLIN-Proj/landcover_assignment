@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.resource_manager.data_loader`
-===========================================================
+landcover_assignment.resource_manager.data_loader
+=================================================
 
 .. py:module:: landcover_assignment.resource_manager.data_loader
 
@@ -16,67 +16,48 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.resource_manager.data_loader.Loader
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Loader
-
 
    The ``Loader`` class serves as an interface to access various national land cover and land use area datasets.
    It utilizes the ``DataManager`` to retrieve specific datasets related to inventory areas, forest areas, cropland areas,
    grassland areas, wetland areas, settlement areas, and forest soil yield mappings.
 
-   .. attribute:: dataframes
+   :ivar dataframes: An instance of the DataManager class for accessing land cover data.
 
-      An instance of the DataManager class for accessing land cover data.
+   :vartype dataframes: landcover_assignment.resource_manager.database_manager.DataManager
 
-      :type: DataManager
+   .. rubric:: Notes
 
-   .. method:: national_inventory_areas()
+   national_inventory_areas(): Retrieves national inventory areas dataset.
+   national_forest_areas(): Retrieves national forest areas dataset.
+   national_cropland_areas(): Retrieves national cropland areas dataset.
+   national_grassland_areas(): Retrieves national grassland areas dataset.
+   national_wetland_areas(): Retrieves national wetland areas dataset.
+   national_settlement_areas(): Retrieves national settlement areas dataset.
+   forest_soil_yield_mapping(): Retrieves forest soil yield mapping to soil groups dataset.
 
-      Retrieves national inventory areas dataset.
 
-   .. method:: national_forest_areas()
+   .. py:attribute:: dataframes
 
-      Retrieves national forest areas dataset.
-
-   .. method:: national_cropland_areas()
-
-      Retrieves national cropland areas dataset.
-
-   .. method:: national_grassland_areas()
-
-      Retrieves national grassland areas dataset.
-
-   .. method:: national_wetland_areas()
-
-      Retrieves national wetland areas dataset.
-
-   .. method:: national_settlement_areas()
-
-      Retrieves national settlement areas dataset.
-
-   .. method:: forest_soil_yield_mapping()
-
-      Retrieves forest soil yield mapping to soil groups dataset.
-      
 
    .. py:method:: national_inventory_areas()
 
-      Retrieves national inventory areas dataset.
+      Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024, in ha).
 
-      :returns: A DataFrame containing national inventory areas data.
+      :returns: indexed by ``Year``, with ``Land_cover`` and ``Area_kha`` (in ha after conversion).
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: national_forest_areas()
@@ -87,12 +68,14 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: national_cropland_areas()
 
       Retrieves national cropland areas dataset.
 
       :returns: A DataFrame containing national cropland areas data.
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: national_grassland_areas()
@@ -103,6 +86,7 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: national_wetland_areas()
 
       Retrieves national wetland areas dataset.
@@ -111,12 +95,32 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: national_settlement_areas()
 
       Retrieves national settlement areas dataset.
 
       :returns: A DataFrame containing national settlement areas data.
       :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: managed_forest_areas()
+
+      Retrieves cbm_runner's managed forest (FM + AF) areas and fire by year, 1990-2070, in ha (decision D6a).
+
+      :returns: managed_forest_data, indexed by year.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:method:: forest_fire_rate()
+
+      Retrieves cbm_runner's scenario forest fire rate and its inputs (decision D6a).
+
+      :returns: forest_fire_rate (one row).
+      :rtype: pandas.Series
+
 
 
    .. py:method:: forest_soil_yield_mapping()

@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.resource_manager.landcover_data_manager`
-======================================================================
+landcover_assignment.resource_manager.landcover_data_manager
+============================================================
 
 .. py:module:: landcover_assignment.resource_manager.landcover_data_manager
 
@@ -14,7 +14,7 @@
    DataManager Class
    -----------------
 
-   .. class:: DataManager(calibration_year, target_year)
+   ``DataManager(calibration_year, target_year)``
 
       The DataManager class is responsible for loading and organizing land cover data for a given calibration and target year.
       It provides structured access to land use information, default Carbon Budget Model (CBM) data, and utilities for scenario-based land use analysis.
@@ -24,54 +24,51 @@
 
       **Attributes**
 
-      - ``data_loader_class`` (:class:`Loader`): An instance of the Loader class to access land cover datasets.
       - ``calibration_year`` (int): The year used as a reference for calibration.
       - ``target_year`` (int): The year to which data projections are made.
       - ``default_calibration_year`` (int): The default year for calibration if none is specified.
       - ``land_use_columns`` (list): A list of strings representing different land use types.
-      - ``cbm_default_data`` (dict): Default data structure for initializing CBM data inputs.
+      - ``cbm_default_data`` (dict): Zero-area template rows for the CBM afforestation table, one per row of the
+        database table ``forest_soil_yield_mapping`` (read on first use; the table is the only source).
       - ``areas_dataframe_cols`` (list): Column names for the areas DataFrame.
-      - ``landuse_dict`` (dict): A dictionary mapping land use types to their corresponding data access methods.
       - ``spared_area_dict`` (dict): A dictionary defining how spared areas are categorized by land use type.
 
       **Methods**
 
-      .. method:: get_default_calibration_year()
+      ``get_default_calibration_year()``
 
          Returns the default calibration year.
 
          :return: The default calibration year.
          :rtype: int
 
-      .. method:: get_land_use_columns()
+      ``get_land_use_columns()``
 
          Returns the list of land use columns.
 
          :return: A list of land use columns.
          :rtype: list
 
-      .. method:: get_cbm_default_data()
+      ``get_cbm_default_data()``
 
-         Returns the default CBM data.
+         Returns the zero-area template rows for the CBM afforestation table, built from the database table
+         ``forest_soil_yield_mapping`` (see :func:`cbm_template`).
 
          :return: A dictionary containing the default CBM data.
          :rtype: dict
 
-      .. method:: get_areas_dataframe_cols()
+      ``get_areas_dataframe_cols()``
 
          Returns the column names for the areas DataFrame.
 
          :return: A list of column names for the areas DataFrame.
          :rtype: list
 
-      .. method:: get_landuse_dict()
-
-         Returns the dictionary mapping land use types to their corresponding data access methods.
 
          :return: A dictionary mapping land use types to data access methods.
          :rtype: dict
 
-      .. method:: get_spared_area_dict()
+      ``get_spared_area_dict()``
 
          Returns the dictionary defining how spared areas are categorized by land use type.
 
@@ -81,7 +78,7 @@
    DistributionManager Class
    -------------------------
 
-   .. class:: DistributionManager()
+   ``DistributionManager()``
 
       Manages the distribution calculations for land use areas, focusing on the composition and characteristics of land based on various environmental factors.
       It initializes with a default land distribution setup and provides utilities for adjusting and analyzing these distributions.
@@ -96,35 +93,35 @@
 
       **Methods**
 
-      .. method:: get_land_distribution_keys()
+      ``get_land_distribution_keys()``
 
          Returns the list of keys for area and shares of different soil types and environmental factors.
 
          :return: A list of keys for land distribution.
          :rtype: list
 
-      .. method:: get_geoland_distribution_keys()
+      ``get_geoland_distribution_keys()``
 
          Returns the list of keys for Geo Model land distribution.
 
          :return: A list of keys for Geo Model land distribution.
          :rtype: list
 
-      .. method:: get_land_share_keys()
+      ``get_land_share_keys()``
 
          Returns the list of keys for land shares.
 
          :return: A list of keys for land shares.
          :rtype: list
 
-      .. method:: get_grassland_share_keys()
+      ``get_grassland_share_keys()``
 
          Returns the list of keys for grassland shares.
 
          :return: A list of keys for grassland shares.
          :rtype: list
 
-      .. method:: get_geoland_share_keys()
+      ``get_geoland_share_keys()``
 
          Returns the list of keys for Geo Model land shares.
 
@@ -133,11 +130,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -145,9 +139,54 @@ Classes
    landcover_assignment.resource_manager.landcover_data_manager.DistributionManager
 
 
+Functions
+---------
+
+.. autoapisummary::
+
+   landcover_assignment.resource_manager.landcover_data_manager.cbm_template
+
+
+Module Contents
+---------------
+
+.. py:function:: cbm_template(yield_mapping)
+
+   Zero-area template rows (scenario -1) for the CBM afforestation table: one row per row of the soil group ->
+   yield class table (``forest_soil_yield_mapping``), in table order. The table is the only source of the
+   species and yield classes (decision D9).
+
+   :param yield_mapping: the table, as returned by ``Loader().forest_soil_yield_mapping()``.
+   :type yield_mapping: pandas.DataFrame
+
+   :returns: ``scenario``, ``species``, ``yield_class`` and ``total_area`` lists.
+   :rtype: dict
 
 
 .. py:class:: DataManager(calibration_year, target_year)
+
+   .. py:attribute:: calibration_year
+
+
+   .. py:attribute:: target_year
+
+
+   .. py:attribute:: default_calibration_year
+      :value: 2015
+
+
+
+   .. py:attribute:: land_use_columns
+      :value: ['grassland', 'wetland', 'cropland', 'forest', 'settlement', 'farmable_condition']
+
+
+
+   .. py:attribute:: areas_dataframe_cols
+      :value: ['farm_id', 'year', 'land_use', 'area_ha', 'share_mineral', 'share_organic',...
+
+
+
+   .. py:attribute:: spared_area_dict
 
 
    .. py:method:: get_default_calibration_year()
@@ -158,6 +197,7 @@ Classes
       :rtype: int
 
 
+
    .. py:method:: get_land_use_columns()
 
       Returns the list of land use columns.
@@ -166,12 +206,20 @@ Classes
       :rtype: list
 
 
+
+   .. py:property:: cbm_default_data
+
+      Zero-area CBM template rows, built from ``forest_soil_yield_mapping`` (see :func:`cbm_template`).
+
+
    .. py:method:: get_cbm_default_data()
 
-      Returns the default CBM data.
+      Returns the zero-area template rows for the CBM afforestation table, built from the database table
+      ``forest_soil_yield_mapping`` (the only source of the species and yield classes).
 
       :returns: A dictionary containing the default CBM data.
       :rtype: dict
+
 
 
    .. py:method:: get_areas_dataframe_cols()
@@ -181,13 +229,6 @@ Classes
       :returns: A list of column names for the areas DataFrame.
       :rtype: list
 
-
-   .. py:method:: get_landuse_dict()
-
-      Returns the dictionary mapping land use types to their corresponding data access methods.
-
-      :returns: A dictionary mapping land use types to data access methods.
-      :rtype: dict
 
 
    .. py:method:: get_spared_area_dict()
@@ -201,6 +242,30 @@ Classes
 
 .. py:class:: DistributionManager
 
+   .. py:attribute:: land_distribution_keys
+      :value: ['area_ha', 'share_mineral', 'share_organic', 'share_drained_rich_organic',...
+
+
+
+   .. py:attribute:: geo_land_distribution_keys
+      :value: ['area_ha', 'share_mineral', 'share_organic', 'share_organic_mineral', 'share_peat_extraction',...
+
+
+
+   .. py:attribute:: land_shares_keys
+      :value: ['share_mineral', 'share_organic', 'share_drained_rich_organic', 'share_drained_poor_organic',...
+
+
+
+   .. py:attribute:: grassland_share_keys
+      :value: ['share_mineral', 'share_organic', 'share_drained_rich_organic', 'share_drained_poor_organic',...
+
+
+
+   .. py:attribute:: geo_land_share_keys
+      :value: ['share_mineral', 'share_organic', 'share_organic_mineral', 'share_burnt']
+
+
 
    .. py:method:: get_land_distribution_keys()
 
@@ -208,6 +273,7 @@ Classes
 
       :returns: A list of keys for land distribution.
       :rtype: list
+
 
 
    .. py:method:: get_geoland_distribution_keys()
@@ -218,6 +284,7 @@ Classes
       :rtype: list
 
 
+
    .. py:method:: get_land_share_keys()
 
       Returns the list of keys for land shares.
@@ -226,12 +293,14 @@ Classes
       :rtype: list
 
 
+
    .. py:method:: get_grassland_share_keys()
 
       Returns the list of keys for grassland shares.
 
       :returns: A list of keys for grassland shares.
       :rtype: list
+
 
 
    .. py:method:: get_geoland_share_keys()

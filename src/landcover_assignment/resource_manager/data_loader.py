@@ -19,7 +19,7 @@ class Loader:
     grassland areas, wetland areas, settlement areas, and forest soil yield mappings.
 
     Attributes:
-        dataframes (DataManager): An instance of the DataManager class for accessing land cover data.
+        dataframes (landcover_assignment.resource_manager.database_manager.DataManager): An instance of the DataManager class for accessing land cover data.
 
     Methods:
         national_inventory_areas(): Retrieves national inventory areas dataset.
@@ -39,10 +39,10 @@ class Loader:
 
     def national_inventory_areas(self):
         """
-        Retrieves national inventory areas dataset.
+        Retrieves the national land area by land category (CRT 2026 Table4.1 final area, 1990-2024, in ha).
 
         Returns:
-            pandas.DataFrame: A DataFrame containing national inventory areas data.
+            pandas.DataFrame: indexed by ``Year``, with ``Land_cover`` and ``Area_kha`` (in ha after conversion).
         """
         return self.dataframes.get_national_inventory_areas()
 
@@ -53,7 +53,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national forest areas data.
         """
-        return self.dataframes.get_national_forest_areas
+        return self.dataframes.get_national_forest_areas()
 
     def national_cropland_areas(self):
         """
@@ -62,7 +62,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national cropland areas data.
         """
-        return self.dataframes.get_national_cropland_areas
+        return self.dataframes.get_national_cropland_areas()
 
     def national_grassland_areas(self):
         """
@@ -71,7 +71,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national grassland areas data.
         """
-        return self.dataframes.get_national_grassland_areas
+        return self.dataframes.get_national_grassland_areas()
 
     def national_wetland_areas(self):
         """
@@ -80,7 +80,7 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national wetland areas data.
         """
-        return self.dataframes.get_national_wetland_areas
+        return self.dataframes.get_national_wetland_areas()
 
     def national_settlement_areas(self):
         """
@@ -89,7 +89,25 @@ class Loader:
         Returns:
             pandas.DataFrame: A DataFrame containing national settlement areas data.
         """
-        return self.dataframes.get_national_settlement_areas
+        return self.dataframes.get_national_settlement_areas()
+
+    def managed_forest_areas(self):
+        """
+        Retrieves cbm_runner's managed forest (FM + AF) areas and fire by year, 1990-2070, in ha (decision D6a).
+
+        Returns:
+            pandas.DataFrame: managed_forest_data, indexed by year.
+        """
+        return self.dataframes.get_managed_forest_areas()
+
+    def forest_fire_rate(self):
+        """
+        Retrieves cbm_runner's scenario forest fire rate and its inputs (decision D6a).
+
+        Returns:
+            pandas.Series: forest_fire_rate (one row).
+        """
+        return self.dataframes.get_forest_fire_rate()
 
     def forest_soil_yield_mapping(self):
         """

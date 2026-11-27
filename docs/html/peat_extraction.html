@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peat extraction in scenarios &mdash; LandCover Assignment 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The package database and its sources" href="data_sources.html" />
+    <link rel="prev" title="Spared area, rewetting and the grassland row" href="rewetting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LandCover Assignment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Peat extraction in scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-assumption">The assumption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why">Why</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downstream">Downstream</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_sources.html">The package database and its sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Landcover Assignment Example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LandCover Assignment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Peat extraction in scenarios</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/peat_extraction.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="peat-extraction-in-scenarios">
+<h1>Peat extraction in scenarios<a class="headerlink" href="#peat-extraction-in-scenarios" title="Link to this heading"></a></h1>
+<p>This page sets out the <strong>modelling assumption</strong> landcover_assignment makes about peat extraction in scenario
+(target) years (decision D10). Peat extraction emissions are counted, but they are not the focus of the model, so the
+rule is kept simple.</p>
+<section id="the-assumption">
+<h2>The assumption<a class="headerlink" href="#the-assumption" title="Link to this heading"></a></h2>
+<p><strong>All peat extraction, industrial and domestic, ends in 2040.</strong> Between the calibration year and 2040 it falls in a
+straight line, and the land that stops being extracted is rewetted.</p>
+<p>In a target-year wetland row:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>remaining = (2040 - target year) / (2040 - calibration year), between 0 and 1
+share_industrial_peat_extraction           = calibration share x remaining
+share_rewetted_industrial_peat_extraction  = calibration share + calibration industrial share x (1 - remaining)
+</pre></div>
+</div>
+<p>The same applies to domestic extraction (<code class="docutils literal notranslate"><span class="pre">share_domestic_peat_extraction</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">share_rewetted_domestic_peat_extraction</span></code>).</p>
+<ul class="simple">
+<li><p>The wetland area does not change, and nor does any other share (near-natural, unmanaged, burnt, …).</p></li>
+<li><p>Calibration-year rows are the inventory (CRT 2026 4(II)), unchanged.</p></li>
+<li><p>Target years from 2040 on have no peat extraction. With a 2020 calibration year, a 2030 target year has half the 2020
+extraction.</p></li>
+<li><p>The year is a constant, <code class="docutils literal notranslate"><span class="pre">national_landcover.PEAT_PHASE_OUT_YEAR</span></code>. The function is
+<code class="docutils literal notranslate"><span class="pre">NationalLandCover.get_peat_extraction_remaining</span></code>.</p></li>
+<li><p>National tree only. The catchment tree keeps its calibration-year peat share.</p></li>
+</ul>
+</section>
+<section id="why">
+<h2>Why<a class="headerlink" href="#why" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Industrial:</strong> Bord na Móna stopped harvesting peat in 2021, and its drained area is moving into rewetted land:
+55.5 kha drained in 2020, 34.7 kha in 2024 (CRT 2026 4(II)). At that pace it reaches zero around 2031, so a straight
+line to 2040 is conservative.</p></li>
+<li><p><strong>Domestic:</strong> there is no agreed end date, and the inventory decline is slower (88.3 kha drained in 2020, 84.3 kha in
+2024). Ending it by 2040 is a scenario assumption, chosen for simplicity and consistency with industrial extraction.</p></li>
+<li><p>Before this change, every scenario extracted peat at the calibration-year rate in every target year.</p></li>
+</ul>
+<p>The 2020 inventory and the target-year rows (wetland area 1,212.5 kha):</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>part (kha)</p></th>
+<th class="head text-right"><p>2020</p></th>
+<th class="head text-right"><p>2030</p></th>
+<th class="head text-right"><p>2050</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>industrial drained</p></td>
+<td class="text-right"><p>55.5</p></td>
+<td class="text-right"><p>27.8</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>industrial rewetted</p></td>
+<td class="text-right"><p>22.9</p></td>
+<td class="text-right"><p>50.7</p></td>
+<td class="text-right"><p>78.4</p></td>
+</tr>
+<tr class="row-even"><td><p>domestic drained</p></td>
+<td class="text-right"><p>88.3</p></td>
+<td class="text-right"><p>44.2</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>domestic rewetted</p></td>
+<td class="text-right"><p>14.4</p></td>
+<td class="text-right"><p>58.6</p></td>
+<td class="text-right"><p>102.7</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="downstream">
+<h2>Downstream<a class="headerlink" href="#downstream" title="Link to this heading"></a></h2>
+<p>The output columns are unchanged, so no other package needs a change. landcover_lca charges the rewetted area with its
+rewetted-peat factors instead of the extraction factors.</p>
+<p>landcover_lca computes off-site CO2 from horticultural peat (<code class="docutils literal notranslate"><span class="pre">horticulture_co2_peat_export</span></code>) from peat export
+tonnage, not from this area. For years after its export data it uses the mean of the last three years. So in a
+scenario year after 2040, that off-site CO2 is still counted although this package has no industrial extraction.
+This is a known difference between the two packages, recorded here; it is not changed.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rewetting.html" class="btn btn-neutral float-left" title="Spared area, rewetting and the grassland row" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data_sources.html" class="btn btn-neutral float-right" title="The package database and its sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Colm Duffy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

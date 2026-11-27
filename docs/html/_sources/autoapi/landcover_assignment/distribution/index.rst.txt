@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.distribution`
-===========================================
+landcover_assignment.distribution
+=================================
 
 .. py:module:: landcover_assignment.distribution
 
@@ -27,38 +27,34 @@
 
    Classes:
    --------
-   .. class:: LandDistribution(scenario_data)
-      :noindex:
+   ``LandDistribution(scenario_data)``
 
       Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
       areas and soil composition.
 
-      .. method:: land_distribution(year, land_use, new_area)
+      ``land_distribution(year, land_use, new_area)``
          Calculates and updates the distribution of land based on land use type and the area change. It supports special
          handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other
          soil types accordingly.
 
-      .. method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)
+      ``grassland_distribution(year, mineral_area, organic_area, grassland_area)``
          Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
          components, and recalculates the total remaining grassland area along with its composition.
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.distribution.LandDistribution
 
 
-
+Module Contents
+---------------
 
 .. py:class:: LandDistribution(scenario_data)
-
 
    Handles the distribution of land areas for various land use types under different scenarios,
    adjusting for changes in areas and soil composition.
@@ -72,38 +68,36 @@ Classes
                          names and drive the scenario-based calculations for land distribution adjustments.
    :type scenario_data: pd.DataFrame
 
-   .. attribute:: data_manager_class
+   :ivar data_manager_class: An instance of DistributionManager for managing land distribution data.
+   :vartype data_manager_class: DistributionManager
+   :ivar national_class: An instance of NationalLandCover for accessing and analyzing Irish national context land cover data.
+   :vartype national_class: NationalLandCover
+   :ivar sc_fetcher_class: An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.
 
-      An instance of DistributionManager for managing land distribution data.
+   :vartype sc_fetcher_class: ScenarioDataFetcher
 
-      :type: DistributionManager
+   .. rubric:: Notes
 
-   .. attribute:: national_class
+   land_distribution(year, land_use, new_area)
+       Calculates and updates the distribution of land based on land use type and the area change.
+       It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
+       of mineral, organic, and other soil types accordingly.
 
-      An instance of NationalLandCover for accessing and analyzing Irish national context land cover data.
-
-      :type: NationalLandCover
-
-   .. attribute:: sc_fetcher_class
-
-      An instance of ScenarioDataFetcher initialized with scenario data for fetching scenario-specific information.
-
-      :type: ScenarioDataFetcher
-
-   .. method:: land_distribution(year, land_use, new_area)
-
-      Calculates and updates the distribution of land based on land use type and the area change.
-      It supports special handling for grassland, wetland, and forest types, among others, adjusting shares
-      of mineral, organic, and other soil types accordingly.
+   grassland_distribution(year, mineral_area, organic_area, grassland_area)
+       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
+       and organic components, and recalculates the total remaining grassland area along with its composition.
 
 
-   .. method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)
-
-      Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral
-      and organic components, and recalculates the total remaining grassland area along with its composition.
+   .. py:attribute:: data_manager_class
 
 
-   .. py:method:: land_distribution(year, land_use, new_area)
+   .. py:attribute:: national_class
+
+
+   .. py:attribute:: sc_fetcher_class
+
+
+   .. py:method:: land_distribution(year, land_use, new_area, target_year=None)
 
       Calculates and updates the land distribution based on land use type and area change.
 
@@ -113,21 +107,34 @@ Classes
       :type land_use: str
       :param new_area: The area change to be applied to the land use type.
       :type new_area: float
+      :param target_year: The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
+                          target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
+                          fire. Without it, forest is the calibration-year row plus ``new_area`` as before. For the other land uses
+                          it makes the row a target-year row, whose ``share_burnt`` is the 3-year rate on the whole area (decision
+                          D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted. For
+                          wetland it also phases out peat extraction (decision D10,
+                          :meth:`NationalLandCover.get_peat_extraction_remaining`).
+      :type target_year: int, optional
 
       :returns: A dictionary containing updated land distribution details.
       :rtype: dict
 
 
-   .. py:method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)
+
+   .. py:method:: grassland_distribution(year, mineral_area, organic_area_to_wet, grassland_area)
 
       Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.
 
+      The mineral area leaves grassland. The rewetted organic area stays in grassland: it is taken from the drained
+      rich/poor shares (in proportion to them) and added to the rewetted rich/poor (rewet-status) shares. The total
+      organic area of the grassland row is unchanged. See docs/rewetting.md.
+
       :param year: The reference year for national land use data.
       :type year: int
-      :param mineral_area: The area of mineral soil to be adjusted.
+      :param mineral_area: The area of mineral soil that leaves grassland (ha).
       :type mineral_area: float
-      :param organic_area: The area of organic soil to be adjusted.
-      :type organic_area: float
+      :param organic_area_to_wet: The drained organic area that is rewetted and stays in grassland with rewet status (ha).
+      :type organic_area_to_wet: float
       :param grassland_area: The total grassland area to be considered.
       :type grassland_area: float
 

@@ -21,25 +21,24 @@ Dependencies:
 
 Classes:
 --------
-.. class:: LandDistribution(scenario_data)
-   :noindex:
+``LandDistribution(scenario_data)``
 
    Handles the distribution of land areas for various land use types under different scenarios, adjusting for changes in
    areas and soil composition.
 
-   .. method:: land_distribution(year, land_use, new_area)
+   ``land_distribution(year, land_use, new_area)``
       Calculates and updates the distribution of land based on land use type and the area change. It supports special 
       handling for grassland, wetland, and forest types, among others, adjusting shares of mineral, organic, and other 
       soil types accordingly.
 
-   .. method:: grassland_distribution(year, mineral_area, organic_area, grassland_area)
+   ``grassland_distribution(year, mineral_area, organic_area, grassland_area)``
       Specifically handles the distribution and adjustment of grassland areas, considering changes in mineral and organic
       components, and recalculates the total remaining grassland area along with its composition.
 
 """
 
 from landcover_assignment.resource_manager.landcover_data_manager import DistributionManager
-from landcover_assignment.national_landcover import NationalLandCover
+from landcover_assignment.national_landcover import NationalLandCover, PEAT_PHASE_OUT
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 
 class LandDistribution:
@@ -84,7 +83,7 @@ class LandDistribution:
         self.sc_fetcher_class = ScenarioDataFetcher(scenario_data, validate_on_init=True)
 
 
-    def land_distribution(self, year, land_use, new_area):
+    def land_distribution(self, year, land_use, new_area, target_year=None):
         """
         Calculates and updates the land distribution based on land use type and area change.
 
@@ -96,6 +95,14 @@ class LandDistribution:
             The type of land use to calculate distribution for.
         new_area : float
             The area change to be applied to the land use type.
+        target_year : int, optional
+            The target year. For forest it gives the target-year row (decision D6a): cbm_runner managed forest in the
+            target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
+            fire. Without it, forest is the calibration-year row plus ``new_area`` as before. For the other land uses
+            it makes the row a target-year row, whose ``share_burnt`` is the 3-year rate on the whole area (decision
+            D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted. For
+            wetland it also phases out peat extraction (decision D10,
+            :meth:`NationalLandCover.get_peat_extraction_remaining`).
 
         Returns
         -------
@@ -104,6 +111,12 @@ class LandDistribution:
         """
         if land_use == "grassland":
             return None
+
+        if land_use == "forest" and target_year is not None:
+            # Decision D6a: managed forest (cbm_runner FM + AF) in the target year + the scenario's afforestation;
+            # NID drained hectares fixed; cbm_runner's fire. See NationalLandCover.get_forest_target_row.
+            row = self.national_class.get_forest_target_row(year, target_year, new_area or 0)
+            return {key: row.get(key, 0) for key in self.data_manager_class.get_land_distribution_keys()}
 
         land = {key: 0 for key in self.data_manager_class.get_land_distribution_keys()}
 
@@ -131,6 +144,18 @@ class LandDistribution:
             for key, share_value in shares.items():
                 land[key] = share_value
 
+        if target_year is not None:
+            land["share_burnt"] = self.national_class.get_burnt_rate(land_use)
+
+        if target_year is not None and land_use == "wetland":
+            # Decision D10 (modelling assumption): peat extraction phases out linearly to 0 in PEAT_PHASE_OUT_YEAR; the
+            # stopped share becomes rewetted. Area and other shares unchanged.
+            remaining = self.national_class.get_peat_extraction_remaining(year, target_year)
+            for extraction, rewetted in PEAT_PHASE_OUT.items():
+                stopped = land[extraction] * (1 - remaining)
+                land[extraction] -= stopped
+                land[rewetted] += stopped
+
         return land
 
 
@@ -138,14 +163,18 @@ class LandDistribution:
         """
         Optimized version to manage the distribution of grassland areas, considering mineral and organic changes.
 
+        The mineral area leaves grassland. The rewetted organic area stays in grassland: it is taken from the drained
+        rich/poor shares (in proportion to them) and added to the rewetted rich/poor (rewet-status) shares. The total
+        organic area of the grassland row is unchanged. See docs/rewetting.md.
+
         Parameters
         ----------
         year : int
             The reference year for national land use data.
         mineral_area : float
-            The area of mineral soil to be adjusted.
-        organic_area : float
-            The area of organic soil to be adjusted.
+            The area of mineral soil that leaves grassland (ha).
+        organic_area_to_wet : float
+            The drained organic area that is rewetted and stays in grassland with rewet status (ha).
         grassland_area : float
             The total grassland area to be considered.
 
@@ -202,7 +231,8 @@ class LandDistribution:
             land["share_rewetted_poor_organic"] = grass_rewetted_total_poor_organic / grass_total_remaining
             land["share_organic_mineral"] = grass_organic_mineral_area / grass_total_remaining
             land["share_mineral"] = grass_remaining_mineral / grass_total_remaining
-            land["share_burnt"] = shares["share_burnt"]
+            # The grassland row is a target-year row: decision D6b, the 3-year burnt rate.
+            land["share_burnt"] = self.national_class.get_burnt_rate("grassland")
         else:
             # Set everything to zero to reflect no remaining grassland
             land = {key: 0 for key in land.keys()}

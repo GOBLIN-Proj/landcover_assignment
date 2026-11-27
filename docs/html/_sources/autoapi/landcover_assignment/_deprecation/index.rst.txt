@@ -1,0 +1,48 @@
+landcover_assignment._deprecation
+=================================
+
+.. py:module:: landcover_assignment._deprecation
+
+.. autoapi-nested-parse::
+
+   Deprecated names
+   ================
+   Helpers that keep misspelt public names working for one release, with a DeprecationWarning. Each use is marked
+   ``DEPRECATED_NAME`` so that the spelling test (``tests/test_spelling.py``) skips it.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   landcover_assignment._deprecation.warn_renamed
+   landcover_assignment._deprecation.renamed_method
+   landcover_assignment._deprecation.renamed_attribute
+   landcover_assignment._deprecation.renamed_keyword
+
+
+Module Contents
+---------------
+
+.. py:function:: warn_renamed(old, new)
+
+   Issue a DeprecationWarning for a renamed public name.
+
+
+.. py:function:: renamed_method(new_name, old_name)
+
+   A method alias that warns, then calls the method called ``new_name``.
+
+
+.. py:function:: renamed_attribute(new_name, old_name)
+
+   A read-only property alias that warns, then returns the attribute called ``new_name``.
+
+
+.. py:function:: renamed_keyword(old_name, new_name)
+
+   Decorator: accept the old keyword argument ``old_name`` as ``new_name``, with a warning.
+
+

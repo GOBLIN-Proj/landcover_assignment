@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.afforestation`
-============================================
+landcover_assignment.afforestation
+==================================
 
 .. py:module:: landcover_assignment.afforestation
 
@@ -35,21 +35,18 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.afforestation.Afforestation
 
 
-
+Module Contents
+---------------
 
 .. py:class:: Afforestation(calibration_year, target_year, scenario_inputs_df, transition_matrix)
-
 
    Manages afforestation outputs for scenarios and data processing for Carbon Budget Model (CBM) inputs.
 
@@ -66,35 +63,38 @@ Classes
    :param transition_matrix: A DataFrame representing the transition matrix for land cover changes.
    :type transition_matrix: pd.DataFrame
 
-   .. attribute:: data_manager_class
+   :ivar data_manager_class: An instance of DataManager for managing land cover data.
+   :vartype data_manager_class: landcover_assignment.resource_manager.landcover_data_manager.DataManager
+   :ivar scenario_data_fetcher: An instance for fetching scenario-specific data.
+   :vartype scenario_data_fetcher: ScenarioDataFetcher
+   :ivar transition_data_fetcher: An instance for fetching transition data.
+   :vartype transition_data_fetcher: TransitionDataFetcher
+   :ivar data_loader: An instance for loading necessary data resources.
+   :vartype data_loader: Loader
+   :ivar yield_mapping: A DataFrame containing yield mapping for different forest soil groups.
 
-      An instance of DataManager for managing land cover data.
+   :vartype yield_mapping: pd.DataFrame
 
-      :type: DataManager
 
-   .. attribute:: scenario_data_fetcher
+   .. py:attribute:: validate_scenarios
+      :value: False
 
-      An instance for fetching scenario-specific data.
 
-      :type: ScenarioDataFetcher
 
-   .. attribute:: transition_data_fetcher
+   .. py:attribute:: data_manager_class
 
-      An instance for fetching transition data.
 
-      :type: TransitionDataFetcher
+   .. py:attribute:: scenario_data_fetcher
 
-   .. attribute:: data_loader
 
-      An instance for loading necessary data resources.
+   .. py:attribute:: transition_data_fetcher
 
-      :type: Loader
 
-   .. attribute:: yield_mapping
+   .. py:attribute:: data_loader
 
-      A DataFrame containing yield mapping for different forest soil groups.
 
-      :type: pd.DataFrame
+   .. py:attribute:: yield_mapping
+
 
    .. py:method:: gen_cbm_afforestation_dataframe(spared_area_breakdown)
 
@@ -108,6 +108,7 @@ Classes
       :type spared_area_breakdown: pd.DataFrame
       :return: A DataFrame structured for CBM afforestation inputs.
       :rtype: pd.DataFrame
+
 
 
    .. py:method:: compute_cbm_afforestation(sc, soil_group, future_forest_area, cbm_dataframe)
@@ -131,13 +132,14 @@ Classes
       :raises ValueError: If the future forest area is less than 0.
 
 
+
    .. py:method:: cbm_dataframe_structure()
 
       Initializes the structure of the CBM DataFrame based on default data.
 
-      This method creates a new DataFrame structured for CBM inputs using default data
-      from the data manager class. It serves as the initial template for accumulating
-      afforestation scenario data.
+      One zero-area row (scenario -1) per row of the soil group -> yield class table
+      (``forest_soil_yield_mapping``, the only source of species and yield classes). It serves as
+      the initial template for accumulating afforestation scenario data.
 
       :return: A DataFrame structured for CBM afforestation inputs.
       :rtype: pd.DataFrame

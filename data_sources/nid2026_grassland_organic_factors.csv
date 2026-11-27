@@ -1,0 +1,11 @@
+name,value,unit,use,source
+ef_ch4_drained_land_poor,11.76,kg CH4/ha/yr,rich fraction,"NID 2026 s.6.5.2 p.271: EF_CH4_land, nutrient poor (Aitova et al. 2023)"
+ef_ch4_drained_land_rich,16.0,kg CH4/ha/yr,rich fraction,"NID 2026 s.6.5.2 p.271: EF_CH4_land, nutrient rich (IPCC 2013 Wetlands Supplement Table 2.3)"
+ef_ch4_drained_ditch,1165.0,kg CH4/ha/yr,rich fraction,"NID 2026 s.6.5.2 p.271: EF_CH4_ditch (IPCC 2013 Wetlands Supplement Table 2.4)"
+frac_ditch,0.05,fraction,rich fraction,"NID 2026 s.6.5.2 p.271: Frac_ditch (IPCC 2013 Wetlands Supplement Table 2.4 default)"
+ef_ch4_rewet_status_poor,68.1,kg CH4-C/ha/yr,rich fraction,"NID 2026 s.6.5.2 p.272: rewet status, nutrient poor, country specific (Aitova et al. 2023)"
+ef_ch4_rewet_status_rich,216.0,kg CH4-C/ha/yr,rich fraction,"NID 2026 s.6.5.2 p.272: rewet status, nutrient rich (IPCC 2013 Wetlands Supplement Table 3.3)"
+ef_co2_drained_on_site_poor,1.3,t C/ha/yr,check,"NID 2026 s.6.5.2 p.271: on-site, nutrient poor (Aitova et al. 2023 Table 2)"
+ef_co2_drained_on_site_rich,6.1,t C/ha/yr,check,"NID 2026 s.6.5.2 p.271: on-site, nutrient rich (IPCC 2013 Wetlands Supplement Table 2.1)"
+ef_co2_rewet_status_on_site_poor,0.85,t C/ha/yr,check,"NID 2026 s.6.5.2 p.272: rewet status on-site, nutrient poor (Aitova et al. 2023)"
+ef_co2_rewet_status_on_site_rich,0.5,t C/ha/yr,check,"NID 2026 s.6.5.2 p.272: rewet status on-site, nutrient rich (IPCC 2013 Wetlands Supplement Table 3.1)"

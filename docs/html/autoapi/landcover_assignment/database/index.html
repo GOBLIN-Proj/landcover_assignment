@@ -1,30 +1,28 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>landcover_assignment.database &mdash; LandCover Assignment 0.4.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+  <title>landcover_assignment.database &mdash; LandCover Assignment 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="landcover_assignment.geo_landcover_assignment" href="../geo_landcover_assignment/index.html" />
-    <link rel="prev" title="landcover_assignment" href="../index.html" /> 
+    <link rel="next" title="landcover_assignment.distribution" href="../distribution/index.html" />
+    <link rel="prev" title="landcover_assignment.afforestation" href="../afforestation/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,17 +46,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grassland_area.html">Where the grassland area comes from</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../peat_extraction.html">Peat extraction in scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../geo_landcover_assignment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.geo_landcover_assignment</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../optimisation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.optimisation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../resource_manager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.resource_manager</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">landcover_assignment</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../_deprecation/index.html">landcover_assignment._deprecation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../afforestation/index.html">landcover_assignment.afforestation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">landcover_assignment.database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distribution/index.html">landcover_assignment.distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../geo_landcover_assignment/index.html">landcover_assignment.geo_landcover_assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../landcover/index.html">landcover_assignment.landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../national_landcover/index.html">landcover_assignment.national_landcover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../optimisation/index.html">landcover_assignment.optimisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resource_manager/index.html">landcover_assignment.resource_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transition_matrix/index.html">landcover_assignment.transition_matrix</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
 </ul>
 </li>
 </ul>
@@ -81,8 +88,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment</span></code></a></li>
-      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></li>
+          <li class="breadcrumb-item"><a href="../index.html">landcover_assignment</a></li>
+      <li class="breadcrumb-item active">landcover_assignment.database</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/landcover_assignment/database/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -93,21 +100,40 @@
            <div itemprop="articleBody">
              
   <section id="module-landcover_assignment.database">
-<span id="landcover-assignment-database"></span><h1><a class="reference internal" href="#module-landcover_assignment.database" title="landcover_assignment.database"><code class="xref py py-mod docutils literal notranslate"><span class="pre">landcover_assignment.database</span></code></a><a class="headerlink" href="#module-landcover_assignment.database" title="Link to this heading"></a></h1>
-<section id="package-contents">
-<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
+<span id="landcover-assignment-database"></span><h1>landcover_assignment.database<a class="headerlink" href="#module-landcover_assignment.database" title="Link to this heading"></a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.database.DATABASE_FILE" title="landcover_assignment.database.DATABASE_FILE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATABASE_FILE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.database.get_local_dir" title="landcover_assignment.database.get_local_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_local_dir</span></code></a>()</p></td>
 <td><p>Gets the directory containing this script</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.database.get_database_path" title="landcover_assignment.database.get_database_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_database_path</span></code></a>()</p></td>
+<td><p>Full path to the package database (<code class="docutils literal notranslate"><span class="pre">DATABASE_FILE</span></code>).</p></td>
+</tr>
 </tbody>
 </table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.database.DATABASE_FILE">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.database.</span></span><span class="sig-name descname"><span class="pre">DATABASE_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'land_use_database_0.5.0.db'</span></em><a class="headerlink" href="#landcover_assignment.database.DATABASE_FILE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="landcover_assignment.database.get_local_dir">
-<span class="sig-prename descclassname"><span class="pre">landcover_assignment.database.</span></span><span class="sig-name descname"><span class="pre">get_local_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/landcover_assignment/database.html#get_local_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#landcover_assignment.database.get_local_dir" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.database.</span></span><span class="sig-name descname"><span class="pre">get_local_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.database.get_local_dir" title="Link to this definition"></a></dt>
 <dd><p>Gets the directory containing this script</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -119,7 +145,12 @@
 </dl>
 </dd></dl>
 
-</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="landcover_assignment.database.get_database_path">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.database.</span></span><span class="sig-name descname"><span class="pre">get_database_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.database.get_database_path" title="Link to this definition"></a></dt>
+<dd><p>Full path to the package database (<code class="docutils literal notranslate"><span class="pre">DATABASE_FILE</span></code>).</p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -127,8 +158,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="landcover_assignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../geo_landcover_assignment/index.html" class="btn btn-neutral float-right" title="landcover_assignment.geo_landcover_assignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../afforestation/index.html" class="btn btn-neutral float-left" title="landcover_assignment.afforestation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../distribution/index.html" class="btn btn-neutral float-right" title="landcover_assignment.distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

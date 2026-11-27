@@ -1,105 +1,156 @@
+"""
+Land cover optimisation
+=======================
+Allocates a scenario's spared **mineral** grassland between land-use targets with a small Pyomo model, solved by the
+open-source HiGHS solver.
+
+The model
+---------
+All areas are divided by the available mineral area A, so the model works in shares of A. This keeps the problem
+well scaled; the results are multiplied back to hectares.
+
+Sets
+    ``LAND_USES``: the land uses with a target (currently forest and cropland). It is built from ``target_areas``, so
+    adding a land use needs no code change.
+Parameters
+    ``target[i]``: the target area of land use *i* (share of A).
+    ``area_available``: 1 (all of A).
+Variables
+    ``allocation[i] >= 0``: area allocated to land use *i*.
+    ``fallback >= 0``: area allocated to no target, returned as ``farmable_condition``.
+Objective (minimise)
+    sum over i with target[i] > 0 of (allocation[i] - target[i])^2 / target[i], plus fallback^2.
+Constraints
+    ``use_all_area``: sum of allocation[i] + fallback = area_available.
+    ``cap_at_target[i]``: allocation[i] <= target[i].
+
+What this gives:
+
+- If the targets fit within the available area, every target is met and the rest goes to ``farmable_condition``.
+- If they don't fit, ``farmable_condition`` is 0 and every target is cut by the same percentage: dividing each
+  squared shortfall by its target makes the shortfalls proportional to the targets, so a small target (say crop
+  1%) is not wiped out before a large one (decision 2026-11-27, step 7 item 13; the earlier unweighted objective cut
+  every target by the same hectares).
+- Land uses with a 0 target are left out of the objective; ``cap_at_target`` keeps them at 0.
+- The objective is strictly convex in the land uses with a target, so the solution is unique. Any correct solver
+  gives the same answer.
+
+Extending the model
+-------------------
+``optimise_mineral_spared_area_distribution`` accepts ``extra_constraints``: functions that take the Pyomo model
+and add components to it. They are added after the standard ones, so they can use ``model.LAND_USES``,
+``model.target``, ``model.allocation`` and ``model.fallback``. For example, a cap on cropland:
+
+.. code-block:: python
+
+    def cap_cropland(model):
+        model.cap_cropland = pyo.Constraint(expr=model.allocation["cropland"] <= 0.1)   # share of A
+
+    LandCoverOptimisation().optimise_mineral_spared_area_distribution(area, targets, extra_constraints=[cap_cropland])
+
+A new land use (for example willow) needs only a new entry in ``target_areas``.
+"""
+import logging
+
 import pyomo.environ as pyo
-from pyomo.environ import *
-from pyomo.opt import SolverFactory
+
+logger = logging.getLogger(__name__)
+
+DEFAULT_SOLVER = "highs"
+FALLBACK_LAND_USE = "farmable_condition"
+
+
+def _objective(model):
+    """Squared shortfall from each target divided by the target (so shortfalls are proportional to the targets), plus
+    the squared unallocated area. Land uses with a 0 target are left out; ``cap_at_target`` holds them at 0."""
+    return sum(
+        (model.allocation[i] - model.target[i]) ** 2 / model.target[i]
+        for i in model.LAND_USES
+        if pyo.value(model.target[i]) > 0
+    ) + model.fallback ** 2
+
+
+def _use_all_area(model):
+    """All of the available mineral area is allocated, to a target or to the fallback."""
+    return sum(model.allocation[i] for i in model.LAND_USES) + model.fallback == model.area_available
+
+
+def _cap_at_target(model, i):
+    """No land use receives more than its target."""
+    return model.allocation[i] <= model.target[i]
 
 
 class LandCoverOptimisation:
     """
-    A class to manage optimisation tasks for land cover allocation and distribution.
+    Allocates spared mineral grassland between land-use targets (see the module docstring for the model).
 
-    Attributes:
-    ----------
-    solver : str
-        The optimization solver to use (e.g., 'cplex', 'gurobi', 'glpk').
-
-    Methods:
-    -------
-    optimise_mineral_spared_area_distribution(mineral_area_available, target_areas)
-        Optimises land distribution to minimize deviation from target areas.
+    :param solver: Pyomo solver name. The default is ``"highs"`` (open-source HiGHS, through ``highspy``). Pyomo's
+        ``"appsi_highs"`` interface does not accept the quadratic objective.
     """
 
-    def __init__(self, solver="cplex_direct"):
-        """
-        Initializes the optimisation class with a specified solver.
-
-        :param solver: Solver to use for optimisation (default: 'cplex').
-        """
+    def __init__(self, solver=DEFAULT_SOLVER):
         self.solver = solver
 
-
-    def optimise_mineral_spared_area_distribution(self, mineral_area_available, target_areas):
+    @staticmethod
+    def build_model(target_shares, extra_constraints=()):
         """
-        Optimises land distribution to minimize deviation from target areas.
-        Includes a fallback mechanism for leftover area to "farmable condition."
+        Build the allocation model.
 
-        :param mineral_area_available: Total mineral area available (float).
-        :param target_areas: Target areas for each land class (dict).
-        :return: Optimized land allocations (dict).
+        :param target_shares: Target area of each land use, as a share of the available area (dict).
+        :param extra_constraints: Functions ``f(model)`` that add further constraints (optional).
+        :return: The Pyomo model.
+        :rtype: pyomo.environ.ConcreteModel
         """
-        # Define scale factor as the total mineral area available
-        scale_factor = mineral_area_available
-
-        # Normalize inputs
-        normalized_target_areas = {k: v / scale_factor for k, v in target_areas.items()}
-        normalized_available_area = 1.0  # Normalize total area to 1
-
         model = pyo.ConcreteModel()
+        model.LAND_USES = pyo.Set(initialize=list(target_shares), ordered=True)
+        model.target = pyo.Param(model.LAND_USES, initialize=target_shares)
+        model.area_available = pyo.Param(initialize=1.0)
+        model.allocation = pyo.Var(model.LAND_USES, domain=pyo.NonNegativeReals)
+        model.fallback = pyo.Var(domain=pyo.NonNegativeReals)
+        model.objective = pyo.Objective(rule=_objective, sense=pyo.minimize)
+        model.use_all_area = pyo.Constraint(rule=_use_all_area)
+        model.cap_at_target = pyo.Constraint(model.LAND_USES, rule=_cap_at_target)
+        for add in extra_constraints:
+            add(model)
+        return model
 
-        # Define Sets
-        land_uses = list(target_areas.keys())
-        model.i = pyo.Set(initialize=land_uses)
+    def solve(self, model):
+        """
+        Solve the model and check that the solver found the optimum.
 
-        # Define Parameters
-        model.target_area = pyo.Param(model.i, initialize=normalized_target_areas)
-        model.actual_mineral_area_available = pyo.Param(initialize=normalized_available_area)
-
-
-        # Decision Variables
-        model.allocation = pyo.Var(model.i, domain=pyo.NonNegativeReals)
-        model.fallback_area = pyo.Var(domain=pyo.NonNegativeReals)
-
-        # Objective Function
-        def objective_function(model):
-            # Minimize the deviation from target areas and handle spillover
-            return sum(
-                (model.allocation[i] - model.target_area[i])**2 for i in model.i
-            ) + model.fallback_area**2
-
-        model.obj = pyo.Objective(rule=objective_function, sense=pyo.minimize)
-
-        # Constraints
-        def total_area_constraint(model):
-            # Ensure total allocation matches available area
-            return sum(model.allocation[i] for i in model.i) + model.fallback_area == model.actual_mineral_area_available
-
-        model.total_area_constraint = pyo.Constraint(rule=total_area_constraint)
-
-        def cap_target_area_constraint(model, i):
-            # Prevent allocation from exceeding the target area for each land class
-            return model.allocation[i] <= model.target_area[i]
-
-        model.cap_target_area_constraint = pyo.Constraint(model.i, rule=cap_target_area_constraint)
-
-        # Solve
-        solver = SolverFactory(self.solver) 
-
+        :raises RuntimeError: if the solver is unavailable or does not report an optimal solution.
+        """
+        solver = pyo.SolverFactory(self.solver)
+        if not solver.available(exception_flag=False):
+            raise RuntimeError(f"Solver '{self.solver}' is not available. Install highspy for the default HiGHS solver.")
         results = solver.solve(model)
+        if not pyo.check_optimal_termination(results):
+            raise RuntimeError(
+                f"Land use allocation: solver '{self.solver}' did not find an optimal solution "
+                f"(termination condition: {results.solver.termination_condition})."
+            )
+        logger.debug("Land use allocation solved to optimality with %s", self.solver)
+        return results
 
-        if results.solver.termination_condition == pyo.TerminationCondition.optimal:
-            print("Land use Assignment Solution is optimal!")
-        elif results.solver.termination_condition == pyo.TerminationCondition.infeasible:
-            print("Land use Assignment Solution is infeasible!")
-            raise ValueError("Infeasible solution!")
-        else:
-            print(f"Solver terminated with condition: {results.solver.termination_condition}")
-            raise RuntimeError("Land use Assignment Solver did not find an optimal solution!")
+    def optimise_mineral_spared_area_distribution(self, mineral_area_available, target_areas, extra_constraints=()):
+        """
+        Allocate the available spared mineral area to the target land uses. The rest goes to farmable condition.
 
-        # Rescale results
-        optimised_allocations = {
-            i: model.allocation[i].value * scale_factor for i in model.i
-        }
-        optimised_allocations["farmable_condition"] = model.fallback_area.value * scale_factor
+        :param mineral_area_available: Spared mineral area available (ha).
+        :param target_areas: Target area of each land use (ha), e.g. ``{"forest": ..., "cropland": ...}``.
+        :param extra_constraints: Functions ``f(model)`` that add further constraints (optional; see module docstring).
+        :return: Allocated area per land use (ha), plus ``farmable_condition``. The values sum to
+            ``mineral_area_available``.
+        :rtype: dict
+        """
+        if mineral_area_available <= 0:
+            # Nothing to allocate (e.g. all spared area is rewetted, or no mineral grassland is left).
+            return {**{land_use: 0.0 for land_use in target_areas}, FALLBACK_LAND_USE: 0.0}
 
-        return optimised_allocations
+        scale = mineral_area_available
+        model = self.build_model({k: v / scale for k, v in target_areas.items()}, extra_constraints)
+        self.solve(model)
 
-
+        allocations = {i: pyo.value(model.allocation[i]) * scale for i in model.LAND_USES}
+        allocations[FALLBACK_LAND_USE] = pyo.value(model.fallback) * scale
+        return allocations

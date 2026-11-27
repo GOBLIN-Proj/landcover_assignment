@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.geo_landcover_assignment.geo_transition_matrix`
-=============================================================================
+landcover_assignment.geo_landcover_assignment.geo_transition_matrix
+===================================================================
 
 .. py:module:: landcover_assignment.geo_landcover_assignment.geo_transition_matrix
 
@@ -14,9 +14,9 @@
    Features:
    ---------
    - **Transition Matrix Generation**: Creates matrices that detail the transitions of land use areas from one type to another,
-   facilitating scenario analysis and environmental planning.
+     facilitating scenario analysis and environmental planning.
    - **Land Cover Integration**: Utilizes the `LandCover` class for comprehensive future land use area calculations,
-   forming the basis of transition matrix computations.
+     forming the basis of transition matrix computations.
 
    Dependencies:
    -------------
@@ -27,12 +27,12 @@
 
    Class Documentation:
    --------------------
-   .. class:: TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-      :noindex:
+   ``TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)``
 
       Manages the creation of transition matrices for land use changes, supporting environmental and land management scenario analysis.
 
       Parameters:
+
       - calibration_year (int): The base year from which land use changes are measured.
       - target_year (int): The future year to which land use changes are projected.
       - scenario_inputs_df (pandas.DataFrame): Inputs defining various scenarios for projection.
@@ -41,6 +41,7 @@
       - spared_area_breakdown (pandas.DataFrame): Detailed breakdown of how spared areas are allocated across land uses.
 
       Methods:
+
       - create_transition_matrix() -> pandas.DataFrame:
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
       - _transition_difference(landuse, index, calibration_year, target_year, land_cover_df) -> float:
@@ -50,21 +51,18 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.geo_landcover_assignment.geo_transition_matrix.TransitionMatrix
 
 
-
+Module Contents
+---------------
 
 .. py:class:: TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-
 
    Constructs transition matrices to analyze land use changes between a calibration year and a target year under various scenarios.
 
@@ -80,12 +78,29 @@ Classes
    - land_cover_class (LandCover): Instance of LandCover for accessing combined future land use areas.
    - data_manager_class (DataManager): Instance of DataManager for land use data management.
 
+
+   .. py:attribute:: calibration_year
+
+
+   .. py:attribute:: target_year
+
+
+   .. py:attribute:: land_cover_class
+
+
+   .. py:attribute:: data_manager_class
+
+
    .. py:method:: create_transition_matrix()
 
       Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
+      As in the national tree, ``Grassland_to_Wetland`` is 0 by design: rewetted spared grassland stays grassland
+      (``share_rewetted_in_organic`` / ``share_rewetted_in_organic_mineral``). See docs/rewetting.md.
+
       :return: A DataFrame representing the transition matrix with changes in land use areas.
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: _transition_difference(landuse, index, calibration_year, target_year, land_cover_df)
@@ -104,6 +119,7 @@ Classes
       :type land_cover_df: pandas.DataFrame
       :return: The difference in area for the specified land use between years.
       :rtype: float
+
 
 
    .. py:method:: _create_transition_frame(land_cover_df)

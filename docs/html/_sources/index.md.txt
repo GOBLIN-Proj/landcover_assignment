@@ -1,4 +1,6 @@
 ```{include} ../README.md
+:relative-docs: docs/
+:relative-images:
 ```
 
 ```{toctree}
@@ -6,6 +8,10 @@
 :hidden:
 
 INSTALLATION.md
+grassland_area.md
+rewetting.md
+peat_extraction.md
+data_sources.md
 CONTRIBUTING.md
 autoapi/index
 example.ipynb

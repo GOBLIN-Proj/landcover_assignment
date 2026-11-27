@@ -29,7 +29,7 @@ for the Carbon Budget Model (CBM) in the context of afforestation scenario analy
 
 """
 
-from landcover_assignment.resource_manager.landcover_data_manager import DataManager
+from landcover_assignment.resource_manager.landcover_data_manager import DataManager, cbm_template
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 from landcover_assignment.resource_manager.data_loader import Loader
 from landcover_assignment.resource_manager.transition_data_fetcher import TransitionDataFetcher
@@ -51,17 +51,20 @@ class Afforestation:
         transition_matrix (pd.DataFrame): A DataFrame representing the transition matrix for land cover changes.
 
     Attributes:
-        data_manager_class (DataManager): An instance of DataManager for managing land cover data.
+        data_manager_class (landcover_assignment.resource_manager.landcover_data_manager.DataManager): An instance of DataManager for managing land cover data.
         scenario_data_fetcher (ScenarioDataFetcher): An instance for fetching scenario-specific data.
         transition_data_fetcher (TransitionDataFetcher): An instance for fetching transition data.
         data_loader (Loader): An instance for loading necessary data resources.
         yield_mapping (pd.DataFrame): A DataFrame containing yield mapping for different forest soil groups.
     """
+    # The catchment subclass (geo_afforestation.Afforestation) validates the scenario table on construction.
+    validate_scenarios = False
+
     def __init__(self, calibration_year, target_year, scenario_inputs_df, transition_matrix):
         self.data_manager_class = DataManager(
             calibration_year, target_year
         )
-        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df)
+        self.scenario_data_fetcher = ScenarioDataFetcher(scenario_inputs_df, validate_on_init=self.validate_scenarios)
         self.transition_data_fetcher = TransitionDataFetcher(transition_matrix)
         self.data_loader = Loader()
         self.yield_mapping = self.data_loader.forest_soil_yield_mapping()
@@ -163,15 +166,13 @@ class Afforestation:
         """
         Initializes the structure of the CBM DataFrame based on default data.
 
-        This method creates a new DataFrame structured for CBM inputs using default data
-        from the data manager class. It serves as the initial template for accumulating
-        afforestation scenario data.
+        One zero-area row (scenario -1) per row of the soil group -> yield class table
+        (``forest_soil_yield_mapping``, the only source of species and yield classes). It serves as
+        the initial template for accumulating afforestation scenario data.
 
         :return: A DataFrame structured for CBM afforestation inputs.
         :rtype: pd.DataFrame
         """
-        cbm_default_data = self.data_manager_class.get_cbm_default_data()
-
-        cbm_df = pd.DataFrame(cbm_default_data)
+        cbm_df = pd.DataFrame(cbm_template(self.yield_mapping))
 
         return cbm_df

@@ -1,5 +1,5 @@
-:py:mod:`landcover_assignment.resource_manager.transition_data_fetcher`
-=======================================================================
+landcover_assignment.resource_manager.transition_data_fetcher
+=============================================================
 
 .. py:module:: landcover_assignment.resource_manager.transition_data_fetcher
 
@@ -11,7 +11,7 @@
    The ``TransitionDataFetcher`` class is designed to process and analyze transition data from grasslands to various land uses based on specific scenarios.
    This class simplifies the process of extracting transition area data and supports detailed environmental and land use planning analyses.
 
-   .. class:: TransitionDataFetcher(transition_data)
+   ``TransitionDataFetcher(transition_data)``
 
       Initializes the TransitionDataFetcher with a pandas DataFrame containing transition data between different land use types.
 
@@ -19,35 +19,35 @@
 
       **Methods**
 
-      .. method:: get_grassland_to_forest_areas()
+      ``get_grassland_to_forest_areas()``
 
          Retrieves the areas transitioning from grasslands to forests across all scenarios.
 
          :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to forests.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_grassland_areas()
+      ``get_grassland_to_grassland_areas()``
 
          Retrieves the areas remaining as grasslands across all scenarios.
 
          :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas remaining as grasslands.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_wetland_areas()
+      ``get_grassland_to_wetland_areas()``
 
          Retrieves the areas transitioning from grasslands to wetlands across all scenarios.
 
          :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to wetlands.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_cropland_areas()
+      ``get_grassland_to_cropland_areas()``
 
          Retrieves the areas transitioning from grasslands to croplands across all scenarios.
 
          :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to croplands.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_forest_soil_group_areas(spared_area_breakdown)
+      ``get_grassland_to_forest_soil_group_areas(spared_area_breakdown)``
 
          Retrieves the areas transitioning from grasslands to forests, categorized by soil groups, based on spared area breakdown.
 
@@ -55,7 +55,7 @@
          :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Forest``.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_wetland_soil_group_areas(spared_area_breakdown)
+      ``get_grassland_to_wetland_soil_group_areas(spared_area_breakdown)``
 
          Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.
 
@@ -63,7 +63,7 @@
          :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Wetland``.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_cropland_soil_group_areas(spared_area_breakdown)
+      ``get_grassland_to_cropland_soil_group_areas(spared_area_breakdown)``
 
          Retrieves the areas transitioning from grasslands to croplands, categorized by soil groups, based on spared area breakdown.
 
@@ -71,7 +71,7 @@
          :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Cropland``.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_farmable_condition_soil_group_areas(spared_area_breakdown)
+      ``get_grassland_to_farmable_condition_soil_group_areas(spared_area_breakdown)``
 
          Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.
 
@@ -79,15 +79,27 @@
          :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Farmable_Condition``.
          :rtype: pandas.DataFrame
 
-      .. method:: get_grassland_to_landuse_soil_group_area(spared_area_breakdown)
+      ``get_grassland_spared_organic_soil_group_areas(spared_area_breakdown)``
+
+         Retrieves the spared organic grassland by soil group: spared organic land that stays in the grassland row,
+         whether rewetted (drained -> rewet status) or spared in its current condition. It is placed in soil group 3.
+
+         :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
+         :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_Spared_Organic``.
+         :rtype: pandas.DataFrame
+
+      ``get_grassland_to_landuse_soil_group_area(spared_area_breakdown)``
 
          Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
+         Each soil group is filled with cropland, then forest, then farmable condition (mineral soil), each capped by what
+         is left; the spared area the transition matrix does not account for is the spared organic land, which stays
+         grassland and is placed in soil group 3. See docs/rewetting.md.
 
          :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
          :return: A pandas DataFrame with transition areas categorized by soil group.
          :rtype: pandas.DataFrame
 
-      .. method:: _derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)
+      ``_derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)``
 
          Internal helper method to calculate the allocation of transition areas by soil group.
 
@@ -99,20 +111,20 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    landcover_assignment.resource_manager.transition_data_fetcher.TransitionDataFetcher
 
 
-
+Module Contents
+---------------
 
 .. py:class:: TransitionDataFetcher(transition_data)
+
+   .. py:attribute:: transition_matrix
 
 
    .. py:method:: get_grassland_to_forest_areas()
@@ -123,12 +135,14 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: get_grassland_to_grassland_areas()
 
       Retrieves the areas remaining as grasslands across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas remaining as grasslands.
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: get_grassland_to_wetland_areas()
@@ -139,12 +153,14 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: get_grassland_to_cropland_areas()
 
       Retrieves the areas transitioning from grasslands to croplands across all scenarios.
 
       :return: A pandas DataFrame with columns ``scenario`` and ``area_ha`` indicating the areas transitioning from grasslands to croplands.
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: get_grassland_to_forest_soil_group_areas(spared_area_breakdown)
@@ -156,6 +172,7 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: get_grassland_to_wetland_soil_group_areas(spared_area_breakdown)
 
       Retrieves the areas transitioning from grasslands to wetlands, categorized by soil groups, based on spared area breakdown.
@@ -163,6 +180,7 @@ Classes
       :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
       :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_to_Wetland``.
       :rtype: pandas.DataFrame
+
 
 
    .. py:method:: get_grassland_to_cropland_soil_group_areas(spared_area_breakdown)
@@ -174,6 +192,7 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
    .. py:method:: get_grassland_to_farmable_condition_soil_group_areas(spared_area_breakdown)
 
       Retrieves the areas transitioning from grasslands to farmable conditions, categorized by soil groups, based on spared area breakdown.
@@ -183,18 +202,60 @@ Classes
       :rtype: pandas.DataFrame
 
 
+
+   .. py:method:: get_grassland_spared_organic_soil_group_areas(spared_area_breakdown)
+
+      Retrieves the spared organic grassland by soil group: spared organic land that stays in the grassland row.
+      That is the rewetted area (drained -> rewet-status shares, up to the scenario's rewetting target) plus any
+      organic land spared beyond the target, which stays in its current condition (drained, or rewet status); the
+      spared-area log separates the three (``rewet_grassland``, ``spared_drained_organic_grassland``,
+      ``spared_rewetted_organic_grassland``). ``Grassland_to_Wetland`` is 0 by design (docs/rewetting.md).
+      It is not a transition between land uses, so the transition matrix has no column for it: it is the spared
+      area that forest, cropland and farmable condition (mineral soil only) do not take. It is placed in soil
+      group 3, the group rewetting draws on.
+
+      :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
+      :return: A pandas DataFrame with columns ``scenario``, ``soil_group``, and ``Grassland_Spared_Organic``.
+      :rtype: pandas.DataFrame
+
+
+
+   .. py:attribute:: SOIL_GROUP_TRANSITIONS
+      :value: ('Grassland_to_Cropland', 'Grassland_to_Forest', 'Grassland_to_Farmable_Condition')
+
+
+
    .. py:method:: get_grassland_to_landuse_soil_group_area(spared_area_breakdown)
 
-      Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups, based on spared area breakdown. This method is used as a helper function for other public methods.
+      Internal method to derive areas transitioning from grasslands to various land uses, categorized by soil groups,
+      based on spared area breakdown. This method is used as a helper function for other public methods.
+
+      Each scenario's spared area by soil group (the breakdown) is filled with the transition matrix's areas, soil
+      group 1 first, then 2, then 3: in each group cropland, then forest, then farmable condition, each capped by
+      what is left in the group and by what is still to place. The spared area the matrix does not account for is
+      the spared organic land (it stays grassland); it is placed in soil group 3 (``Grassland_Spared_Organic``). With the
+      breakdown and the matrix consistent, each soil group's columns add up to its spared area.
+      ``Grassland_to_Wetland`` is kept as a column and is always 0 by design. A soil group with no rows counts as
+      0 ha.
 
       :param spared_area_breakdown: A pandas DataFrame detailing the breakdown of spared areas by soil group.
       :return: A pandas DataFrame with transition areas categorized by soil group.
       :rtype: pandas.DataFrame
 
 
+
+   .. py:attribute:: _COLUMNS
+      :value: ('Grassland_to_Forest', 'Grassland_to_Wetland', 'Grassland_to_Cropland',...
+
+
+
    .. py:method:: _derive_soil_group_area(soil_group, soil_group_pool, transition_area_dict)
 
       Internal helper method to calculate the allocation of transition areas by soil group.
+
+      Cropland, then forest, then farmable condition each take ``min(left in the group, still to place)``. In soil
+      group 3 the spared organic land (stays grassland) then takes what is left, up to the scenario's amount.
+      ``soil_group_pool`` and ``transition_area_dict`` are reduced by what is placed.
 
       :param soil_group: The soil group identifier.
       :param soil_group_pool: A dictionary containing available areas for each soil group.

@@ -8,9 +8,9 @@ particularly focusing on the dynamics between grassland and other land uses unde
 Features:
 ---------
 - **Transition Matrix Generation**: Creates matrices that detail the transitions of land use areas from one type to another, 
-facilitating scenario analysis and environmental planning.
+  facilitating scenario analysis and environmental planning.
 - **Land Cover Integration**: Utilizes the `LandCover` class for comprehensive future land use area calculations, 
-forming the basis of transition matrix computations.
+  forming the basis of transition matrix computations.
 
 Dependencies:
 -------------
@@ -21,12 +21,12 @@ Dependencies:
 
 Class Documentation:
 --------------------
-.. class:: TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
-   :noindex:
+``TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)``
 
    Manages the creation of transition matrices for land use changes, supporting environmental and land management scenario analysis.
 
    Parameters:
+
    - calibration_year (int): The base year from which land use changes are measured.
    - target_year (int): The future year to which land use changes are projected.
    - scenario_inputs_df (pandas.DataFrame): Inputs defining various scenarios for projection.
@@ -35,6 +35,7 @@ Class Documentation:
    - spared_area_breakdown (pandas.DataFrame): Detailed breakdown of how spared areas are allocated across land uses.
 
    Methods:
+
    - create_transition_matrix() -> pandas.DataFrame:
      Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
    - _transition_difference(landuse, index, calibration_year, target_year, land_cover_df) -> float:
@@ -89,6 +90,9 @@ class TransitionMatrix:
     def create_transition_matrix(self):
         """
         Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
+
+        As in the national tree, ``Grassland_to_Wetland`` is 0 by design: rewetted spared grassland stays grassland
+        (``share_rewetted_in_organic`` / ``share_rewetted_in_organic_mineral``). See docs/rewetting.md.
 
         :return: A DataFrame representing the transition matrix with changes in land use areas.
         :rtype: pandas.DataFrame
