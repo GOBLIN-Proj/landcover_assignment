@@ -146,6 +146,16 @@ Initializes the structure of the transition matrix based on land use columns and
 </ul>
 </div></blockquote>
 </section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.transition_matrix.AREA_TOLERANCE_HA" title="landcover_assignment.transition_matrix.AREA_TOLERANCE_HA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AREA_TOLERANCE_HA</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
@@ -158,6 +168,11 @@ Initializes the structure of the transition matrix based on land use columns and
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.transition_matrix.AREA_TOLERANCE_HA">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.transition_matrix.</span></span><span class="sig-name descname"><span class="pre">AREA_TOLERANCE_HA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1e-06</span></em><a class="headerlink" href="#landcover_assignment.transition_matrix.AREA_TOLERANCE_HA" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="landcover_assignment.transition_matrix.TransitionMatrix">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">landcover_assignment.transition_matrix.</span></span><span class="sig-name descname"><span class="pre">TransitionMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario_inputs_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_grassland</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_spared_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spared_area_breakdown</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.transition_matrix.TransitionMatrix" title="Link to this definition"></a></dt>
@@ -196,8 +211,10 @@ Initializes the structure of the transition matrix based on land use columns and
 <dt class="sig sig-object py" id="landcover_assignment.transition_matrix.TransitionMatrix.create_transition_matrix">
 <span class="sig-name descname"><span class="pre">create_transition_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.transition_matrix.TransitionMatrix.create_transition_matrix" title="Link to this definition"></a></dt>
 <dd><p>Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.</p>
-<p>Only the <code class="docutils literal notranslate"><span class="pre">Grassland_to_&lt;land</span> <span class="pre">use&gt;</span></code> cells are filled. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Grassland</span></code> is the (negative) change in
-the grassland row, which is the spared mineral area. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is 0 by design: rewetted spared
+<p>Only the <code class="docutils literal notranslate"><span class="pre">Grassland_to_&lt;land</span> <span class="pre">use&gt;</span></code> cells are filled, each with the signed change in that land use’s row
+(target - calibration year). <code class="docutils literal notranslate"><span class="pre">Grassland_to_Grassland</span></code> is the (negative) change in the grassland row, which is
+the spared mineral area. No other land use can shrink with the current allocation; if one does, the matrix
+can’t record the loss as a conversion from grassland and a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Wetland</span></code> is 0 by design: rewetted spared
 grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
 rewetted area is reported in the spared-area log as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>. <code class="docutils literal notranslate"><span class="pre">Grassland_to_Forest</span></code> is the
 scenario’s afforestation: the forest row’s change less the change in cbm_runner managed forest (decision D6a).</p>
@@ -207,6 +224,9 @@ scenario’s afforestation: the forest row’s change less the change in cbm_run
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if a land use other than grassland shrinks.</p>
 </dd>
 </dl>
 </dd></dl>

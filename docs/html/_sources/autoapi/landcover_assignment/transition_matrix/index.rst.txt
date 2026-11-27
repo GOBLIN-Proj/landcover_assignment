@@ -51,6 +51,14 @@ landcover_assignment.transition_matrix
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   landcover_assignment.transition_matrix.AREA_TOLERANCE_HA
+
+
 Classes
 -------
 
@@ -61,6 +69,10 @@ Classes
 
 Module Contents
 ---------------
+
+.. py:data:: AREA_TOLERANCE_HA
+   :value: 1e-06
+
 
 .. py:class:: TransitionMatrix(calibration_year, target_year, scenario_inputs_df, total_grassland, total_spared_area, spared_area_breakdown)
 
@@ -95,14 +107,17 @@ Module Contents
 
       Generates a transition matrix detailing the changes in land use areas from the calibration year to the target year.
 
-      Only the ``Grassland_to_<land use>`` cells are filled. ``Grassland_to_Grassland`` is the (negative) change in
-      the grassland row, which is the spared mineral area. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
+      Only the ``Grassland_to_<land use>`` cells are filled, each with the signed change in that land use's row
+      (target - calibration year). ``Grassland_to_Grassland`` is the (negative) change in the grassland row, which is
+      the spared mineral area. No other land use can shrink with the current allocation; if one does, the matrix
+      can't record the loss as a conversion from grassland and a ``ValueError`` is raised. ``Grassland_to_Wetland`` is 0 by design: rewetted spared
       grassland stays grassland with rewet status, and is not a land-use conversion (see docs/rewetting.md). The
       rewetted area is reported in the spared-area log as ``rewet_grassland``. ``Grassland_to_Forest`` is the
       scenario's afforestation: the forest row's change less the change in cbm_runner managed forest (decision D6a).
 
       :return: A DataFrame representing the transition matrix with changes in land use areas.
       :rtype: pandas.DataFrame
+      :raises ValueError: if a land use other than grassland shrinks.
 
 
 
