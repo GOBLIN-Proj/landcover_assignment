@@ -1,5 +1,5 @@
 # 🏘️🌳🌲🌽🍀 Land cover generator for the GOBLIN model (Ireland only)
-[![license](https://img.shields.io/badge/License-MIT-red)](https://github.com/GOBLIN-Proj/landcover_assignment/blob/0.1.0/LICENSE)
+[![license](https://img.shields.io/badge/License-MIT-red)](https://github.com/GOBLIN-Proj/landcover_assignment/blob/main/LICENSE)
 [![python](https://img.shields.io/badge/python-3.9-blue?logo=python&logoColor=white)](https://github.com/GOBLIN-Proj/landcover_assignment)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -28,7 +28,7 @@
 
  ```
 
- For national level analysis, the historic land uses and areas of organic and mineral soil are taken from the National Inventory [CRF Tables](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2022.php).
+ For national level analysis, the historic land uses and areas of organic and mineral soil are taken from Ireland's national inventory: the Common Reporting Tables and National Inventory Document 2026 ([EPA, National Inventory Submissions 2026](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2026.php)), with burnt area from the CRF 2024 tables. The managed forest area and forest fire follow [cbm_runner](https://goblin-proj.github.io/cbm_runner/html/index.html) 0.6.1. The package database records the unit, source and cell of every value; see [docs/data_sources.md](docs/data_sources.md).
 
  The package is currently parameterised for use in the Irish context. 
 
@@ -47,6 +47,8 @@ Install from PyPI
 pip install landcover_assignment
 ```
 
+The optimiser uses the open-source HiGHS solver through Pyomo; `highspy` is installed as a dependency, and no commercial solver is needed.
+
 ## Usage
 The baseline year represents the scenario baseline. The target year is the end year for each one of the scenarios. 
 
@@ -54,49 +56,64 @@ The scenario dataframe is the scenario input parameters.
 
 Spared area and grassland area represent the calculated spared area and the remaining grassland area, respectively.
 
+The example below is `tests/example.py`, which runs on the test inputs in `tests/data/` (`python tests/example.py`).
+
 ```python
-import pandas as pd
 import os
-from landcover_assignment.transition_matrix import TransitionMatrix
-from landcover_assignment.landcover import LandCover
+
+import pandas as pd
+
 from landcover_assignment.afforestation import Afforestation
+from landcover_assignment.landcover import LandCover
+from landcover_assignment.transition_matrix import TransitionMatrix
+
 
 def main():
 
-    path = "./data/"
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-    baseline = 2020
+    baseline = 2020  # calibration year
     target_year = 2050
     scenario_dataframe = pd.read_csv(os.path.join(path, "scenario_dataframe.csv"), index_col=0)
     spared_area = pd.read_csv(os.path.join(path, "spared_area.csv"), index_col=0)
-    spared_area_breakdown = pd.read_csv(os.path.join(path, "spared_area_breakdown.csv"), index_col=0)
     spared_area.columns = spared_area.columns.astype(int)
+    spared_area_breakdown = pd.read_csv(os.path.join(path, "spared_area_breakdown.csv"), index_col=0)
     grassland_area = pd.read_csv(os.path.join(path, "total_grassland_area.csv"), index_col=0)
     grassland_area.columns = grassland_area.columns.astype(int)
-
-
-    transition = TransitionMatrix(
-        baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown
-    )
 
     land = LandCover(
         baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown
     )
 
-    
-    #create_combined_future_land_use_area
+    # land use areas and shares: calibration year, then the target year of each scenario
     print("combined future land use area")
     print(land.combined_future_land_use_area())
-    print("#"*50)
+    print("#" * 50)
 
-    #create_transition_matrix
+    # where the spared area went, per scenario
+    print("spared area log")
+    print(land.get_spared_area_log())
+    print("#" * 50)
+
+    # the grassland row's parts: herd grassland, spared organic land, other (national balance)
+    print("grassland area breakdown")
+    print(land.get_grassland_area_breakdown())
+    print("#" * 50)
+
+    # transition matrix (Grassland_to_<land use>, in ha)
+    transition = TransitionMatrix(
+        baseline, target_year, scenario_dataframe, grassland_area, spared_area, spared_area_breakdown
+    )
     transition_matrix = transition.create_transition_matrix()
+    print("transition matrix")
     print(transition_matrix)
-    print("#"*50)
+    print("#" * 50)
 
-    #create afforestation 
+    # afforestation by species and yield class, for cbm_runner
     affor = Afforestation(baseline, target_year, scenario_dataframe, transition_matrix)
+    print("afforestation")
     print(affor.gen_cbm_afforestation_dataframe(spared_area_breakdown))
+
 
 if __name__ == "__main__":
     main()

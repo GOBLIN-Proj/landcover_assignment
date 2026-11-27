@@ -89,6 +89,8 @@
 - **Zero mineral area**: when no spared mineral area is available (all of it rewetted, or no mineral grassland left), the optimiser returns zeros. Before, it raised `ZeroDivisionError`.
 - **Transition matrix keeps the sign of each change (step 7, item 14; LA1; no change to outputs).** `create_transition_matrix` wrote `abs(change)` for every land use except grassland, so a land use that shrank would have appeared as a gain from grassland. It now writes the signed change (target minus calibration year) and raises `ValueError` if a land use other than grassland shrinks: the matrix only has `Grassland_to_<land use>` cells, so a loss can't be recorded there. No land use other than grassland can shrink with the current allocation (cropland and farmable condition only gain spared land, wetland and settlement keep their area, forest gains the scenario's afforestation once the managed-forest change is taken out), so every output is unchanged. National tree; catchment on the to-do. A land use that doesn't change is written as 0.0, not -0.0.
 
+- **Usage example restored and checked:** `tests/example.py`, the example shown in the README, was removed with the old test scripts in this release cycle; it is back. It runs from any folder, prints the land-use table, spared-area log, grassland breakdown, transition matrix and afforestation table, and writes no files. `tests/test_example.py` runs it and checks that the README shows it unchanged. `docs/example.ipynb` casts the year columns to int (as the README says) and its stored outputs are from 0.5.0. README: data sources (CRT/NID 2026, CRF 2024, cbm_runner), solver note; installation pages list the current requirements.
+
 ### Removed
 - Dead code:
   - the catchment `combined_future_land_use_area_old`;

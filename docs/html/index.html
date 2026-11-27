@@ -80,7 +80,7 @@
              
   <section id="land-cover-generator-for-the-goblin-model-ireland-only">
 <h1>🏘️🌳🌲🌽🍀 Land cover generator for the GOBLIN model (Ireland only)<a class="headerlink" href="#land-cover-generator-for-the-goblin-model-ireland-only" title="Link to this heading"></a></h1>
-<p><a class="reference external" href="https://github.com/GOBLIN-Proj/landcover_assignment/blob/0.1.0/LICENSE"><img alt="license" src="https://img.shields.io/badge/License-MIT-red" /></a>
+<p><a class="reference external" href="https://github.com/GOBLIN-Proj/landcover_assignment/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/badge/License-MIT-red" /></a>
 <a class="reference external" href="https://github.com/GOBLIN-Proj/landcover_assignment"><img alt="python" src="https://img.shields.io/badge/python-3.9-blue?logo=python&amp;logoColor=white" /></a>
 <a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
 <p>Based on the <a class="reference external" href="https://gmd.copernicus.org/articles/15/2239/2022/">GOBLIN</a> (<strong>G</strong>eneral <strong>O</strong>verview for a <strong>B</strong>ackcasting approach of <strong>L</strong>ivestock <strong>IN</strong>tensification) land use tool module</p>
@@ -100,7 +100,7 @@ retrieve catchment specific data that has been derived from <a class="reference 
 
 </pre></div>
 </div>
-<p>For national level analysis, the historic land uses and areas of organic and mineral soil are taken from the National Inventory <a class="reference external" href="https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2022.php">CRF Tables</a>.</p>
+<p>For national level analysis, the historic land uses and areas of organic and mineral soil are taken from Ireland’s national inventory: the Common Reporting Tables and National Inventory Document 2026 (<a class="reference external" href="https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2026.php">EPA, National Inventory Submissions 2026</a>), with burnt area from the CRF 2024 tables. The managed forest area and forest fire follow <a class="reference external" href="https://goblin-proj.github.io/cbm_runner/html/index.html">cbm_runner</a> 0.6.1. The package database records the unit, source and cell of every value; see <a class="reference internal" href="data_sources.html"><span class="std std-doc">docs/data_sources.md</span></a>.</p>
 <p>The package is currently parameterised for use in the Irish context.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
@@ -112,54 +112,69 @@ retrieve catchment specific data that has been derived from <a class="reference 
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>landcover_assignment
 </pre></div>
 </div>
+<p>The optimiser uses the open-source HiGHS solver through Pyomo; <code class="docutils literal notranslate"><span class="pre">highspy</span></code> is installed as a dependency, and no commercial solver is needed.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <p>The baseline year represents the scenario baseline. The target year is the end year for each one of the scenarios.</p>
 <p>The scenario dataframe is the scenario input parameters.</p>
 <p>Spared area and grassland area represent the calculated spared area and the remaining grassland area, respectively.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.transition_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransitionMatrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.landcover</span><span class="w"> </span><span class="kn">import</span> <span class="n">LandCover</span>
+<p>The example below is <code class="docutils literal notranslate"><span class="pre">tests/example.py</span></code>, which runs on the test inputs in <code class="docutils literal notranslate"><span class="pre">tests/data/</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">tests/example.py</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.afforestation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Afforestation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.landcover</span><span class="w"> </span><span class="kn">import</span> <span class="n">LandCover</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">landcover_assignment.transition_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransitionMatrix</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="s2">"./data/"</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">"data"</span><span class="p">)</span>
 
-    <span class="n">baseline</span> <span class="o">=</span> <span class="mi">2020</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="mi">2020</span>  <span class="c1"># calibration year</span>
     <span class="n">target_year</span> <span class="o">=</span> <span class="mi">2050</span>
     <span class="n">scenario_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"scenario_dataframe.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">spared_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"spared_area.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">spared_area_breakdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"spared_area_breakdown.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">spared_area</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">spared_area</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">spared_area_breakdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"spared_area_breakdown.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">grassland_area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"total_grassland_area.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">grassland_area</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">grassland_area</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-
-
-    <span class="n">transition</span> <span class="o">=</span> <span class="n">TransitionMatrix</span><span class="p">(</span>
-        <span class="n">baseline</span><span class="p">,</span> <span class="n">target_year</span><span class="p">,</span> <span class="n">scenario_dataframe</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">,</span> <span class="n">spared_area</span><span class="p">,</span> <span class="n">spared_area_breakdown</span>
-    <span class="p">)</span>
 
     <span class="n">land</span> <span class="o">=</span> <span class="n">LandCover</span><span class="p">(</span>
         <span class="n">baseline</span><span class="p">,</span> <span class="n">target_year</span><span class="p">,</span> <span class="n">scenario_dataframe</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">,</span> <span class="n">spared_area</span><span class="p">,</span> <span class="n">spared_area_breakdown</span>
     <span class="p">)</span>
 
-    
-    <span class="c1">#create_combined_future_land_use_area</span>
+    <span class="c1"># land use areas and shares: calibration year, then the target year of each scenario</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"combined future land use area"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">land</span><span class="o">.</span><span class="n">combined_future_land_use_area</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
 
-    <span class="c1">#create_transition_matrix</span>
+    <span class="c1"># where the spared area went, per scenario</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"spared area log"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">land</span><span class="o">.</span><span class="n">get_spared_area_log</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># the grassland row's parts: herd grassland, spared organic land, other (national balance)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"grassland area breakdown"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">land</span><span class="o">.</span><span class="n">get_grassland_area_breakdown</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># transition matrix (Grassland_to_&lt;land use&gt;, in ha)</span>
+    <span class="n">transition</span> <span class="o">=</span> <span class="n">TransitionMatrix</span><span class="p">(</span>
+        <span class="n">baseline</span><span class="p">,</span> <span class="n">target_year</span><span class="p">,</span> <span class="n">scenario_dataframe</span><span class="p">,</span> <span class="n">grassland_area</span><span class="p">,</span> <span class="n">spared_area</span><span class="p">,</span> <span class="n">spared_area_breakdown</span>
+    <span class="p">)</span>
     <span class="n">transition_matrix</span> <span class="o">=</span> <span class="n">transition</span><span class="o">.</span><span class="n">create_transition_matrix</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"transition matrix"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">transition_matrix</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"#"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
 
-    <span class="c1">#create afforestation </span>
+    <span class="c1"># afforestation by species and yield class, for cbm_runner</span>
     <span class="n">affor</span> <span class="o">=</span> <span class="n">Afforestation</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span> <span class="n">target_year</span><span class="p">,</span> <span class="n">scenario_dataframe</span><span class="p">,</span> <span class="n">transition_matrix</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"afforestation"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">affor</span><span class="o">.</span><span class="n">gen_cbm_afforestation_dataframe</span><span class="p">(</span><span class="n">spared_area_breakdown</span><span class="p">))</span>
+
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
