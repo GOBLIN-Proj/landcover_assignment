@@ -228,6 +228,9 @@ emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha.
 carbon in horticultural peat, which the inventory works out from tonnage, and which landcover_lca adds from export
 statistics. The package uses the 4(II) area, so that carbon is not counted twice.
 
+In scenario years, industrial and domestic peat extraction phase out to 0 in 2040 (decision D10, a modelling
+assumption): see [peat extraction in scenarios](peat_extraction.md).
+
 The 42.7 kha is taken to be the estimated area of private (non-Bord na Mona) horticultural peat production: the NID
 (s.6.6.3) builds the industrial area from Bord na Mona's area plus an area worked back from horticultural peat sales,
 and after Bord na Mona stopped harvesting in 2021 the extra area persists (28 kha in 2024). It is in the wetland

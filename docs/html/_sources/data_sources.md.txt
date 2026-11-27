@@ -13,19 +13,29 @@ built it.
 | `nid2026_forest_organic_soils.csv` | `tools/transcribe_nid_forest.py` | NID 2026 Tables 6.7 (p.217) and 6.15 (p.231): forest organic soil areas |
 | `nid2026_grassland_organic_factors.csv` | transcribed | NID 2026 s.6.5.2 (p.271-272): grassland organic soil emission factors, nutrient rich and nutrient poor |
 | `cbm_runner_forest.csv`, `cbm_runner_forest_parameters.csv` | `tools/export_cbm_runner_forest.py` | cbm_runner 0.6.1 managed forest (FM + AF) area and forest fire by year, 1990-2070, and the inventory areas behind its scenario fire rate (derived; see below) |
-| `legacy_burnt_area.csv` | `tools/export_legacy_columns.py` | burnt area kept from the 0.4.0 database until its decision is taken (only `forest_data.burnt_kha` is still read) |
 | `forest_soil_yield_mapping.csv` | `tools/export_legacy_columns.py` | soil group -> yield class table, 0.4.0 values; source Upton et al. (2013) Table 2 (D9, see below) |
 
 The database records its own provenance:
 
 - `column_metadata`: for every column, its unit, meaning, source, cell reference, transformation, decision and status;
-- `sources`: the documents behind each source id;
+- `sources`: the documents behind each source id, with a link to each (see below);
 - `inventory_values`: every extracted inventory value, with notation keys;
 - `build_info`: the package version and the SHA-256 of every input file.
 
 The tables the code reads (`forest_data`, `grassland_data`, `cropland_data`, `wetland_data`, `settlement_data`,
 `NIR`, `forest_soil_yield_mapping`) keep their 0.4.0 names and columns. Two tables are new in 0.5.0:
 `managed_forest_data` and `forest_fire_rate` (cbm_runner's managed forest and forest fire, decision D6a).
+
+Every value comes from a published source; nothing is copied from the 0.4.0 database any more. The sources:
+
+| id | document | link |
+|---|---|---|
+| CRT2026 | EPA Ireland, Common Reporting Tables 2026 (1990-2024) | [Ireland's National Inventory Submissions 2026](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2026.php) |
+| NID2026 | EPA Ireland, National Inventory Document 2026 | as CRT2026 |
+| CRF2024 | EPA Ireland, Common Reporting Format 2024 (burnt area, 1990-2022) | [Ireland's National Inventory Submissions 2024](https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/irelands-national-inventory-submissions-2024.php) |
+| UPTON2013 | Upton et al. (2013), Irish Forestry 70: 61-74, Table 2 | none recorded (the journal site could not be checked) |
+| CBM061 | goblin_cbm_runner 0.6.1, `cbm_runner_database_0.6.2.db` | [GitHub, commit cfc0199](https://github.com/GOBLIN-Proj/goblin_cbm_runner/tree/cfc0199af562c04c2b055a8200b73365e8b4b4c6) |
+| PACKAGE | parameters and keys set in `tools/build_database.py` | [this repository](https://github.com/GOBLIN-Proj/landcover_assignment) |
 
 **Units.** Values are stored as published (areas in kha), and `column_metadata` names each column's unit. The readers
 convert on read, column by column, with `landcover_assignment.resource_manager.units` (kha to ha), the one place
@@ -173,7 +183,7 @@ calibration-year share (2020, a low fire year), and added land burnt nothing. Na
 grassland 146 -> 231 ha, wetland 336 -> 316 ha, cropland 14 -> 48 ha.
 
 The catchment tree keeps its own rule (the all-years average), which now covers 1990-2024; its forest still reads
-`forest_data.burnt_kha`. Both are on the catchment to-do list for later.
+`forest_data.burnt_kha` (CRF 2024 4.A.1 wildfires). Both are on the catchment to-do list for later.
 
 ### National land area by category: the `NIR` table (D8)
 `NIR` holds the area of each inventory land category (forest, cropland, grassland, managed and unmanaged wetland,
@@ -218,6 +228,9 @@ emission (on-site CO2, drainage-water DOC, CH4, N2O) is charged on the 55.5 kha.
 carbon in horticultural peat, which the inventory works out from tonnage, and which landcover_lca adds from export
 statistics. The package uses the 4(II) area, so that carbon is not counted twice.
 
+In scenario years, industrial and domestic peat extraction phase out to 0 in 2040 (decision D10, a modelling
+assumption): see [peat extraction in scenarios](peat_extraction.md).
+
 The 42.7 kha is taken to be the estimated area of private (non-Bord na Mona) horticultural peat production: the NID
 (s.6.6.3) builds the industrial area from Bord na Mona's area plus an area worked back from horticultural peat sales,
 and after Bord na Mona stopped harvesting in 2021 the extra area persists (28 kha in 2024). It is in the wetland
@@ -228,4 +241,4 @@ the industrial rates it would be about 345 kt CO2e a year (2020).
 
 | column | now | decision |
 |---|---|---|
-| `forest_data.burnt_kha` (read only by the catchment tree) | 0.4.0 values (CRF 2024 4.A.1), 1990-2022; 2023-2024 empty | catchment forest burnt area (the national forest row uses cbm_runner's fire, D6a) |
+| `forest_data.burnt_kha` (read only by the catchment tree) | CRF 2024 Table4(V) 4.A.1 wildfires, 1990-2022 (the same values as 0.4.0); 2023-2024 empty | catchment forest burnt area (the national forest row uses cbm_runner's fire, D6a) |

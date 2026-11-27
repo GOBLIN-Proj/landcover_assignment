@@ -1,6 +1,21 @@
 # Changelog
 
-## [Unreleased] (0.5.0, in progress)
+## [0.5.0] - 2026-11-27
+
+### Upgrading from 0.4.0
+- **No code change is needed downstream.** Function names, signatures, output columns and index conventions are unchanged. Misspelt names still work for this release, with a `DeprecationWarning`.
+- **Results change.** These are the main reasons, each described below:
+  - the database is rebuilt from CRT 2026 / NID 2026 (D1-D9);
+  - the national grassland row includes the national balance;
+  - the forest row mirrors cbm_runner 0.6.1 (D6a);
+  - burnt area comes from the inventory (D6b);
+  - rewetting never goes beyond the scenario's target (finding 8);
+  - peat extraction phases out by 2040 in scenario years (D10);
+  - when mineral land is short, every target is cut by the same percentage.
+- **The forest row grows with cbm_runner's managed forest** (D6a). Take the forest change from `Grassland_to_Forest` (the scenario's afforestation), not from the difference between forest rows.
+- **The transition matrix raises `ValueError`** if a land use other than grassland would shrink (none does today).
+- **Solver:** HiGHS through `highspy`, installed as a dependency. CPLEX is not needed. Pyomo >= 6.9.4.
+- **Data:** every database column records its unit, source and decision. Each source has a link where one could be checked. See `docs/data_sources.md`, `docs/grassland_area.md`, `docs/rewetting.md` and `docs/peat_extraction.md`.
 
 ### Added
 - **Unit conversions in one place** (`resource_manager/units.py`, the landcover_lca pattern): the database readers convert each column from the unit recorded in `column_metadata` (kha to ha) instead of a hard-coded `* 1000` in each reader; `tools/` and the tests use the same constants. Outputs are bit-identical.
