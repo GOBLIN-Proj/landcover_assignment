@@ -19,7 +19,7 @@ Variables
     ``allocation[i] >= 0``: area allocated to land use *i*.
     ``fallback >= 0``: area allocated to no target, returned as ``farmable_condition``.
 Objective (minimise)
-    sum over i of (allocation[i] - target[i])^2, plus fallback^2.
+    sum over i with target[i] > 0 of (allocation[i] - target[i])^2 / target[i], plus fallback^2.
 Constraints
     ``use_all_area``: sum of allocation[i] + fallback = area_available.
     ``cap_at_target[i]``: allocation[i] <= target[i].
@@ -27,9 +27,13 @@ Constraints
 What this gives:
 
 - If the targets fit within the available area, every target is met and the rest goes to ``farmable_condition``.
-- If they don't fit, ``farmable_condition`` is 0 and every target is cut by the same area: the squared objective
-  spreads the shortfall evenly in absolute terms, and any target that reaches 0 stops there.
-- The objective is strictly convex, so the solution is unique. Any correct solver gives the same answer.
+- If they don't fit, ``farmable_condition`` is 0 and every target is cut by the same percentage: dividing each
+  squared shortfall by its target makes the shortfalls proportional to the targets, so a small target (say crop
+  1%) is not wiped out before a large one (decision 2026-11-27, step 7 item 13; the earlier unweighted objective cut
+  every target by the same hectares).
+- Land uses with a 0 target are left out of the objective; ``cap_at_target`` keeps them at 0.
+- The objective is strictly convex in the land uses with a target, so the solution is unique. Any correct solver
+  gives the same answer.
 
 Extending the model
 -------------------
@@ -57,8 +61,13 @@ FALLBACK_LAND_USE = "farmable_condition"
 
 
 def _objective(model):
-    """Squared deviation from each target, plus the squared unallocated area."""
-    return sum((model.allocation[i] - model.target[i]) ** 2 for i in model.LAND_USES) + model.fallback ** 2
+    """Squared shortfall from each target divided by the target (so shortfalls are proportional to the targets), plus
+    the squared unallocated area. Land uses with a 0 target are left out; ``cap_at_target`` holds them at 0."""
+    return sum(
+        (model.allocation[i] - model.target[i]) ** 2 / model.target[i]
+        for i in model.LAND_USES
+        if pyo.value(model.target[i]) > 0
+    ) + model.fallback ** 2
 
 
 def _use_all_area(model):

@@ -117,7 +117,7 @@ adding a land use needs no code change.</p>
 <dt>Variables</dt><dd><p><code class="docutils literal notranslate"><span class="pre">allocation[i]</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>: area allocated to land use <em>i</em>.
 <code class="docutils literal notranslate"><span class="pre">fallback</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>: area allocated to no target, returned as <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code>.</p>
 </dd>
-<dt>Objective (minimise)</dt><dd><p>sum over i of (allocation[i] - target[i])^2, plus fallback^2.</p>
+<dt>Objective (minimise)</dt><dd><p>sum over i with target[i] &gt; 0 of (allocation[i] - target[i])^2 / target[i], plus fallback^2.</p>
 </dd>
 <dt>Constraints</dt><dd><p><code class="docutils literal notranslate"><span class="pre">use_all_area</span></code>: sum of allocation[i] + fallback = area_available.
 <code class="docutils literal notranslate"><span class="pre">cap_at_target[i]</span></code>: allocation[i] &lt;= target[i].</p>
@@ -126,9 +126,13 @@ adding a land use needs no code change.</p>
 <p>What this gives:</p>
 <ul class="simple">
 <li><p>If the targets fit within the available area, every target is met and the rest goes to <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code>.</p></li>
-<li><p>If they don’t fit, <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code> is 0 and every target is cut by the same area: the squared objective
-spreads the shortfall evenly in absolute terms, and any target that reaches 0 stops there.</p></li>
-<li><p>The objective is strictly convex, so the solution is unique. Any correct solver gives the same answer.</p></li>
+<li><p>If they don’t fit, <code class="docutils literal notranslate"><span class="pre">farmable_condition</span></code> is 0 and every target is cut by the same percentage: dividing each
+squared shortfall by its target makes the shortfalls proportional to the targets, so a small target (say crop
+1%) is not wiped out before a large one (decision 2026-11-27, step 7 item 13; the earlier unweighted objective cut
+every target by the same hectares).</p></li>
+<li><p>Land uses with a 0 target are left out of the objective; <code class="docutils literal notranslate"><span class="pre">cap_at_target</span></code> keeps them at 0.</p></li>
+<li><p>The objective is strictly convex in the land uses with a target, so the solution is unique. Any correct solver
+gives the same answer.</p></li>
 </ul>
 </section>
 <section id="extending-the-model">
@@ -175,7 +179,7 @@ and add components to it. They are added after the standard ones, so they can us
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation._objective" title="landcover_assignment.optimisation.landcover_optimisation._objective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_objective</span></code></a>(model)</p></td>
-<td><p>Squared deviation from each target, plus the squared unallocated area.</p></td>
+<td><p>Squared shortfall from each target divided by the target (so shortfalls are proportional to the targets), plus</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.optimisation.landcover_optimisation._use_all_area" title="landcover_assignment.optimisation.landcover_optimisation._use_all_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_use_all_area</span></code></a>(model)</p></td>
 <td><p>All of the available mineral area is allocated, to a target or to the fallback.</p></td>
@@ -206,7 +210,8 @@ and add components to it. They are added after the standard ones, so they can us
 <dl class="py function">
 <dt class="sig sig-object py" id="landcover_assignment.optimisation.landcover_optimisation._objective">
 <span class="sig-prename descclassname"><span class="pre">landcover_assignment.optimisation.landcover_optimisation.</span></span><span class="sig-name descname"><span class="pre">_objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.optimisation.landcover_optimisation._objective" title="Link to this definition"></a></dt>
-<dd><p>Squared deviation from each target, plus the squared unallocated area.</p>
+<dd><p>Squared shortfall from each target divided by the target (so shortfalls are proportional to the targets), plus
+the squared unallocated area. Land uses with a 0 target are left out; <code class="docutils literal notranslate"><span class="pre">cap_at_target</span></code> holds them at 0.</p>
 </dd></dl>
 
 <dl class="py function">
