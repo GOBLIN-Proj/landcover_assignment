@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../INSTALLATION.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grassland_area.html">Where the grassland area comes from</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../peat_extraction.html">Peat extraction in scenarios</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
@@ -211,7 +212,9 @@ and organic components, and recalculates the total remaining grassland area alon
 target year plus <code class="docutils literal notranslate"><span class="pre">new_area</span></code> (the scenario’s afforestation), the NID drained hectares, and cbm_runner’s
 fire. Without it, forest is the calibration-year row plus <code class="docutils literal notranslate"><span class="pre">new_area</span></code> as before. For the other land uses
 it makes the row a target-year row, whose <code class="docutils literal notranslate"><span class="pre">share_burnt</span></code> is the 3-year rate on the whole area (decision
-D6b, <code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate()</span></code>); without it the calibration-year share is diluted.</p></li>
+D6b, <code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate()</span></code>); without it the calibration-year share is diluted. For
+wetland it also phases out peat extraction (decision D10,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_peat_extraction_remaining()</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

@@ -25,6 +25,12 @@ Burnt area of the other land uses (decision D6b): calibration-year rows take tha
 ``BURNT_RATE_YEARS`` (:meth:`NationalLandCover.get_burnt_rate`: sum of burnt area / sum of area), on the whole row,
 so land a scenario adds to wetland or cropland burns at the same rate. Settlement and farmable_condition: 0.
 
+Peat extraction (decision D10, a modelling assumption): industrial and domestic extraction phase out linearly from
+the calibration year to 0 in ``PEAT_PHASE_OUT_YEAR`` (2040). In target-year wetland rows the stopped share moves to
+the matching rewetted share (``PEAT_PHASE_OUT``); the wetland area and every other share are unchanged
+(:meth:`NationalLandCover.get_peat_extraction_remaining`, docs/peat_extraction.md). Calibration-year rows stay the
+inventory.
+
 The grassland area is not a database area: it is grassland_production's herd-derived area plus the national balance
 (see :meth:`NationalLandCover.get_grassland_balance_area` and docs/grassland_area.md).
 """
@@ -61,6 +67,13 @@ SHARE_SOURCES = {
 }
 # Decision D6b: target-year rows of the non-forest land uses burn at the rate over these years (first, last).
 BURNT_RATE_YEARS = (2022, 2024)
+# Decision D10 (modelling assumption, owner 2026-11-27): peat extraction ends in this year. Each extraction share in a
+# target-year wetland row phases out linearly from the calibration year and moves to its rewetted share.
+PEAT_PHASE_OUT_YEAR = 2040
+PEAT_PHASE_OUT = {
+    "share_industrial_peat_extraction": "share_rewetted_industrial_peat_extraction",
+    "share_domestic_peat_extraction": "share_rewetted_domestic_peat_extraction",
+}
 # Order of the columns in a land use's row.
 ROW_COLUMNS = ["area_ha", "share_mineral", "share_organic", "share_organic_mineral", "share_drained_rich_organic",
                "share_drained_poor_organic", "share_rewetted_rich_organic", "share_rewetted_poor_organic",
@@ -234,6 +247,23 @@ class NationalLandCover:
         if len(data) != BURNT_RATE_YEARS[1] - BURNT_RATE_YEARS[0] + 1 or data["burnt_kha"].isna().any():
             raise ValueError(f"No burnt area for {landuse} in every year {BURNT_RATE_YEARS[0]}-{BURNT_RATE_YEARS[1]}")
         return data["burnt_kha"].sum() / data["total_kha"].sum()
+
+    @staticmethod
+    def get_peat_extraction_remaining(calibration_year, target_year):
+        """
+        Share of the calibration year's peat extraction still going on in the target year (decision D10): a straight
+        line from 1 in the calibration year to 0 in ``PEAT_PHASE_OUT_YEAR``, and 0 after it (also 0 when the
+        calibration year is after ``PEAT_PHASE_OUT_YEAR``).
+
+        :param calibration_year: The calibration year.
+        :param target_year: The target year.
+        :return: A fraction between 0 and 1.
+        :rtype: float
+        """
+        if calibration_year >= PEAT_PHASE_OUT_YEAR:
+            return 0.0
+        remaining = (PEAT_PHASE_OUT_YEAR - target_year) / (PEAT_PHASE_OUT_YEAR - calibration_year)
+        return min(1.0, max(0.0, remaining))
 
     def get_national_mineral(self, landuse, year):
         return self.get_national_share("share_mineral", landuse, year)

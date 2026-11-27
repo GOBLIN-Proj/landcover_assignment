@@ -38,7 +38,7 @@ Classes:
 """
 
 from landcover_assignment.resource_manager.landcover_data_manager import DistributionManager
-from landcover_assignment.national_landcover import NationalLandCover
+from landcover_assignment.national_landcover import NationalLandCover, PEAT_PHASE_OUT
 from landcover_assignment.resource_manager.scenario_data_fetcher import ScenarioDataFetcher
 
 class LandDistribution:
@@ -100,7 +100,9 @@ class LandDistribution:
             target year plus ``new_area`` (the scenario's afforestation), the NID drained hectares, and cbm_runner's
             fire. Without it, forest is the calibration-year row plus ``new_area`` as before. For the other land uses
             it makes the row a target-year row, whose ``share_burnt`` is the 3-year rate on the whole area (decision
-            D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted.
+            D6b, :meth:`NationalLandCover.get_burnt_rate`); without it the calibration-year share is diluted. For
+            wetland it also phases out peat extraction (decision D10,
+            :meth:`NationalLandCover.get_peat_extraction_remaining`).
 
         Returns
         -------
@@ -144,6 +146,15 @@ class LandDistribution:
 
         if target_year is not None:
             land["share_burnt"] = self.national_class.get_burnt_rate(land_use)
+
+        if target_year is not None and land_use == "wetland":
+            # Decision D10 (modelling assumption): peat extraction phases out linearly to 0 in PEAT_PHASE_OUT_YEAR; the
+            # stopped share becomes rewetted. Area and other shares unchanged.
+            remaining = self.national_class.get_peat_extraction_remaining(year, target_year)
+            for extraction, rewetted in PEAT_PHASE_OUT.items():
+                stopped = land[extraction] * (1 - remaining)
+                land[extraction] -= stopped
+                land[rewetted] += stopped
 
         return land
 

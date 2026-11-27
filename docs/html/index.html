@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="INSTALLATION.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grassland_area.html">Where the grassland area comes from</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peat_extraction.html">Peat extraction in scenarios</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
@@ -191,6 +192,11 @@ retrieve catchment specific data that has been derived from <a class="reference 
 <li><p>The spared-area log records the rewetted area as <code class="docutils literal notranslate"><span class="pre">rewet_grassland</span></code>, and organic land spared beyond the target as <code class="docutils literal notranslate"><span class="pre">spared_drained_organic_grassland</span></code> and <code class="docutils literal notranslate"><span class="pre">spared_rewetted_organic_grassland</span></code>.</p></li>
 </ul>
 <p>See <a class="reference internal" href="rewetting.html"><span class="std std-doc">docs/rewetting.md</span></a> for the method and a worked example.</p>
+</section>
+<section id="peat-extraction-in-scenarios">
+<h2>Peat extraction in scenarios<a class="headerlink" href="#peat-extraction-in-scenarios" title="Link to this heading"></a></h2>
+<p>Modelling assumption (decision D10): all peat extraction, industrial and domestic, ends in 2040. In target-year wetland rows it falls in a straight line from the calibration year to 0 in 2040, and the stopped share becomes rewetted (<code class="docutils literal notranslate"><span class="pre">share_rewetted_industrial_peat_extraction</span></code>, <code class="docutils literal notranslate"><span class="pre">share_rewetted_domestic_peat_extraction</span></code>). The wetland area and the calibration-year rows (the inventory) are unchanged.</p>
+<p>See <a class="reference internal" href="peat_extraction.html"><span class="std std-doc">docs/peat_extraction.md</span></a>.</p>
 </section>
 <section id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h2>

@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../INSTALLATION.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grassland_area.html">Where the grassland area comes from</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../rewetting.html">Spared area, rewetting and the grassland row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../peat_extraction.html">Peat extraction in scenarios</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_sources.html">The package database and its sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
@@ -120,6 +121,11 @@ area, and cbm_runner’s scenario fire on it (rate x afforestation) to the burnt
 (CRF 2024; 2023-2024 derived, see docs/data_sources.md). Target-year rows take the 3-year rate over
 <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code> (<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate" title="landcover_assignment.national_landcover.NationalLandCover.get_burnt_rate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_burnt_rate()</span></code></a>: sum of burnt area / sum of area), on the whole row,
 so land a scenario adds to wetland or cropland burns at the same rate. Settlement and farmable_condition: 0.</p>
+<p>Peat extraction (decision D10, a modelling assumption): industrial and domestic extraction phase out linearly from
+the calibration year to 0 in <code class="docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT_YEAR</span></code> (2040). In target-year wetland rows the stopped share moves to
+the matching rewetted share (<code class="docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT</span></code>); the wetland area and every other share are unchanged
+(<a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_peat_extraction_remaining" title="landcover_assignment.national_landcover.NationalLandCover.get_peat_extraction_remaining"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_peat_extraction_remaining()</span></code></a>, docs/peat_extraction.md). Calibration-year rows stay the
+inventory.</p>
 <p>The grassland area is not a database area: it is grassland_production’s herd-derived area plus the national balance
 (see <a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area" title="landcover_assignment.national_landcover.NationalLandCover.get_grassland_balance_area"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NationalLandCover.get_grassland_balance_area()</span></code></a> and docs/grassland_area.md).</p>
 <section id="attributes">
@@ -139,6 +145,12 @@ so land a scenario adds to wetland or cropland burns at the same rate. Settlemen
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.BURNT_RATE_YEARS" title="landcover_assignment.national_landcover.BURNT_RATE_YEARS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BURNT_RATE_YEARS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.PEAT_PHASE_OUT_YEAR" title="landcover_assignment.national_landcover.PEAT_PHASE_OUT_YEAR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT_YEAR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.PEAT_PHASE_OUT" title="landcover_assignment.national_landcover.PEAT_PHASE_OUT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#landcover_assignment.national_landcover.ROW_COLUMNS" title="landcover_assignment.national_landcover.ROW_COLUMNS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ROW_COLUMNS</span></code></a></p></td>
@@ -188,6 +200,16 @@ so land a scenario adds to wetland or cropland burns at the same rate. Settlemen
 <dl class="py data">
 <dt class="sig sig-object py" id="landcover_assignment.national_landcover.BURNT_RATE_YEARS">
 <span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">BURNT_RATE_YEARS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2022,</span> <span class="pre">2024)</span></em><a class="headerlink" href="#landcover_assignment.national_landcover.BURNT_RATE_YEARS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.PEAT_PHASE_OUT_YEAR">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">PEAT_PHASE_OUT_YEAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2040</span></em><a class="headerlink" href="#landcover_assignment.national_landcover.PEAT_PHASE_OUT_YEAR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.PEAT_PHASE_OUT">
+<span class="sig-prename descclassname"><span class="pre">landcover_assignment.national_landcover.</span></span><span class="sig-name descname"><span class="pre">PEAT_PHASE_OUT</span></span><a class="headerlink" href="#landcover_assignment.national_landcover.PEAT_PHASE_OUT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -356,6 +378,28 @@ over <code class="docutils literal notranslate"><span class="pre">BURNT_RATE_YEA
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> – for forest (its target-year burnt area is cbm_runner’s, see
 <a class="reference internal" href="#landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row" title="landcover_assignment.national_landcover.NationalLandCover.get_forest_target_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_forest_target_row()</span></code></a>) and for an unknown land use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="landcover_assignment.national_landcover.NationalLandCover.get_peat_extraction_remaining">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_peat_extraction_remaining</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#landcover_assignment.national_landcover.NationalLandCover.get_peat_extraction_remaining" title="Link to this definition"></a></dt>
+<dd><p>Share of the calibration year’s peat extraction still going on in the target year (decision D10): a straight
+line from 1 in the calibration year to 0 in <code class="docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT_YEAR</span></code>, and 0 after it (also 0 when the
+calibration year is after <code class="docutils literal notranslate"><span class="pre">PEAT_PHASE_OUT_YEAR</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calibration_year</strong> – The calibration year.</p></li>
+<li><p><strong>target_year</strong> – The target year.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A fraction between 0 and 1.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

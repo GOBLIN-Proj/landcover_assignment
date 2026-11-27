@@ -10,6 +10,7 @@
 INSTALLATION.md
 grassland_area.md
 rewetting.md
+peat_extraction.md
 data_sources.md
 CONTRIBUTING.md
 autoapi/index

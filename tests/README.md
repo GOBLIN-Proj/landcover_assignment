@@ -31,6 +31,7 @@ No test writes into a data folder. Expected failures mark known bugs and data ga
 | `test_spared_area_edge_cases.py` | Step 7, findings 4 and 5 (national tree): a scenario with zero spared area runs (grassland unchanged, no transitions, nothing planted); a spared-area column with more than one non-zero value, or a scenario missing from the spared-area breakdown, raises a clear `ValueError`; a scenario with no soil group 3 has no organic potential and runs. |
 | `test_rewetting_target.py` | Step 7, finding 8: rewetting never exceeds the scenario's target (rewetted proportion x spared area); organic land spared beyond it stays in its current condition (national scenario 3: drained hectares unchanged, `spared_drained_organic_grassland` 126,410 ha, `spared_rewetted_organic_grassland` 188,230 ha); every scenario has the same six log entries. |
 | `test_transition_sign.py` | Step 7, item 14 (LA1): the transition matrix writes the signed change; a land use other than grassland that shrinks raises `ValueError` (the matrix only records conversions from grassland). |
+| `test_peat_phase_out.py` | D10: target-year wetland rows phase out industrial and domestic peat extraction linearly to 0 in 2040, the stopped share moving to rewetted (2050: none left; 2030: half); wetland area and other shares unchanged; calibration rows are the inventory. |
 | `test_spelling.py` | No misspelt names in the source, README or docs pages. The renamed public names still work, with a `DeprecationWarning`. |
 | `_helpers.py` | Paths, input loaders, and a cached pipeline run. |
 

@@ -126,6 +126,12 @@ Rewetted grassland is not wetland:
 
 See [docs/rewetting.md](docs/rewetting.md) for the method and a worked example.
 
+## Peat extraction in scenarios
+
+Modelling assumption (decision D10): all peat extraction, industrial and domestic, ends in 2040. In target-year wetland rows it falls in a straight line from the calibration year to 0 in 2040, and the stopped share becomes rewetted (`share_rewetted_industrial_peat_extraction`, `share_rewetted_domestic_peat_extraction`). The wetland area and the calibration-year rows (the inventory) are unchanged.
+
+See [docs/peat_extraction.md](docs/peat_extraction.md).
+
 ## Tests
 
 ```bash
