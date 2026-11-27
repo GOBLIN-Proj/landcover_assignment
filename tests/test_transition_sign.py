@@ -4,6 +4,7 @@ Only ``Grassland_to_<X>`` cells are filled, so a land use other than grassland t
 Today none can (dossier S7_item14_transition_sign); if one ever does, the matrix raises instead of writing the loss as
 a gain from grassland (the old ``abs()``).
 """
+import math
 import unittest
 
 from _helpers import CAL, TARGET, load_national
@@ -36,6 +37,14 @@ class TransitionSign(unittest.TestCase):
     def test_growing_land_use_is_written_as_a_gain(self):
         tm = matrix_with_target_change("cropland", 1_000.0)
         self.assertAlmostEqual(tm.create_transition_matrix().loc[0, "Grassland_to_Cropland"], 1_000.0, delta=1e-6)
+
+    def test_no_change_is_written_as_zero_not_minus_zero(self):
+        """A land use whose area doesn't change gets 0.0, not -0.0 (which prints as "-0.0")."""
+        sc, grass, spared, breakdown = load_national()
+        matrix = TransitionMatrix(CAL, TARGET, sc, grass, spared, breakdown).create_transition_matrix()
+        negative_zeros = [(i, c) for i in matrix.index for c in matrix.columns
+                          if matrix.at[i, c] == 0 and math.copysign(1.0, matrix.at[i, c]) < 0]
+        self.assertEqual(negative_zeros, [])
 
 
 if __name__ == "__main__":

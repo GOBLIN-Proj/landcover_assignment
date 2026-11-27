@@ -116,7 +116,9 @@ class TransitionMatrix:
             if index >= 0:
                 for land_use in self.data_manager_class.get_land_use_columns():
                     # Signed change, target - calibration (step 7 item 14: was abs(), which hid the sign of a loss).
-                    change = -self._transition_difference(land_use, index, calibration_year, target_year, land_cover_df)
+                    # 0.0 - x, not -x, so that no change is 0.0 rather than -0.0.
+                    change = 0.0 - self._transition_difference(land_use, index, calibration_year, target_year,
+                                                               land_cover_df)
                     if land_use != "grassland" and change < -AREA_TOLERANCE_HA:
                         raise ValueError(
                             f"Scenario {index}: {land_use} shrinks by {-change:,.1f} ha between {calibration_year} and "
