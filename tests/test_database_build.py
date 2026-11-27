@@ -171,10 +171,36 @@ class Decisions(unittest.TestCase):
         self.assertAlmostEqual(value("wetland_data", "unmanaged_wetland_kha"), 108.364, places=3)
 
     def test_pending_forest_burnt_area(self):
-        """forest_data.burnt_kha (read only by the catchment tree, see .artifacts/geo_todo.md G1) stays as in 0.4.0:
-        CRF 2024 4.A.1, 1990-2022, 2023-2024 empty. The national forest row uses cbm_runner's fire (D6a)."""
-        self.assertAlmostEqual(value("forest_data", "burnt_kha"), 0.177653407915582, places=15)
+        """forest_data.burnt_kha (read only by the catchment tree, see .artifacts/geo_todo.md G1): CRF 2024 Table4(V)
+        4.A.1 wildfires, 1990-2022, 2023-2024 empty. The national forest row uses cbm_runner's fire (D6a)."""
+        crf = crf_burnt("A.1.wildfires")
+        for year in range(1990, 2023):
+            self.assertAlmostEqual(value("forest_data", "burnt_kha", year), crf[year] / KHA_TO_HA, places=15, msg=year)
+        self.assertAlmostEqual(value("forest_data", "burnt_kha"), 0.177653407915582, places=12)   # as in 0.4.0
+        self.assertIsNone(value("forest_data", "burnt_kha", 2023))
         self.assertIsNone(value("forest_data", "burnt_kha", 2024))
+        (source,) = query("SELECT source_id FROM column_metadata WHERE table_name = 'forest_data' "
+                          "AND column_name = 'burnt_kha'")[0]
+        self.assertEqual(source, "CRF2024")
+
+
+class Sources(unittest.TestCase):
+    def test_no_legacy_inputs(self):
+        """Every value comes from a published source: nothing is copied from the 0.4.0 database any more."""
+        self.assertFalse(any("legacy" in p for p in build_database.INPUTS))
+        self.assertFalse(list((ROOT / "data_sources").glob("legacy_*")))
+
+    def test_every_source_is_used(self):
+        used = {r[0] for r in query("SELECT source_id FROM column_metadata UNION SELECT source_id FROM inventory_values")}
+        self.assertEqual({r[0] for r in query("SELECT source_id FROM sources")}, used)
+
+    def test_urls(self):
+        """Each source has a link to the published document where one has been checked; empty otherwise."""
+        urls = dict(query("SELECT source_id, url FROM sources"))
+        for source, url in urls.items():
+            self.assertTrue(url == "" or url.startswith("https://"), source)
+        for source in ("CRT2026", "NID2026", "CRF2024", "CBM061", "PACKAGE"):
+            self.assertTrue(urls[source], source)
 
 
 def crf_burnt(code):

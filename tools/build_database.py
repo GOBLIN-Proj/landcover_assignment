@@ -6,7 +6,7 @@ database records where it came from:
 - `column_metadata`: for every column of every table the code reads, its unit, meaning, source, cell reference,
   transformation, the decision behind it (D1-D10, see the step 6 dossier) and a status (`inventory`, `derived`,
   `parameter`, `pending` or `key`);
-- `sources`: the documents behind the source ids;
+- `sources`: the documents behind the source ids, with a link to each where one has been checked;
 - `inventory_values`: every inventory value extracted (long format, with notation keys such as NO, NA, IE);
 - `build_info`: the package version and the SHA-256 of every input file.
 
@@ -48,9 +48,9 @@ Decided (owner, 2026-11-23/24):
   (NFS soil category -> Sitka yield class), the six categories grouped as the Teagasc NFS soil groups (1-2, 3-4, 5-6; owner confirmed).
   It is the only source of the afforestation yield classes (the CBM template rows are built from it).
 
-Pending (values kept from the 0.4.0 database, CRF 2024 vintage; see tools/export_legacy_columns.py):
-- `forest_data.burnt_kha` (CRF 2024 4.A.1, 1990-2022; 2023-2024 empty), read only by the catchment tree (geo to-do;
-  the national forest row uses cbm_runner's fire, D6a);
+Pending (the method, not the source):
+- `forest_data.burnt_kha`: CRF 2024 Table4(V) 4.A.1 wildfires, 1990-2022 (the 0.4.0 values; 2023-2024 empty), read
+  only by the catchment tree (geo to-do G1; the national forest row uses cbm_runner's fire, D6a).
 
 Two builds give byte-identical files (same SQLite library). Usage, from the repo root:
     .venv/bin/python tools/build_database.py
@@ -69,42 +69,44 @@ VERSION = "0.5.0"
 OUTPUT = ROOT / f"src/landcover_assignment/database/land_use_database_{VERSION}.db"
 YEARS = list(range(1990, 2025))
 INPUTS = ("data_sources/inventory_areas.csv", "data_sources/nid2026_forest_organic_soils.csv",
-          "data_sources/legacy_burnt_area.csv",
           "data_sources/forest_soil_yield_mapping.csv", "data_sources/nid2026_grassland_organic_factors.csv",
           "data_sources/cbm_runner_forest.csv", "data_sources/cbm_runner_forest_parameters.csv",
           "tools/build_database.py")
 CBM_YEARS = list(range(1990, 2071))
 
+# Source links: only pages checked to hold the document (2026-11-27); empty where none could be checked.
+EPA_INVENTORY = "https://www.epa.ie/publications/monitoring--assessment/climate-change/air-emissions/"
+EPA_2026 = EPA_INVENTORY + "irelands-national-inventory-submissions-2026.php"   # NID 2026 PDF and CRT 2026 zip
+EPA_2024 = EPA_INVENTORY + "irelands-national-inventory-submissions-2024.php"   # NIR 2024 and CRF 2024 zip
 SOURCES = [
     ("CRT2026", "EPA Ireland, Common Reporting Tables 2026 (IRL-CRT-2026-V1.0, one workbook per year, 1990-2024), "
-                "extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv"),
+                "extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv", EPA_2026),
     ("NID2026", "EPA Ireland, National Inventory Document 2026, Table 6.7 p.217 (4.A.1) and Table 6.15 p.231 (4.A.2), "
                 "transcribed by tools/transcribe_nid_forest.py into data_sources/nid2026_forest_organic_soils.csv; "
                 "s.6.5.2 p.271-272 grassland organic soil emission factors, transcribed into "
-                "data_sources/nid2026_grassland_organic_factors.csv"),
+                "data_sources/nid2026_grassland_organic_factors.csv", EPA_2026),
     ("CRF2024", "EPA Ireland, Common Reporting Format 2024 submission, Table4(V) biomass burning: area burnt "
-                "(1990-2022), extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv"),
-    ("LEGACY040", "landcover_assignment 0.4.0 database land_use_database.db (CRF 2024 vintage, git 25a83b4), "
-                  "exported by tools/export_legacy_columns.py into data_sources/legacy_*.csv and "
-                  "forest_soil_yield_mapping.csv"),
+                "(1990-2022), extracted by tools/extract_inventory.py into data_sources/inventory_areas.csv", EPA_2024),
     ("UPTON2013", "Upton, V., Ryan, M., Farrelly, N. and O'Donoghue, C. (2013) The potential economic returns of "
                   "converting agricultural land to forestry: an analysis of system and soil effects from 1995 to 2009. "
                   "Irish Forestry 70: 61-74. Table 2 (p.5): National Farm Survey soil category -> expected Sitka "
                   "spruce yield class (Farrelly et al. 2011 productivity model): 1 Wide 24, 2 Moderately wide 24, "
-                  "3 Somewhat limited 20, 4 Limited 20, 5 Very limited 18, 6 Extremely limited 14"),
+                  "3 Somewhat limited 20, 4 Limited 20, 5 Very limited 18, 6 Extremely limited 14", ""),
     ("CBM061", "goblin_cbm_runner 0.6.1 (GitHub GOBLIN-Proj/goblin_cbm_runner main, cfc0199), database "
                "cbm_runner_database_0.6.2.db: FM and AF inventories and disturbance events. Historic forest "
                "disturbances aligned with the NID and forest expert judgement (prepared by the forest consultant who "
                "prepared them for the NID). Exported by tools/export_cbm_runner_forest.py into "
-               "data_sources/cbm_runner_forest.csv and cbm_runner_forest_parameters.csv"),
-    ("PACKAGE", "landcover_assignment parameter or key, set in tools/build_database.py"),
+               "data_sources/cbm_runner_forest.csv and cbm_runner_forest_parameters.csv",
+     "https://github.com/GOBLIN-Proj/goblin_cbm_runner/tree/cfc0199af562c04c2b055a8200b73365e8b4b4c6"),
+    ("PACKAGE", "landcover_assignment parameter or key, set in tools/build_database.py",
+     "https://github.com/GOBLIN-Proj/landcover_assignment"),
 ]
 
 # Column recipes. Each entry: column -> (kind, argument, unit, description, decision)
 #   crt: CRT quantity in data_sources/inventory_areas.csv (notation key -> 0)
 #   crt_rich: (CRT 4(II).C.1 row, "rich" or "poor"): the row's area x its rich (or poor) fraction (D4)
 #   nid: NID column, 4.A.1 + 4.A.2, interpolated between printed years
-#   legacy_burnt: data_sources/legacy_burnt_area.csv
+#   crf_burnt: CRF 2024 Table4(V) burnt area (ha) in data_sources/inventory_areas.csv, 1990-2022 as reported; 2023-2024 NULL
 #   burnt: (CRF burnt area code, CRT wildfire CH4 quantity or None): D6b, see burnt_series
 #   zero: 0 in every year (PACKAGE parameter)
 REFRESH = "refresh: CRF 2024 -> CRT 2026"
@@ -118,7 +120,7 @@ TABLES = {
         "mineral_kha": ("crt", "4.A.mineral_area", "kha", "forest land on mineral soil (incl. its open area)", "D3"),
         "organic_kha": ("crt", "4.A.organic_area", "kha", "forest land on organic soil (drained N-poor, drained N-rich "
                         "and open area); not read by the code", "D3"),
-        "burnt_kha": ("legacy_burnt", "forest_data", "kha", "burnt forest area (CRF 2024 Table4(V) 4.A.1 wildfires)", D6),
+        "burnt_kha": ("crf_burnt", "A.1.wildfires", "kha", "burnt forest area (CRF 2024 Table4(V) 4.A.1 wildfires)", D6),
         "organic_emitting_kha": ("nid", "drained_n_poor_organic_kha", "kha",
                                  "drained N-poor organic forest soil (emits from drainage); forest share_organic", "D3"),
         "organo_mineral_emitting_kha": ("nid", "drained_n_rich_organo_mineral_kha", "kha",
@@ -352,7 +354,6 @@ def grassland_rich_fraction(inventory, factors, row):
 def build_tables():
     inventory = read_csv("data_sources/inventory_areas.csv")
     nid = read_csv("data_sources/nid2026_forest_organic_soils.csv")
-    burnt = read_csv("data_sources/legacy_burnt_area.csv")
     f = read_csv("data_sources/nid2026_grassland_organic_factors.csv")
     factors = dict(zip(f.name, f.value))
     tables, metadata = {}, []
@@ -397,11 +398,14 @@ def build_tables():
             elif kind == "zero":
                 values = pd.Series(0.0, index=YEARS)
                 source, reference, transformation, status = "PACKAGE", "", "0 in every year", "parameter"
-            elif kind == "legacy_burnt":
-                s = burnt[burnt.table == arg].set_index("year").value.astype(float)
-                values = s.reindex(YEARS)
-                source, reference, transformation, status = "LEGACY040", f"{arg}.burnt_kha", \
-                    "copied 1990-2022; 2023-2024 NULL", "pending"
+            elif kind == "crf_burnt":
+                quantity = f"burnt_area.4.{arg}"
+                rows = inventory[inventory.quantity == quantity].set_index("year")
+                if list(rows.index) != YEARS[:-2] or rows.value.isna().any():
+                    raise ValueError(f"{quantity}: not a value in every year 1990-2022")
+                values = (rows.value.astype(float) * HA_TO_KHA).reindex(YEARS)
+                source, reference, transformation, status = "CRF2024", crt_reference(inventory, quantity), \
+                    "ha / 1000; 1990-2022 as reported; 2023-2024 NULL", "pending"
             else:
                 raise ValueError(kind)
             data[column] = [None if pd.isna(v) else float(v) for v in values]
@@ -454,8 +458,8 @@ def build(path=OUTPUT):
         cur.executemany('INSERT INTO "forest_soil_yield_mapping" VALUES (?, ?, ?)',
                         [(int(g), str(s), str(y)) for g, s, y in mapping.itertuples(index=False, name=None)])
 
-        cur.execute('CREATE TABLE "sources" ("source_id" TEXT PRIMARY KEY, "citation" TEXT)')
-        cur.executemany('INSERT INTO "sources" VALUES (?, ?)', SOURCES)
+        cur.execute('CREATE TABLE "sources" ("source_id" TEXT PRIMARY KEY, "citation" TEXT, "url" TEXT)')
+        cur.executemany('INSERT INTO "sources" VALUES (?, ?, ?)', SOURCES)
         cur.execute('CREATE TABLE "column_metadata" ("table_name" TEXT, "column_name" TEXT, "unit" TEXT, '
                     '"description" TEXT, "source_id" TEXT, "reference" TEXT, "transformation" TEXT, '
                     '"decision" TEXT, "status" TEXT)')
